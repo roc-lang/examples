@@ -8,4 +8,31 @@ If you have any ideas or improvements for this repository please start a discuss
 
 Note that this is not a package repository, it is for teaching and demonstration purposes only.
 
+# Build Process
 
+- Run `roc check`
+- Run `roc test`
+- Generate static site
+- Copy static assets into
+
+## Stage 1
+- Fork Static Site 
+- Tabs for the other languages
+
+## Stage 2
+- Syntax highlighting (🤘 ❌ or top level config??)
+- Add Yaml config
+- Add tags
+```yaml
+---
+title: Json Example
+author: Luke Boswell
+lastUpdated: 2023/03/12
+...
+```
+
+## Future Scope
+- Testing. Add tests inside example.roc files, run in browser with WASM
+- Benchmarks. Linux commands etc
+- Feedback Button (HTML FORM)
+- Search
