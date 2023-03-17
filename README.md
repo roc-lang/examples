@@ -10,7 +10,11 @@ You can run these examples using the Roc cli e.g. `roc run examples/basic-json/m
 
 ## Building the Roc Examples static site
 
+To generate the html files from examples use the Roc cli. 
+
 `roc run main.roc -- examples build`
+
+Then copy the static assets from `/www` to `/build`.
 
 ## Ideas and Improvements
 

@@ -2,7 +2,8 @@
 ## MVP
 - Static site for Examples with separate code files
 
-## Possible features 
+## Possible features
+- Build script to copy static assets from `/www` to `/build`
 - Add a table of contents for examples, generated using the Roc app 
 - Tabs and highlighting to support multiple language examples
 - Syntax highlighting inline snippets; currently everything assumed to be roc; how to show other languages or remove highlighting
