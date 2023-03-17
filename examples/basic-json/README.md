@@ -13,5 +13,5 @@ main.roc
 
 **URL Packages.** Both the imported platform and package are downloaded from a URL. Roc will download these as a tarball if they are not already present in the cache, confirm the contents match the file hash, and then build the application.
 
-**Roc Scripts.** Also this example demonstrates how Roc applications can be used as scripts. The file starts with a `#!/usr/bin/env roc` which tells the operating system on UNIX and MacOS to run this file as a script. This can then be done with the command `./hello-json.roc`. Note that you may need to make the file executable using `chmod 755 hello-json.roc`
+**Roc Scripts.** Also this example demonstrates how Roc applications can be used as scripts. The file starts with a `#!/usr/bin/env roc` which tells the operating system on UNIX and MacOS to run this file as a script. This can then be done with the command `./main.roc`. Note that you may need to make the file executable using `chmod 755 main.roc`
 
