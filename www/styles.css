@@ -79,7 +79,6 @@ table tr td {
   margin-top: 0;
   margin-bottom: 24px;
   padding: 8px 16px;
-  border-radius: 8px 8px 0px 0px;
   border-bottom: 1px solid var(--border-color);
 }
 
@@ -173,7 +172,6 @@ main {
 
 section {
   border: 2px solid var(--border-color);
-  border-radius: 8px;
   padding: 0px 0px 16px 0px;
   margin: 72px 16px;
 }
@@ -350,7 +348,6 @@ h4 {
   padding: 8px 16px;
   display: block;
   box-sizing: border-box;
-  border-radius: 8px;
   font-family: var(--font-mono);
   background-color: var(--code-bg);
 }
@@ -364,7 +361,6 @@ code {
 
 p code {
   padding: 0 8px;
-  border-radius: 4px;
 }
 
 code a,
@@ -460,7 +456,6 @@ pre {
   border: 1px solid #666;
   padding: 1px 3px 3px;
   font-style: normal;
-  border-radius: 4px;
   line-height: 15px;
 }
 

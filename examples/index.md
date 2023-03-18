@@ -1,9 +1,10 @@
-# Examples
 
-Welcome to the Roc Examples site. 
+Goal: **the centralized place to find your up-to-date, roc-expert-approved answer to "How to x in roc".**
 
-These Examples should be useful Roc examples to complement the [Roc Tutorial](https://www.roc-lang.org/tutorial) and support a variety of needs such as application templates, content for guides and tutorials, and helpful scripts.
+Examples:
+- [Json](/json-basic/README.html)
+- [Parser](/parser-basic/README.html)
 
-## [Basic Json](/basic-json/README.html)
+[Feedback](https://github.com/roc-lang/examples/issues/new)
 
-## [Basic Parser](/basic-parser/README.html)
+[Contribute](https://github.com/roc-lang/examples)

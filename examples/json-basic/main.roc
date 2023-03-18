@@ -1,5 +1,4 @@
-#!/usr/bin/env roc
-app "example"
+app "json-basic"
     packages {
         cli: "https://github.com/roc-lang/basic-cli/releases/download/0.2.1/wx1N6qhU3kKva-4YqsVJde3fho34NqiLD3m620zZ-OI.tar.br",
         json: "https://github.com/lukewilliamboswell/roc-package-explorations/releases/download/0.0.1/cdKMia6cwdRG6Gb0SfXP8cgGF7yTz-i959FV6ZfuS0E.tar.br",
@@ -36,5 +35,5 @@ outputStr =
     |> Result.onErr \_ -> crash "bad encode"
     |> Result.withDefault ""
 
-# MY TEST HERE
+# Tests
 expect outputStr == inputStr
