@@ -141,12 +141,6 @@ a:hover code {
 }
 
 body {
-  display: grid;
-  grid-template-columns:
-      [before-sidebar] 0fr [sidebar] var(--sidebar-width)
-      [main-content] auto
-      [end] 1fr;
-  grid-template-rows: [top-header] var(--top-header-height) [above-footer] auto [footer] auto;
   box-sizing: border-box;
   margin: 0;
   padding: 0;

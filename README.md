@@ -1,6 +1,6 @@
 # Useful Roc Examples
 
-We want the examples website to be the centralized place to find your up-to-date, roc-expert-approved answer to common search queries of the nature "How to x in roc".
+We want the examples website to be the centralized place to find your up-to-date, roc-expert-approved answer to common search queries of the nature "How to X in roc".
 
 Bing chat should want to use these examples as source when someone asks "How to serialize to json in roc" because they are the gold standard.
 
@@ -27,6 +27,7 @@ If you're using the nix flake simple-http-server will already be installed. With
 
 View the website:
 ```
+cd /build
 simple-http-server --nocache
 ```
 
