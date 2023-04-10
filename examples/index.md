@@ -6,6 +6,11 @@ The centralized place to find your up-to-date, roc-expert-approved answer for "H
 ## Examples
 - [Json - Basic](/json-basic/README.html)
 - [Parser - Basic](/parser-basic/README.html)
+- [Rosetta Code Problem - A+B](/rosetta/AplusB/README.html)
+- [Rosetta Code Problem - Arithmetic](/rosetta/Arithmetic/README.html)
+- [Rosetta Code Problem - FizzBuzz](/rosetta/FizzBuzz/README.html)
+- [Rosetta Code Problem - Least Square Difference](/rosetta/LeastSquares/README.html)
+- [Rosetta Code Problem - Towers of Hanoi](/rosetta/TowersOfHanoi/README.html)
 
 ## Feedback
 
