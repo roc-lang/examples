@@ -21,6 +21,6 @@ lastUpdated: 2023/03/12
 
 - Search
 - Testing. Add tests inside example.roc files, can we run these in the browser with WASM
-- Benchmarks. Can we include benchmark examples? What about reporting thier status?
+- Benchmarks. Can we include benchmark examples? What about reporting their status?
 - Feedback Button (HTML FORM) submission to email the Roc developers with ideas/concerns instead of assuming everyone has a Github account
 - Possible Build Process for Examples for acceptability; Maybe run `roc check` and `roc test`
