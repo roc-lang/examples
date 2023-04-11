@@ -2,7 +2,7 @@ app "example"
     packages { pf: "https://github.com/roc-lang/basic-cli/releases/download/0.3.1/97mY3sUwo433-pcnEQUlMhn-sWiIf_J9bPhcAFZoqY4.tar.br" }
     imports [
         pf.Stdout,
-        pf.Task.{await},
+        pf.Task.{ await },
         pf.Arg,
     ]
     provides [main] to pf
@@ -15,7 +15,7 @@ main =
 
         sum = args.a + args.b
         aStr = Num.toStr args.a
-        bStr =  Num.toStr args.b
+        bStr = Num.toStr args.b
         sumStr = Num.toStr sum
 
         Task.succeed "The sum of \(aStr) and \(bStr) is \(sumStr)"
@@ -40,16 +40,11 @@ readArgs =
     Arg.list
     |> Task.mapFail \_ -> InvalidArg
     |> await \args ->
-        when args is 
+        when args is
             [_, aArg, bArg, ..] ->
                 when (Str.toI32 aArg, Str.toI32 bArg) is
-                    (Ok a, Ok b) ->
-                        if a < -1000 || a > 1000 || b < -1000 || b > 1000 then
-                            Task.fail InvalidNumStr
-                        else
-                            Task.succeed { a, b }
-
+                    (Ok a, Ok b) -> Task.succeed { a, b }
                     _ -> Task.fail InvalidNumStr
 
-            _ -> 
+            _ ->
                 Task.fail InvalidNumStr

@@ -2,7 +2,7 @@ app "example"
     packages { pf: "https://github.com/roc-lang/basic-cli/releases/download/0.3.1/97mY3sUwo433-pcnEQUlMhn-sWiIf_J9bPhcAFZoqY4.tar.br" }
     imports [
         pf.Stdout,
-        pf.Task.{await},
+        pf.Task.{ await },
         pf.Arg,
     ]
     provides [main] to pf
@@ -14,13 +14,13 @@ main =
         args <- readArgs |> await
 
         {
-            numDisks: args.numDisks, 
-            from: "A", 
-            to: "B", 
-            using: "C", 
-            moves: []
+            numDisks: args.numDisks,
+            from: "A",
+            to: "B",
+            using: "C",
+            moves: [],
         }
-        |> hanoi     
+        |> hanoi
         |> List.map \(from, to) -> "Move disk from \(from) to \(to)"
         |> Str.joinWith "\n"
         |> Task.succeed
@@ -58,35 +58,35 @@ readArgs =
 ##
 ## Returns a list of moves (tuples) to solve the Tower of Hanoi problem.
 ##
-hanoi = \{numDisks, from, to, using, moves} ->
+hanoi = \{ numDisks, from, to, using, moves } ->
     if numDisks == 1 then
         List.concat moves [(from, to)]
     else
         moves1 = hanoi {
-            numDisks: (numDisks - 1), 
-            from, 
-            to: using, 
-            using: to, 
-            moves
+            numDisks: (numDisks - 1),
+            from,
+            to: using,
+            using: to,
+            moves,
         }
 
         moves2 = List.concat moves1 [(from, to)]
 
         hanoi {
-            numDisks: (numDisks - 1), 
-            from: using, 
-            to, 
-            using: from, 
-            moves: moves2
+            numDisks: (numDisks - 1),
+            from: using,
+            to,
+            using: from,
+            moves: moves2,
         }
 
 tc = { numDisks: 1, from: "A", to: "B", using: "C", moves: [] }
 
 ## Test Case 1: Tower of Hanoi with 1 disk
-expect hanoi {tc & numDisks: 1} == [("A", "B")]
+expect hanoi { tc & numDisks: 1 } == [("A", "B")]
 
 ## Test Case 2: Tower of Hanoi with 2 disks
-expect hanoi {tc & numDisks: 2} == [("A", "C"), ("A", "B"), ("C", "B")]
+expect hanoi { tc & numDisks: 2 } == [("A", "C"), ("A", "B"), ("C", "B")]
 
 ## Test Case 3: Tower of Hanoi with 3 disks
-expect hanoi {tc & numDisks: 3} == [("A", "B"), ("A", "C"), ("B", "C"), ("A", "B"), ("C", "A"), ("C", "B"), ("A", "B")]
+expect hanoi { tc & numDisks: 3 } == [("A", "B"), ("A", "C"), ("B", "C"), ("A", "B"), ("C", "A"), ("C", "B"), ("A", "B")]

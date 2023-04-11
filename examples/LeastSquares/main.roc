@@ -18,7 +18,7 @@ main =
 ## `U32`representing the least positive integer that satisfies the condition.
 ##
 leastSquareDifference : {} -> U32
-leastSquareDifference = \_ -> 
+leastSquareDifference = \_ ->
     findNumber = \n ->
         difference = (Num.powInt n 2) - (Num.powInt (n - 1) 2)
 
