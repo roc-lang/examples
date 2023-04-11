@@ -1,9 +1,9 @@
 
-# Rosetta Code - FizzBuzz
+# Problem - FizzBuzz
 
-This is a Roc solution for the [Rosetta Code FizzBuzz Problem](https://rosettacode.org/wiki/FizzBuzz).
+This is a Roc solution for the popular [FizzBuzz](https://en.wikipedia.org/wiki/Fizz_buzz) interview problem;
 
-> *Print the integers from 1 to 100, replacing; multiples of three with "Fizz"; multiples of five with "Buzz"; multiples of both three and five with "FizzBuzz".*
+> *Print the integers from 1 to 100, replacing multiples of three with "Fizz", multiples of five with "Buzz", and multiples of both three and five with "FizzBuzz".*
 
 ## Output 
 

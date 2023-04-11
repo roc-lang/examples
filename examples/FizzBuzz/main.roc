@@ -1,8 +1,7 @@
-app "rosetta-example"
+app "example"
     packages { pf: "https://github.com/roc-lang/basic-cli/releases/download/0.3.1/97mY3sUwo433-pcnEQUlMhn-sWiIf_J9bPhcAFZoqY4.tar.br" }
     imports [
         pf.Stdout,
-        Str,
     ]
     provides [main] to pf
 
@@ -17,14 +16,14 @@ main =
 ## and the original number as a string for all other values.
 fizzBuzz : I32 -> Str
 fizzBuzz = \n ->
-    fizz = Num.rem n 3 == 0
-    buzz = Num.rem n 5 == 0
+    fizz = n % 3 == 0
+    buzz = n % 5 == 0
 
     if fizz && buzz then
         "FizzBuzz"
-    else if fizz && !buzz then
+    else if fizz then
         "Fizz"
-    else if !fizz && buzz then
+    else if buzz then
         "Buzz"
     else
         Num.toStr n

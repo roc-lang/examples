@@ -1,10 +1,9 @@
-app "rosetta-example"
+app "example"
     packages { pf: "https://github.com/roc-lang/basic-cli/releases/download/0.3.1/97mY3sUwo433-pcnEQUlMhn-sWiIf_J9bPhcAFZoqY4.tar.br" }
     imports [
         pf.Stdout,
-        pf.Task,
+        pf.Task.{await},
         pf.Arg,
-        Str,
     ]
     provides [main] to pf
 
@@ -12,26 +11,26 @@ TaskErrors : [InvalidArg, InvalidNumStr]
 
 main =
     task =
-        args <- readArgs |> Task.await
+        args <- readArgs |> await
 
-        results = [
-            ("sum", args.a + args.b),
-            ("difference", args.a - args.b),
-            ("product", args.a * args.b),
-            ("integer quotient", args.a // args.b),
-            ("remainder", args.a % args.b),
-            ("exponentiation", Num.powInt args.a args.b),
-        ]
+        calculate = \(operation, result) ->
+            resultStr = Num.toStr result
 
-        resultsStr =
-            results
-            |> List.map
-                (\(operation, result) ->
-                    resultStr = result |> Num.toStr
-                    "\(operation): \(resultStr)")
+            "\(operation): \(resultStr)"
+
+        results =
+            [
+                ("sum", args.a + args.b),
+                ("difference", args.a - args.b),
+                ("product", args.a * args.b),
+                ("integer quotient", args.a // args.b),
+                ("remainder", args.a % args.b),
+                ("exponentiation", Num.powInt args.a args.b),
+            ]
+            |> List.map calculate
             |> Str.joinWith "\n"
 
-        Task.succeed resultsStr
+        Task.succeed results
 
     taskResult <- Task.attempt task
 
@@ -52,7 +51,7 @@ readArgs : Task.Task { a : I32, b : I32 } TaskErrors
 readArgs =
     Arg.list
     |> Task.mapFail \_ -> InvalidArg
-    |> Task.await \args ->
+    |> await \args ->
         aResult = List.get args 1 |> Result.try Str.toI32
         bResult = List.get args 2 |> Result.try Str.toI32
 

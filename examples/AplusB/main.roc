@@ -1,10 +1,9 @@
-app "rosetta-example"
+app "example"
     packages { pf: "https://github.com/roc-lang/basic-cli/releases/download/0.3.1/97mY3sUwo433-pcnEQUlMhn-sWiIf_J9bPhcAFZoqY4.tar.br" }
     imports [
         pf.Stdout,
-        pf.Task,
+        pf.Task.{await},
         pf.Arg,
-        Str,
     ]
     provides [main] to pf
 
@@ -12,12 +11,12 @@ TaskErrors : [InvalidArg, InvalidNumStr]
 
 main =
     task =
-        args <- readArgs |> Task.await
+        args <- readArgs |> await
 
         sum = args.a + args.b
-        aStr = args.a |> Num.toStr
-        bStr = args.b |> Num.toStr
-        sumStr = sum |> Num.toStr
+        aStr = Num.toStr args.a
+        bStr =  Num.toStr args.b
+        sumStr = Num.toStr sum
 
         Task.succeed "The sum of \(aStr) and \(bStr) is \(sumStr)"
 
@@ -40,15 +39,17 @@ readArgs : Task.Task { a : I32, b : I32 } TaskErrors
 readArgs =
     Arg.list
     |> Task.mapFail \_ -> InvalidArg
-    |> Task.await \args ->
-        aResult = List.get args 1 |> Result.try Str.toI32
-        bResult = List.get args 2 |> Result.try Str.toI32
+    |> await \args ->
+        when args is 
+            [_, aArg, bArg, ..] ->
+                when (Str.toI32 aArg, Str.toI32 bArg) is
+                    (Ok a, Ok b) ->
+                        if a < -1000 || a > 1000 || b < -1000 || b > 1000 then
+                            Task.fail InvalidNumStr
+                        else
+                            Task.succeed { a, b }
 
-        when (aResult, bResult) is
-            (Ok a, Ok b) ->
-                if a < -1000 || a > 1000 || b < -1000 || b > 1000 then
-                    Task.fail InvalidNumStr
-                else
-                    Task.succeed { a, b }
+                    _ -> Task.fail InvalidNumStr
 
-            _ -> Task.fail InvalidNumStr
+            _ -> 
+                Task.fail InvalidNumStr

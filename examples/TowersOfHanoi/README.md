@@ -1,9 +1,7 @@
 
-# Rosetta Code - Towers of Hanoi 
+# Problem - Towers of Hanoi 
 
-This is a Roc solution for the [Rosetta Code Towers of Hanoi Problem](https://en.wikipedia.org/wiki/Tower_of_Hanoi) task.
-
-> *Solve the Towers of Hanoi problem using recursion.*
+This is a Roc solution for the popular [Towers of Hanoi](https://en.wikipedia.org/wiki/Tower_of_Hanoi) problem.
 
 ## Output
 
