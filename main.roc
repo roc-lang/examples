@@ -1,5 +1,5 @@
 app "generate-build"
-    packages { pf: "/home/username/gitrepos/roc/examples/static-site-gen/platform/main.roc" }
+    packages { pf: "/Users/luke/Documents/GitHub/roc/examples/static-site-gen/platform/main.roc" }
     imports [
         pf.Html.{ html,svg, main, p, footer, h1,  head, header, body, div, text, a, link, meta, title },
         pf.Html.Attributes.{ role, attribute, name, content, href, rel, lang, class,  charset },
@@ -28,9 +28,9 @@ view = \fileName, htmlContent ->
             div [class "top-header-extension"] [],
             header [class "top-header"] [
                 div [class "pkg-and-logo"] [
-                    a [class "logo", href "#"] [logoSvg],
+                    a [class "logo", href "/"] [logoSvg],
                     h1 [class "pkg-full-name"] [
-                        a [href "#"] [text "Examples"],
+                        a [href "/index.html"] [text "Examples"],
                     ],
                 ],
                 div [class "top-header-triangle"] [],
