@@ -13,7 +13,7 @@ main =
     task =
         args <- readArgs |> await
 
-        calculate = \(operation, result) ->
+        formatResult = \(operation, result) ->
             resultStr = Num.toStr result
 
             "\(operation): \(resultStr)"
@@ -27,7 +27,7 @@ main =
                 ("remainder", args.a % args.b),
                 ("exponentiation", Num.powInt args.a args.b),
             ]
-            |> List.map calculate
+            |> List.map formatResult
             |> Str.joinWith "\n"
 
         Task.succeed results
