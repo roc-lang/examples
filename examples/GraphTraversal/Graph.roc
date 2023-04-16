@@ -64,7 +64,10 @@ dfsHelper = \isTarget, stack, visited, graph ->
                 when Dict.get graph current is
                     Ok neighbors ->
                         # filter out all seen neighbors
-                        filtered = List.keepIf neighbors (\n -> !(Set.contains visited n))
+                        filtered =
+                            neighbors
+                            |> List.keepIf (\n -> !(Set.contains visited n))
+                            |> List.reverse
 
                         # newly explored nodes are added to LIFO stack
                         newStack = List.concat rest filtered
@@ -118,42 +121,42 @@ bfsHelper = \isTarget, queue, visited, graph ->
                     Err KeyNotFound ->
                         bfsHelper isTarget rest newVisited graph
 
-# Test using depth-first search.
+# Test DFS
 expect
-    actual = dfs (\v -> v == "F") "A" testGraphSmall
-    expected = Ok "F"
+    actual = dfs (\v -> Str.startsWith v "F") "A" testGraphSmall
+    expected = Ok "F-DFS"
 
     actual == expected
 
-## Test and breadth-first search.
+## Test BFS
 expect
-    actual = bfs (\v -> v == "F") "A" testGraphSmall
-    expected = Ok "F"
+    actual = bfs (\v -> Str.startsWith v "F") "A" testGraphSmall
+    expected = Ok "F-BFS"
 
     actual == expected
 
-# Test node not present depth-first search
+# Test NotFound DFS
 expect
-    actual = dfs (\v -> v == "X") "A" testGraphSmall
+    actual = dfs (\v -> v == "not a node") "A" testGraphSmall
     expected = Err NotFound
 
     actual == expected
 
-# Test node not present breadth-first search
+# Test NotFound BFS
 expect
-    actual = dfs (\v -> v == "X") "A" testGraphSmall
+    actual = dfs (\v -> v == "not a node") "A" testGraphSmall
     expected = Err NotFound
 
     actual == expected
 
-# Test using depth-first search large.
+# Test DFS large
 expect
     actual = dfs (\v -> v == "AE") "A" testGraphLarge
     expected = Ok "AE"
 
     actual == expected
 
-## Test and breadth-first search large.
+## Test BFS large
 expect
     actual = bfs (\v -> v == "AE") "A" testGraphLarge
     expected = Ok "AE"
@@ -163,12 +166,13 @@ expect
 # Some helpers for testing
 testGraphSmall =
     [
-        ("A", ["B", "C"]),
+        ("A", ["B", "C", "F-BFS"]),
         ("B", ["D", "E"]),
         ("C", []),
         ("D", []),
-        ("E", ["F"]),
-        ("F", []),
+        ("E", ["F-DFS"]),
+        ("F-BFS", []),
+        ("F-DFS", []),
     ]
     |> fromList
 
