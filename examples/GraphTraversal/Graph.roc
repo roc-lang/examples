@@ -8,9 +8,7 @@ interface Graph
         dfs,
         bfs,
     ]
-    imports [
-        Dict,
-    ]
+    imports []
 
 ## Graph type representing a graph as a dictionary of adjacency lists
 ## where each key is a vertex and each value is a list of its adjacent vertices.
@@ -34,15 +32,15 @@ fromList = \adjacencyList ->
 ## - `graph`    : The graph to perform the search on.
 dfs : (a -> Bool), a, Graph a -> Result a [NotFound]
 dfs = \isTarget, root, @Graph graph ->
-    dfsHelper isTarget [root] [] graph
+    dfsHelper isTarget [root] (Set.empty {}) graph
 
 # A helper function for performing the depth-first search.
 #
 # `isTarget` : A function that returns true if a vertex is the target.
-# `stack`    : A list of vertices to visit.
-# `visited`  : A list of visited vertices.
+# `stack`    : A List of vertices to visit.
+# `visited`  : A Sist of visited vertices.
 # `graph`    : The graph to perform the search on.
-dfsHelper : (a -> Bool), List a, List a, Dict a (List a) -> Result a [NotFound]
+dfsHelper : (a -> Bool), List a, Set a, Dict a (List a) -> Result a [NotFound]
 dfsHelper = \isTarget, stack, visited, graph ->
     when stack is
         [] ->
@@ -53,10 +51,10 @@ dfsHelper = \isTarget, stack, visited, graph ->
 
             if isTarget current then
                 Ok current
-            else if List.contains visited current then
+            else if Set.contains visited current then
                 dfsHelper isTarget rest visited graph
             else
-                newVisited = List.prepend visited current
+                newVisited = Set.insert visited current
 
                 when Dict.get graph current is
                     Ok neighbors ->
@@ -75,15 +73,15 @@ dfsHelper = \isTarget, stack, visited, graph ->
 ## - `graph`    : The graph to perform the search on.
 bfs : (a -> Bool), a, Graph a -> Result a [NotFound]
 bfs = \isTarget, root, @Graph graph ->
-    bfsHelper isTarget [root] [] graph
+    bfsHelper isTarget [root] (Set.empty {}) graph
 
 # A helper function for performing the breadth-first search.
 #
 # `isTarget` : A function that returns true if a vertex is the target.
-# `queue`    : A list of vertices to visit.
-# `visited`  : A list of visited vertices.
+# `queue`    : A List of vertices to visit.
+# `visited`  : A Set of visited vertices.
 # `graph`    : The graph to perform the search on.
-bfsHelper : (a -> Bool), List a, List a, Dict a (List a) -> Result a [NotFound]
+bfsHelper : (a -> Bool), List a, Set a, Dict a (List a) -> Result a [NotFound]
 bfsHelper = \isTarget, queue, visited, graph ->
     when queue is
         [] ->
@@ -94,10 +92,10 @@ bfsHelper = \isTarget, queue, visited, graph ->
 
             if isTarget current then
                 Ok current
-            else if List.contains visited current then
+            else if Set.contains visited current then
                 bfsHelper isTarget rest visited graph
             else
-                newVisited = List.append visited current
+                newVisited = Set.insert visited current
 
                 when Dict.get graph current is
                     Ok neighbors ->
