@@ -18,5 +18,5 @@ Move disk from A to B
 
 ## Code
 ```roc
-file:main.roc
+file:Hanoi.roc
 ```
