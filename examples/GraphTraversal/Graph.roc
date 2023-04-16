@@ -5,6 +5,7 @@ interface Graph
     exposes [
         Graph,
         fromList,
+        fromDict,
         dfs,
         bfs,
     ]
@@ -24,6 +25,10 @@ fromList = \adjacencyList ->
 
     List.walk adjacencyList emptyDict update
     |> @Graph
+
+## Create a Graph from an adjacency list.
+fromDict : Dict a (List a) -> Graph a
+fromDict = @Graph
 
 ## Perform a depth-first search on a graph to find a target vertex.
 ##
