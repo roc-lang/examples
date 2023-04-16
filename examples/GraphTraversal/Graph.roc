@@ -67,7 +67,7 @@ dfsHelper = \isTarget, stack, visited, graph ->
                         filtered = List.keepIf neighbors (\n -> !(Set.contains visited n))
 
                         # newly explored nodes are added to LIFO stack
-                        newStack = List.concat filtered rest
+                        newStack = List.concat rest filtered
 
                         dfsHelper isTarget newStack newVisited graph
 
