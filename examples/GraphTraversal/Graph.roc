@@ -58,8 +58,11 @@ dfsHelper = \isTarget, stack, visited, graph ->
 
                 when Dict.get graph current is
                     Ok neighbors ->
+                        # filter out all seen neighbors
+                        filtered = List.keepIf neighbors (\n -> !(Set.contains visited n))
+
                         # newly explored nodes are added to LIFO stack
-                        newStack = List.concat neighbors rest
+                        newStack = List.concat filtered rest
 
                         dfsHelper isTarget newStack newVisited graph
 
@@ -99,16 +102,61 @@ bfsHelper = \isTarget, queue, visited, graph ->
 
                 when Dict.get graph current is
                     Ok neighbors ->
+                        # filter out all seen neighbors
+                        filtered = List.keepIf neighbors (\n -> !(Set.contains visited n))
+
                         # newly explored nodes are added to the FIFO queue
-                        newQueue = List.concat rest neighbors
+                        newQueue = List.concat rest filtered
 
                         bfsHelper isTarget newQueue newVisited graph
 
                     Err KeyNotFound ->
                         bfsHelper isTarget rest newVisited graph
 
+# Test using depth-first search.
+expect
+    actual = dfs (\v -> v == "F") "A" testGraphSmall
+    expected = Ok "F"
+
+    actual == expected
+
+## Test and breadth-first search.
+expect
+    actual = bfs (\v -> v == "F") "A" testGraphSmall
+    expected = Ok "F"
+
+    actual == expected
+
+# Test node not present depth-first search
+expect
+    actual = dfs (\v -> v == "X") "A" testGraphSmall
+    expected = Err NotFound
+
+    actual == expected
+
+# Test node not present breadth-first search
+expect
+    actual = dfs (\v -> v == "X") "A" testGraphSmall
+    expected = Err NotFound
+
+    actual == expected
+
+# Test using depth-first search large.
+expect
+    actual = dfs (\v -> v == "AE") "A" testGraphLarge
+    expected = Ok "AE"
+
+    actual == expected
+
+## Test and breadth-first search large.
+expect
+    actual = bfs (\v -> v == "AE") "A" testGraphLarge
+    expected = Ok "AE"
+
+    actual == expected
+
 # Some helpers for testing
-testGraph =
+testGraphSmall =
     [
         ("A", ["B", "C"]),
         ("B", ["D", "E"]),
@@ -119,30 +167,38 @@ testGraph =
     ]
     |> fromList
 
-# Test using depth-first search.
-expect
-    actual = dfs (\v -> v == "F") "A" testGraph
-    expected = Ok "F"
-
-    actual == expected
-
-## Test and breadth-first search.
-expect
-    actual = bfs (\v -> v == "F") "A" testGraph
-    expected = Ok "F"
-
-    actual == expected
-
-# Test node not present depth-first search
-expect
-    actual = dfs (\v -> v == "X") "A" testGraph
-    expected = Err NotFound
-
-    actual == expected
-
-# Test node not present breadth-first search
-expect
-    actual = dfs (\v -> v == "X") "A" testGraph
-    expected = Err NotFound
-
-    actual == expected
+testGraphLarge =
+    [
+        ("A", ["B", "C", "D"]),
+        ("B", ["E", "F", "G"]),
+        ("C", ["H", "I", "J"]),
+        ("D", ["K", "L", "M"]),
+        ("E", ["N", "O"]),
+        ("F", ["P", "Q"]),
+        ("G", ["R", "S"]),
+        ("H", ["T", "U"]),
+        ("I", ["V", "W"]),
+        ("J", ["X", "Y"]),
+        ("K", ["Z", "AA"]),
+        ("L", ["AB", "AC"]),
+        ("M", ["AD", "AE"]),
+        ("N", []),
+        ("O", []),
+        ("P", []),
+        ("Q", []),
+        ("R", []),
+        ("S", []),
+        ("T", []),
+        ("U", []),
+        ("V", []),
+        ("W", []),
+        ("X", []),
+        ("Y", []),
+        ("Z", []),
+        ("AA", []),
+        ("AB", []),
+        ("AC", []),
+        ("AD", []),
+        ("AE", []),
+    ]
+    |> fromList
