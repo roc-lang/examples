@@ -46,7 +46,7 @@ dfs = \isTarget, root, @Graph graph ->
 # `visited`  : A Sist of visited vertices.
 # `graph`    : The graph to perform the search on.
 dfsHelper : (a -> Bool), List a, Set a, Dict a (List a) -> Result a [NotFound]
-dfsHelper = \isTarget, stack, visited, graph ->
+dfsHelper = \isTarget, stack, seen, graph ->
     when stack is
         [] ->
             Err NotFound
@@ -56,26 +56,24 @@ dfsHelper = \isTarget, stack, visited, graph ->
 
             if isTarget current then
                 Ok current
-            else if Set.contains visited current then
-                dfsHelper isTarget rest visited graph
             else
-                newVisited = Set.insert visited current
-
                 when Dict.get graph current is
                     Ok neighbors ->
                         # filter out all seen neighbors
                         filtered =
                             neighbors
-                            |> List.keepIf (\n -> !(Set.contains visited n))
+                            |> List.keepIf (\n -> !(Set.contains seen n))
                             |> List.reverse
+
+                        newSeen = Set.union seen (Set.fromList filtered)
 
                         # newly explored nodes are added to LIFO stack
                         newStack = List.concat rest filtered
 
-                        dfsHelper isTarget newStack newVisited graph
+                        dfsHelper isTarget newStack newSeen graph
 
                     Err KeyNotFound ->
-                        dfsHelper isTarget rest newVisited graph
+                        dfsHelper isTarget rest seen graph
 
 ## Perform a breadth-first search on a graph to find a target vertex.
 ##
