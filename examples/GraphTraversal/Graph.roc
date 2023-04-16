@@ -60,7 +60,7 @@ dfsHelper = \isTarget, stack, visited, graph ->
 
                 when Dict.get graph current is
                     Ok neighbors ->
-                        # newly explored nodes are added to the START of the stack
+                        # newly explored nodes are added to LIFO stack
                         newStack = List.concat neighbors rest
 
                         dfsHelper isTarget newStack newVisited graph
@@ -101,7 +101,7 @@ bfsHelper = \isTarget, queue, visited, graph ->
 
                 when Dict.get graph current is
                     Ok neighbors ->
-                        # newly explored nodes are added to the END of the queue
+                        # newly explored nodes are added to the FIFO queue
                         newQueue = List.concat rest neighbors
 
                         bfsHelper isTarget newQueue newVisited graph
