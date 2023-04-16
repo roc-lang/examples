@@ -6,6 +6,7 @@ The centralized place to find your up-to-date, roc-expert-approved answer for "H
 ## Examples
 - [Hello World](/HelloWorld/README.html)
 - [Pattern Matching](/PatternMatching/README.html)
+- [Graph Traversal](/GraphTraversal/README.html)
 - [Json - Basic](/json-basic/README.html)
 - [Parser - Basic](/parser-basic/README.html)
 - [Problem - Arithmetic](/Arithmetic/README.html)
