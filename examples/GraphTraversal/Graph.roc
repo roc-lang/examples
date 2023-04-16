@@ -48,15 +48,15 @@ dfsHelper = \isTarget, stack, visited, graph ->
         [] ->
             Err NotFound
 
-        [current, ..] ->
-            rest = List.dropFirst stack
+        [.., current] ->
+            rest = List.dropLast stack
 
             if isTarget current then
                 Ok current
             else if List.contains visited current then
                 dfsHelper isTarget rest visited graph
             else
-                newVisited = List.append visited current
+                newVisited = List.prepend visited current
 
                 when Dict.get graph current is
                     Ok neighbors ->
@@ -80,17 +80,17 @@ bfs = \isTarget, root, @Graph graph ->
 # A helper function for performing the breadth-first search.
 #
 # `isTarget` : A function that returns true if a vertex is the target.
-# `stack`    : A list of vertices to visit.
+# `queue`    : A list of vertices to visit.
 # `visited`  : A list of visited vertices.
 # `graph`    : The graph to perform the search on.
 bfsHelper : (a -> Bool), List a, List a, Dict a (List a) -> Result a [NotFound]
-bfsHelper = \isTarget, stack, visited, graph ->
-    when stack is
+bfsHelper = \isTarget, queue, visited, graph ->
+    when queue is
         [] ->
             Err NotFound
 
         [current, ..] ->
-            rest = List.dropFirst stack
+            rest = List.dropFirst queue
 
             if isTarget current then
                 Ok current
@@ -101,10 +101,10 @@ bfsHelper = \isTarget, stack, visited, graph ->
 
                 when Dict.get graph current is
                     Ok neighbors ->
-                        # newly explored nodes are added to the END of the stack
-                        newStack = List.concat rest neighbors
+                        # newly explored nodes are added to the END of the queue
+                        newQueue = List.concat rest neighbors
 
-                        bfsHelper isTarget newStack newVisited graph
+                        bfsHelper isTarget newQueue newVisited graph
 
                     Err KeyNotFound ->
                         bfsHelper isTarget rest newVisited graph
