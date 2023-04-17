@@ -43,10 +43,10 @@ dfs = \isTarget, root, @Graph graph ->
 #
 # `isTarget` : A function that returns true if a vertex is the target.
 # `stack`    : A List of vertices to visit.
-# `visited`  : A Sist of visited vertices.
+# `visited`  : A Set of visited vertices.
 # `graph`    : The graph to perform the search on.
 dfsHelper : (a -> Bool), List a, Set a, Dict a (List a) -> Result a [NotFound]
-dfsHelper = \isTarget, stack, seen, graph ->
+dfsHelper = \isTarget, stack, visited, graph ->
     when stack is
         [] ->
             Err NotFound
@@ -56,24 +56,26 @@ dfsHelper = \isTarget, stack, seen, graph ->
 
             if isTarget current then
                 Ok current
+            else if Set.contains visited current then
+                dfsHelper isTarget rest visited graph
             else
+                newVisited = Set.insert visited current
+
                 when Dict.get graph current is
                     Ok neighbors ->
-                        # filter out all seen neighbors
+                        # filter out all visited neighbors
                         filtered =
                             neighbors
-                            |> List.keepIf (\n -> !(Set.contains seen n))
+                            |> List.keepIf (\n -> !(Set.contains newVisited n))
                             |> List.reverse
-
-                        newSeen = Set.union seen (Set.fromList filtered)
 
                         # newly explored nodes are added to LIFO stack
                         newStack = List.concat rest filtered
 
-                        dfsHelper isTarget newStack newSeen graph
+                        dfsHelper isTarget newStack newVisited graph
 
                     Err KeyNotFound ->
-                        dfsHelper isTarget rest seen graph
+                        dfsHelper isTarget rest newVisited graph
 
 ## Perform a breadth-first search on a graph to find a target vertex.
 ##
@@ -82,16 +84,16 @@ dfsHelper = \isTarget, stack, seen, graph ->
 ## - `graph`    : The graph to perform the search on.
 bfs : (a -> Bool), a, Graph a -> Result a [NotFound]
 bfs = \isTarget, root, @Graph graph ->
-    bfsHelper isTarget [root] (Set.empty {}) graph
+    bfsHelper isTarget [root] (Set.single root) graph
 
 # A helper function for performing the breadth-first search.
 #
 # `isTarget` : A function that returns true if a vertex is the target.
 # `queue`    : A List of vertices to visit.
-# `visited`  : A Set of visited vertices.
+# `seen`  : A Set of all seen vertices.
 # `graph`    : The graph to perform the search on.
 bfsHelper : (a -> Bool), List a, Set a, Dict a (List a) -> Result a [NotFound]
-bfsHelper = \isTarget, queue, visited, graph ->
+bfsHelper = \isTarget, queue, seen, graph ->
     when queue is
         [] ->
             Err NotFound
@@ -101,23 +103,36 @@ bfsHelper = \isTarget, queue, visited, graph ->
 
             if isTarget current then
                 Ok current
-            else if Set.contains visited current then
-                bfsHelper isTarget rest visited graph
             else
-                newVisited = Set.insert visited current
-
                 when Dict.get graph current is
                     Ok neighbors ->
                         # filter out all seen neighbors
-                        filtered = List.keepIf neighbors (\n -> !(Set.contains visited n))
+                        filtered = List.keepIf neighbors (\n -> !(Set.contains seen n))
 
                         # newly explored nodes are added to the FIFO queue
                         newQueue = List.concat rest filtered
 
-                        bfsHelper isTarget newQueue newVisited graph
+                        # the new nodes are also added to the seen set
+                        newSeen = List.walk filtered seen Set.insert
+
+                        bfsHelper isTarget newQueue newSeen graph
 
                     Err KeyNotFound ->
-                        bfsHelper isTarget rest newVisited graph
+                        bfsHelper isTarget rest seen graph
+
+# Test DFS with multiple paths
+expect
+    actual = dfs (\v -> Str.startsWith v "C") "A" testGraphMultipath
+    expected = Ok "Ccorrect"
+
+    actual == expected
+
+# Test BFS with multiple paths
+expect
+    actual = bfs (\v -> Str.startsWith v "C") "A" testGraphMultipath
+    expected = Ok "Ccorrect"
+
+    actual == expected
 
 # Test DFS
 expect
@@ -207,5 +222,14 @@ testGraphLarge =
         ("AC", []),
         ("AD", []),
         ("AE", []),
+    ]
+    |> fromList
+
+testGraphMultipath =
+    [
+        ("A", ["B", "Ccorrect"]),
+        ("B", ["Ccorrect", "Cwrong"]),
+        ("Ccorrect", []),
+        ("Cwrong", []),
     ]
     |> fromList
