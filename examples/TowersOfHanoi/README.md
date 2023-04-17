@@ -6,7 +6,11 @@ This is a Roc solution for the popular [Towers of Hanoi](https://en.wikipedia.or
 ## Output
 
 ```
-% roc run main.roc -- 3
+% roc test examples/TowersOfHanoi/Hanoi.roc 
+
+0 failed and 3 passed in 662 ms.
+
+% roc run examples/TowersOfHanoi/main.roc -- 3
 Move disk from A to B
 Move disk from A to C
 Move disk from B to C
@@ -18,5 +22,5 @@ Move disk from A to B
 
 ## Code
 ```roc
-file:main.roc
+file:Hanoi.roc
 ```
