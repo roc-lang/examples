@@ -1,5 +1,5 @@
 
-# Problem - Towers of Hanoi 
+# Towers of Hanoi 
 
 This is a Roc solution for the popular [Towers of Hanoi](https://en.wikipedia.org/wiki/Tower_of_Hanoi) problem.
 

@@ -1,5 +1,5 @@
 
-# Problem - FizzBuzz
+# FizzBuzz
 
 This is a Roc solution for the popular [FizzBuzz](https://en.wikipedia.org/wiki/Fizz_buzz) interview problem;
 
