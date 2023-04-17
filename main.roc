@@ -23,7 +23,7 @@ view = \fileName, htmlContent ->
             meta [name "viewport", content "width=device-width"] [],
             link [rel "icon", href "/favicon.svg"] [],
             link [rel "stylesheet", href "/styles.css"] [],
-            script [type "text/javascript", src "/search.js", defer ""] []
+            script [type "text/javascript", src "/copy-btn.js", defer ""] []
         ],
         body [] [
             div [class "top-header-extension"] [],
