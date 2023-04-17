@@ -1,5 +1,6 @@
-## The Graph interface represents a graph using an adjacency list and exposes
-## functions for working with graphs, such as creating one from a list and
+## The Graph interface represents a [graph](https://en.wikipedia.org/wiki/Graph_(discrete_mathematics))
+## using an [adjacency list](https://en.wikipedia.org/wiki/Adjacency_list)
+## and exposes functions for working with graphs, such as creating one from a list and
 ## performing a depth-first or breadth-first search.
 interface Graph
     exposes [
@@ -31,6 +32,7 @@ fromDict : Dict a (List a) -> Graph a
 fromDict = @Graph
 
 ## Perform a depth-first search on a graph to find a target vertex.
+## [Algorithm animation](https://en.wikipedia.org/wiki/Depth-first_search#/media/File:Depth-First-Search.gif)
 ##
 ## - `isTarget` : A function that returns true if a vertex is the target.
 ## - `root`     : The starting vertex for the search.
@@ -78,6 +80,7 @@ dfsHelper = \isTarget, stack, visited, graph ->
                         dfsHelper isTarget rest newVisited graph
 
 ## Perform a breadth-first search on a graph to find a target vertex.
+## [Algorithm animation](https://en.wikipedia.org/wiki/Breadth-first_search#/media/File:Animated_BFS.gif)
 ##
 ## - `isTarget` : A function that returns true if a vertex is the target.
 ## - `root`     : The starting vertex for the search.
