@@ -13,6 +13,7 @@ The centralized place to find your up-to-date, roc-expert-approved answer for "H
 - [Problem - FizzBuzz](/FizzBuzz/README.html)
 - [Problem - Least Square Difference](/LeastSquares/README.html)
 - [Problem - Towers of Hanoi](/TowersOfHanoi/README.html)
+- [Random Numbers](/RandomNumbers/README.html)
 
 ## Feedback
 
