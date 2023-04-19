@@ -159,7 +159,7 @@ main {
   font-size: 18px;
   line-height: 1.85em;
   margin-top: 2px;
-  padding: 48px;
+  padding: 0px 48px;
 
   min-width: 0; /* necessary for text-overflow: ellipsis to work in descendants */
 }
@@ -694,4 +694,19 @@ code .upperident {
 samp .dim,
 code .dim {
   opacity: 0.55;
+}
+
+ul.links {
+  display: flex;
+  list-style: none;
+}
+
+ul.links li a {
+  text-decoration: none;
+  padding: 8px;
+  color: var(--link-color);
+}
+
+ul.links li a:hover {
+  background-color: var(--code-bg);
 }

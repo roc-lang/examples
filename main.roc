@@ -1,8 +1,8 @@
 app "generate-build"
     packages { pf: "/Users/luke/Documents/GitHub/roc/examples/static-site-gen/platform/main.roc" }
     imports [
-        pf.Html.{ html,svg, main, p, footer, h1, script, head, header, body, div, text, a, link, meta, title },
-        pf.Html.Attributes.{ role, attribute, name, src, content, href, rel, lang, class, type, charset },
+        pf.Html.{ html,svg, main, p, footer, h1, ul, li, script, head, header, body, div, text, a, link, meta, title },
+        pf.Html.Attributes.{ role, attribute, name, src, content, href, rel, lang, class, charset, type },
     ]
     provides [transformFileContent] to pf
 
@@ -35,6 +35,14 @@ view = \fileName, htmlContent ->
                     ],
                 ],
                 div [class "top-header-triangle"] [],
+            ],
+            ul [class "links"] [
+                li [] [
+                    a [href "https://roc.zulipchat.com/"] [text "Feedback"]
+                ],
+                li [] [
+                    a [href "https://github.com/roc-lang/examples"] [text "Contribute"]
+                ]
             ],
             viewContent,
             footer [] [
