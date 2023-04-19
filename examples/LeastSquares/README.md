@@ -1,5 +1,5 @@
 
-# Problem - Least Square Difference
+# Least Square Difference
 
 This is a Roc solution for the following [Least Squares](https://en.wikipedia.org/wiki/Least_squares) problem.
 

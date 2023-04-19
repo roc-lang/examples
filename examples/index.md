@@ -7,12 +7,12 @@ The centralized place to find your up-to-date, roc-expert-approved answer for "H
 - [Hello World](/HelloWorld/README.html)
 - [Pattern Matching](/PatternMatching/README.html)
 - [Graph Traversal](/GraphTraversal/README.html)
-- [Json - Basic](/json-basic/README.html)
-- [Parser - Basic](/parser-basic/README.html)
-- [Problem - Arithmetic](/Arithmetic/README.html)
-- [Problem - FizzBuzz](/FizzBuzz/README.html)
-- [Problem - Least Square Difference](/LeastSquares/README.html)
-- [Problem - Towers of Hanoi](/TowersOfHanoi/README.html)
+- [Json](/json-basic/README.html)
+- [Parser](/parser-basic/README.html)
+- [Arithmetic](/Arithmetic/README.html)
+- [FizzBuzz](/FizzBuzz/README.html)
+- [Least Square Difference](/LeastSquares/README.html)
+- [Towers of Hanoi](/TowersOfHanoi/README.html)
 
 ## Feedback
 
