@@ -1,4 +1,4 @@
-# Json - Basic
+# Json
 
 How to serialise and de-serialise data to and from json using the `Encode` and `Decode` abilities.
 
