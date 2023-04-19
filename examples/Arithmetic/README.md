@@ -1,4 +1,4 @@
-# Problem - Arithmetic
+# Arithmetic
 
 This is a Roc solution for the following task;
 

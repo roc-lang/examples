@@ -371,6 +371,7 @@ a:visited code {
 }
 
 pre {
+  position: relative;
   margin: 36px 0;
   padding: 8px 16px;
   box-sizing: border-box;
@@ -596,6 +597,26 @@ pre {
       padding-top: 24px;
       padding-bottom: 12px;
   }
+}
+
+.button-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.copy-button {
+  background: var(--code-bg);
+  border: 1px solid var(--magenta);
+  color: var(--magenta);
+  display: inline-block;
+  cursor: pointer;
+  margin: 8px;
+}
+
+.copy-button:hover {
+  border-color: var(--green);
+  color: var(--green);
 }
 
 /* Comments `#` and Documentation comments `##` */
