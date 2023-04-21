@@ -13,21 +13,13 @@ app "example"
 main =
 
     # Initialise "randomness"
-    initialSeed = Random.seed16 42
+    initialSeed = Random.seed 42
 
     # Create a generator for values from 25-75 (inclusive)
-    u16 = Random.u16 25 75
+    generator = Random.int 25 75
 
     # Create a list of random numbers
-    result =
-        List.range { start: At 0, end: Before 10 }
-        |> List.walk { seed: initialSeed, numbers: [] } \state, _ ->
-
-            random = u16 state.seed
-            seed = random.state
-            numbers = List.append state.numbers random.value
-
-            { seed, numbers }
+    result = randomList initialSeed generator
 
     # Format as a string
     numbersListStr =
@@ -36,3 +28,19 @@ main =
         |> Str.joinWith ","
 
     Stdout.line "Random numbers are: \(numbersListStr)"
+
+# Generate a list of numbers using the seed and generator provided
+randomList = \initialSeed, generator ->
+    List.range { start: At 0, end: Before 10 }
+    |> List.walk { seed: initialSeed, numbers: [] } \state, _ ->
+
+        # Use the generator to get a new seed and value
+        random = generator state.seed
+
+        # Update seed for the next generating the next value
+        seed = random.state
+
+        # Append the latest random value to the list of numbers
+        numbers = List.append state.numbers random.value
+
+        { seed, numbers }
