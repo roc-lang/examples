@@ -1,8 +1,8 @@
 app "generate-build"
     packages { pf: "/Users/luke/Documents/GitHub/roc/examples/static-site-gen/platform/main.roc" }
     imports [
-        pf.Html.{ html,svg, main, p, footer, h1,  head, header, body, div, text, a, link, meta, title },
-        pf.Html.Attributes.{ role, attribute, name, content, href, rel, lang, class,  charset },
+        pf.Html.{ html, svg, main, p, footer, h1, ul, li, script, head, header, body, div, text, a, link, meta, title },
+        pf.Html.Attributes.{ role, attribute, name, src, content, href, rel, lang, class, charset, type },
     ]
     provides [transformFileContent] to pf
 
@@ -11,18 +11,19 @@ transformFileContent = \fileName, htmlContent -> Html.render (view fileName html
 
 view : Str, Str -> Html.Node
 view = \fileName, htmlContent ->
-    viewContent = 
-        when fileName is 
+    viewContent =
+        when fileName is
             "index.html" -> viewIndex htmlContent
             _ -> viewExample htmlContent
-    
+
     html [lang "en"] [
         head [] [
-            title [] [text "title"],
+            title [] [text "Roc Examples"],
             meta [charset "utf-8"] [],
             meta [name "viewport", content "width=device-width"] [],
             link [rel "icon", href "/favicon.svg"] [],
             link [rel "stylesheet", href "/styles.css"] [],
+            script [type "text/javascript", src "/copy-btn.js", defer ""] []
         ],
         body [] [
             div [class "top-header-extension"] [],
@@ -35,40 +36,52 @@ view = \fileName, htmlContent ->
                 ],
                 div [class "top-header-triangle"] [],
             ],
+            ul [class "links"] [
+                li [] [
+                    a [href "https://roc.zulipchat.com/"] [text "Feedback"]
+                ],
+                li [] [
+                    a [href "https://github.com/roc-lang/examples"] [text "Contribute"]
+                ]
+            ],
             viewContent,
             footer [] [
                 p [] [text "Made by people who like to make nice things."],
                 p [] [text " © 2023"],
             ],
-        ]
+        ],
     ]
 
 viewIndex : Str -> Html.Node
 viewIndex = \htmlContent ->
     main [] [
-      text htmlContent
+        text htmlContent,
     ]
 
 viewExample : Str -> Html.Node
 viewExample = \htmlContent ->
     main [] [
-        text htmlContent
+        text htmlContent,
     ]
 
-logoSvg = 
-    svg [
-        viewBox "0 -6 51 58",
-        fill "none",
-        xmlns "http://www.w3.org/2000/svg",
-        ariaLabelledBy "logo-link",
-        role "img",
-    ] [
-        Html.title [id "logo-link"] [text "Return to Roc packages"],
-        polygon [
-            role "presentation", 
-            points "0,0 23.8834,3.21052 37.2438,19.0101 45.9665,16.6324 50.5,22 45,22 44.0315,26.3689 26.4673,39.3424 27.4527,45.2132 17.655,53 23.6751,22.7086"
-        ] [],
-    ]
+logoSvg =
+    svg
+        [
+            viewBox "0 -6 51 58",
+            fill "none",
+            xmlns "http://www.w3.org/2000/svg",
+            ariaLabelledBy "logo-link",
+            role "img",
+        ]
+        [
+            Html.title [id "logo-link"] [text "Return to Roc packages"],
+            polygon
+                [
+                    role "presentation",
+                    points "0,0 23.8834,3.21052 37.2438,19.0101 45.9665,16.6324 50.5,22 45,22 44.0315,26.3689 26.4673,39.3424 27.4527,45.2132 17.655,53 23.6751,22.7086",
+                ]
+                [],
+        ]
 
 ariaLabelledBy = attribute "aria-labelledby"
 xmlns = attribute "xmlns"
@@ -76,5 +89,5 @@ fill = attribute "fill"
 viewBox = attribute "viewBox"
 id = attribute "id"
 points = attribute "points"
-
+defer = attribute "defer"
 polygon = Html.element "polygon"

@@ -159,7 +159,7 @@ main {
   font-size: 18px;
   line-height: 1.85em;
   margin-top: 2px;
-  padding: 48px;
+  padding: 0px 48px;
 
   min-width: 0; /* necessary for text-overflow: ellipsis to work in descendants */
 }
@@ -371,6 +371,7 @@ a:visited code {
 }
 
 pre {
+  position: relative;
   margin: 36px 0;
   padding: 8px 16px;
   box-sizing: border-box;
@@ -598,6 +599,26 @@ pre {
   }
 }
 
+.button-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.copy-button {
+  background: var(--code-bg);
+  border: 1px solid var(--magenta);
+  color: var(--magenta);
+  display: inline-block;
+  cursor: pointer;
+  margin: 8px;
+}
+
+.copy-button:hover {
+  border-color: var(--green);
+  color: var(--green);
+}
+
 /* Comments `#` and Documentation comments `##` */
 samp .comment,
 code .comment {
@@ -673,4 +694,19 @@ code .upperident {
 samp .dim,
 code .dim {
   opacity: 0.55;
+}
+
+ul.links {
+  display: flex;
+  list-style: none;
+}
+
+ul.links li a {
+  text-decoration: none;
+  padding: 8px;
+  color: var(--link-color);
+}
+
+ul.links li a:hover {
+  background-color: var(--code-bg);
 }
