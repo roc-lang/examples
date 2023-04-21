@@ -30,6 +30,7 @@ main =
     Stdout.line "Random numbers are: \(numbersListStr)"
 
 # Generate a list of numbers using the seed and generator provided
+# WARNING: likely NOT cryptograhpically secure
 randomList = \initialSeed, generator ->
     List.range { start: At 0, end: Before 10 }
     |> List.walk { seed: initialSeed, numbers: [] } \state, _ ->
@@ -37,7 +38,7 @@ randomList = \initialSeed, generator ->
         # Use the generator to get a new seed and value
         random = generator state.seed
 
-        # Update seed for the next generating the next value
+        # Update seed so it can be used to generate the next value
         seed = random.state
 
         # Append the latest random value to the list of numbers
