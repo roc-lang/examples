@@ -5,7 +5,7 @@
 
 set timeout 7
 
-spawn ./roc_nightly/roc run ./examples/HelloWorld.roc --prebuilt-platform=true
+spawn ./roc_nightly/roc run ./examples/HelloWorld/main.roc --prebuilt-platform=true
 
 
 expect "Hello, World!\r\n" {
