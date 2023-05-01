@@ -1,4 +1,4 @@
-# Parser - Basic
+# Parser
 
 A custom [parser](https://www.techopedia.com/definition/3854/parser) for counting letters.
 
@@ -10,6 +10,6 @@ A custom [parser](https://www.techopedia.com/definition/3854/parser) for countin
 
 ## Code
 ```roc
-main.roc
+file:main.roc
 ```
 

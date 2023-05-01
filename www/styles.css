@@ -159,7 +159,7 @@ main {
   font-size: 18px;
   line-height: 1.85em;
   margin-top: 2px;
-  padding: 48px;
+  padding: 0px 48px;
 
   min-width: 0; /* necessary for text-overflow: ellipsis to work in descendants */
 }
@@ -371,6 +371,7 @@ a:visited code {
 }
 
 pre {
+  position: relative;
   margin: 36px 0;
   padding: 8px 16px;
   box-sizing: border-box;
@@ -598,24 +599,67 @@ pre {
   }
 }
 
+.button-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.copy-button {
+  background: var(--code-bg);
+  border: 1px solid var(--magenta);
+  color: var(--magenta);
+  display: inline-block;
+  cursor: pointer;
+  margin: 8px;
+}
+
+.copy-button:hover {
+  border-color: var(--green);
+  color: var(--green);
+}
+
 /* Comments `#` and Documentation comments `##` */
 samp .comment,
 code .comment {
   color: var(--green);
 }
-/* Number, String, Tag, Type literals */
+
+/* Number, String, Tag literals */
+samp .storage.type,
+code .storage.type,
+samp .string,
+code .string,
+samp .string.begin,
+code .string.begin,
+samp .string.end,
+code .string.end,
+samp .constant,
+code .constant,
 samp .literal,
 code .literal {
   color: var(--cyan);
 }
+
 /* Keywords and punctuation */
-samp .kw,
+samp .keyword, 
+code .keyword,
+samp .punctuation.section, 
+code .punctuation.section,
+samp .punctuation.separator, 
+code .punctuation.separator,
+samp .punctuation.terminator, 
+code .punctuation.terminator,
+samp .kw, 
 code .kw {
-  color: var(--magenta);
+    color: var(--magenta);
 }
+
 /* Operators */
 samp .op,
-code .op {
+code .op,
+samp .keyword.operator,
+code .keyword.operator {
   color: var(--orange);
 }
 
@@ -626,12 +670,22 @@ code .delimeter {
 }
 
 /* Variables modules and field names */
+samp .function,
+code .function,
+samp .meta.group,
+code .meta.group,
+samp .meta.block,
+code .meta.block,
 samp .lowerident,
 code .lowerident {
   color: var(--blue);
 }
 
 /* Types, Tags, and Modules */
+samp .type,
+code .type,
+samp .meta.path,
+code .meta.path,
 samp .upperident,
 code .upperident {
   color: var(--green);
@@ -640,4 +694,19 @@ code .upperident {
 samp .dim,
 code .dim {
   opacity: 0.55;
+}
+
+ul.links {
+  display: flex;
+  list-style: none;
+}
+
+ul.links li a {
+  text-decoration: none;
+  padding: 8px;
+  color: var(--link-color);
+}
+
+ul.links li a:hover {
+  background-color: var(--code-bg);
 }

@@ -4,8 +4,16 @@
 The centralized place to find your up-to-date, roc-expert-approved answer for "How to X in roc".
 
 ## Examples
-- [Json - Basic](/json-basic/README.html)
-- [Parser - Basic](/parser-basic/README.html)
+- [Hello World](/HelloWorld/README.html)
+- [Pattern Matching](/PatternMatching/README.html)
+- [Graph Traversal](/GraphTraversal/README.html)
+- [Json](/json-basic/README.html)
+- [Parser](/parser-basic/README.html)
+- [Arithmetic](/Arithmetic/README.html)
+- [FizzBuzz](/FizzBuzz/README.html)
+- [Least Square Difference](/LeastSquares/README.html)
+- [Towers of Hanoi](/TowersOfHanoi/README.html)
+- [Random Numbers](/RandomNumbers/README.html)
 
 ## Feedback
 
