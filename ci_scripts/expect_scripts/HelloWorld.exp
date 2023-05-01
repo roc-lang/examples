@@ -1,0 +1,16 @@
+#!/usr/bin/expect
+
+# uncomment line below for debugging
+# exp_internal 1
+
+set timeout 7
+
+spawn ./roc_nightly/roc run ./examples/HelloWorld.roc --prebuilt-platform=true
+
+
+expect "Hello, World!\r\n" {
+  expect eof
+  exit 0
+}
+
+exit 1
