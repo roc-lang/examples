@@ -20,7 +20,7 @@ jobs:
           --output roc_releases.json
 
       - name: get the url of the most recent release for linux (x86_64)
-        run: echo "ROC_RELEASE_URL=$(./ci/get_latest_roc_url.sh linux_x86_64)" >> $GITHUB_ENV
+        run: echo "ROC_RELEASE_URL=$(./ci/get_latest_roc.sh linux_x86_64)" >> $GITHUB_ENV
       
       - run: mkdir roc_nightly
 
