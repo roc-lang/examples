@@ -1,0 +1,23 @@
+on:
+  [pull_request]
+
+name: Test examples on Ubuntu 20.04
+
+jobs:
+  test-examples:
+    name: text examples
+    runs-on: [ubuntu-20.04]
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: fetch releases data and save to file
+        run: |
+          curl --request GET \
+          --url https://api.github.com/repos/roc-lang/roc/releases \
+          --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
+          --header 'content-type: application/json' \
+          --output roc_releases.json
+
+      - name: get the url of the most recent release for linux (x86_64)
+        run: ./ci/get_latest_roc_url.sh linux_x86_64
