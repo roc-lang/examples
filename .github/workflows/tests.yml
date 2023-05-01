@@ -35,8 +35,7 @@ jobs:
       - name: get roc binary path
         working-directory: roc_nightly
         run: |
-          cd * \
-          echo "ROC_BIN=$(realpath roc)" >> $GITHUB_ENV
+          cd * && echo "ROC_BIN=$(realpath roc)" >> $GITHUB_ENV
 
       - name: test hello world
         run: ${{ env.ROC_BIN }} run examples/HelloWorld/main.roc
