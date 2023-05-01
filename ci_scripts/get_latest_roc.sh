@@ -12,5 +12,5 @@ then
   echo "I expected to get a url but I got null instead. The provided argument for this bash script may not have had any matches when used as arch in the jq query above."
   exit 1
 else
-  LATEST_RELEASE_URL=$(echo $LATEST_RELEASE_URL | sed s/\"//g)
+  echo $LATEST_RELEASE_URL | sed s/\"//g
 fi

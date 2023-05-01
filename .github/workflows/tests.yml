@@ -26,9 +26,7 @@ jobs:
 
       - name: Get the archive from the url.
         working-directory: roc_nightly
-        env:
-            ROC_RELEASE_URL: ${{ env.ROC_RELEASE_URL }}
-        run: curl -OL $ROC_RELEASE_URL
+        run: curl -OL ${{ env.ROC_RELEASE_URL }}
 
       - name: extract nightly roc tar
         working-directory: roc_nightly
