@@ -5,4 +5,4 @@ set -euxo pipefail
 
 ./roc_nightly/roc build ./examples/HelloWorld/main.roc
 
-expect ci/expect_scripts/HelloWorld.exp
+expect ci_scripts/expect_scripts/HelloWorld.exp
