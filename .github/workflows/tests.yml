@@ -11,7 +11,10 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - run: mkdir roc_nightly
+
       - name: fetch releases data and save to file
+        working-directory: roc_nightly
         run: |
           curl --request GET \
           --url https://api.github.com/repos/roc-lang/roc/releases \
@@ -20,4 +23,18 @@ jobs:
           --output roc_releases.json
 
       - name: get the url of the most recent release for linux (x86_64)
+        working-directory: roc_nightly
         run: ./ci/get_latest_roc_url.sh linux_x86_64
+
+      - name: extract nightly roc tar
+        working-directory: roc_nightly
+        run: ls | grep tar | xargs tar -xf
+
+      - name: get roc binary path
+        working-directory: roc_nightly
+        run: |
+          cd * \
+          echo "ROC_BIN=$(realpath roc)" >> $GITHUB_ENV
+
+      - name: test hello world
+        run: ${{ env.ROC_BIN }} run examples/HelloWorld/main.roc
