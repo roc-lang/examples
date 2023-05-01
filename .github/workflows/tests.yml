@@ -33,6 +33,7 @@ jobs:
         run: ls | grep tar | xargs tar -xf
 
       - name: delete tar
+        working-directory: roc_nightly
         run: ls | grep tar | xargs rm
 
       - name: get roc binary path
