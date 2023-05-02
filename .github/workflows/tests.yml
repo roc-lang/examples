@@ -22,7 +22,6 @@ jobs:
       - name: get the url of the most recent release for linux (x86_64)
         run: echo "ROC_RELEASE_URL=$(./ci_scripts/get_latest_roc.sh linux_x86_64)" >> $GITHUB_ENV
 
-
       - name: Get the archive from the url.
         run: curl -OL ${{ env.ROC_RELEASE_URL }}
 
