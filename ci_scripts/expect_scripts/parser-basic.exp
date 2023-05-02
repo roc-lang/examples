@@ -5,10 +5,10 @@
 
 set timeout 7
 
-spawn ./roc_nightly/roc run ./examples/HelloWorld/main.roc
+spawn ./roc_nightly/roc run ./examples/parser-basic/main.roc
 
 
-expect "Hello, World!\r\n" {
+expect "I counted 7 letter A's!\r\n" {
   expect eof
   exit 0
 }

@@ -22,8 +22,13 @@
             {
                 devShell = pkgs.mkShell {
                     packages = [
-			pkgs.simple-http-server # to be able to view the website when developing
-		    ];
+                      pkgs.simple-http-server # to be able to view the website when developing
+                      pkgs.expect # to test examples on CI
+		                ];
+
+                    # nix does not store libs in /usr/lib or /lib
+                    NIX_GLIBC_PATH =
+                      if pkgs.stdenv.isLinux then "${pkgs.glibc.out}/lib" else "";
                 };
             });
 }

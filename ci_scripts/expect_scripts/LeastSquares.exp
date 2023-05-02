@@ -5,10 +5,10 @@
 
 set timeout 7
 
-spawn ./roc_nightly/roc run ./examples/HelloWorld/main.roc
+spawn ./roc_nightly/roc run ./examples/LeastSquares/main.roc
 
 
-expect "Hello, World!\r\n" {
+expect "The least positive integer n, where the difference of n*n and (n-1)*(n-1) is greater than 1000, is 501\r\n" {
   expect eof
   exit 0
 }

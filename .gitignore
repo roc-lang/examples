@@ -1,3 +1,6 @@
 build
 generate-build
 example
+examples/json-basic/json-basic
+examples/parser-basic/parser-basic
+roc_nightly/

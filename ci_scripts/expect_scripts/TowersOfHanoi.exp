@@ -1,0 +1,17 @@
+#!/usr/bin/expect
+
+# uncomment line below for debugging
+# exp_internal 1
+
+set timeout 7
+
+spawn ./roc_nightly/roc run ./examples/TowersOfHanoi/main.roc -- 3
+
+
+expect "Move disk from A to B\r\nMove disk from A to C\r\nMove disk from B to C\r\nMove disk from A to B\r\nMove disk from C to A\r\nMove disk from C to B\r\nMove disk from A to B" {
+  expect eof
+  exit 0
+}
+
+puts stderr "\nError: output was different from expected value."
+exit 1

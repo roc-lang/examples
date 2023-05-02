@@ -13,7 +13,7 @@ To get random numbers in Roc we first need a `Generator` which provides pseudora
 
 ```
 % roc run examples/RandomNumbers/main.roc
-Random numbers are: 37,31,29,34,67,28,46,41,63,30
+Random numbers are: 29,30,71,64,48,33,55,68,53,28
 ```
 
 ## Code
