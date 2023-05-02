@@ -1,0 +1,40 @@
+on:
+  [pull_request]
+
+name: Test examples on Ubuntu 20.04
+
+jobs:
+  test-examples:
+    name: text examples
+    runs-on: [ubuntu-20.04]
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: fetch releases data and save to file
+        run: |
+          curl --request GET \
+          --url https://api.github.com/repos/roc-lang/roc/releases \
+          --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
+          --header 'content-type: application/json' \
+          --output roc_releases.json
+
+      - name: get the url of the most recent release for linux (x86_64)
+        run: echo "ROC_RELEASE_URL=$(./ci_scripts/get_latest_roc.sh linux_x86_64)" >> $GITHUB_ENV
+
+      - name: Get the archive from the url.
+        run: curl -OL ${{ env.ROC_RELEASE_URL }}
+
+      - name: extract nightly roc tar
+        run: ls | grep tar | xargs tar -xf
+
+      - name: delete tar
+        run: ls | grep tar | xargs rm
+
+      - name: simplify nightly folder name
+        run: mv roc_nightly* roc_nightly
+
+      - name: install expect # used to check if output is correct
+        run: sudo apt install -y expect
+
+      - run: ./ci_scripts/all_tests.sh

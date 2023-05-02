@@ -1,0 +1,17 @@
+#!/usr/bin/expect
+
+# uncomment line below for debugging
+# exp_internal 1
+
+set timeout 7
+
+spawn ./roc_nightly/roc run ./examples/RandomNumbers/main.roc
+
+
+expect "Random numbers are: 29,30,71,64,48,33,55,68,53,28\r\n" {
+  expect eof
+  exit 0
+}
+
+puts stderr "\nError: output was different from expected value."
+exit 1

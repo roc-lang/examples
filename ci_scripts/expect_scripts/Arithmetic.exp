@@ -1,0 +1,17 @@
+#!/usr/bin/expect
+
+# uncomment line below for debugging
+# exp_internal 1
+
+set timeout 7
+
+spawn ./roc_nightly/roc run ./examples/Arithmetic/main.roc -- 20 4
+
+
+expect "sum: 24\r\ndifference: 16\r\nproduct: 80\r\ninteger quotient: 5\r\nremainder: 0\r\nexponentiation: 160000" {
+  expect eof
+  exit 0
+}
+
+puts stderr "\nError: output was different from expected value."
+exit 1
