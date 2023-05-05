@@ -24,9 +24,9 @@ $roc run ./examples/JsonBasic/main.roc
 $roc build ./examples/LeastSquares/main.roc
 expect ci_scripts/expect_scripts/LeastSquares.exp
 
-$roc build ./examples/parser-basic/main.roc
-$roc test ./examples/parser-basic/main.roc
-expect ci_scripts/expect_scripts/parser-basic.exp
+$roc build ./examples/ParserBasic/main.roc
+$roc test ./examples/ParserBasic/main.roc
+expect ci_scripts/expect_scripts/ParserBasic.exp
 
 # TODO fix pattern matching failing test
 # $roc test ./examples/PatternMatching/PatternMatching.roc
