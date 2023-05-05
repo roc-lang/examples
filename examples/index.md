@@ -7,13 +7,14 @@ The centralized place to find your up-to-date, roc-expert-approved answer for "H
 - [Hello World](/HelloWorld/README.html)
 - [Pattern Matching](/PatternMatching/README.html)
 - [Graph Traversal](/GraphTraversal/README.html)
-- [Json](/json-basic/README.html)
-- [Parser](/parser-basic/README.html)
+- [Parser](/ParserBasic/README.html)
 - [Arithmetic](/Arithmetic/README.html)
 - [FizzBuzz](/FizzBuzz/README.html)
 - [Least Square Difference](/LeastSquares/README.html)
 - [Towers of Hanoi](/TowersOfHanoi/README.html)
 - [Random Numbers](/RandomNumbers/README.html)
+<!-- TODO reenable when roc-lang/examples/issues/24 is fixed -->
+<!-- - [Json](/JsonBasic/README.html) -->
 
 ## Feedback
 

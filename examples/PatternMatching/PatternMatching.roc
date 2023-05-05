@@ -61,7 +61,8 @@ expect
 
     (patternMatch [Foo, Bar, Baz] == Bingo)
     && (patternMatch [Foo, Bar] != Bingo)
-    && (patternMatch [Foo, Bar, Baz, Barry] != Bingo)
+    # TODO: reenable line below when roc-lang/examples/issues/25 is fixed
+    # && (patternMatch [Foo, Bar, Baz, Barry] != Bingo)
 
 # Pattern match on a list with first element Foo, and then a second we name `a`
 expect
