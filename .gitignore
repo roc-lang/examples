@@ -1,6 +1,6 @@
 build
 generate-build
 example
-examples/json-basic/json-basic
-examples/parser-basic/parser-basic
+examples/JsonBasic/json-basic
+examples/ParserBasic/parser-basic
 roc_nightly/
