@@ -1,5 +1,6 @@
 on:
-  [pull_request]
+  pull_request:
+  workflow_dispatch:
 
 name: Test examples on Ubuntu 20.04
 
