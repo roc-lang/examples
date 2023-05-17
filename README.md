@@ -18,7 +18,7 @@ You can run these examples using the [Roc cli](https://github.com/roc-lang/roc/t
 ## To view the examples site locally
 
 ```
-roc run main.roc -- examples build
+roc run main.roc -- examples build 
 ```
 
 Then copy the static assets from `/www` to `/build`.
