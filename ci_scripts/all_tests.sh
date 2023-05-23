@@ -37,3 +37,6 @@ expect ci_scripts/expect_scripts/RandomNumbers.exp
 $roc build ./examples/TowersOfHanoi/main.roc
 $roc test ./examples/TowersOfHanoi/Hanoi.roc
 expect ci_scripts/expect_scripts/TowersOfHanoi.exp
+
+# test building website
+$roc run main.roc -- examples build
