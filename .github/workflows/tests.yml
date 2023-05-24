@@ -42,12 +42,14 @@ jobs:
         run: |
           cd roc_nightly
           find . ! -name 'roc' -type f -exec rm -rf {} +
-          mkdir gitrepo
-          cd gitrepo
-          git clone https://github.com/roc-lang/roc.git
-          cd roc
-          git checkout ${{ env.SHORT_COMMIT_SHA }}
-          mv * ../../
+          ls
+
+        # mkdir gitrepo
+        # cd gitrepo
+        # git clone https://github.com/roc-lang/roc.git
+        # cd roc
+        # git checkout ${{ env.SHORT_COMMIT_SHA }}
+        # mv * ../../
 
 
       - name: install expect # used to check if output is correct
