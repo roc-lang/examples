@@ -27,7 +27,7 @@ jobs:
         run: curl -OL ${{ env.ROC_RELEASE_URL }}
 
       - name: store short commit SHA
-        run: echo "SHORT_COMMIT_SHA=$(ls | grep roc_nightly | cut -d '-' -f 5 | cut -d '.' -f 1)"  >> $GITHUB_ENV
+        run: echo "SHORT_COMMIT_SHA=$(ls | grep roc_nightly | cut -d '-' -f 6 | cut -d '.' -f 1)"  >> $GITHUB_ENV
 
       - name: extract nightly roc tar
         run: ls | grep tar | xargs tar -xf
