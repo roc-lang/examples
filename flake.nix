@@ -31,8 +31,8 @@
 
             linuxInputs = with pkgs;
               lib.optionals stdenv.isLinux [
-                valgrind # for debugging
-                gdb # for debugging
+                #valgrind # for debugging
+                #gdb # for debugging
               ];
         in
             {
