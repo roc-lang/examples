@@ -39,8 +39,6 @@ jobs:
         run: |
           cd roc_nightly/examples
           svn checkout https://github.com/roc-lang/roc/trunk/examples/static-site-gen
-          cd static-site-gen
-          pwd
 
       - name: install expect # used to check if output is correct
         run: sudo apt install -y expect
