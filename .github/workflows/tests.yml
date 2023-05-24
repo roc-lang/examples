@@ -26,14 +26,14 @@ jobs:
       - name: Get the archive from the url.
         run: curl -OL ${{ env.ROC_RELEASE_URL }}
 
+      - name: store short commit SHA
+        run: echo "SHORT_COMMIT_SHA=$(ls | grep roc_nightly | cut -d '-' -f 5 | cut -d '.' -f 1)"  >> $GITHUB_ENV
+
       - name: extract nightly roc tar
         run: ls | grep tar | xargs tar -xf
 
       - name: delete tar
         run: ls | grep tar | xargs rm
-
-      - name: store short commit SHA
-        run: echo "SHORT_COMMIT_SHA=$(ls | grep roc_nightly | cut -d '-' -f 5 | cut -d '.' -f 1)"  >> $GITHUB_ENV
 
       - name: simplify nightly folder name
         run: mv roc_nightly* roc_nightly
