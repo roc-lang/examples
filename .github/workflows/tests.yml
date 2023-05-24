@@ -46,7 +46,7 @@ jobs:
           cd gitrepo
           git clone https://github.com/roc-lang/roc.git
           cd roc
-          git checkout ${{ env.ROC_RELEASE_URL }}
+          git checkout ${{ env.SHORT_COMMIT_SHA }}
           mv * ../../
 
 
