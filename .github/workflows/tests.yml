@@ -6,7 +6,7 @@ name: Test examples on Ubuntu 20.04
 
 jobs:
   test-examples:
-    name: text examples
+    name: test examples
     runs-on: [ubuntu-20.04]
     timeout-minutes: 90
     steps:
