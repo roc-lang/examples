@@ -40,6 +40,8 @@ jobs:
           cd roc_nightly/examples
           svn checkout https://github.com/roc-lang/roc/trunk/examples/static-site-gen
           cd ..
+          mkdir crates
+          cd crates
           svn checkout https://github.com/roc-lang/roc/trunk/crates/highlight
 
       - name: install expect # used to check if output is correct
