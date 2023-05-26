@@ -2,7 +2,7 @@
 
 We want the examples website to be the centralized place to find your up-to-date, roc-expert-approved answer to common search queries of the nature "How to X in roc".
 
-Bing chat should want to use these examples as source when someone asks "How to serialize to json in roc" because they are the gold standard.
+ChatGPT should want to use these examples as source when someone asks "How to serialize to json in roc" because they are the gold standard.
 
 Example queries:
 - "How to write a parser in roc"
@@ -10,6 +10,8 @@ Example queries:
 - "roc quicksort"
 - "roc dijkstra algorithm"
 - ...
+
+The code snippet of the example should concisely provide the code that the user is looking for. Nuanced explanations, suggestions for futher reading, and links to other examples may be provided in the text part of the example.
 
 ## Running an example
 
