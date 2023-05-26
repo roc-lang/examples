@@ -23,6 +23,9 @@
       monospace;
   --top-header-height: 67px;
   --sidebar-width: 280px;
+  --main-padding-side: 48px;
+  --main-font-size: 18px;
+  --footer-pos: 70vh;
 }
 
 a {
@@ -71,7 +74,7 @@ table tr td {
 .entry-name {
   white-space: pre-wrap;
   font-family: var(--font-mono);
-  font-size: 18px;
+  font-size: var(--main-font-size);
   font-weight: normal;
   color: var(--violet);
   background-color: var(--code-bg);
@@ -127,17 +130,20 @@ a:hover code {
   text-decoration: none;
 }
 
+
+.feedback {
+  padding-top: 24px;
+  padding-bottom: 0px;
+  padding-left: var(--main-padding-side);
+  padding-right: var(--main-padding-side);
+  font-size: var(--main-font-size);
+}
+
 .search-button {
   flex-shrink: 0; /* always shrink the package name before these; they have a relatively constrained length */
   padding: 12px 18px;
   margin-right: 42px;
   display: none; /* only show this in the mobile view */
-}
-
-.version {
-  padding: 18px 10px;
-  min-width: 48px;
-  margin-right: 8px;
 }
 
 body {
@@ -156,12 +162,17 @@ main {
   grid-row-end: above-footer;
   box-sizing: border-box;
   position: relative;
-  font-size: 18px;
+  font-size: var(--main-font-size);
   line-height: 1.85em;
   margin-top: 2px;
-  padding: 0px 48px;
+  padding: 0px var(--main-padding-side);
 
   min-width: 0; /* necessary for text-overflow: ellipsis to work in descendants */
+
+  /* so that footer sticks to bottom */
+  display: flex;
+  flex-direction: column;
+  min-height: var(--footer-pos);
 }
 
 section {
@@ -212,7 +223,7 @@ padding: 0px 16px;
   box-sizing: border-box;
   font-family: var(--font-sans);
   font-size: 24px;
-  height: 100%;
+  height: var(--top-header-height);
   min-width: 0; /* necessary for text-overflow: ellipsis to work in descendants */
 }
 
@@ -223,7 +234,7 @@ padding: 0px 16px;
   width: 0;
   height: 0;
   border-style: solid;
-  border-width: var(--top-header-height) 0 0 48px;
+  border-width: calc(var(--top-header-height) + 0.1px) 0 0 var(--main-padding-side);;
   border-color: transparent transparent transparent var(--violet-bg);
 }
 
@@ -238,9 +249,11 @@ footer {
   grid-row-start: footer;
   grid-row-end: footer;
   max-width: var(--main-content-max-width);
-  font-size: 14px;
   box-sizing: border-box;
-  padding: 16px;
+  padding: var(--main-padding-side);
+  font-size: var(--main-font-size);
+  opacity: 0.5;
+  margin-top: auto;
 }
 
 footer p {
@@ -490,6 +503,10 @@ pre {
 }
 
 @media only screen and (max-device-width: 480px) and (orientation: portrait) {
+  :root {
+      --main-padding-side: 18px;
+  }
+
   #search-link-hint {
       display: none;
   }
@@ -506,7 +523,6 @@ pre {
   .pkg-full-name {
       margin-left: 8px;
       margin-right: 12px;
-      font-size: 24px;
       padding-bottom: 14px;
   }
 
@@ -542,8 +558,13 @@ pre {
       grid-column-end: none;
       grid-row-start: above-footer;
       grid-row-end: above-footer;
-      padding: 18px;
+      padding: 0px var(--main-padding-side);
       font-size: 16px;
+
+      /* so that footer sticks to bottom */
+      display: flex;
+      flex-direction: column;
+      min-height: var(--footer-pos);
   }
 
   #sidebar-nav {

@@ -1,6 +1,11 @@
 build
 generate-build
 example
-examples/JsonBasic/json-basic
-examples/ParserBasic/parser-basic
+examples/Arithmetic/arithmetic
+examples/FizzBuzz/fizz-buzz
+examples/HelloWorld/hello-world
+examples/Json/json-basic
+examples/Parser/parser-basic
+examples/RandomNumbers/random-numbers
+examples/TowersOfHanoi/towers-of-hanoi
 roc_nightly/

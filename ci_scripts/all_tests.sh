@@ -17,19 +17,17 @@ expect ci_scripts/expect_scripts/FizzBuzz.exp
 
 $roc test ./examples/GraphTraversal/Graph.roc
 
-# TODO enable once fixed: $roc build ./examples/JsonBasic/main.roc
-$roc run ./examples/JsonBasic/main.roc
-# TODO add expect script test, as well as build test once the JsonBasic example is fixed
+$roc build ./examples/Json/main.roc
+expect ci_scripts/expect_scripts/Json.exp
 
 $roc build ./examples/LeastSquares/main.roc
 expect ci_scripts/expect_scripts/LeastSquares.exp
 
-$roc build ./examples/ParserBasic/main.roc
-$roc test ./examples/ParserBasic/main.roc
-expect ci_scripts/expect_scripts/ParserBasic.exp
+$roc build ./examples/Parser/main.roc
+$roc test ./examples/Parser/main.roc
+expect ci_scripts/expect_scripts/Parser.exp
 
-# TODO fix pattern matching failing test
-# $roc test ./examples/PatternMatching/PatternMatching.roc
+$roc test ./examples/PatternMatching/PatternMatching.roc
 
 $roc build ./examples/RandomNumbers/main.roc
 expect ci_scripts/expect_scripts/RandomNumbers.exp
@@ -37,3 +35,6 @@ expect ci_scripts/expect_scripts/RandomNumbers.exp
 $roc build ./examples/TowersOfHanoi/main.roc
 $roc test ./examples/TowersOfHanoi/Hanoi.roc
 expect ci_scripts/expect_scripts/TowersOfHanoi.exp
+
+# test building website
+$roc run main.roc -- examples build

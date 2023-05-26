@@ -6,7 +6,7 @@ name: Test examples on Ubuntu 20.04
 
 jobs:
   test-examples:
-    name: text examples
+    name: test examples
     runs-on: [ubuntu-20.04]
     timeout-minutes: 90
     steps:
@@ -26,6 +26,9 @@ jobs:
       - name: Get the archive from the url.
         run: curl -OL ${{ env.ROC_RELEASE_URL }}
 
+      - name: store short commit SHA
+        run: echo "SHORT_COMMIT_SHA=$(ls | grep roc_nightly | cut -d '-' -f 6 | cut -d '.' -f 1)"  >> $GITHUB_ENV
+
       - name: extract nightly roc tar
         run: ls | grep tar | xargs tar -xf
 
@@ -34,6 +37,18 @@ jobs:
 
       - name: simplify nightly folder name
         run: mv roc_nightly* roc_nightly
+
+      - name: get roc repo
+        run: |
+          cd roc_nightly
+          find . -mindepth 1 ! -name 'roc' -exec rm -rf {} +
+          mkdir gitrepo
+          cd gitrepo
+          git clone https://github.com/roc-lang/roc.git
+          cd roc
+          git checkout ${{ env.SHORT_COMMIT_SHA }}
+          mv * ../../
+
 
       - name: install expect # used to check if output is correct
         run: sudo apt install -y expect
