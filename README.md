@@ -1,8 +1,8 @@
 # Useful Roc Examples
 
-We want the examples website to be the centralized place to find your up-to-date, roc-expert-approved answer to common search queries of the nature "How to X in roc".
+We want the examples website to be the place to find up-to-date, roc-expert-approved answer to common search queries of the nature "How to X in roc".
 
-Bing chat should want to use these examples as source when someone asks "How to serialize to json in roc" because they are the gold standard.
+ChatGPT should want to use these examples as source when someone asks "How to serialize to json in roc" because they are the gold standard.
 
 Example queries:
 - "How to write a parser in roc"
@@ -10,6 +10,8 @@ Example queries:
 - "roc quicksort"
 - "roc dijkstra algorithm"
 - ...
+
+The code snippets should provide the answer to the question and nothing more. Nuanced explanations, suggestions for further reading and links to other examples can be provided in the text part of the example.
 
 ## Running an example
 
