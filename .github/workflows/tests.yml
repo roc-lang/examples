@@ -12,33 +12,22 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: fetch releases data and save to file
-        run: |
-          curl --request GET \
-          --url https://api.github.com/repos/roc-lang/roc/releases \
-          --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
-          --header 'content-type: application/json' \
-          --output roc_releases.json
-
-      - name: get the url of the most recent release for linux (x86_64)
-        run: echo "ROC_RELEASE_URL=$(./ci_scripts/get_latest_roc.sh linux_x86_64)" >> $GITHUB_ENV
-
       - name: Get the archive from the url.
-        run: curl -OL ${{ env.ROC_RELEASE_URL }}
-
-      - name: store short commit SHA
-        run: echo "SHORT_COMMIT_SHA=$(ls | grep roc_nightly | cut -d '-' -f 6 | cut -d '.' -f 1)"  >> $GITHUB_ENV
+        run: curl -OL https://github.com/roc-lang/roc/releases/download/nightly/roc_nightly-linux_x86_64-latest.tar.gz
 
       - name: extract nightly roc tar
-        run: ls | grep tar | xargs tar -xf
+        run: tar -xf roc_nightly-linux_x86_64-latest.tar.gz
 
       - name: delete tar
-        run: ls | grep tar | xargs rm
+        run: rm roc_nightly-linux_x86_64-latest.tar.gz
 
       - name: simplify nightly folder name
         run: mv roc_nightly* roc_nightly
 
-      - name: get roc repo
+      - name: get short commit SHA
+        run: echo "SHORT_COMMIT_SHA=$(./roc_nightly/roc version | grep -oP 'commit \K[a-f0-9]+' )" >> $GITHUB_ENV
+
+      - name: get roc repo for static-site-gen platform and its dependencies
         run: |
           cd roc_nightly
           find . -mindepth 1 ! -name 'roc' -exec rm -rf {} +
