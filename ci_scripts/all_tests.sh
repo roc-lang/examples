@@ -23,6 +23,9 @@ expect ci_scripts/expect_scripts/Json.exp
 $roc build ./examples/LeastSquares/main.roc
 expect ci_scripts/expect_scripts/LeastSquares.exp
 
+$roc build ./examples/IngestFiles/main.roc
+expect ci_scripts/expect_scripts/IngestFiles.exp
+
 $roc build ./examples/Parser/main.roc
 $roc test ./examples/Parser/main.roc
 expect ci_scripts/expect_scripts/Parser.exp

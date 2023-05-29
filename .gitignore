@@ -2,6 +2,7 @@ build
 generate-build
 example
 examples/Arithmetic/arithmetic
+examples/IngestFiles/ingested-file
 examples/FizzBuzz/fizz-buzz
 examples/HelloWorld/hello-world
 examples/Json/json-basic
