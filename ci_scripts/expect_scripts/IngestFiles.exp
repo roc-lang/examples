@@ -1,0 +1,16 @@
+#!/usr/bin/expect
+
+# uncomment line below for debugging
+#exp_internal 1
+
+set timeout 7
+
+spawn ./roc_nightly/roc run ./examples/IngestFiles/main.roc
+
+expect "The quick brown fox jumps over the lazy dog" {
+  expect eof
+  exit 0
+}
+
+puts stderr "\nError: output was different from expected value."
+exit 1
