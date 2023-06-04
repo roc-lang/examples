@@ -1,10 +1,11 @@
 app "json-basic"
     packages {
         cli: "https://github.com/roc-lang/basic-cli/releases/download/0.3.2/tE4xS_zLdmmxmHwHih9kHWQ7fsXtJr7W7h3425-eZFk.tar.br",
+        json: "https://github.com/lukewilliamboswell/roc-json/releases/download/0.1.0/xbO9bXdHi7E9ja6upN5EJXpDoYm7lwmJ8VzL7a5zhYE.tar.br",
     }
     imports [
         cli.Stdout,
-        Json.{ jsonWithOptions },
+        json.Core.{ jsonWithOptions },
         Decode.{ DecodeResult, fromBytesPartial },
     ]
     provides [main] to cli

@@ -13,7 +13,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Get the archive from the url.
-        run: curl -OL https://github.com/roc-lang/roc/releases/download/nightly/roc_nightly-linux_x86_64-latest.tar.gz
+        run: curl -fOL https://github.com/roc-lang/roc/releases/download/nightly/roc_nightly-linux_x86_64-latest.tar.gz
 
       - name: extract nightly roc tar
         run: tar -xf roc_nightly-linux_x86_64-latest.tar.gz
