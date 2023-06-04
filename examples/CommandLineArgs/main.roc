@@ -46,10 +46,10 @@ myTask =
 readPath : Task.Task Str TaskError
 readPath =
     # Read command line arguments
-    args <- Arg.list |> Task.mapFail \_ -> InvalidArg |> Task.await
+    args <- Arg.list |> Task.mapFail (\_ -> InvalidArg) |> Task.await
 
     # Get the second argument, the first is the executable location
-    List.get args 1 |> Result.mapErr \_ -> InvalidArg |> Task.fromResult
+    List.get args 1 |> Result.mapErr (\_ -> InvalidArg) |> Task.fromResult
 
 # This task returns a Str or a TaskError, the Str will the contents of the file
 # that is located at the path given.
