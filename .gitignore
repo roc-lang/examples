@@ -9,4 +9,5 @@ examples/Json/json-basic
 examples/Parser/parser-basic
 examples/RandomNumbers/random-numbers
 examples/TowersOfHanoi/towers-of-hanoi
+examples/CommandLineArgs/command-line-args
 roc_nightly/
