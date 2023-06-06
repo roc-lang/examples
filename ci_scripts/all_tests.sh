@@ -35,6 +35,10 @@ $roc test ./examples/PatternMatching/PatternMatching.roc
 $roc build ./examples/RandomNumbers/main.roc
 expect ci_scripts/expect_scripts/RandomNumbers.exp
 
+$roc build ./examples/CommandLineArgs/main.roc
+expect ci_scripts/expect_scripts/CommandLineArgs.exp
+
+
 $roc build ./examples/TowersOfHanoi/main.roc
 $roc test ./examples/TowersOfHanoi/Hanoi.roc
 expect ci_scripts/expect_scripts/TowersOfHanoi.exp

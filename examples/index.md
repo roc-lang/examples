@@ -8,9 +8,11 @@
 - [Json](/Json/README.html)
 - [Random Numbers](/RandomNumbers/README.html)
 - [Pattern Matching](/PatternMatching/README.html)
+- [Command Line Args](/CommandLineArgs/README.html)
 - [Import Files](/IngestFiles/README.html)
 - [Graph Traversal](/GraphTraversal/README.html)
 - [Parser](/Parser/README.html)
 - [Arithmetic](/Arithmetic/README.html)
 - [Least Square Difference](/LeastSquares/README.html)
 - [Towers of Hanoi](/TowersOfHanoi/README.html)
+
