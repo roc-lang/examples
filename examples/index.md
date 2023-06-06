@@ -9,6 +9,7 @@
 - [Random Numbers](/RandomNumbers/README.html)
 - [Pattern Matching](/PatternMatching/README.html)
 - [Import Files](/IngestFiles/README.html)
+- [Safe Math](/SafeMath/README.html)
 - [Graph Traversal](/GraphTraversal/README.html)
 - [Parser](/Parser/README.html)
 - [Arithmetic](/Arithmetic/README.html)
