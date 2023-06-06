@@ -32,7 +32,7 @@ main =
             Stderr.line "Error ReadFileErr:\n\(indentedErrMsg)"
 
         Ok fileContentStr ->
-            Stdout.line "file content:\n\t\(fileContentStr)"
+            Stdout.line "file content: \(fileContentStr)"
 
 # Task to read the first CLI arg (= Str)
 readFirstArgT : Task.Task Str [ZeroArgsGiven]_
