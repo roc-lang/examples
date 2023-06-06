@@ -1,4 +1,4 @@
-# Run this with `roc dev aoc-2020/01.roc -- aoc-2020/input/01.txt`
+# Run with `roc ./examples/CommandLineArgs/main.roc -- examples/CommandLineArgs/input.txt`
 app "command-line-args"
     packages {
         pf: "https://github.com/roc-lang/basic-cli/releases/download/0.3.2/tE4xS_zLdmmxmHwHih9kHWQ7fsXtJr7W7h3425-eZFk.tar.br",
@@ -13,49 +13,58 @@ app "command-line-args"
     ]
     provides [main] to pf
 
-# Define custom error to return from our tasks, this makes it easier to handle
-# errors that may come from multiple sources.
-TaskError : [InvalidArg, InvalidFile Str]
-
-# Define the main task, this is the entry point for the program. Note that all
-# possible errors are handled hence the return value is {} and possible errors
-# are [].
 main : Task.Task {} []
 main =
-    # Run the effectful myTask, which may fail
-    result <- Task.attempt myTask
+    finalTask =
+        # try to read the first command line argument
+        pathArg <- Task.await readFirstArgT
 
-    # Handle the result or errors
-    when result is
-        Ok answer -> Stdout.line answer
-        Err InvalidArg -> Stderr.line "Error: expected arg file.roc -- path/to/input.txt"
-        Err (InvalidFile path) -> Stderr.line "Error: couldn't read input file at \"\(path)\""
+        readFileToStr (Path.fromStr pathArg)
 
-# Define a task that reads a file path from command line arguments,
-# reads the file into a RocStr and then return a formatted string.
-myTask : Task.Task Str TaskError
-myTask =
-    path <- readPath |> Task.await
-    fileContents <- readFile path |> Task.await
+    finalResult <- Task.attempt finalTask
 
-    Task.succeed "Success, file contents: \(fileContents)"
+    when finalResult is
+        Err ZeroArgsGiven ->
+            Stderr.line "Error ZeroArgsGiven:\n\tI expected one argument, but I got none.\n\tRun the app like this: `roc command-line-args.roc -- path/to/input.txt`"
 
-# This task returns a Str or a TaskError, the Str will the argument passed on
-# the command line, e.g. `roc run main.roc -- path/to/input.txt`
-# returns the string "path/to/input.txt"
-readPath : Task.Task Str TaskError
-readPath =
-    # Read command line arguments
-    args <- Arg.list |> Task.mapFail (\_ -> InvalidArg) |> Task.await
+        Err (ReadFileErr errMsg) ->
+            indentedErrMsg = indentLines errMsg
+            Stderr.line "Error ReadFileErr:\n\(indentedErrMsg)"
 
-    # Get the second argument, the first is the executable location
-    List.get args 1 |> Result.mapErr (\_ -> InvalidArg) |> Task.fromResult
+        Ok fileContentStr ->
+            Stdout.line "file content:\n\t\(fileContentStr)"
 
-# This task returns a Str or a TaskError, the Str will the contents of the file
-# that is located at the path given.
-readFile : Str -> Task.Task Str TaskError
-readFile = \path ->
-    # Read input file at the given path
-    Path.fromStr path
+# Task to read the first CLI arg (= Str)
+readFirstArgT : Task.Task Str [ZeroArgsGiven]_
+readFirstArgT =
+    # read all command line arguments
+    args <- Arg.list |> Task.await
+
+    # get the second argument, the first is the executable's path
+    List.get args 1 |> Result.mapErr (\_ -> ZeroArgsGiven) |> Task.fromResult
+
+# reads a file and puts all lines in one Str
+readFileToStr : Path.Path -> Task.Task Str [ReadFileErr Str]_
+readFileToStr = \path ->
+    path
     |> File.readUtf8
-    |> Task.mapFail \_ -> InvalidFile path
+    # Make a nice error message 
+    |> Task.mapFail
+        (\fileReadErr ->
+            pathStr = Path.display path
+            # TODO use FileReadErrToErrMsg when it is implemented: https://github.com/roc-lang/basic-cli/issues/44
+            when fileReadErr is
+                FileReadErr _ readErr ->
+                    readErrStr = File.readErrToStr readErr
+                    ReadFileErr "Failed to read file at:\n\t\(pathStr)\n\(readErrStr)"
+
+                FileReadUtf8Err _ _ ->
+                    ReadFileErr "I could not read the file:\n\t\(pathStr)\nIt contains charcaters that are not valid UTF-8:\n\t- Check if the file is encoded using a different format and convert it to UTF-8.\n\t- Check if the file is corrupted.\n\t- Find the characters that are not valid UTF-8 and fix or remove them."
+        )
+
+# indent all lines in a Str with a single tab
+indentLines: Str -> Str
+indentLines = \inputStr ->
+    Str.split inputStr "\n"
+    |> List.map (\line -> Str.concat "\t" line)
+    |> Str.joinWith "\n"
