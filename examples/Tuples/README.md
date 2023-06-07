@@ -9,7 +9,7 @@ A tuple is an ordered sequence of elements where the elements may have different
 ```
 % roc run main.roc
 First is: A String,
-Second is: 4.2, 
+Second is: true, 
 Third is: 15000000.
 You also have some pears.
 ```

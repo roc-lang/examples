@@ -9,12 +9,12 @@ app "tuples-example"
 main = 
 
     # a tuple that contains different types
-    simpleTuple : ( Str, F64, I64 )
-    simpleTuple = ("A String", 4.2, 15_000_000)
+    simpleTuple : ( Str, Bool, I64 )
+    simpleTuple = ("A String", Bool.true, 15_000_000)
 
     # access the items in a tuple by index (starts at 0)
     firstItem = simpleTuple.0
-    secondItem = Num.toStr simpleTuple.1
+    secondItem = if simpleTuple.1 then "true" else "false"
     thirdItem = Num.toStr simpleTuple.2
 
     {} <- Stdout.line 
