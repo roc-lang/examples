@@ -1,16 +1,17 @@
 
 # Tuples
 
-This example shows the Tuple language feature of Roc using the [basic-cli platform](https://github.com/roc-lang/basic-cli).
+This example briefly shows different uses of tuples in Roc.
+A tuple is an ordered sequence of elements where the elements may have different types.
 
 ## Output
 
 ```
 % roc run main.roc
 First is: A String,
-Second is: 43777, 
+Second is: 4.2, 
 Third is: 15000000.
-You also have some pears
+You also have some pears.
 ```
 
 ## Code

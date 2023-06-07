@@ -8,10 +8,11 @@ app "tuples-example"
 
 main = 
 
-    # This is a tuple, note that it contains different types
-    simpleTuple = ("A String", 0xAB01, 15_000_000i64)
+    # a tuple that contains different types
+    simpleTuple : ( Str, F64, I64 )
+    simpleTuple = ("A String", 4.2, 15_000_000)
 
-    # You can access the items in a tuple by index, note that it starts at zero
+    # access the items in a tuple by index (starts at 0)
     firstItem = simpleTuple.0
     secondItem = Num.toStr simpleTuple.1
     thirdItem = Num.toStr simpleTuple.2
@@ -24,19 +25,18 @@ main =
         """
         |> Task.await
 
+    # You can also use tuples with `when`:
     fruitSelection : [Apple, Pear, Banana]
     fruitSelection = Pear
 
-    qty : U32
-    qty = 12
+    quantity = 12
 
-    # You can also use tuples in pattern matching
-    when (fruitSelection, qty) is 
-        (_, a) if a == 0 -> Stdout.line "You also have no fruit"
-        (Apple, _) -> Stdout.line "You also have some apples"
-        (Pear, _) -> Stdout.line "You also have some pears"
-        (Banana, _) -> Stdout.line "You also have some bananas"
-        (_,_) -> crash "unrecongized fruit selection"
-
-
-
+    when (fruitSelection, quantity) is 
+        (_, qty) if qty == 0 ->
+            Stdout.line "You also have no fruit."
+        (Apple, _) ->
+            Stdout.line "You also have some apples."
+        (Pear, _) ->
+            Stdout.line "You also have some pears."
+        (Banana, _) ->
+            Stdout.line "You also have some bananas."
