@@ -15,4 +15,5 @@
 - [Arithmetic](/Arithmetic/README.html)
 - [Least Square Difference](/LeastSquares/README.html)
 - [Towers of Hanoi](/TowersOfHanoi/README.html)
+- [Tuples](/Tuples/README.html)
 
