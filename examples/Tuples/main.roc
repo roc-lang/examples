@@ -32,7 +32,7 @@ main =
     quantity = 12
 
     when (fruitSelection, quantity) is
-        # TODO re-enable when github.com/roc-lang/roc/issues/5530 is fixed
+        # TODO re-enable when github.com/roc-lang/roc/issues/5530 is fixed.
         #(_, qty) if qty == 0 ->
         #    Stdout.line "You also have no fruit."
         (Apple, _) ->
