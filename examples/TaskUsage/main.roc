@@ -45,8 +45,11 @@ printErrorMessage =
             OopsSomethingBadHappened -> Stdout.line "Something error!"
 
 ## This task will either fail or succeed depending on the Boolean value provided.
-## Note thae from the type annotation we can see that this task can fail with
-## exactly three different errors.
+## If we review the type annotation, we can see that if this task succeeds it will 
+## return a tag union with a single tag, `Success`. If it fails it may return
+## any one of three different tags. 
+##
+## Note we are only using the `AnotherFail` tag here.   
 canFail : Bool -> Task.Task [Success] [Failure, AnotherFail, YetAnotherFail]
 canFail = \shouldFail ->
     if shouldFail then
@@ -62,8 +65,8 @@ main =
     {} <- printErrorMessage |> Task.await
 
     # Here we know that the `canFail` task may fail, and so we can use
-    # `Task.attempt` to convert the task to a `Result` and then pattern match
-    # to handle each of the success and failure cases.
+    # `Task.attempt` to convert the task to a `Result` and use then pattern 
+    # matching to handle the succes and each of the possible failure cases.
     result <- canFail Bool.true |> Task.attempt
     when result is
         Ok Success -> Stdout.line "Success!"
