@@ -5,6 +5,7 @@
 
 - [Hello World](/HelloWorld/README.html)
 - [FizzBuzz](/FizzBuzz/README.html)
+- [Task Usage](/TaskUsage/README.html)
 - [Json](/Json/README.html)
 - [Random Numbers](/RandomNumbers/README.html)
 - [Pattern Matching](/PatternMatching/README.html)
