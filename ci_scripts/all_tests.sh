@@ -38,6 +38,8 @@ expect ci_scripts/expect_scripts/RandomNumbers.exp
 $roc build ./examples/CommandLineArgs/main.roc
 expect ci_scripts/expect_scripts/CommandLineArgs.exp
 
+$roc build ./examples/Tuples/main.roc
+expect ci_scripts/expect_scripts/Tuples.exp
 
 $roc build ./examples/TowersOfHanoi/main.roc
 $roc test ./examples/TowersOfHanoi/Hanoi.roc
