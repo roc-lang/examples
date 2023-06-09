@@ -6,43 +6,70 @@ app "task-usage"
     ]
     provides [main] to pf
 
-## This is a simple Task that always succeeds. From the type annotation, we can
-## see that it returns a `Str` value and cannot fail as the error type is an
-## empty tag uninon.
+## A Task represents an effect; an interaction with state outside your Roc program, such as the terminal's standard output, or a file.
+
+## A simple Task that always succeeds.
+##
+## A Task has two type parameters: the type of value it produces when it finishes running,
+## and any errors that might happen when running it.
+##
+## The type `Task Str []` indicates that the success value of this task is
+## `Str` and it cannot fail, so the error type is empty. 
+##
 getName : Task.Task Str []
 getName = Task.succeed "Louis"
 
 ## This task uses the `getName` task and combines the returned `Str` with the
 ## welcome message "Bonjour".
 ##
-## We use `Task.map` to take the return value of the `Task` and apply the function
-## `\name -> "Bonjour \(name)!"` to it. Note that this function has the type
-## `Str -> Str`.
+## We use `Task.map` to take the success value of the `getName` task, a `Str` and apply a function
+## to it with type `Str -> Str`: `\name -> "Bonjour \(name)!"`.
 ##
-## Then we use `Task.await` to print the interpolated string to Stdout. This
+## The type of `Task.map` is `Task a err, (a -> b) -> Task b err`.
+## Filling this in for our case, this becomes: `Task Str [], (Str -> Str) -> Task Str []`
+## In this case the type variables `a` and `b` are both `Str`, the types may be different but
+## they don't need to be.
+##
+## Remember that `Task.map` is used to transform (= apply a function to) the success value of a Task.
+##
+## Next we use `Task.await` to print the new string to `Stdout`. This
 ## function takes the `Str` and returns a new `Task`.
 ##
-## We know that `Stdout.line` has type `Str -> Task {} *` and `getName` cannot
-## fail, therefore this task also cannot fail.
+## `Stdout.line` has the type `Str -> Task {} *`.
+## The type of `Task.await` is `Task a err, (a -> Task b err) -> Task b err`.
+## If we fill this in, we get: `Task Str [], (Str -> Task {} *) -> Task {} *`
+## `Task.await` is used to create a new task with the success value of a given task.
+##
+## What's the difference between `Task {} []` and `Task {} *`?
+## TODO
+##
 printName : Task.Task {} []
 printName =
     getName
-    |> Task.map \name -> "Bonjour \(name)!"
-    |> Task.await \welcomeStr -> Stdout.line welcomeStr
+    |> Task.map (\name -> "Bonjour \(name)!")
+    |> Task.await (\welcomeStr -> Stdout.line welcomeStr)
 
-## This task is similar to `getName` however it always fails and returns the
-## tag `OopsSomethingBadHappened`.
-alwaysFail : Task.Task {} [OopsSomethingBadHappened]
-alwaysFail = Task.fail OopsSomethingBadHappened
+## This task is similar to `getName` but it always fails and returns the
+## error tag `Oops`.
+alwaysFail : Task.Task {} [Oops]
+alwaysFail = Task.fail Oops
 
-## Here we use `Task.onFail` to run another task if the previous task fails.
-## In this case we are printing a message to Stdout.
+## Here we use `Task.onFail` to create a new task if the previous one failed.
+## In this case we are printing an error message to `Stdout`.
+##
+## The type of `Task.onFail` is `Task ok a, (a -> Task ok b) -> Task ok b`.
+## If we fill this in, we get `Task {} [Oops], (Oops -> Task {} *) -> Task {} *`
+##
+## You can see the similarity with `Task.await`.
+## With `Task.await` we create a new Task with the success value,
+## and with `Task.onFail` we create a new Task with the failure value.
+##
 printErrorMessage : Task.Task {} []
 printErrorMessage =
     alwaysFail
     |> Task.onFail \err ->
         when err is
-            OopsSomethingBadHappened -> Stdout.line "Something error!"
+            Oops -> Stdout.line "Something error!" # TODO should we do Stderr.line instead here?
 
 ## This task will either fail or succeed depending on the Boolean value provided.
 ## If we review the type annotation, we can see that if this task succeeds it will 
