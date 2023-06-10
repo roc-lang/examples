@@ -7,7 +7,7 @@ This example shows how to use command line arguments to read a file using the [b
 
 ```
 % roc run examples/CommandLineArgs/main.roc -- examples/CommandLineArgs/input.txt
-Success, file contents: The answer is 42
+file content: 42
 ```
 
 ## Code
