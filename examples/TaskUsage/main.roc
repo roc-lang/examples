@@ -2,6 +2,7 @@ app "task-usage"
     packages { pf: "https://github.com/roc-lang/basic-cli/releases/download/0.3.2/tE4xS_zLdmmxmHwHih9kHWQ7fsXtJr7W7h3425-eZFk.tar.br" }
     imports [
         pf.Stdout,
+        pf.Stderr,
         pf.Task,
     ]
     provides [main] to pf
@@ -39,10 +40,6 @@ getName = Task.succeed "Louis"
 ## The type of `Task.await` is `Task a err, (a -> Task b err) -> Task b err`.
 ## If we fill this in, we get: `Task Str [], (Str -> Task {} *) -> Task {} *`
 ## `Task.await` is used to create a new task with the success value of a given task.
-##
-## What's the difference between `Task {} []` and `Task {} *`?
-## TODO
-##
 printName : Task.Task {} []
 printName =
     getName
@@ -69,7 +66,7 @@ printErrorMessage =
     alwaysFail
     |> Task.onFail \err ->
         when err is
-            Oops -> Stdout.line "Something error!" # TODO should we do Stderr.line instead here?
+            Oops -> Stderr.line "Something error!"
 
 ## This task will either fail or succeed depending on the Boolean value provided.
 ## If we review the type annotation, we can see that if this task succeeds it will 
