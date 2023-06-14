@@ -5,9 +5,10 @@
 
 - [Hello World](/HelloWorld/README.html)
 - [FizzBuzz](/FizzBuzz/README.html)
+- [Pattern Matching](/PatternMatching/README.html)
+- [Task Usage](/TaskUsage/README.html)
 - [Json](/Json/README.html)
 - [Random Numbers](/RandomNumbers/README.html)
-- [Pattern Matching](/PatternMatching/README.html)
 - [Tuples](/Tuples/README.html)
 - [Command Line Args](/CommandLineArgs/README.html)
 - [Import Files](/IngestFiles/README.html)

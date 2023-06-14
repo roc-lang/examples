@@ -50,7 +50,7 @@ If you have any ideas or improvements for this repository please start a discuss
 
 ## Contributing
 
-- The code snippet of the example should concisely provide the code that the user is looking for and be easy to understand. Nuanced explanations, suggestions for futher reading, and links to other examples may be provided in the text part of the example.
+- The code snippet of the example should concisely provide the code that the user is looking for and be easy to understand. Nuanced explanations, suggestions for further reading, and links to other examples may be provided in the text part of the example.
 - The platform and any packages should be URLs and not relative links. It should be as easy as navigating to a relevant example, copying it into a file, and now you have working code!
 
 Please also read the [Roc Contributing](https://github.com/roc-lang/roc/blob/main/CONTRIBUTING.md) instructions.

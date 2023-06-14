@@ -10,5 +10,6 @@ examples/Parser/parser-basic
 examples/RandomNumbers/random-numbers
 examples/TowersOfHanoi/towers-of-hanoi
 examples/CommandLineArgs/command-line-args
+examples/TaskUsage/task-usage
 examples/Tuples/tuples-example
 roc_nightly/
