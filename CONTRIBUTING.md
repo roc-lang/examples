@@ -1,7 +1,7 @@
 
 ## Code of Conduct
 
-We are committed to providing a friendly, safe and welcoming environment for all. Make sure to take a look at the Code of Conduct!
+We are committed to providing a friendly, safe and welcoming environment for all. Make sure to take a look at the [Code of Conduct](https://github.com/roc-lang/roc/blob/main/CODE_OF_CONDUCT.md).
 
 ## How to contribute
 
@@ -24,14 +24,14 @@ If you are looking for a good place to start, check the [good first issues](http
 
 ## To view the examples site locally
 
-Clone the roc repo if you don't have it already:
+Clone the Roc repo if you don't have it already:
 ```
 git clone https://github.com/roc-lang/roc.git
 ```
 
-Update the path in ./main.roc:
+Update the path in the file `./main.roc` (of the example repo):
 ```
-    packages { pf: "/PATH_TO_ROC_REPO/examples/static-site-gen/platform/main.roc" }
+packages { pf: "/PATH_TO_ROC_REPO/examples/static-site-gen/platform/main.roc" }
 ```
 Generate the html files:
 ```
@@ -43,7 +43,7 @@ Copy the static assets from `./www` to `./build`:
 cp ./wwww/* ./build
 ```
 
-If you're using the nix flake simple-http-server will already be installed. Without nix you can install it with `cargo install simple-http-server`.
+If you're using the nix flake, simple-http-server will already be installed. Without nix you can do `cargo install simple-http-server`.
 
 View the website:
 ```

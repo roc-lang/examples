@@ -7,7 +7,7 @@ Website coming soon!
 ## Running an example
 
 1. [Install Roc](https://github.com/roc-lang/roc/tree/main/getting_started#installation)
-2. For json example: `roc run examples/Json/main.roc`
+2. For the json example: `roc run examples/Json/main.roc`
 
 ## Ideas and Improvements
 
@@ -15,5 +15,5 @@ If you have any ideas or improvements, talk to us on our [group chat](https://ro
 
 ## Contributing
 
-Contributions are welcome :heart:
-Check out [CONTRIBUTING.md](CONTRIBUTING.md)
+Contributions are welcome :heart:  
+Check out [CONTRIBUTING.md](contributing.md)
