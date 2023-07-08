@@ -41,7 +41,7 @@ If you're using the nix flake simple-http-server will already be installed. With
 View the website:
 ```
 cd ./build
-simple-http-server --nocache
+simple-http-server --nocache --index
 ```
 
 ## Ideas and Improvements
