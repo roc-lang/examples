@@ -4,7 +4,8 @@ app "json-basic"
         json: "https://github.com/lukewilliamboswell/roc-json/releases/download/0.1.0/xbO9bXdHi7E9ja6upN5EJXpDoYm7lwmJ8VzL7a5zhYE.tar.br",
     }
     imports [
-        cli.{ Stdout, Task },
+        cli.Stdout,
+        cli.Task,
         json.Core.{ jsonWithOptions },
         Decode.{ DecodeResult, fromBytesPartial },
     ]
