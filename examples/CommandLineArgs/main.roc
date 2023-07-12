@@ -25,15 +25,15 @@ main =
 
     when finalResult is
         Err ZeroArgsGiven ->
-            Stderr.line "Error ZeroArgsGiven:\n\tI expected one argument, but I got none.\n\tRun the app like this: `roc command-line-args.roc -- path/to/input.txt`"
+            {} <- Stderr.line "Error ZeroArgsGiven:\n\tI expected one argument, but I got none.\n\tRun the app like this: `roc command-line-args.roc -- path/to/input.txt`" |> Task.await
 
-            Task.err 1 # 1 is an exit code to indicate failure
+            Task.fail 1 # 1 is an exit code to indicate failure
 
         Err (ReadFileErr errMsg) ->
             indentedErrMsg = indentLines errMsg
-            Stderr.line "Error ReadFileErr:\n\(indentedErrMsg)"
+            {} <- Stderr.line "Error ReadFileErr:\n\(indentedErrMsg)" |> Task.await
 
-            Task.err 1 # 1 is an exit code to indicate failure
+            Task.fail 1 # 1 is an exit code to indicate failure
 
         Ok fileContentStr ->
             Stdout.line "file content: \(fileContentStr)"

@@ -33,14 +33,14 @@ main =
             Stdout.line result
 
         Err InvalidArg ->
-            Stdout.line "Error: Please provide the number of disks as an argument."
+            {} <- Stdout.line "Error: Please provide the number of disks as an argument." |> Task.await
 
-            Task.err 1 # 1 is an exit code to indicate failure
+            Task.fail 1 # 1 is an exit code to indicate failure
         
         Err InvalidNumStr ->
-            Stdout.line "Error: Invalid number format. Please provide a positive integer."
+            {} <- Stdout.line "Error: Invalid number format. Please provide a positive integer." |> Task.await
 
-            Task.err 1 # 1 is an exit code to indicate failure
+            Task.fail 1 # 1 is an exit code to indicate failure
 
 readArgs : Task.Task { numDisks : U32 } TaskErrors
 readArgs =

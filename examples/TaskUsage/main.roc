@@ -97,17 +97,17 @@ main =
             Stdout.line "Success!"
 
         Err Failure ->
-            Stdout.line "Oops, failed!"
+            {} <- Stdout.line "Oops, failed!" |> Task.await
 
-            Task.err 1 # 1 is an exit code to indicate failure
+            Task.fail 1 # 1 is an exit code to indicate failure
 
         Err AnotherFail ->
-            Stdout.line "Ooooops, another failure!"
+            {} <- Stdout.line "Ooooops, another failure!" |> Task.await
 
-            Task.err 1
+            Task.fail 1
 
         Err YetAnotherFail ->
-            Stdout.line "Really big oooooops, yet again!"
+            {} <- Stdout.line "Really big oooooops, yet again!" |> Task.await
 
-            Task.err 1
+            Task.fail 1
 

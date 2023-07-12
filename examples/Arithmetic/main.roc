@@ -36,16 +36,16 @@ main =
 
     when taskResult is
         Ok result -> Stdout.line result
-        
-        Err InvalidArg ->
-            Stdout.line "Error: Please provide two integers between -1000 and 1000 as arguments."
 
-            Task.err 1 # 1 is an exit code to indicate failure
+        Err InvalidArg ->
+            {} <- Stdout.line "Error: Please provide two integers between -1000 and 1000 as arguments." |> Task.await
+
+            Task.fail 1 # 1 is an exit code to indicate failure
 
         Err InvalidNumStr ->
-            Stdout.line "Error: Invalid number format. Please provide integers between -1000 and 1000."
+            {} <- Stdout.line "Error: Invalid number format. Please provide integers between -1000 and 1000." |> Task.await
 
-            Task.err 1 # 1 is an exit code to indicate failure
+            Task.fail 1 # 1 is an exit code to indicate failure
 
 ## Reads two command-line arguments, attempts to parse them as `I32` numbers,
 ## and returns a task containing a record with two fields, `a` and `b`, holding
