@@ -93,8 +93,21 @@ main =
     # matching to handle the succes and each of the possible failure cases.
     result <- canFail Bool.true |> Task.attempt
     when result is
-        Ok Success -> Stdout.line "Success!"
-        Err Failure -> Stdout.line "Oops, failed!"
-        Err AnotherFail -> Stdout.line "Ooooops, another failure!"
-        Err YetAnotherFail -> Stdout.line "Really big oooooops, yet again!"
+        Ok Success ->
+            Stdout.line "Success!"
+
+        Err Failure ->
+            Stdout.line "Oops, failed!"
+
+            Task.err 1 # 1 is an exit code to indicate failure
+
+        Err AnotherFail ->
+            Stdout.line "Ooooops, another failure!"
+
+            Task.err 1
+
+        Err YetAnotherFail ->
+            Stdout.line "Really big oooooops, yet again!"
+
+            Task.err 1
 

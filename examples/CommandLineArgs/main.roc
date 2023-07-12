@@ -13,7 +13,7 @@ app "command-line-args"
     ]
     provides [main] to pf
 
-main : Task.Task {} []
+main : Task.Task {} U32
 main =
     finalTask =
         # try to read the first command line argument
@@ -27,9 +27,13 @@ main =
         Err ZeroArgsGiven ->
             Stderr.line "Error ZeroArgsGiven:\n\tI expected one argument, but I got none.\n\tRun the app like this: `roc command-line-args.roc -- path/to/input.txt`"
 
+            Task.err 1 # 1 is an exit code to indicate failure
+
         Err (ReadFileErr errMsg) ->
             indentedErrMsg = indentLines errMsg
             Stderr.line "Error ReadFileErr:\n\(indentedErrMsg)"
+
+            Task.err 1 # 1 is an exit code to indicate failure
 
         Ok fileContentStr ->
             Stdout.line "file content: \(fileContentStr)"

@@ -19,8 +19,13 @@ main =
     decoded = fromBytesPartial requestBody decoder
 
     when decoded.result is
-        Ok record -> Stdout.line "Successfully decoded image, title:\"\(record.image.title)\""
-        Err _ -> crash "Error, failed to decode image"
+        Ok record ->
+            Stdout.line "Successfully decoded image, title:\"\(record.image.title)\""
+        
+        Err _ ->
+            Stdout.line "Error, failed to decode image"
+
+            Task.err 1 # 1 is an exit code to indicate failure
 
 ImageRequest : {
     image : {
