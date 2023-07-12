@@ -1,5 +1,5 @@
 app "arithmetic"
-    packages { pf: "https://github.com/roc-lang/basic-cli/releases/download/0.3.2/tE4xS_zLdmmxmHwHih9kHWQ7fsXtJr7W7h3425-eZFk.tar.br" }
+    packages { pf: "https://github.com/roc-lang/basic-cli/releases/download/0.4.0/DI4lqn7LIZs8ZrCDUgLK-tHHpQmxGF1ZrlevRKq5LXk.tar.br" }
     imports [
         pf.Stdout,
         pf.Task.{ await },
@@ -36,8 +36,16 @@ main =
 
     when taskResult is
         Ok result -> Stdout.line result
-        Err InvalidArg -> Stdout.line "Error: Please provide two integers between -1000 and 1000 as arguments."
-        Err InvalidNumStr -> Stdout.line "Error: Invalid number format. Please provide integers between -1000 and 1000."
+
+        Err InvalidArg ->
+            {} <- Stdout.line "Error: Please provide two integers between -1000 and 1000 as arguments." |> Task.await
+
+            Task.fail 1 # 1 is an exit code to indicate failure
+
+        Err InvalidNumStr ->
+            {} <- Stdout.line "Error: Invalid number format. Please provide integers between -1000 and 1000." |> Task.await
+
+            Task.fail 1 # 1 is an exit code to indicate failure
 
 ## Reads two command-line arguments, attempts to parse them as `I32` numbers,
 ## and returns a task containing a record with two fields, `a` and `b`, holding

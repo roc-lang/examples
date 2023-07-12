@@ -1,5 +1,5 @@
 app "towers-of-hanoi"
-    packages { pf: "https://github.com/roc-lang/basic-cli/releases/download/0.3.2/tE4xS_zLdmmxmHwHih9kHWQ7fsXtJr7W7h3425-eZFk.tar.br" }
+    packages { pf: "https://github.com/roc-lang/basic-cli/releases/download/0.4.0/DI4lqn7LIZs8ZrCDUgLK-tHHpQmxGF1ZrlevRKq5LXk.tar.br" }
     imports [
         pf.Stdout,
         pf.Task.{ await },
@@ -29,9 +29,18 @@ main =
     taskResult <- Task.attempt task
 
     when taskResult is
-        Ok result -> Stdout.line result
-        Err InvalidArg -> Stdout.line "Error: Please provide the number of disks as an argument."
-        Err InvalidNumStr -> Stdout.line "Error: Invalid number format. Please provide a positive integer."
+        Ok result ->
+            Stdout.line result
+
+        Err InvalidArg ->
+            {} <- Stdout.line "Error: Please provide the number of disks as an argument." |> Task.await
+
+            Task.fail 1 # 1 is an exit code to indicate failure
+        
+        Err InvalidNumStr ->
+            {} <- Stdout.line "Error: Invalid number format. Please provide a positive integer." |> Task.await
+
+            Task.fail 1 # 1 is an exit code to indicate failure
 
 readArgs : Task.Task { numDisks : U32 } TaskErrors
 readArgs =

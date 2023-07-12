@@ -1,7 +1,7 @@
 # Run with `roc ./examples/CommandLineArgs/main.roc -- examples/CommandLineArgs/input.txt`
 app "command-line-args"
     packages {
-        pf: "https://github.com/roc-lang/basic-cli/releases/download/0.3.2/tE4xS_zLdmmxmHwHih9kHWQ7fsXtJr7W7h3425-eZFk.tar.br",
+        pf: "https://github.com/roc-lang/basic-cli/releases/download/0.4.0/DI4lqn7LIZs8ZrCDUgLK-tHHpQmxGF1ZrlevRKq5LXk.tar.br",
     }
     imports [
         pf.Stdout,
@@ -13,7 +13,7 @@ app "command-line-args"
     ]
     provides [main] to pf
 
-main : Task.Task {} []
+main : Task.Task {} U32
 main =
     finalTask =
         # try to read the first command line argument
@@ -25,11 +25,15 @@ main =
 
     when finalResult is
         Err ZeroArgsGiven ->
-            Stderr.line "Error ZeroArgsGiven:\n\tI expected one argument, but I got none.\n\tRun the app like this: `roc command-line-args.roc -- path/to/input.txt`"
+            {} <- Stderr.line "Error ZeroArgsGiven:\n\tI expected one argument, but I got none.\n\tRun the app like this: `roc command-line-args.roc -- path/to/input.txt`" |> Task.await
+
+            Task.fail 1 # 1 is an exit code to indicate failure
 
         Err (ReadFileErr errMsg) ->
             indentedErrMsg = indentLines errMsg
-            Stderr.line "Error ReadFileErr:\n\(indentedErrMsg)"
+            {} <- Stderr.line "Error ReadFileErr:\n\(indentedErrMsg)" |> Task.await
+
+            Task.fail 1 # 1 is an exit code to indicate failure
 
         Ok fileContentStr ->
             Stdout.line "file content: \(fileContentStr)"
