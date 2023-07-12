@@ -17,7 +17,8 @@ app "task-usage"
 ## The type `Task Str []` indicates that the success value of this task is
 ## `Str` and it cannot fail, so the error type is empty. 
 ##
-getName : Task.Task Str []
+# TODO re-enable type definition (issue #72)
+# getName : Task.Task Str []
 getName = Task.succeed "Louis"
 
 ## This task uses the `getName` task and combines the returned `Str` with the
@@ -40,7 +41,8 @@ getName = Task.succeed "Louis"
 ## The type of `Task.await` is `Task a err, (a -> Task b err) -> Task b err`.
 ## If we fill this in, we get: `Task Str [], (Str -> Task {} *) -> Task {} *`
 ## `Task.await` is used to create a new task with the success value of a given task.
-printName : Task.Task {} []
+# TODO re-enable type definition (issue #72)
+# printName : Task.Task {} []
 printName =
     getName
     |> Task.map (\name -> "Bonjour \(name)!")
@@ -48,7 +50,8 @@ printName =
 
 ## This task is similar to `getName` but it always fails and returns the
 ## error tag `Oops`.
-alwaysFail : Task.Task {} [Oops]
+# TODO re-enable type definition (issue #72)
+# alwaysFail : Task.Task {} [Oops]
 alwaysFail = Task.fail Oops
 
 ## Here we use `Task.onFail` to create a new task if the previous one failed.
@@ -61,7 +64,8 @@ alwaysFail = Task.fail Oops
 ## With `Task.await` we create a new Task with the success value,
 ## and with `Task.onFail` we create a new Task with the failure value.
 ##
-printErrorMessage : Task.Task {} []
+# TODO re-enable type definition (issue #72)
+# printErrorMessage : Task.Task {} []
 printErrorMessage =
     alwaysFail
     |> Task.onFail \err ->
