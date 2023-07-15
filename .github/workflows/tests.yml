@@ -47,4 +47,6 @@ jobs:
 
       - run: ./ci_scripts/all_tests.sh
 
-      - run: ./roc_nightly/roc run main.roc -- examples build
+      # TODO re-enable once issue#74 is fixed
+      #- run: ./roc_nightly/roc run main.roc -- examples build
+      - run: ./roc_nightly/roc build main.roc
