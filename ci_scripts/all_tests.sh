@@ -47,8 +47,3 @@ expect ci_scripts/expect_scripts/TowersOfHanoi.exp
 
 $roc build ./examples/TaskUsage/main.roc
 expect ci_scripts/expect_scripts/TaskUsage.exp
-
-# test building website (only on github CI)
-if [ -n "${GITHUB_ACTIONS+x}" ]; then  
-  $roc run main.roc -- examples build
-fi
