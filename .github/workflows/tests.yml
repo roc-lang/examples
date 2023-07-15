@@ -42,4 +42,7 @@ jobs:
       - name: install expect # used to check if output is correct
         run: sudo apt install -y expect
 
+      - name: print runner CPU
+        run: lscpu
+
       - run: ./ci_scripts/all_tests.sh
