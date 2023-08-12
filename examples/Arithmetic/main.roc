@@ -30,7 +30,7 @@ main =
             |> List.map formatResult
             |> Str.joinWith "\n"
 
-        Task.succeed results
+        Task.ok results
 
     taskResult <- Task.attempt task
 
@@ -40,12 +40,12 @@ main =
         Err InvalidArg ->
             {} <- Stdout.line "Error: Please provide two integers between -1000 and 1000 as arguments." |> Task.await
 
-            Task.fail 1 # 1 is an exit code to indicate failure
+            Task.err 1 # 1 is an exit code to indicate failure
 
         Err InvalidNumStr ->
             {} <- Stdout.line "Error: Invalid number format. Please provide integers between -1000 and 1000." |> Task.await
 
-            Task.fail 1 # 1 is an exit code to indicate failure
+            Task.err 1 # 1 is an exit code to indicate failure
 
 ## Reads two command-line arguments, attempts to parse them as `I32` numbers,
 ## and returns a task containing a record with two fields, `a` and `b`, holding
@@ -58,7 +58,7 @@ main =
 readArgs : Task.Task { a : I32, b : I32 } TaskErrors
 readArgs =
     Arg.list
-    |> Task.mapFail \_ -> InvalidArg
+    |> Task.mapErr \_ -> InvalidArg
     |> await \args ->
         aResult = List.get args 1 |> Result.try Str.toI32
         bResult = List.get args 2 |> Result.try Str.toI32
@@ -66,8 +66,8 @@ readArgs =
         when (aResult, bResult) is
             (Ok a, Ok b) ->
                 if a < -1000 || a > 1000 || b < -1000 || b > 1000 then
-                    Task.fail InvalidNumStr
+                    Task.err InvalidNumStr
                 else
-                    Task.succeed { a, b }
+                    Task.ok { a, b }
 
-            _ -> Task.fail InvalidNumStr
+            _ -> Task.err InvalidNumStr

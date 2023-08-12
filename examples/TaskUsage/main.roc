@@ -19,7 +19,7 @@ app "task-usage"
 ##
 # TODO re-enable type definition (issue #72)
 # getName : Task.Task Str []
-getName = Task.succeed "Louis"
+getName = Task.ok "Louis"
 
 ## This task uses the `getName` task and combines the returned `Str` with the
 ## welcome message "Bonjour".
@@ -52,7 +52,7 @@ printName =
 ## error tag `Oops`.
 # TODO re-enable type definition (issue #72)
 # alwaysFail : Task.Task {} [Oops]
-alwaysFail = Task.fail Oops
+alwaysFail = Task.err Oops
 
 ## Here we use `Task.onFail` to create a new task if the previous one failed.
 ## In this case we are printing an error message to `Stdout`.
@@ -81,9 +81,9 @@ printErrorMessage =
 canFail : Bool -> Task.Task [Success] [Failure, AnotherFail, YetAnotherFail]
 canFail = \shouldFail ->
     if shouldFail then
-        Task.fail AnotherFail
+        Task.err AnotherFail
     else
-        Task.succeed Success
+        Task.ok Success
 
 main =
     # Let's run our tasks in sequence, we can use `Task.await` and backpassing
@@ -103,15 +103,15 @@ main =
         Err Failure ->
             {} <- Stdout.line "Oops, failed!" |> Task.await
 
-            Task.fail 1 # 1 is an exit code to indicate failure
+            Task.err 1 # 1 is an exit code to indicate failure
 
         Err AnotherFail ->
             {} <- Stdout.line "Ooooops, another failure!" |> Task.await
 
-            Task.fail 1
+            Task.err 1
 
         Err YetAnotherFail ->
             {} <- Stdout.line "Really big oooooops, yet again!" |> Task.await
 
-            Task.fail 1
+            Task.err 1
 
