@@ -54,21 +54,21 @@ printName =
 # alwaysFail : Task.Task {} [Oops]
 alwaysFail = Task.err Oops
 
-## Here we use `Task.onFail` to create a new task if the previous one failed.
+## Here we use `Task.onErr` to create a new task if the previous one failed.
 ## In this case we are printing an error message to `Stdout`.
 ##
-## The type of `Task.onFail` is `Task ok a, (a -> Task ok b) -> Task ok b`.
+## The type of `Task.onErr` is `Task ok a, (a -> Task ok b) -> Task ok b`.
 ## If we fill this in, we get `Task {} [Oops], (Oops -> Task {} *) -> Task {} *`
 ##
 ## You can see the similarity with `Task.await`.
 ## With `Task.await` we create a new Task with the success value,
-## and with `Task.onFail` we create a new Task with the failure value.
+## and with `Task.onErr` we create a new Task with the failure value.
 ##
 # TODO re-enable type definition (issue #72)
 # printErrorMessage : Task.Task {} []
 printErrorMessage =
     alwaysFail
-    |> Task.onFail \err ->
+    |> Task.onErr \err ->
         when err is
             Oops -> Stderr.line "Something error!"
 

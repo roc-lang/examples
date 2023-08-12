@@ -13,7 +13,7 @@ app "command-line-args"
     ]
     provides [main] to pf
 
-main : Task.Task {} U32
+main : Task.Task {} I32
 main =
     finalTask =
         # try to read the first command line argument
