@@ -44,6 +44,10 @@
 		                ] ++ linuxInputs;
 
                     # nix does not store libs in /usr/lib or /lib
+                    # for libgcc_s.so.1
+                    NIX_LIBGCC_S_PATH =
+                      if pkgs.stdenv.isLinux then "${pkgs.stdenv.cc.cc.lib}/lib" else "";
+                    # for crti.o, crtn.o, and Scrt1.o
                     NIX_GLIBC_PATH =
                       if pkgs.stdenv.isLinux then "${pkgs.glibc.out}/lib" else "";
                 };

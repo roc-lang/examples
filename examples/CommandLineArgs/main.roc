@@ -1,7 +1,7 @@
 # Run with `roc ./examples/CommandLineArgs/main.roc -- examples/CommandLineArgs/input.txt`
 app "command-line-args"
     packages {
-        pf: "https://github.com/roc-lang/basic-cli/releases/download/0.4.0/DI4lqn7LIZs8ZrCDUgLK-tHHpQmxGF1ZrlevRKq5LXk.tar.br",
+        pf: "https://github.com/roc-lang/basic-cli/releases/download/0.5.0/Cufzl36_SnJ4QbOoEmiJ5dIpUxBvdB3NEySvuH82Wio.tar.br",
     }
     imports [
         pf.Stdout,
@@ -13,7 +13,7 @@ app "command-line-args"
     ]
     provides [main] to pf
 
-main : Task.Task {} U32
+main : Task.Task {} I32
 main =
     finalTask =
         # try to read the first command line argument
@@ -27,13 +27,13 @@ main =
         Err ZeroArgsGiven ->
             {} <- Stderr.line "Error ZeroArgsGiven:\n\tI expected one argument, but I got none.\n\tRun the app like this: `roc command-line-args.roc -- path/to/input.txt`" |> Task.await
 
-            Task.fail 1 # 1 is an exit code to indicate failure
+            Task.err 1 # 1 is an exit code to indicate failure
 
         Err (ReadFileErr errMsg) ->
             indentedErrMsg = indentLines errMsg
             {} <- Stderr.line "Error ReadFileErr:\n\(indentedErrMsg)" |> Task.await
 
-            Task.fail 1 # 1 is an exit code to indicate failure
+            Task.err 1 # 1 is an exit code to indicate failure
 
         Ok fileContentStr ->
             Stdout.line "file content: \(fileContentStr)"
@@ -53,7 +53,7 @@ readFileToStr = \path ->
     path
     |> File.readUtf8
     # Make a nice error message 
-    |> Task.mapFail
+    |> Task.mapErr
         (\fileReadErr ->
             pathStr = Path.display path
             # TODO use FileReadErrToErrMsg when it is implemented: https://github.com/roc-lang/basic-cli/issues/44

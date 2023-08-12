@@ -1,5 +1,5 @@
 app "towers-of-hanoi"
-    packages { pf: "https://github.com/roc-lang/basic-cli/releases/download/0.4.0/DI4lqn7LIZs8ZrCDUgLK-tHHpQmxGF1ZrlevRKq5LXk.tar.br" }
+    packages { pf: "https://github.com/roc-lang/basic-cli/releases/download/0.5.0/Cufzl36_SnJ4QbOoEmiJ5dIpUxBvdB3NEySvuH82Wio.tar.br" }
     imports [
         pf.Stdout,
         pf.Task.{ await },
@@ -24,7 +24,7 @@ main =
         |> Hanoi.hanoi
         |> List.map \(from, to) -> "Move disk from \(from) to \(to)"
         |> Str.joinWith "\n"
-        |> Task.succeed
+        |> Task.ok
 
     taskResult <- Task.attempt task
 
@@ -35,26 +35,26 @@ main =
         Err InvalidArg ->
             {} <- Stdout.line "Error: Please provide the number of disks as an argument." |> Task.await
 
-            Task.fail 1 # 1 is an exit code to indicate failure
+            Task.err 1 # 1 is an exit code to indicate failure
         
         Err InvalidNumStr ->
             {} <- Stdout.line "Error: Invalid number format. Please provide a positive integer." |> Task.await
 
-            Task.fail 1 # 1 is an exit code to indicate failure
+            Task.err 1 # 1 is an exit code to indicate failure
 
 readArgs : Task.Task { numDisks : U32 } TaskErrors
 readArgs =
     Arg.list
-    |> Task.mapFail \_ -> InvalidArg
+    |> Task.mapErr \_ -> InvalidArg
     |> await \args ->
         numDisksResult = List.get args 1 |> Result.try Str.toU32
 
         when numDisksResult is
             Ok numDisks ->
                 if numDisks < 1 then
-                    Task.fail InvalidNumStr
+                    Task.err InvalidNumStr
                 else
-                    Task.succeed { numDisks }
+                    Task.ok { numDisks }
 
-            _ -> Task.fail InvalidNumStr
+            _ -> Task.err InvalidNumStr
 

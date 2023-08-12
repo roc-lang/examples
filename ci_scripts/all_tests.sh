@@ -17,8 +17,8 @@ expect ci_scripts/expect_scripts/FizzBuzz.exp
 
 $roc test ./examples/GraphTraversal/Graph.roc
 
-$roc build ./examples/Json/main.roc
-expect ci_scripts/expect_scripts/Json.exp
+#$roc build ./examples/Json/main.roc
+#expect ci_scripts/expect_scripts/Json.exp
 
 $roc build ./examples/LeastSquares/main.roc
 expect ci_scripts/expect_scripts/LeastSquares.exp

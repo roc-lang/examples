@@ -1,5 +1,5 @@
 app "task-usage"
-    packages { pf: "https://github.com/roc-lang/basic-cli/releases/download/0.4.0/DI4lqn7LIZs8ZrCDUgLK-tHHpQmxGF1ZrlevRKq5LXk.tar.br" }
+    packages { pf: "https://github.com/roc-lang/basic-cli/releases/download/0.5.0/Cufzl36_SnJ4QbOoEmiJ5dIpUxBvdB3NEySvuH82Wio.tar.br" }
     imports [
         pf.Stdout,
         pf.Stderr,
@@ -19,7 +19,7 @@ app "task-usage"
 ##
 # TODO re-enable type definition (issue #72)
 # getName : Task.Task Str []
-getName = Task.succeed "Louis"
+getName = Task.ok "Louis"
 
 ## This task uses the `getName` task and combines the returned `Str` with the
 ## welcome message "Bonjour".
@@ -52,23 +52,23 @@ printName =
 ## error tag `Oops`.
 # TODO re-enable type definition (issue #72)
 # alwaysFail : Task.Task {} [Oops]
-alwaysFail = Task.fail Oops
+alwaysFail = Task.err Oops
 
-## Here we use `Task.onFail` to create a new task if the previous one failed.
+## Here we use `Task.onErr` to create a new task if the previous one failed.
 ## In this case we are printing an error message to `Stdout`.
 ##
-## The type of `Task.onFail` is `Task ok a, (a -> Task ok b) -> Task ok b`.
+## The type of `Task.onErr` is `Task ok a, (a -> Task ok b) -> Task ok b`.
 ## If we fill this in, we get `Task {} [Oops], (Oops -> Task {} *) -> Task {} *`
 ##
 ## You can see the similarity with `Task.await`.
 ## With `Task.await` we create a new Task with the success value,
-## and with `Task.onFail` we create a new Task with the failure value.
+## and with `Task.onErr` we create a new Task with the failure value.
 ##
 # TODO re-enable type definition (issue #72)
 # printErrorMessage : Task.Task {} []
 printErrorMessage =
     alwaysFail
-    |> Task.onFail \err ->
+    |> Task.onErr \err ->
         when err is
             Oops -> Stderr.line "Something error!"
 
@@ -81,9 +81,9 @@ printErrorMessage =
 canFail : Bool -> Task.Task [Success] [Failure, AnotherFail, YetAnotherFail]
 canFail = \shouldFail ->
     if shouldFail then
-        Task.fail AnotherFail
+        Task.err AnotherFail
     else
-        Task.succeed Success
+        Task.ok Success
 
 main =
     # Let's run our tasks in sequence, we can use `Task.await` and backpassing
@@ -103,15 +103,15 @@ main =
         Err Failure ->
             {} <- Stdout.line "Oops, failed!" |> Task.await
 
-            Task.fail 1 # 1 is an exit code to indicate failure
+            Task.err 1 # 1 is an exit code to indicate failure
 
         Err AnotherFail ->
             {} <- Stdout.line "Ooooops, another failure!" |> Task.await
 
-            Task.fail 1
+            Task.err 1
 
         Err YetAnotherFail ->
             {} <- Stdout.line "Really big oooooops, yet again!" |> Task.await
 
-            Task.fail 1
+            Task.err 1
 
