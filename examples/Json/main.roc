@@ -26,7 +26,7 @@ main =
         Err _ ->
             {} <- Stdout.line "Error, failed to decode image" |> Task.await
 
-            Task.fail 1 # 1 is an exit code to indicate failure
+            Task.err 1 # 1 is an exit code to indicate failure
 
 ImageRequest : {
     image : {
