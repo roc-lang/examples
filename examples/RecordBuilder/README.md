@@ -11,7 +11,7 @@ Let's assume we want to develop a module that supplies a type-safe yet versatile
 ```roc
 Count a := (U32, a)
 ```
-This type takes a type variable `a`, and holds a tuple of a `U32` and an `a`. Here, U32 will maintain our counter's value, while a houses the function to progress our builder pattern.
+This type takes a type variable `a`, and contains a tuple of a `U32` maintain our counter's value, and the state we are composing.
 
 2. **End Goal** It's useful to visualize our desired result. The record builder pattern we're aiming for looks like:
 
@@ -22,14 +22,15 @@ expect
             foo: <- inc,
             bar: <- inc,
             baz: <- inc,
-        } |> done
+        } 
+        |> done
 
     foo == 1 && bar == 2 && baz == 3
 ```
 
-This generates a record with fields foo, bar, and baz, all possessing sequential U32 IDs. Note the slight deviation from the conventional record syntax, using a `: <-` instead of `:`, this is the record builder pattern syntax.
+This generates a record with fields `foo`, `bar`, and `baz`, all possessing sequential `U32` IDs. Note the slight deviation from the conventional record syntax, using a `: <-` instead of `:`, this is the Record Builder syntax.
 
-3. **Under the Hood** The record builder pattern is syntax suger which converts the preceding into:
+3. **Under the Hood** The record builder pattern is syntax sugar which converts the preceding into:
 
 ```roc
 expect
@@ -42,7 +43,7 @@ expect
 
     foo == 1 && bar == 2 && baz == 3
 ```
-To make this work, we will define the functions `from` `inc` and `done`.
+To make this work, we will define the functions `from`, `inc`, and `done`.
 
 4. **Initial Value** Let's start with `from`:
 
@@ -51,11 +52,11 @@ from : a -> Count a
 from = \advance ->
     @Count (0, advance)
 ```
-`from` initiates the `Count a` value with `U32` set to `0` and stores the advance function, which is wrapped by `@Count` into our opaque type.
+`from` initiates the `Count a` value with `U32` set to `0` and stores the advance function, which is wrapped by `@Count` into our opaque type. In this case `from` will always take a function, but more generally this is the function that wraps (or lifts) a value into the type, such as `Task.ok`.
 
 > Note: This usage of an opaque type ensures that, outside this module, the counter's value remains concealed (unless we purposely expose it through another function).
 
-5. **Applicative** `inc` is defined it as:
+5. **Applicative** `inc` is defined as:
 
 ```roc
 inc : Count (U32 -> a) -> Count a
@@ -76,12 +77,12 @@ from (\a -> \b -> \c -> { foo:a, bar:b, baz:c }) # Count (U32 -> U32 -> U32 -> {
 |> inc                                           # Count (U32 -> U32 -> { foo: U32, bar: U32, baz: U32 })
 |> inc                                           # Count (U32 -> { foo: U32, bar: U32, baz: U32 })
 |> inc                                           # Count ({ foo: U32, bar: U32, baz: U32 })
-|> done
+|> done                                          # { foo: U32, bar: U32, baz: U32 }
 ```
 
 Above you can see the type of `a` is advanced at each step by applying a `U32` value to the function. This is also known as an applicative pipeline, and can be a flexible way to build up complex types.
 
-6. **Unwrap** Finally, `done` unwraps the `Count a` value and return our record. 
+6. **Unwrap** Finally, `done` unwraps the `Count a` value and returns our record. 
 
 ```roc
 done : Count a -> a
