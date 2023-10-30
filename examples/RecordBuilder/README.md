@@ -1,119 +1,101 @@
 
 # Record Builder 
 
-This example demonstrates the Record Builder pattern in Roc. This pattern leverages the functional programming concept of applicative functors, to provide a flexible method for constructing complex types.
+This example demonstrates the Record Builder pattern in Roc. This pattern leverages the functional programming concept of [applicative functors](https://lucamug.medium.com/functors-applicatives-and-monads-in-pictures-784c2b5786f7), to provide a flexible method for constructing complex types.
 
 ## The Basics
 
-Let's assume we want to develop a module that supplies a type-safe yet versatile method for users to safely obtain sequential IDs. The record builder pattern can be beneficial in this scenario.
+Let's assume we want to develop a module that supplies a type-safe yet versatile method for users to obtain user IDs that are guaranteed to be sequential. The record builder pattern can be helpful here.
 
-1. **Opaque Type** We need an opaque type that will accumulate our state:
+> Note: it is possible to achieve this sequential ID mechanism with simpler code but more "real world" record builder examples may be too complex to easily understand the mechanism. If you want to contribute, we would love to have a real world record builder example that is well explained.
+
+1. **Opaque Type** We need an [opaque type](https://www.roc-lang.org/tutorial#opaque-types) that will accumulate our state:
 ```roc
-Count a := (U32, a)
+IDCount state := (ID, state)
 ```
-This type takes a type variable `a`, and contains a tuple of a `U32` maintain our counter's value, and the state we are composing.
+This type takes a type variable `state`. In our case `state` will be either a record or a function that produces a record.
 
 2. **End Goal** It's useful to visualize our desired result. The record builder pattern we're aiming for looks like:
 
 ```roc
 expect
-    { foo, bar, baz } = 
-        from {
-            foo: <- inc,
-            bar: <- inc,
-            baz: <- inc,
-        } 
-        |> done
+    { aliceID, bobID, trudyID } = 
+        initIDCount {
+            aliceID: <- incID,
+            bobID: <- incID,
+            trudyID: <- incID,
+        } |> extractState
 
-    foo == 1 && bar == 2 && baz == 3
+    aliceID == 1 && bobID == 2 && trudyID == 3
 ```
 
-This generates a record with fields `foo`, `bar`, and `baz`, all possessing sequential `U32` IDs. Note the slight deviation from the conventional record syntax, using a `: <-` instead of `:`, this is the Record Builder syntax.
+This generates a record with fields `aliceID`, `bobID`, and `trudyID`, all possessing sequential IDs (= `U32`). Note the slight deviation from the conventional record syntax, using a `: <-` instead of `:`, this is the Record Builder syntax.
 
 3. **Under the Hood** The record builder pattern is syntax sugar which converts the preceding into:
 
 ```roc
 expect
-    { foo, bar, baz } =
-        from (\a -> \b -> \c -> { foo:a, bar:b, baz:c })
-        |> inc
-        |> inc
-        |> inc
-        |> done
+    { aliceID, bobID, trudyID } =
+        initIDCount (\aID -> \bID -> \cID -> { aliceID: aID, bobID: bID, trudyID: cID })
+        |> incID
+        |> incID
+        |> incID
+        |> extractState
 
-    foo == 1 && bar == 2 && baz == 3
+    aliceID == 1 && bobID == 2 && trudyID == 3
 ```
-To make this work, we will define the functions `from`, `inc`, and `done`.
+To make this work, we will define the functions `initIDCount`, `incID`, and `extractState`.
 
-4. **Initial Value** Let's start with `from`:
+4. **Initial Value** Let's start with `initIDCount`:
 
 ```roc
-from : a -> Count a
-from = \advance ->
-    @Count (0, advance)
+initIDCount : state -> IDCount state
+initIDCount = \advanceF ->
+    @IDCount (0, advanceF)
 ```
-`from` initiates the `Count a` value with `U32` set to `0` and stores the advance function, which is wrapped by `@Count` into our opaque type. In this case `from` will always take a function, but more generally this is the function that wraps (or lifts) a value into the type, such as `Task.ok`.
+`initIDCount` initiates the `IDCount state` value with the `ID` (= `U32`) set to `0` and stores the advanceF function, which is wrapped by `@IDCount` into our opaque type.
 
-> Note: This usage of an opaque type ensures that, outside this module, the counter's value remains concealed (unless we purposely expose it through another function).
+> Note: This usage of an opaque type ensures that, outside this module, the IDcounter's value remains concealed/protected (unless we purposely expose it through another function).
 
-5. **Applicative** `inc` is defined as:
+5. **Applicative** `incID` is defined as:
 
 ```roc
-inc : Count (U32 -> a) -> Count a
-inc = \@Count (curr, advance) ->
-    new = curr + 1
+incID : IDCount (ID -> state) -> IDCount state
+incID = \@IDCount (currID, advanceF) ->
+    nextID = currID + 1
 
-    @Count (new, advance new)
+    @IDCount (nextID, advanceF nextID)
 ```
 
-Looking at the type signature, we see that it takes a `Count a` value and applies a `U32` value to it's advance function.
+`incID` unwraps the argument `@IDCount (currID, advanceF)`; calculates a new state value `nextID = currID + 1`; applies this new value to the provided advanceF function `@IDCount (nextID, advanceF nextID)`; returning a new `IDCount` value.
 
-`inc` unwraps the argument `@Count (curr, advance)`; calculates a new state value `new = curr + 1`; applies this new value to the provided advance function `@Count (new, advance new)`; returning a new `Count a` value.
-
-If you haven't seen this pattern before, it can be difficult to see how this works. Let's break it down and follow the type of `a` at each step in our builder pattern.
+If you haven't seen this pattern before, it can be difficult to grasp. Let's break it down and follow the type of `state` at each step in our builder pattern.
 
 ```roc
-from (\a -> \b -> \c -> { foo:a, bar:b, baz:c }) # Count (U32 -> U32 -> U32 -> { foo: U32, bar: U32, baz: U32  })
-|> inc                                           # Count (U32 -> U32 -> { foo: U32, bar: U32, baz: U32 })
-|> inc                                           # Count (U32 -> { foo: U32, bar: U32, baz: U32 })
-|> inc                                           # Count ({ foo: U32, bar: U32, baz: U32 })
-|> done                                          # { foo: U32, bar: U32, baz: U32 }
+initIDCount (\aID -> \bID -> \cID -> { aliceID: aID, bobID: bID, trudyID: cID }) # IDCount (ID -> ID -> ID -> { foo: ID, bar: ID, trudyID: ID  })
+|> incID                                           # IDCount (ID -> ID -> { aliceID: ID, bobID: ID, trudyID: ID })
+|> incID                                           # IDCount (ID -> { aliceID: ID, bobID: ID, trudyID: ID })
+|> incID                                           # IDCount ({ aliceID: ID, bobID: ID, trudyID: ID })
+|> extractState                                    # { aliceID: ID, bobID: ID, trudyID: ID }
 ```
 
-Above you can see the type of `a` is advanced at each step by applying a `U32` value to the function. This is also known as an applicative pipeline, and can be a flexible way to build up complex types.
+Above you can see the type of `state` is advanced at each step by applying an `ID` value to the function. This is also known as an applicative pipeline, and can be a flexible way to build up complex types.
 
-6. **Unwrap** Finally, `done` unwraps the `Count a` value and returns our record. 
+6. **Unwrap** Finally, `extractState` unwraps the `IDCount` value and returns our record. 
 
 ```roc
-done : Count a -> a
-done = \@Count (_, final) -> 
-    final
+extractState : IDCount state -> state
+extractState = \@IDCount (_, finalState) -> finalState
 ```
 
-In our case, we don't need the `U32` state of our tuple `@Count (_, final)` and just return the record we have built.
+In our case, we don't need the `ID` count anymore and just return the record we have built.
 
-## Basic Counter
+## ID Counter
 
-Code for the above example is available in `BasicCounter.roc` which you can run using the following.
+Code for the above example is available in `IDCounter.roc` which you can run like this:
 
 ```sh
-% roc test BasicCounter.roc
+% roc test IDCounter.roc
 
 0 failed and 1 passed in 698 ms.
-```
-
-## Advanced Counter
-
-For a more advanced example, the `AdvancedCounter.roc` example demonstrates using the record builder pattern by passing an initial value for the counter, and also taking an argument to increment the counter by.
-
-```roc
-expect
-    { foo, bar, baz } =
-        from 0 {
-            foo: <- incBy 2,
-            bar: <- incBy 3,
-            baz: <- incBy 4,
-        } |> done
-
-    foo == 2 && bar == 5 && baz == 9
 ```
