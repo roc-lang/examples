@@ -5,7 +5,7 @@
 
 set timeout 7
 
-spawn ./roc_nightly/roc run ./examples/Json/main.roc
+spawn ./roc_nightly/roc run ./examples/Json/main.roc --linker=legacy
 
 
 expect "Successfully decoded image, title:\"View from 15th Floor\"\r\n" {
