@@ -47,3 +47,5 @@ expect ci_scripts/expect_scripts/TowersOfHanoi.exp
 
 $roc build ./examples/TaskUsage/main.roc
 expect ci_scripts/expect_scripts/TaskUsage.exp
+
+$roc test ./examples/RecordBuilder/IDCounter.roc
