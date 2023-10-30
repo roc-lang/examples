@@ -7,7 +7,7 @@ Website coming soon, until then check the [examples folder](https://github.com/r
 ## Running an example
 
 1. [Install Roc](https://github.com/roc-lang/roc/tree/main/getting_started#installation)
-2. For the json example: `roc run examples/Json/main.roc`
+2. For the FizzBuzz example: `roc examples/FizzBuzz/main.roc`
 
 ## Ideas and Improvements
 
