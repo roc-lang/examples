@@ -54,7 +54,7 @@ dfsHelper = \isTarget, stack, visited, graph ->
             Err NotFound
 
         [.., current] ->
-            rest = List.dropLast stack
+            rest = List.dropLast stack 1
 
             if isTarget current then
                 Ok current
@@ -102,7 +102,7 @@ bfsHelper = \isTarget, queue, seen, graph ->
             Err NotFound
 
         [current, ..] ->
-            rest = List.dropFirst queue
+            rest = List.dropFirst queue 1
 
             if isTarget current then
                 Ok current
