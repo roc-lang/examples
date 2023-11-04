@@ -19,10 +19,10 @@ view = \fileName, htmlContent ->
     html [lang "en"] [
         head [] [
             title [] [text "Roc Examples"],
-            meta [charset "utf-8"] [],
-            meta [name "viewport", content "width=device-width"] [],
-            link [rel "icon", href "/favicon.svg"] [],
-            link [rel "stylesheet", href "/styles.css"] [],
+            meta [charset "utf-8"],
+            meta [name "viewport", content "width=device-width"],
+            link [rel "icon", href "/favicon.svg"],
+            link [rel "stylesheet", href "/styles.css"],
             script [type "text/javascript", src "/copy-btn.js", defer ""] []
         ],
         body [] [
