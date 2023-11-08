@@ -7,7 +7,10 @@ name: Test examples on Ubuntu 20.04
 jobs:
   test-examples:
     name: test examples
-    runs-on: [ubuntu-20.04]
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      matrix:
+        operating-system: [ubuntu-20.04, ubuntu-22.04]
     timeout-minutes: 90
     steps:
       - uses: actions/checkout@v3
