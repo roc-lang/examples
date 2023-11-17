@@ -1,16 +1,17 @@
+# Hello, World!
 
-# Hello World 
-
-This is an example of [Hello World](https://en.wikipedia.org/wiki/%22Hello,_World!%22_program) using Roc's [basic-cli platform](https://github.com/roc-lang/basic-cli)
-
-## Output
-
-```
-% roc run main.roc
-Hello, World!
-```
+Printing [Hello World](https://en.wikipedia.org/wiki/%22Hello,_World!%22_program) to the command line using the [basic-cli platform](https://github.com/roc-lang/basic-cli):
 
 ## Code
 ```roc
 file:main.roc
+```
+
+## Output
+
+Run this from the directory that has `main.roc` in it:
+
+```
+$ roc run
+Hello, World!
 ```

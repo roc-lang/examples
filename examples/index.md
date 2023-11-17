@@ -1,12 +1,11 @@
+# Examples
 
-🌟 Up-to-date, roc-expert-approved answers for "How to X in roc"
+Here are some small examples of ways to do various things in Roc.
 
-## Examples
-
-- [Hello World](/HelloWorld/README.html)
+- [Hello, World!](/HelloWorld/README.html)
 - [FizzBuzz](/FizzBuzz/README.html)
 - [Pattern Matching](/PatternMatching/README.html)
-- [Task Usage](/TaskUsage/README.html)
+- [Tasks](/Tasks/README.html)
 - [Json](/Json/README.html)
 - [Random Numbers](/RandomNumbers/README.html)
 - [Tuples](/Tuples/README.html)
