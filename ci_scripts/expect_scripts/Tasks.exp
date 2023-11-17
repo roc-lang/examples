@@ -5,7 +5,7 @@
 
 set timeout 7
 
-spawn ./roc_nightly/roc run ./examples/TaskUsage/main.roc
+spawn ./roc_nightly/roc run ./examples/Tasks/main.roc
 
 expect "Bonjour Louis!\r\nSomething error!\r\nOoooops, another failure!\r\n" {
   expect eof

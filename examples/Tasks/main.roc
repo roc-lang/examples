@@ -7,7 +7,8 @@ app "task-usage"
     ]
     provides [main] to pf
 
-## A Task represents an effect; an interaction with state outside your Roc program, such as the terminal's standard output, or a file.
+## A Task represents an effect—an interaction with state outside your Roc program,
+## such as the terminal's standard output, or a file.
 
 ## A simple Task that always succeeds.
 ##
@@ -15,11 +16,11 @@ app "task-usage"
 ## and any errors that might happen when running it.
 ##
 ## The type `Task Str []` indicates that the success value of this task is
-## `Str` and it cannot fail, so the error type is empty. 
+## `Str` and it cannot fail, so the error type is empty.
 ##
-# TODO re-enable type definition (issue #72)
-# getName : Task.Task Str []
-getName = Task.ok "Louis"
+# TODO re-enable type definition once https://github.com/roc-lang/examples/issues/72 is fixed
+# getName : Task Str []
+getName = Task.ok "Sam"
 
 ## This task uses the `getName` task and combines the returned `Str` with the
 ## welcome message "Bonjour".
@@ -41,17 +42,17 @@ getName = Task.ok "Louis"
 ## The type of `Task.await` is `Task a err, (a -> Task b err) -> Task b err`.
 ## If we fill this in, we get: `Task Str [], (Str -> Task {} *) -> Task {} *`
 ## `Task.await` is used to create a new task with the success value of a given task.
-# TODO re-enable type definition (issue #72)
-# printName : Task.Task {} []
+# TODO re-enable type definition once https://github.com/roc-lang/examples/issues/72 is fixed
+# printName : Task {} []
 printName =
     getName
-    |> Task.map (\name -> "Bonjour \(name)!")
+    |> Task.map (\name -> "Bonjour, \(name)!")
     |> Task.await (\welcomeStr -> Stdout.line welcomeStr)
 
 ## This task is similar to `getName` but it always fails and returns the
 ## error tag `Oops`.
-# TODO re-enable type definition (issue #72)
-# alwaysFail : Task.Task {} [Oops]
+# TODO re-enable type definition once https://github.com/roc-lang/examples/issues/72 is fixed
+# alwaysFail : Task {} [Oops]
 alwaysFail = Task.err Oops
 
 ## Here we use `Task.onErr` to create a new task if the previous one failed.
@@ -64,20 +65,20 @@ alwaysFail = Task.err Oops
 ## With `Task.await` we create a new Task with the success value,
 ## and with `Task.onErr` we create a new Task with the failure value.
 ##
-# TODO re-enable type definition (issue #72)
-# printErrorMessage : Task.Task {} []
+# TODO re-enable type definition once https://github.com/roc-lang/examples/issues/72 is fixed
+# printErrorMessage : Task {} []
 printErrorMessage =
     alwaysFail
     |> Task.onErr \err ->
         when err is
-            Oops -> Stderr.line "Something error!"
+            Oops -> Stderr.line "An error happened!"
 
 ## This task will either fail or succeed depending on the Boolean value provided.
-## If we review the type annotation, we can see that if this task succeeds it will 
+## If we review the type annotation, we can see that if this task succeeds it will
 ## return a tag union with a single tag, `Success`. If it fails it may return
-## any one of three different tags. 
+## any one of three different tags.
 ##
-## Note we are only using the `AnotherFail` tag here.   
+## Note we are only using the `AnotherFail` tag here.
 canFail : Bool -> Task.Task [Success] [Failure, AnotherFail, YetAnotherFail]
 canFail = \shouldFail ->
     if shouldFail then
@@ -93,25 +94,22 @@ main =
     {} <- printErrorMessage |> Task.await
 
     # Here we know that the `canFail` task may fail, and so we can use
-    # `Task.attempt` to convert the task to a `Result` and use then pattern 
+    # `Task.attempt` to convert the task to a `Result` and use then pattern
     # matching to handle the succes and each of the possible failure cases.
     result <- canFail Bool.true |> Task.attempt
+
     when result is
         Ok Success ->
             Stdout.line "Success!"
 
         Err Failure ->
-            {} <- Stdout.line "Oops, failed!" |> Task.await
-
+            {} <- Stderr.line "Oops, failed!" |> Task.await
             Task.err 1 # 1 is an exit code to indicate failure
 
         Err AnotherFail ->
-            {} <- Stdout.line "Ooooops, another failure!" |> Task.await
-
+            {} <- Stderr.line "Oops, another failure!" |> Task.await
             Task.err 1
 
         Err YetAnotherFail ->
-            {} <- Stdout.line "Really big oooooops, yet again!" |> Task.await
-
+            {} <- Stderr.line "Really big oooooops, yet again!" |> Task.await
             Task.err 1
-
