@@ -9,6 +9,8 @@ file:PatternMatching.roc
 
 ## Output
 
+Run this from the directory that has `PatternMatching.roc` in it:
+
 ```
 $ roc test PatternMatching.roc
 

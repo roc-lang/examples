@@ -2,7 +2,7 @@ app "towers-of-hanoi"
     packages { pf: "https://github.com/roc-lang/basic-cli/releases/download/0.5.0/Cufzl36_SnJ4QbOoEmiJ5dIpUxBvdB3NEySvuH82Wio.tar.br" }
     imports [
         pf.Stdout,
-        pf.Task.{ await },
+        pf.Task,
         pf.Arg,
         Hanoi,
     ]
@@ -12,7 +12,7 @@ TaskErrors : [InvalidArg, InvalidNumStr]
 
 main =
     task =
-        args <- readArgs |> await
+        args <- readArgs |> Task.await
 
         {
             numDisks: args.numDisks,
@@ -36,7 +36,7 @@ main =
             {} <- Stdout.line "Error: Please provide the number of disks as an argument." |> Task.await
 
             Task.err 1 # 1 is an exit code to indicate failure
-        
+
         Err InvalidNumStr ->
             {} <- Stdout.line "Error: Invalid number format. Please provide a positive integer." |> Task.await
 
@@ -46,7 +46,7 @@ readArgs : Task.Task { numDisks : U32 } TaskErrors
 readArgs =
     Arg.list
     |> Task.mapErr \_ -> InvalidArg
-    |> await \args ->
+    |> Task.await \args ->
         numDisksResult = List.get args 1 |> Result.try Str.toU32
 
         when numDisksResult is
@@ -57,4 +57,3 @@ readArgs =
                     Task.ok { numDisks }
 
             _ -> Task.err InvalidNumStr
-

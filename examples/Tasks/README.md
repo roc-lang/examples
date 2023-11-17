@@ -9,8 +9,10 @@ file:main.roc
 
 ## Output
 
+Run this from the directory that has `main.roc` in it:
+
 ```
-$ roc run main.roc
+$ roc run
 Bonjour, Sam!
 An error happend!
 Oops, another failure!

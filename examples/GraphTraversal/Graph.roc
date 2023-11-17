@@ -12,7 +12,7 @@ interface Graph
     ]
     imports []
 
-## Graph type representing a graph as a dictionary of adjacency lists
+## Graph type representing a graph as a dictionary of adjacency lists,
 ## where each key is a vertex and each value is a list of its adjacent vertices.
 Graph a := Dict a (List a) where a implements Eq
 

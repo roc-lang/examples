@@ -1,22 +1,23 @@
+# Random Numbers
 
-# Random Numbers 
-
-This is example uses the [JanCVanB/roc-random](https://github.com/JanCVanB/roc-random) package and Roc's [basic-cli platform](https://github.com/roc-lang/basic-cli) to generate a list of random numbers.
+Generate a list of random numbers using the [roc-random package](https://github.com/JanCVanB/roc-random) and the [basic-cli platform](https://github.com/roc-lang/basic-cli).
 
 ## Random `Generators`
 
-Working with random numbers in Roc may seem unfamiliar if you are coming from another language. This is because, most languages provide a function like `Math.random()` to produce random numbers. However, functions in Roc provide the same output each time they are called with the same input. This makes Roc reliable and easy to test, however it also means we have to do things differently to work with random numbers.
+Some languages provide a function like JavaScript’s `Math.random()` which can return a different number each time you call it. However, functions in Roc are guaranteed to return the same answer when given the same arguments, so something like `Math.random` couldn’t possibly be a valid Roc function! As such, we use a different approach to generate random numbers in Roc.
 
-To get random numbers in Roc we first need a `Generator` which provides pseudorandom numbers. This generates numbers using the PCG algorithm which is fast and provides numbers which are [statistically random](https://en.wikipedia.org/wiki/Statistical_randomness). To do this, the `Generator` requires a `seed` value which provides the initial "randomness" for the algorithm, and each time a new value is generated. Note that if the same seed value is provided then the same number sequence will be generated each and every time.
-
-## Output
-
-```
-% roc run examples/RandomNumbers/main.roc
-Random numbers are: 29,30,71,64,48,33,55,68,53,28
-```
+This example uses a `Generator` which generates pseudorandom numbers using an initial seed value and the [PCG algorithm](https://www.pcg-random.org/). Note that if the same seed is provided, then the same number sequence will be generated every time! The appearance of randomness comes entirely from deterministic math being done on that initial seed. (The same is true of `Math.random()`, except that `Math.random()` silently chooses a seed for you at runtime.)
 
 ## Code
 ```roc
 file:main.roc
+```
+
+## Output
+
+Run this from the directory that has `main.roc` in it:
+
+```
+$ roc run
+Random numbers are: 29,30,71,64,48,33,55,68,53,28
 ```
