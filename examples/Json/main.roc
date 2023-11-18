@@ -14,6 +14,10 @@ app "json-basic"
 main =
     requestBody = Str.toUtf8 "{\"Image\":{\"Animated\":false,\"Height\":600,\"Ids\":[116,943,234,38793],\"Thumbnail\":{\"Height\":125,\"Url\":\"http:\\/\\/www.example.com\\/image\\/481989943\",\"Width\":100},\"Title\":\"View from 15th Floor\",\"Width\":800}}"
 
+    # This { fieldNameMapping: PascalCase } setting translates
+    # incoming JSON fields from PascalCase (first letter capitalized)
+    # to camelCase (first letter uncapitalized), which is what
+    # Roc field names always use.
     decoder = jsonWithOptions { fieldNameMapping: PascalCase }
 
     decoded : DecodeResult ImageRequest
@@ -22,7 +26,7 @@ main =
     when decoded.result is
         Ok record ->
             Stdout.line "Successfully decoded image, title:\"\(record.image.title)\""
-        
+
         Err _ ->
             {} <- Stdout.line "Error, failed to decode image" |> Task.await
 

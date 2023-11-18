@@ -1,8 +1,6 @@
 app "fizz-buzz"
     packages { pf: "https://github.com/roc-lang/basic-cli/releases/download/0.5.0/Cufzl36_SnJ4QbOoEmiJ5dIpUxBvdB3NEySvuH82Wio.tar.br" }
-    imports [
-        pf.Stdout,
-    ]
+    imports [pf.Stdout]
     provides [main] to pf
 
 main =
@@ -11,9 +9,10 @@ main =
     |> Str.joinWith ","
     |> Stdout.line
 
-## Determine the FizzBuzz value for a given integer. Returns "Fizz" for multiples
-## of 3, "Buzz" for multiples of 5, "FizzBuzz" for multiples of both 3 and 5,
-## and the original number as a string for all other values.
+## Determine the FizzBuzz value for a given integer.
+## Returns "Fizz" for multiples of 3, "Buzz" for
+## multiples of 5, "FizzBuzz" for multiples of both
+## 3 and 5, and the original number for anything else.
 fizzBuzz : I32 -> Str
 fizzBuzz = \n ->
     fizz = n % 3 == 0

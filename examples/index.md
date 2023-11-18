@@ -1,20 +1,21 @@
+# Examples
 
-🌟 Up-to-date, roc-expert-approved answers for "How to X in roc"
+Here are some small examples of ways to do various things in Roc.
 
-## Examples
+You can find the source code for all of these at [github.com/roc-lang/examples](https://github.com/roc-lang/examples/)
 
-- [Hello World](/HelloWorld/README.html)
+- [Hello, World!](/HelloWorld/README.html)
 - [FizzBuzz](/FizzBuzz/README.html)
 - [Pattern Matching](/PatternMatching/README.html)
-- [Task Usage](/TaskUsage/README.html)
-- [Json](/Json/README.html)
+- [Tasks](/Tasks/README.html)
+- [JSON](/Json/README.html)
 - [Random Numbers](/RandomNumbers/README.html)
 - [Tuples](/Tuples/README.html)
-- [Command Line Args](/CommandLineArgs/README.html)
+- [CLI Args](/CommandLineArgs/README.html)
 - [Import Files](/IngestFiles/README.html)
 - [Graph Traversal](/GraphTraversal/README.html)
 - [Parser](/Parser/README.html)
 - [Arithmetic](/Arithmetic/README.html)
-- [Least Square Difference](/LeastSquares/README.html)
+- [Least Squares](/LeastSquares/README.html)
 - [Towers of Hanoi](/TowersOfHanoi/README.html)
 - [Record Builder](/RecordBuilder/README.html)

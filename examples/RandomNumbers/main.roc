@@ -12,7 +12,7 @@ app "random-numbers"
 # Print a list of 10 random numbers in the range 25-75 inclusive.
 main =
 
-    # Initialise "randomness"
+    # Initialize "randomness"
     initialSeed = Random.seed 42
 
     # Create a generator for values from 25-75 (inclusive)
@@ -30,11 +30,10 @@ main =
     Stdout.line "Random numbers are: \(numbersListStr)"
 
 # Generate a list of numbers using the seed and generator provided
-# WARNING: likely NOT cryptograhpically secure
+# This is NOT cryptograhpically secure!
 randomList = \initialSeed, generator ->
     List.range { start: At 0, end: Before 10 }
     |> List.walk { seed: initialSeed, numbers: [] } \state, _ ->
-
         # Use the generator to get a new seed and value
         random = generator state.seed
 

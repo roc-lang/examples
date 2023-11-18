@@ -2,7 +2,7 @@ app "arithmetic"
     packages { pf: "https://github.com/roc-lang/basic-cli/releases/download/0.5.0/Cufzl36_SnJ4QbOoEmiJ5dIpUxBvdB3NEySvuH82Wio.tar.br" }
     imports [
         pf.Stdout,
-        pf.Task.{ await },
+        pf.Task,
         pf.Arg,
     ]
     provides [main] to pf
@@ -11,7 +11,7 @@ TaskErrors : [InvalidArg, InvalidNumStr]
 
 main =
     task =
-        args <- readArgs |> await
+        args <- readArgs |> Task.await
 
         formatResult = \(operation, result) ->
             resultStr = Num.toStr result
@@ -59,7 +59,7 @@ readArgs : Task.Task { a : I32, b : I32 } TaskErrors
 readArgs =
     Arg.list
     |> Task.mapErr \_ -> InvalidArg
-    |> await \args ->
+    |> Task.await \args ->
         aResult = List.get args 1 |> Result.try Str.toI32
         bResult = List.get args 2 |> Result.try Str.toI32
 
