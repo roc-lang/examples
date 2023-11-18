@@ -2,6 +2,8 @@
 
 Here are some small examples of ways to do various things in Roc.
 
+You can find the source code for all of these at [github.com/roc-lang/examples](https://github.com/roc-lang/examples/)
+
 - [Hello, World!](/HelloWorld/README.html)
 - [FizzBuzz](/FizzBuzz/README.html)
 - [Pattern Matching](/PatternMatching/README.html)
