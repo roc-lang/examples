@@ -1,54 +1,46 @@
 app "parser-basic"
     packages {
         cli: "https://github.com/roc-lang/basic-cli/releases/download/0.5.0/Cufzl36_SnJ4QbOoEmiJ5dIpUxBvdB3NEySvuH82Wio.tar.br",
-        parser: "./package/main.roc",
+        parser: "https://github.com/lukewilliamboswell/roc-parser/releases/download/0.2.0/dJQSsSmorujhiPNIvJKlQoI92RFIG_JQwUfIxZsCSwE.tar.br",
     }
     imports [
         cli.Stdout,
-        parser.ParserCore.{ Parser, buildPrimitiveParser, many },
-        parser.ParserStr.{ parseStr },
+        parser.Core.{ Parser, many, oneOf, map },
+        parser.String.{ parseStr, codeunit, anyCodeunit },
     ]
     provides [main] to cli
 
 main =
     many letterParser
     |> parseStr inputStr
-    |> Result.onErr \_ -> crash "Ooops, something went wrong parsing"
     |> Result.map countLetterAs
     |> Result.map \count -> "I counted \(count) letter A's!"
-    |> Result.withDefault ""
+    |> Result.withDefault "Ooops, something went wrong parsing"
     |> Stdout.line
 
 Letter : [A, B, C, Other]
 
 inputStr = "AAAiBByAABBwBtCCCiAyArBBx"
 
-# Helper to check if a letter is an A tag 
+# Helper to check if a letter is an A tag
 isA = \l -> l == A
 
 # Count the number of Letter A's
 countLetterAs : List Letter -> Str
-countLetterAs = \letters -> 
+countLetterAs = \letters ->
     letters
-    |> List.keepIf isA
-    |> List.map \_ -> 1
-    |> List.sum
+    |> List.countIf isA
     |> Num.toStr
 
-# Build a custom parser to convert utf8 input into Letter tags
+# Parser to convert utf8 input into Letter tags
 letterParser : Parser (List U8) Letter
 letterParser =
-    input <- buildPrimitiveParser
-
-    valResult = when input is
-        [] -> Err (ParsingFailure "Nothing to parse")
-        ['A', ..] -> Ok A
-        ['B', ..] -> Ok B
-        ['C', ..] -> Ok C
-        _ -> Ok Other
-
-    valResult
-    |> Result.map \val -> { val, input: List.dropFirst input 1 }
+    oneOf [
+        codeunit 'A' |> map \_ -> A,
+        codeunit 'B' |> map \_ -> B,
+        codeunit 'C' |> map \_ -> C,
+        anyCodeunit |> map \_ -> Other,
+    ]
 
 # Test we can parse a single B letter
 expect
