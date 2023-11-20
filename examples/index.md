@@ -19,3 +19,7 @@ You can find the source code for all of these at [github.com/roc-lang/examples](
 - [Least Squares](/LeastSquares/README.html)
 - [Towers of Hanoi](/TowersOfHanoi/README.html)
 - [Record Builder](/RecordBuilder/README.html)
+
+## External examples
+
+- [Interpreter for stack based language](https://github.com/isaacvando/gob)
