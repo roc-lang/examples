@@ -1,14 +1,20 @@
 # Parser
 
-A custom [parser](https://www.techopedia.com/definition/3854/parser) for counting certain letters.
-
-## Platform:
-[roc-lang/basic-cli 0.3.2](https://github.com/roc-lang/basic-cli/tree/0.3.2)
-
-## Packages:
-- [Parser (requires manual download)](https://github.com/roc-lang/roc/tree/main/examples/parser/package)
+A custom [parser](https://www.techopedia.com/definition/3854/parser) for counting certain letters, implemented with the [roc-parser](https://github.com/lukewilliamboswell/roc-parser) package.
 
 ## Code
+
 ```roc
 file:main.roc
 ```
+
+## Output
+
+Run this from the directory that has `main.roc` in it:
+
+```
+$ roc run
+I counted 7 letter A's!
+```
+
+Run unit tests with `roc test main.roc`
