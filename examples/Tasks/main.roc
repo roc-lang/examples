@@ -1,6 +1,6 @@
 app "task-usage"
     packages { 
-        pf: "https://github.com/roc-lang/basic-cli/releases/download/0.5.0/Cufzl36_SnJ4QbOoEmiJ5dIpUxBvdB3NEySvuH82Wio.tar.br",
+        pf: "https://github.com/roc-lang/basic-cli/releases/download/0.6.1/LFXCmL8ahcPM6oFkV9gcZwthvHFxF1OS_vz92lQYrI4.tar.br",
         colors: "https://github.com/lukewilliamboswell/roc-ansi-escapes/releases/download/0.1.1/cPHdNPNh8bjOrlOgfSaGBJDz6VleQwsPdW0LJK6dbGQ.tar.br",
     }
     imports [ pf.Stdout, pf.Stderr, pf.Arg, pf.Env, pf.Http, pf.Dir, pf.Utc, pf.File, pf.Path.{ Path }, pf.Task.{ Task }, colors.Color ]
@@ -22,7 +22,7 @@ Error : [
 
 handleErr : Error -> Task {} *
 handleErr = \err ->
-    usage = "DEBUG=1 roc main.roc -- \"http://roc-lang.org\" roc.html"
+    usage = "DEBUG=1 roc main.roc -- \"https://www.roc-lang.org\" roc.html"
     msg = when err is
         UnableToReadArgs -> "Unable to read command line arguments, usage: \(usage)"
         UnableToFetchHtml httpErr -> "Unable to fetch URL \(httpErr), usage: \(usage)"
@@ -66,10 +66,6 @@ run =
         listCwd 
         |> Task.map \paths -> paths |> List.map Path.display |> Str.joinWith ","
         |> Task.await \files -> printDebug debug "Files in current directory: \(files)"
-        |> Task.onErr \_ -> 
-            # TODO remove once https://github.com/roc-lang/basic-cli/pull/136 is released
-            # `Dir.list` is currently unimplemented, ignore errors for now 
-            Task.ok {} 
         |> Task.await 
     
     # Read UTC epoch
@@ -111,6 +107,6 @@ fetchHtml = \url ->
 
 listCwd : Task (List Path) [UnableToReadCwd]_
 listCwd = 
-    Path.fromStr ""
+    Path.fromStr "."
     |> Dir.list
     |> Task.onErr \_ -> Task.err UnableToReadCwd
