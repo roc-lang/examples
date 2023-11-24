@@ -1,5 +1,5 @@
 app "generate-build"
-    packages { pf: "../roc/examples/static-site-gen/platform/main.roc" }
+    packages { pf: "/home/runner/work/examples/examples/roc_nightly/examples/static-site-gen/platform/main.roc" }
     imports [
         pf.Html.{ html, main, p, footer, script, head, body, div, text, link, meta, title },
         pf.Html.Attributes.{ name, src, content, href, rel, lang, class, charset, type },
