@@ -1,15 +1,23 @@
-build
+
+# local dev website files
+dist
+main
+
+# generated docs
 generate-build
-example
-examples/Arithmetic/arithmetic
-examples/IngestFiles/ingested-file
-examples/FizzBuzz/fizz-buzz
-examples/HelloWorld/hello-world
-examples/Json/json-basic
-examples/Parser/parser-basic
-examples/RandomNumbers/random-numbers
-examples/TowersOfHanoi/towers-of-hanoi
-examples/CommandLineArgs/command-line-args
-examples/Tasks/task-usage
-examples/Tuples/tuples-example
+
+# example binaries
+examples/Arithmetic/main
+examples/IngestFiles/main
+examples/FizzBuzz/main
+examples/HelloWorld/main
+examples/Json/main
+examples/Parser/main
+examples/RandomNumbers/main
+examples/CommandLineArgs/main
+examples/Tasks/main
+examples/Tuples/main
 roc_nightly/
+
+# macOS directory attributes
+.DS_Store
