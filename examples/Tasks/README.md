@@ -14,13 +14,13 @@ file:main.roc
 
 ## `Task` Explanation
 
-These explanations are in the order they appears in the example, and focus on how `Task` is used in different ways to achieve the required outcome.
+These explanations are in the order they appear in the example and focus on how `Task` is used in different ways to achieve the required outcome.
 
 ### Platform Main and Error Handling
 
 The [roc-lang/basic-cli](https://github.com/roc-lang/basic-cli) platform requires an application to provide a `main : Task {} *`. This task usually represents a sequence or combination of `Tasks`, and will resolve to an empty record.
 
-The `main` task is run by the platform when the application is executed. It cannot fail, and therefore returns the wildcard `*` type.
+The `main` task is run by the platform when the application is executed. It cannot fail and therefore returns the wildcard `*` type.
 
 **Aside** it may seem confusing that a `*` in the return position tells us that this task cannot fail. However, one way to think about this, is that it is impossible to write a function that can return *any* type, therefore this task must always succeed.
 
@@ -37,7 +37,7 @@ run : Task {} Error
 
 The `run : Task {} Error` task resolves to a success value of an empty record, and if it fails, returns with an application `Error`.  
 
-This simplifies error handling so that a single `handleErr` function can be used to handle all the application `Error` values that could possibly occur.
+This simplifies error handling so that a single `handleErr` function can be used to handle all the application `Error` values that could occur.
 
 ### Read Coordinated Universal Time (UTC) epoch
 
@@ -49,7 +49,7 @@ start <- Utc.now |> Task.await
 
 ### Read an environment variable
 
-The `readDbgEnv` function takes a `Str` argument for environment variable, it cannot fail, and so will resolves to either a `DebugSet` or `DebugNotSet` value.
+The `readDbgEnv` function takes a `Str` argument for the required environment variable, and resolves to either a `DebugSet` or `DebugNotSet` tag.
 
 ```roc
 debug <- readDbgEnv "DEBUG" |> Task.await
@@ -61,7 +61,7 @@ readDbgEnv : Str -> Task [DebugSet, DebugNotSet] *
 
 ### Debug print to stdout
 
-The `printDebug` function takes a tag, either `DebugSet` or `DebugNotSet`, and a message `Str`. It returns a `Task` which will resolve to an empty record, and cannot fail.
+The `printDebug` function takes a tag, either `DebugSet` or `DebugNotSet`, and a message `Str`. It returns a `Task` which resolves to an empty record and cannot fail.
 
 ```roc
 {} <- printDebug debug "DEBUG variable set to verbose" |> Task.await
@@ -73,7 +73,7 @@ printDebug : [DebugSet, DebugNotSet], Str -> Task {} *
 
 ### Read command line arguments
 
-The `readUrlArg` function returns a `Task` which resolves to a record `{ url: Str, path: Path }`, or fails with an `UnableToReadArgs` tag.
+The `readUrlArg` task resolves to a record `{ url: Str, path: Path }`, or fails with an `UnableToReadArgs` tag.
 
 ```roc
 {url, path} <- readUrlArg |> Task.await
@@ -85,7 +85,7 @@ readUrlArg : Task { url: Str, path: Path } [UnableToReadArgs]_
 
 ### Fetch a website using HTTP
 
-The `fetchHtml` function takes a `Str` argument for the URL to fetch, and returns a `Task` which will resolve to the content `Str` of the website, or fails with an `UnableToFetchHtml` tag.
+The `fetchHtml` function takes a `Str` argument for the URL and returns a `Task` which resolves to the content `Str` of the website or fails with an `UnableToFetchHtml` tag.
 
 ```roc
 content <- fetchHtml url |> Task.await
@@ -97,7 +97,7 @@ fetchHtml : Str -> Task Str [UnableToFetchHtml Str]_
 
 ### Write to a file
 
-The `File.writeUtf8` function returns a `Task` which will resolves to an empty record if the `contents` are sucessfuly written to the `path`, or it will fail with a `FileWriteErr` tag. Using `Task.onErr` this error is translated into an `UnableToWriteFile` tag.
+The `File.writeUtf8` task resolves to an empty record if the `contents` are sucessfully written to the `path`, or it fails with a `FileWriteErr` tag. Using `Task.onErr` any error value is transformed into an `UnableToWriteFile` tag.
 
 ```roc
 {} <- 
@@ -108,7 +108,7 @@ The `File.writeUtf8` function returns a `Task` which will resolves to an empty r
 
 ### List the contents of a directory
 
-The `listCwd` function returns a `Task` which resolves to a `List Path` with the contents of the current directory, or it fails with an `UnableToReadCwd` tag. These `paths` are then mapped to `Str` vlues, joined with a comma separator, and printed to stdout.  
+The `listCwd` task resolves to a `List Path` with the contents of the current directory, or fails with an `UnableToReadCwd` tag. The `paths` are then mapped to `Str` values, joined with a comma separator, and optionally printed to stdout.  
 
 ```roc
 {} <- 
