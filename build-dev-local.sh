@@ -12,6 +12,10 @@ rm -rf dist/
 
 roc run main.roc -- examples/ dist/
 
+wget "https://www.roc-lang.org/site.js" -P dist/
+wget "https://www.roc-lang.org/favicon.svg" -P dist/
+wget "https://www.roc-lang.org/site.css" -P dist/
+
 cp -r www/* dist/
 
 npx http-server dist/ -p 8080 -c-1 --cors
