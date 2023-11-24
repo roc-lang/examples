@@ -28,7 +28,7 @@ The `main` task is run by the platform when the application is executed. It cann
 main : Task {} *
 main = run |> Task.onErr handleErr
 
-# Error : [ UnableToReadArgs, UnableToReadDbgEnv Str, ... ]
+# Error : [ UnableToReadArgs, UnableToFetchHtml Str, ... ]
 
 handleErr : Error -> Task {} *
 
