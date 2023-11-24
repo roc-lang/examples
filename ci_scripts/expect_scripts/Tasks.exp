@@ -5,7 +5,7 @@
 
 set timeout 7
 
-spawn ./roc_nightly/roc run ./examples/Tasks/main.roc -- "http://roc-lang.org" roc.html
+spawn ./roc_nightly/roc run ./examples/Tasks/main.roc -- "https://www.roc-lang.org" roc.html
 
 expect "Completed\r\n" {
   expect eof
