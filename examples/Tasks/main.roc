@@ -4,14 +4,17 @@ app "task-usage"
         colors: "https://github.com/lukewilliamboswell/roc-ansi-escapes/releases/download/0.1.1/cPHdNPNh8bjOrlOgfSaGBJDz6VleQwsPdW0LJK6dbGQ.tar.br",
     }
     imports [ pf.Stdout, pf.Stderr, pf.Arg, pf.Env, pf.Http, pf.Dir, pf.Utc, pf.File, pf.Path.{ Path }, pf.Task.{ Task }, colors.Color ]
-    provides [main] to pf
+    provides [ main ] to pf
+
+# NOTE in future there will be no requirement for a trailing underscore `_` character 
+# for the Task error tag union. This is a temporary workaround until [this issue](https://github.com/roc-lang/roc/issues/5660) 
+# is resolved.
 
 main : Task {} *
 main = run |> Task.onErr handleErr
 
 Error : [
     UnableToReadArgs,
-    UnableToReadDbgEnv Str,
     UnableToFetchHtml Str,
     UnableToWriteFile Path,
     UnableToReadCwd,
@@ -22,7 +25,6 @@ handleErr = \err ->
     usage = "DEBUG=1 roc main.roc -- \"http://roc-lang.org\" roc.html"
     msg = when err is
         UnableToReadArgs -> "Unable to read command line arguments, usage: \(usage)"
-        UnableToReadDbgEnv env -> "Unable to read environment variable \(env), usage: \(usage)"
         UnableToFetchHtml httpErr -> "Unable to fetch URL \(httpErr), usage: \(usage)"
         UnableToWriteFile path -> "Unable to write file \(Path.display path), usage: \(usage)"
         UnableToReadCwd -> "Unable to read current working directory, usage: \(usage)"
@@ -42,7 +44,7 @@ run =
     {} <- printDebug debug "DEBUG variable set to verbose" |> Task.await
     
     # Read command line arguments
-    {url, path} <- readUrlArg |> Task.await
+    { url, path } <- readUrlArg |> Task.await
 
     # Debug print to stdout
     {} <- printDebug debug "Fetching content from \(url)..." |> Task.await
@@ -79,15 +81,15 @@ run =
         DebugSet -> printDebug debug "Completed in \(duration)ms"
         DebugNotSet -> Stdout.line "Completed"
 
-readUrlArg : Task {url: Str, path: Path} Error
+readUrlArg : Task { url: Str, path: Path } [UnableToReadArgs]_
 readUrlArg =
     args <- Arg.list |> Task.attempt
     
     when args is
-        Ok ([_, first, second, ..]) -> Task.ok { url: first, path: Path.fromStr second}
+        Ok ([ _, first, second, .. ]) -> Task.ok { url: first, path: Path.fromStr second }
         _ -> Task.err UnableToReadArgs
 
-readDbgEnv : Str -> Task [DebugSet, DebugNotSet] Error
+readDbgEnv : Str -> Task [DebugSet, DebugNotSet] *
 readDbgEnv = \var ->
     result <- Env.var var |> Task.attempt
 
@@ -95,19 +97,19 @@ readDbgEnv = \var ->
         Ok value if !(Str.isEmpty value) -> Task.ok DebugSet
         _ -> Task.ok DebugNotSet
 
-printDebug : [DebugSet, DebugNotSet], Str -> Task {} Error
+printDebug : [DebugSet, DebugNotSet], Str -> Task {} *
 printDebug = \debug, msg ->
     when debug is
         DebugSet -> [ Color.fg "INFO:" Green, msg ] |> Str.joinWith " " |> Stdout.line
         DebugNotSet -> Task.ok {}
 
-fetchHtml : Str -> Task Str Error
+fetchHtml : Str -> Task Str [UnableToFetchHtml Str]_
 fetchHtml = \url ->
     { Http.defaultRequest & url } 
     |> Http.send 
     |> Task.onErr \err -> Task.err (UnableToFetchHtml (Http.errorToString err)) 
 
-listCwd : Task (List Path) Error
+listCwd : Task (List Path) [UnableToReadCwd]_
 listCwd = 
     Path.fromStr ""
     |> Dir.list

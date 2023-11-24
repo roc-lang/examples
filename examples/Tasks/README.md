@@ -14,11 +14,15 @@ file:main.roc
 
 ## `Task` Explanation
 
-These explanations are in the order that the code appears in the example, and should describe how `Task` is being used in this part of the example.
+These explanations are in the order they appears in the example, and focus on how `Task` is used in different ways to achieve the required outcome.
 
 ### Platform Main and Error Handling
 
-The [roc-lang/basic-cli](https://github.com/roc-lang/basic-cli) platform expects the application to provide a `main` function which performs various tasks in sequence and finally resolves to a `Task {} *` value. This is the main task that is ran by the platform when the application is executed.
+The [roc-lang/basic-cli](https://github.com/roc-lang/basic-cli) platform requires an application to provide a `main : Task {} *`. This task usually represents a sequence or combination of `Tasks`, and will resolve to an empty record.
+
+The `main` task is run by the platform when the application is executed. It cannot fail, and therefore returns the wildcard `*` type.
+
+**Aside** it may seem confusing that a `*` in the return position tells us that this task cannot fail. However, one way to think about this, is that it is impossible to write a function that can return *any* type, therefore this task must always succeed.
 
 ```roc
 main : Task {} *
@@ -31,46 +35,69 @@ handleErr : Error -> Task {} *
 run : Task {} Error
 ```
 
-The `run` function provides a `Task {} Error` which resolves to a success value of an empty record, and if any of the tasks in the sequence fail, it returns an application `Error`.  
+The `run : Task {} Error` task resolves to a success value of an empty record, and if it fails, returns with an application `Error`.  
 
-This simplifies error handling by enabling all of the application errors to be handled using a single function `handleErr`.
+This simplifies error handling so that a single `handleErr` function can be used to handle all the application `Error` values that could possibly occur.
 
 ### Read Coordinated Universal Time (UTC) epoch
 
-The `Utc.now : Task Utc *` function returns a `Task` which will resolves with the current epoch time. It cannot fail and so returns a wildcard `*` type. 
-
-**Aside** it may seem confusing that a `*` in the return position tells us that this task cannot fail. However, one way to think about this, is that it is impossible to write a function that can return *any* type, therefore this task must always succeed.
+The `Utc.now : Task Utc *` task resolves with the current `Utc` epoch time. We can simply use `Task.await` and bind the value to a variable using backpassing syntax, as we know that this task cannot fail. 
 
 ```roc
-# Read UTC epoch
 start <- Utc.now |> Task.await
 ```
 
 ### Read an environment variable
 
+The `readDbgEnv` function takes a `Str` argument for environment variable, it cannot fail, and so will resolves to either a `DebugSet` or `DebugNotSet` value.
+
 ```roc
 debug <- readDbgEnv "DEBUG" |> Task.await
+
+# …
+
+readDbgEnv : Str -> Task [DebugSet, DebugNotSet] *
 ```
 
 ### Debug print to stdout
 
+The `printDebug` function takes a tag, either `DebugSet` or `DebugNotSet`, and a message `Str`. It returns a `Task` which will resolve to an empty record, and cannot fail.
+
 ```roc
 {} <- printDebug debug "DEBUG variable set to verbose" |> Task.await
+
+# …
+
+printDebug : [DebugSet, DebugNotSet], Str -> Task {} *
 ```
 
 ### Read command line arguments
 
+The `readUrlArg` function returns a `Task` which resolves to a record `{ url: Str, path: Path }`, or fails with an `UnableToReadArgs` tag.
+
 ```roc
 {url, path} <- readUrlArg |> Task.await
+
+# …
+
+readUrlArg : Task { url: Str, path: Path } [UnableToReadArgs]_
 ```
 
 ### Fetch a website using HTTP
 
+The `fetchHtml` function takes a `Str` argument for the URL to fetch, and returns a `Task` which will resolve to the content `Str` of the website, or fails with an `UnableToFetchHtml` tag.
+
 ```roc
 content <- fetchHtml url |> Task.await
+
+# …
+
+fetchHtml : Str -> Task Str [UnableToFetchHtml Str]_
 ```
 
 ### Write to a file
+
+The `File.writeUtf8` function returns a `Task` which will resolves to an empty record if the `contents` are sucessfuly written to the `path`, or it will fail with a `FileWriteErr` tag. Using `Task.onErr` this error is translated into an `UnableToWriteFile` tag.
 
 ```roc
 {} <- 
@@ -81,12 +108,18 @@ content <- fetchHtml url |> Task.await
 
 ### List the contents of a directory
 
+The `listCwd` function returns a `Task` which resolves to a `List Path` with the contents of the current directory, or it fails with an `UnableToReadCwd` tag. These `paths` are then mapped to `Str` vlues, joined with a comma separator, and printed to stdout.  
+
 ```roc
 {} <- 
     listCwd 
     |> Task.map \paths -> paths |> List.map Path.display |> Str.joinWith ","
     |> Task.await \files -> printDebug debug "Files in current directory: \(files)"
-    |> Task.await 
+    |> Task.await
+
+# …
+
+listCwd : Task (List Path) [UnableToReadCwd]_
 ```
 
 ## Output
