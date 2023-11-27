@@ -1,112 +1,114 @@
 app "task-usage"
     packages { 
-        pf: "https://github.com/roc-lang/basic-cli/releases/download/0.6.1/LFXCmL8ahcPM6oFkV9gcZwthvHFxF1OS_vz92lQYrI4.tar.br",
-        colors: "https://github.com/lukewilliamboswell/roc-ansi-escapes/releases/download/0.1.1/cPHdNPNh8bjOrlOgfSaGBJDz6VleQwsPdW0LJK6dbGQ.tar.br",
+        pf: "https://github.com/roc-lang/basic-cli/releases/download/0.6.2/c7T4Hp8bAdWz3r9ZrhboBzibCjJag8d0IP_ljb42yVc.tar.br"
     }
-    imports [ pf.Stdout, pf.Stderr, pf.Arg, pf.Env, pf.Http, pf.Dir, pf.Utc, pf.File, pf.Path.{ Path }, pf.Task.{ Task }, colors.Color ]
+    imports [ pf.Stdout, pf.Stderr, pf.Arg, pf.Env, pf.Http, pf.Dir, pf.Utc, pf.File, pf.Path.{ Path }, pf.Task.{ Task } ]
     provides [ main ] to pf
-
-# NOTE in future there will be no requirement for a trailing underscore `_` character 
-# for the Task error tag union. This is a temporary workaround until [this issue](https://github.com/roc-lang/roc/issues/5660) 
-# is resolved.
-
-main : Task {} *
-main = run |> Task.onErr handleErr
-
-Error : [
-    UnableToReadArgs,
-    UnableToFetchHtml Str,
-    UnableToWriteFile Path,
-    UnableToReadCwd,
-]
-
-handleErr : Error -> Task {} *
-handleErr = \err ->
-    usage = "DEBUG=1 roc main.roc -- \"https://www.roc-lang.org\" roc.html"
-    msg = when err is
-        UnableToReadArgs -> "Unable to read command line arguments, usage: \(usage)"
-        UnableToFetchHtml httpErr -> "Unable to fetch URL \(httpErr), usage: \(usage)"
-        UnableToWriteFile path -> "Unable to write file \(Path.display path), usage: \(usage)"
-        UnableToReadCwd -> "Unable to read current working directory, usage: \(usage)"
-
-    [ Color.fg "ERROR:" Red, msg ] |> Str.joinWith " " |> Stderr.line
 
 run : Task {} Error
 run =
 
-    # Read UTC epoch
-    start <- Utc.now |> Task.await
+    # Get time since [Unix Epoch](https://en.wikipedia.org/wiki/Unix_time)
+    startTime <- Utc.now |> Task.await
 
-    # Read an environment variable
-    debug <- readDbgEnv "DEBUG" |> Task.await
+    # Read the HELLO environment variable
+    helloEnvVar <- readEnvVar "HELLO" |> Task.await
 
-    # Debug print to stdout
-    {} <- printDebug debug "DEBUG variable set to verbose" |> Task.await
+    {} <- Stdout.line "HELLO env var was set to \(helloEnvVar)" |> Task.await
     
     # Read command line arguments
-    { url, path } <- readUrlArg |> Task.await
+    { url, outputPath } <- readArgs |> Task.await
 
-    # Debug print to stdout
-    {} <- printDebug debug "Fetching content from \(url)..." |> Task.await
+    {} <- Stdout.line "Fetching content from \(url)..." |> Task.await
     
-    # Fetch a website using HTTP
-    content <- fetchHtml url |> Task.await
+    # Fetch the provided url using HTTP
+    strHTML <- fetchHtml url |> Task.await
 
-    # Debug print to stdout
-    {} <- printDebug debug "Saving content to \(Path.display path)..." |> Task.await
+    {} <- Stdout.line "Saving url HTML to \(Path.display outputPath)..." |> Task.await
 
-    # Write to a file
+    # Write HTML string to a file
     {} <- 
-        File.writeUtf8 path content 
-        |> Task.onErr \_ -> Task.err (UnableToWriteFile path)
-        |> Task.await
+       File.writeUtf8 outputPath strHTML
+       |> Task.onErr \_ -> Task.err (FailedToWriteFile outputPath)
+       |> Task.await
 
-    # List the contents of cwd directory
+    # Print contents of current working directory
     {} <- 
-        listCwd 
-        |> Task.map \paths -> paths |> List.map Path.display |> Str.joinWith ","
-        |> Task.await \files -> printDebug debug "Files in current directory: \(files)"
+        listCwdContent
+        |> Task.map \dirContents ->
+            List.map dirContents Path.display
+            |> Str.joinWith ","
+
+        |> Task.await \contentsStr ->
+            Stdout.line "Contents of current directory: \(contentsStr)"
+
         |> Task.await 
     
-    # Read UTC epoch
-    end <- Utc.now |> Task.await
-    duration = start |> Utc.deltaAsMillis end |> Num.toStr
+    endTime <- Utc.now |> Task.await
+    runTime = Utc.deltaAsMillis startTime endTime |> Num.toStr
+
+    {} <- Stdout.line "Run time: \(runTime) ms" |> Task.await
 
     # Final task doesn't need to be awaited
-    when debug is
-        DebugSet -> printDebug debug "Completed in \(duration)ms"
-        DebugNotSet -> Stdout.line "Completed"
+    Stdout.line "Done"
 
-readUrlArg : Task { url: Str, path: Path } [UnableToReadArgs]_
-readUrlArg =
+# NOTE in the future the trailing underscore `_` character will not be necessary.
+# This is a temporary workaround until [this issue](https://github.com/roc-lang/roc/issues/5660) 
+# is resolved.
+
+readArgs : Task { url: Str, outputPath: Path } [FailedToReadArgs]_
+readArgs =
     args <- Arg.list |> Task.attempt
     
     when args is
-        Ok ([ _, first, second, .. ]) -> Task.ok { url: first, path: Path.fromStr second }
-        _ -> Task.err UnableToReadArgs
+        Ok ([ _, first, second, .. ]) ->
+            Task.ok { url: first, outputPath: Path.fromStr second }
+        _ ->
+            Task.err FailedToReadArgs
 
-readDbgEnv : Str -> Task [DebugSet, DebugNotSet] *
-readDbgEnv = \var ->
-    result <- Env.var var |> Task.attempt
+readEnvVar : Str -> Task Str *
+readEnvVar = \envVarName ->
+    envVarResult <- Env.var envVarName |> Task.attempt
 
-    when result is
-        Ok value if !(Str.isEmpty value) -> Task.ok DebugSet
-        _ -> Task.ok DebugNotSet
+    when envVarResult is
+        Ok envVarStr if !(Str.isEmpty envVarStr) ->
+            Task.ok envVarStr
+        _ ->
+            Task.ok ""
 
-printDebug : [DebugSet, DebugNotSet], Str -> Task {} *
-printDebug = \debug, msg ->
-    when debug is
-        DebugSet -> [ Color.fg "INFO:" Green, msg ] |> Str.joinWith " " |> Stdout.line
-        DebugNotSet -> Task.ok {}
-
-fetchHtml : Str -> Task Str [UnableToFetchHtml Str]_
+fetchHtml : Str -> Task Str [FailedToFetchHtml Str]_
 fetchHtml = \url ->
     { Http.defaultRequest & url } 
     |> Http.send 
-    |> Task.onErr \err -> Task.err (UnableToFetchHtml (Http.errorToString err)) 
+    |> Task.onErr \err ->
+        Task.err (FailedToFetchHtml (Http.errorToString err)) 
 
-listCwd : Task (List Path) [UnableToReadCwd]_
-listCwd = 
+listCwdContent : Task (List Path) [FailedToListCwd]_
+listCwdContent = 
     Path.fromStr "."
     |> Dir.list
-    |> Task.onErr \_ -> Task.err UnableToReadCwd
+    |> Task.onErr \_ -> Task.err FailedToListCwd
+
+main : Task {} *
+main =
+    run
+    |> Task.onErr handleErr
+
+Error : [
+    FailedToReadArgs,
+    FailedToFetchHtml Str,
+    FailedToWriteFile Path,
+    FailedToListCwd,
+]
+
+handleErr : Error -> Task {} *
+handleErr = \err ->
+    usage = "HELLO=1 roc main.roc -- \"https://www.roc-lang.org\" roc.html"
+
+    errorMsg = when err is
+        FailedToReadArgs -> "Failed to read command line arguments, usage: \(usage)"
+        FailedToFetchHtml httpErr -> "Failed to fetch URL \(httpErr), usage: \(usage)"
+        FailedToWriteFile path -> "Failed to write to file \(Path.display path), usage: \(usage)"
+        FailedToListCwd -> "Failed to list contents of current directory, usage: \(usage)"
+
+    Stderr.line "Error: \(errorMsg)"

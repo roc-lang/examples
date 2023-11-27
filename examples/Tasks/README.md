@@ -1,98 +1,96 @@
 # Tasks
 
-The aim of this example is to demonstrate how to use `Task` with the [basic-cli platform](https://github.com/roc-lang/basic-cli). It includes various ways to use `Task` to perform common tasks such as reading command line arguments and environment variables, writing files, and fetching content using HTTP.
+## Explanation
 
-You may find the [tutorial](https://www.roc-lang.org/tutorial#tasks) or documentation for the [platform](https://www.roc-lang.org/packages/basic-cli/Task) useful as a guide with this example.
+This example shows how to use `Task` with the [basic-cli platform](https://github.com/roc-lang/basic-cli). We'll explain how tasks work while demonstrating how to read command line arguments and environment variables, write files, and fetch content through HTTP.
 
-## Code
+We recommend you read the [tasks and backpassings sections in the tutorial](https://www.roc-lang.org/tutorial#tasks) first and open up the [documentation for the basic-cli platform](https://www.roc-lang.org/packages/basic-cli/Task) on the side.
 
-This is the example code. You will find detailed explanations for each of these tasks included below.
+Reminder: a Task represents an [effect](https://en.wikipedia.org/wiki/Side_effect_(computer_science)); an interaction with state outside your Roc program, such as the terminal's standard output, or a file.
 
-```roc
-file:main.roc
-```
+Below we'll introduce the example code step by step, you can check out the full code at any time at the bottom.
 
-## `Task` Explanation
+### main
 
-These explanations are in the order they appear in the example and focus on how `Task` is used in different ways to achieve the required outcome.
+The [roc-lang/basic-cli](https://github.com/roc-lang/basic-cli) platform requires an application to provide a Task, namely `main : Task {} *`. This task usually represents a sequence or combination of `Tasks`, and will resolve to an empty record `{}`.
 
-### Platform Main and Error Handling
+The `main` task is run by the platform when the application is executed. It cannot return errors, which is indicated by the wildcard `*`.
 
-The [roc-lang/basic-cli](https://github.com/roc-lang/basic-cli) platform requires an application to provide a `main : Task {} *`. This task usually represents a sequence or combination of `Tasks`, and will resolve to an empty record.
-
-The `main` task is run by the platform when the application is executed. It cannot fail and therefore returns the wildcard `*` type.
-
-**Aside** it may seem confusing that a `*` in the return position tells us that this task cannot fail. However, one way to think about this, is that it is impossible to write a function that can return *any* type, therefore this task must always succeed.
-
+For this example, we'll be using the following main:
 ```roc
 main : Task {} *
-main = run |> Task.onErr handleErr
+main =
+    run
+    |> Task.onErr handleErr
 
-# Error : [ UnableToReadArgs, UnableToFetchHtml Str, ... ]
+# Error : [ FailedToReadArgs, FailedToFetchHtml Str, ... ]
 
 handleErr : Error -> Task {} *
 
 run : Task {} Error
 ```
 
-The `run : Task {} Error` task resolves to a success value of an empty record, and if it fails, returns with an application `Error`.  
+The `run : Task {} Error` task resolves to a success value of an empty record, and if it fails, returns with our `Error` type.  
 
-This simplifies error handling so that a single `handleErr` function can be used to handle all the application `Error` values that could occur.
+This simplifies error handling so that a single `handleErr` function can be used to handle all the `Error` values that could occur.
 
-### Read Coordinated Universal Time (UTC) epoch
+### run
 
-The `Utc.now : Task Utc *` task resolves with the current `Utc` epoch time. We can simply use `Task.await` and bind the value to a variable using backpassing syntax, as we know that this task cannot fail. 
+We want to see how fast our app runs, so we'll start our run `Task` by getting the current time.
 
 ```roc
-start <- Utc.now |> Task.await
+startTime <- Utc.now |> Task.await
 ```
 
-### Read an environment variable
+To get the current time, we need to interact with state outside of the roc program.
+We can not just calculate the current time, so we use the task `Utc.now`.
+It's type is `Task Utc *`. The task resolves to the [UTC time](https://en.wikipedia.org/wiki/Coordinated_Universal_Time) (since [Epoch](https://en.wikipedia.org/wiki/Unix_time)). `Task.await` allows us to chain tasks. We use this common [backpassing pattern](https://www.roc-lang.org/tutorial#backpassing) `... <- ... |> ...`  to make it look similar to `startTime = Utc.now` for readability.
 
-The `readDbgEnv` function takes a `Str` argument for the required environment variable, and resolves to either a `DebugSet` or `DebugNotSet` tag.
+#### Read an environment variable
+
+Next up in the task chain we'll read the environment variable HELLO:
 
 ```roc
-debug <- readDbgEnv "DEBUG" |> Task.await
+helloEnvVar <- readEnvVar "HELLO" |> Task.await
 
 # …
 
-readDbgEnv : Str -> Task [DebugSet, DebugNotSet] *
+readEnvVar : Str -> Task Str *
 ```
-
-### Debug print to stdout
-
-The `printDebug` function takes a tag, either `DebugSet` or `DebugNotSet`, and a message `Str`. It returns a `Task` which resolves to an empty record and cannot fail.
+And print it (to [stdout](https://en.wikipedia.org/wiki/Standard_streams)):
 
 ```roc
-{} <- printDebug debug "DEBUG variable set to verbose" |> Task.await
+{} <- Stdout.line "HELLO env var was set to \(helloEnvVar)" |> Task.await
+```
+
+The `{} <- ` looks different then the previous steps of the chain, that's because the type of `Stdout.line` is `Str -> Task {} *`. The `Task` resolves to nothing (= the empty record) upon success. This is similar to `void` or `unit` in other programming languages.
+You can't just do `Stdout.line "HELLO env var was set to \(helloEnvVar)"` without `{} <- ... |> Task.await` like you could in other languages. By keeping it in the task chain we know which roc code is pure (no [side-effects](https://en.wikipedia.org/wiki/Side_effect_(computer_science))) and which isn't, which comes with [a lot of benefits](https://chat.openai.com/share/8cff0cbb-a4a3-4b4f-9ddf-8824ac5809ec)!
+
+
+### Command line arguments
+
+
+When reading command line arguments, it's nice to be able to return multiple things. We can use [record destructuring](https://www.roc-lang.org/tutorial#record-destructuring) to fit this nicely into our chain:
+
+```roc
+{ url, outputPath } <- readArgs |> Task.await
 
 # …
 
-printDebug : [DebugSet, DebugNotSet], Str -> Task {} *
+readArgs : Task { url: Str, outputPath: Path } [FailedToReadArgs]_
 ```
 
-### Read command line arguments
+Notice that `readArgs` can actually return an error unlike the previous tasks, namely `FailedToReadArgs`.
+With our `Task.await` chain we can deal with errors at the end so it doesn't interrupt the flow of our code right now.
 
-The `readUrlArg` task resolves to a record `{ url: Str, path: Path }`, or fails with an `UnableToReadArgs` tag.
+The underscore (`_`) at the end of `[FailedToReadArgs]` is a temporary workaround for [an issue](https://github.com/roc-lang/roc/issues/5660).
 
-```roc
-{url, path} <- readUrlArg |> Task.await
+### Fetch website content
 
-# …
-
-readUrlArg : Task { url: Str, path: Path } [UnableToReadArgs]_
-```
-
-### Fetch a website using HTTP
-
-The `fetchHtml` function takes a `Str` argument for the URL and returns a `Task` which resolves to the content `Str` of the website or fails with an `UnableToFetchHtml` tag.
+We'll use the `url` we obtained in the previous step and retrieve its contents:
 
 ```roc
-content <- fetchHtml url |> Task.await
-
-# …
-
-fetchHtml : Str -> Task Str [UnableToFetchHtml Str]_
+strHTML <- fetchHtml url |> Task.await
 ```
 
 ### Write to a file
@@ -122,6 +120,12 @@ The `listCwd` task resolves to a `List Path` with the contents of the current di
 listCwd : Task (List Path) [UnableToReadCwd]_
 ```
 
+## Full Code
+
+```roc
+file:main.roc
+```
+
 ## Output
 
 Run this from the directory that has `main.roc` in it:
@@ -133,3 +137,4 @@ INFO: Fetching content from http://roc-lang.org...
 INFO: Saving content to roc.html...
 INFO: Completed in 219ms
 ```
+
