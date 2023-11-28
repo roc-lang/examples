@@ -22,4 +22,5 @@ You can find the source code for all of these at [github.com/roc-lang/examples](
 
 ## External examples
 
+- [Awesome Roc](https://github.com/lukewilliamboswell/roc-awesome)
 - [Interpreter for stack based language](https://github.com/isaacvando/gob)
