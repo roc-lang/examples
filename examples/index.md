@@ -7,7 +7,7 @@ You can find the source code for all of these at [github.com/roc-lang/examples](
 - [Hello, World!](/HelloWorld/README.html)
 - [FizzBuzz](/FizzBuzz/README.html)
 - [Pattern Matching](/PatternMatching/README.html)
-- [Tasks](/Tasks/README.html)
+- [Tasks & Error Handling](/Tasks/README.html)
 - [JSON](/Json/README.html)
 - [Random Numbers](/RandomNumbers/README.html)
 - [Tuples](/Tuples/README.html)
