@@ -2,7 +2,9 @@
 
 We want the examples website to be the centralized place to find your up-to-date, roc-expert-approved answer to common search queries like "How to X in roc".
 
-Website coming soon, until then check the [examples folder](https://github.com/roc-lang/examples/tree/main/examples)!
+[website](https://www.roc-lang.org/examples)
+
+[examples source code](https://github.com/roc-lang/examples/tree/main/examples)
 
 ## Running an example
 
