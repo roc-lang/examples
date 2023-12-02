@@ -18,4 +18,4 @@ If you have any ideas or improvements, talk to us on our [group chat](https://ro
 ## Contributing
 
 Contributions are welcome :heart:  
-Check out [CONTRIBUTING.md](contributing.md)
+Check out [CONTRIBUTING.md](CONTRIBUTING.md)
