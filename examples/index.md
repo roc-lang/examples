@@ -19,6 +19,7 @@ You can find the source code for all of these at [github.com/roc-lang/examples](
 - [Least Squares](/LeastSquares/README.html)
 - [Towers of Hanoi](/TowersOfHanoi/README.html)
 - [Record Builder](/RecordBuilder/README.html)
+- [Multi-line Comments](/MultiLineComments/README.html)
 
 ## External examples
 
