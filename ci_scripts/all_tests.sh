@@ -47,3 +47,5 @@ $roc build ./examples/Tasks/main.roc
 expect ci_scripts/expect_scripts/Tasks.exp
 
 $roc test ./examples/RecordBuilder/IDCounter.roc
+
+$roc test ./examples/Dict/main.roc

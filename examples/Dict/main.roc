@@ -31,12 +31,12 @@ toStr = \dict ->
 
 aListOfFruit = ["Banana", "Pear", "Apple", "Apple", "Pear", "Banana", "Apple", "Apple"]
 
-# Let's count our fruits with a Dict(ionary)
-countDict =
-    aListOfFruit
-    |> List.walk emptyDict (\dict, fruit -> inc dict fruit)
+# a function to count things with a Dict(ionary)
+count = \list ->
+    list
+    |> List.walk emptyDict (\dict, key -> inc dict key)
 
-# The Dict.update function is ideal for bulding a Dict one item at the time
+# The Dict.update function is ideal for counting or executing similar calculations by key
 inc = \dict, key ->
     Dict.update dict key \value ->
         when value is
@@ -54,8 +54,19 @@ output =
     \(aDict |> toStr)
 
     countDict:
-    \(countDict |> toStr)
+    \(aListOfFruit |> count |> toStr)
     """
 
 main = 
     Stdout.line output
+
+expect inc (Dict.empty {}) "thing" == Dict.single "thing" 1
+
+expect inc (Dict.single "thing" 3) "thing" == Dict.single "thing" 4
+
+expect inc (Dict.single "other thing" 3) "thing" == Dict.single "other thing" 3 |> Dict.insert "thing" 1
+
+expect count ["one", "two", "three", "three", "one", "one"] ==
+    Dict.single "one" 3
+    |> Dict.insert "two" 1
+    |> Dict.insert "three" 2
