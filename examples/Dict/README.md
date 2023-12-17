@@ -19,4 +19,15 @@ Run this from the directory that has `main.roc` in it:
 
 ```
 $ roc run
+emptyDict:
+Not much to display, this Dict is empty!
+
+aDict:
+- Banana: 0
+- Apple: 0
+
+countDict:
+- Banana: 2
+- Pear: 2
+- Apple: 4
 ```

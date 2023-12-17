@@ -8,10 +8,10 @@ emptyDict =
     Dict.empty {}
 
 # A Dict(ionary) can have any data type for keys, but all keys need to have the same type.
-# In the following Dict I am using Str.
+# In the following Dict, I am using Str keys.
 #
 # It also can have any data type for the values, but all the values need to have the same type.
-# In the following Dict I am using Num
+# In the following Dict, I am using Num values.
 #
 # You can use Dict.insert to add (key, values) pairs to the Dict.
 aDict =
@@ -22,7 +22,7 @@ aDict =
 # Let's render the Dict into a Str
 toStr = \dict ->
     if Dict.isEmpty dict then
-        "(Not much to display, this Dict is empty!)"
+        "Not much to display, this Dict is empty!"
     else
         dict
         |> Dict.toList
@@ -31,7 +31,7 @@ toStr = \dict ->
 
 aListOfFruit = ["Banana", "Pear", "Apple", "Apple", "Pear", "Banana", "Apple", "Apple"]
 
-# Let's count our fruits
+# Let's count our fruits with a Dict(ionary)
 countDict =
     aListOfFruit
     |> List.walk emptyDict (\dict, fruit -> inc dict fruit)
