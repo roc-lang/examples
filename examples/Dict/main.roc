@@ -24,10 +24,10 @@ toStr = \dict ->
     if Dict.isEmpty dict then
         "(Not much to display, this Dict is empty!)"
     else
-       dict
-         |> Dict.toList
-         |> List.map (\pair -> "- \(pair.0): \(Num.toStr pair.1)")
-         |> Str.joinWith "\n"
+        dict
+        |> Dict.toList
+        |> List.map (\pair -> "- \(pair.0): \(Num.toStr pair.1)")
+        |> Str.joinWith "\n"
 
 aListOfFruit = ["Banana", "Pear", "Apple", "Apple", "Pear", "Banana", "Apple", "Apple"]
 
@@ -39,23 +39,23 @@ countDict =
 # The Dict.update function is ideal for bulding a Dict one item at the time
 inc = \dict, key ->
     Dict.update dict key \value ->
-      when value is
-        # If the key is not present, yet. I can add it
-        Missing -> Present 1
-        # If the key is present, I can update its value
-        Present v -> Present (v+1)
+        when value is
+            # If the key is not present, yet. I can add it
+            Missing -> Present 1
+            # If the key is present, I can update its value
+            Present v -> Present (v+1)
 
 output =
-   """
-   emptyDict:
-   \(emptyDict |> toStr)
+    """
+    emptyDict:
+    \(emptyDict |> toStr)
 
-   aDict:
-   \(aDict |> toStr)
+    aDict:
+    \(aDict |> toStr)
 
-   countDict:
-   \(countDict |> toStr)
-   """
+    countDict:
+    \(countDict |> toStr)
+    """
 
 main = 
     Stdout.line output
