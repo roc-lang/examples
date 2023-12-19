@@ -14,8 +14,8 @@ fruitDict =
 
 expect
     # get the value for a key
+    # Dict.get returns a Result with either `Ok value` or `Err KeyNotFound`
     Dict.get fruitDict "Apple" == (Ok 3)
-# Dict.get returns a Result with either `Ok value` or `Err KeyNotFound`
 
 expect
     # get the length (number of key-value pairs) of a Dict
