@@ -17,7 +17,7 @@ fruitDict =
     |> Dict.insert "Banana" 2
 ``` 
 
-## Basic Dict examples
+## Basic Dict Examples
 
 ```roc
 file:BasicDict.roc
@@ -41,7 +41,4 @@ Run this from the directory that has `BasicDict.roc` in it:
 $ roc test BasicDict.roc
 
 0 failed and 8 passed in 144 ms.
-
-
-
 ```
