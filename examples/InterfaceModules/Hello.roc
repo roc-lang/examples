@@ -1,5 +1,5 @@
 interface Hello
-    # Only the functions exposed by 'expose' are visable from the outside
+    # Only the functions exposed by 'exposes' are visable from the outside
     exposes [hello]
     imports []
 

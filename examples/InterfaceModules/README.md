@@ -10,10 +10,10 @@ main.roc
 file:main.roc
 ```
 
-hello.roc
+Hello.roc
 
 ```roc
-file:hello.roc
+file:Hello.roc
 ```
 
 ## Output
