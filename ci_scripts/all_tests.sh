@@ -49,3 +49,7 @@ expect ci_scripts/expect_scripts/Tasks.exp
 $roc test ./examples/RecordBuilder/IDCounter.roc
 
 $roc test ./examples/BasicDict/BasicDict.roc
+
+$roc test ./examples/InterfaceModules/hello.roc
+$roc build ./examples/InterfaceModules/main.roc
+expect ci_scripts/expect_scripts/InterfaceModules.exp
