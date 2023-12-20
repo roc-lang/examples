@@ -50,6 +50,6 @@ $roc test ./examples/RecordBuilder/IDCounter.roc
 
 $roc test ./examples/BasicDict/BasicDict.roc
 
-$roc test ./examples/InterfaceModules/hello.roc
+$roc test ./examples/InterfaceModules/Hello.roc
 $roc build ./examples/InterfaceModules/main.roc
 expect ci_scripts/expect_scripts/InterfaceModules.exp
