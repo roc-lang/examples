@@ -14,8 +14,8 @@ fruitDict =
 
 expect
     # get the value for a key
-    Dict.get fruitDict "Apple" == (Ok 3)
     # Dict.get returns a Result with either `Ok value` or `Err KeyNotFound`
+    Dict.get fruitDict "Apple" == (Ok 3)
 
 expect
     # get the length (number of key-value pairs) of a Dict
@@ -56,7 +56,7 @@ expect
             # If the fruit is not in the dict (=missing), we set the count to 1
             Missing -> Present 1
             # If the fruit is in the dict (=present), we increase the count
-            Present count -> Present (count+1)
+            Present count -> Present (count + 1)
 
     Dict.get updatedDict "Apple" == (Ok 4)
 
