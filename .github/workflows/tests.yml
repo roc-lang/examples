@@ -48,7 +48,10 @@ jobs:
       - name: print runner CPU
         run: lscpu
 
-      - run: ./ci_scripts/all_tests.sh
+      - name: check if roc files are properly formatted
+        run: ROC=./roc_nightly/roc ./ci_scripts/check_format.sh
+
+      - run: ROC=./roc_nightly/roc ./ci_scripts/all_tests.sh
 
       # TODO re-enable once issue#74 is fixed
       #- run: ./roc_nightly/roc run main.roc -- examples build

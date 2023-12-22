@@ -51,8 +51,7 @@ readFirstArgT =
 readFileToStr : Path.Path -> Task.Task Str [ReadFileErr Str]_
 readFileToStr = \path ->
     path
-    |> File.readUtf8
-    # Make a nice error message 
+    |> File.readUtf8 # Make a nice error message
     |> Task.mapErr
         (\fileReadErr ->
             pathStr = Path.display path
@@ -67,7 +66,7 @@ readFileToStr = \path ->
         )
 
 # indent all lines in a Str with a single tab
-indentLines: Str -> Str
+indentLines : Str -> Str
 indentLines = \inputStr ->
     Str.split inputStr "\n"
     |> List.map (\line -> Str.concat "\t" line)

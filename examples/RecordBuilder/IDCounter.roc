@@ -25,11 +25,12 @@ extractState : IDCount state -> state
 extractState = \@IDCount (_, finalState) -> finalState
 
 expect
-    { aliceID, bobID, trudyID } = 
+    { aliceID, bobID, trudyID } =
         initIDCount {
             aliceID: <- incID,
             bobID: <- incID,
             trudyID: <- incID,
-        } |> extractState
+        }
+        |> extractState
 
     aliceID == 1 && bobID == 2 && trudyID == 3
