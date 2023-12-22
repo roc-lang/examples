@@ -11,6 +11,7 @@ You can find the source code for all of these at [github.com/roc-lang/examples](
 - [Pattern Matching](/PatternMatching/README.html)
 - [Tasks & Error Handling](/Tasks/README.html)
 - [Import Files](/IngestFiles/README.html)
+- [Multiple Roc Files](/MultipleRocFiles/README.html)
 - [JSON](/Json/README.html)
 - [Random Numbers](/RandomNumbers/README.html)
 - [CLI Args](/CommandLineArgs/README.html)
@@ -21,7 +22,6 @@ You can find the source code for all of these at [github.com/roc-lang/examples](
 - [Towers of Hanoi](/TowersOfHanoi/README.html)
 - [Record Builder](/RecordBuilder/README.html)
 - [Multi-line Comments](/MultiLineComments/README.html)
-- [Interface Modules](/InterfaceModules/README.html)
 
 ## External examples
 

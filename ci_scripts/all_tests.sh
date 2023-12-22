@@ -60,6 +60,5 @@ $ROC test ./examples/RecordBuilder/IDCounter.roc
 
 $ROC test ./examples/BasicDict/BasicDict.roc
 
-$ROC build ./examples/InterfaceModules/main.roc
-$ROC test ./examples/InterfaceModules/Hello.roc
-expect ci_scripts/expect_scripts/InterfaceModules.exp
+$ROC build ./examples/MultipleRocFiles/main.roc
+expect ci_scripts/expect_scripts/MultipleRocFiles.exp
