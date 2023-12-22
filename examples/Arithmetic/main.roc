@@ -36,7 +36,6 @@ main =
 
     when taskResult is
         Ok result -> Stdout.line result
-
         Err InvalidArg ->
             {} <- Stdout.line "Error: Please provide two integers between -1000 and 1000 as arguments." |> Task.await
 
