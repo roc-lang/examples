@@ -48,6 +48,9 @@ jobs:
       - name: print runner CPU
         run: lscpu
 
+      - name: check if roc files are properly formatted
+        run: ./ci_scripts/check_format.sh
+
       - run: ./ci_scripts/all_tests.sh
 
       # TODO re-enable once issue#74 is fixed
