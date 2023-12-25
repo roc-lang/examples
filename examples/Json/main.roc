@@ -1,6 +1,6 @@
 app "json-basic"
     packages {
-        cli: "https://github.com/roc-lang/basic-cli/releases/download/0.7.0/bkGby8jb0tmZYsy2hg1E_B2QrCgcSTxdUlHtETwm5m4.tar.br",
+        cli: "https://github.com/roc-lang/basic-cli/releases/download/0.7.1/Icc3xJoIixF3hCcfXrDwLCu4wQHtNdPyoJkEbkgIElA.tar.br",
         json: "https://github.com/lukewilliamboswell/roc-json/releases/download/v0.4.0/PJHoaxmf2rXTmGW42QZz0kPVFqQkrv8D31pRMchw2eA.tar.br",
     }
     imports [
