@@ -41,6 +41,7 @@
                       simple-http-server # to be able to view the website when developing
                       expect # to test examples on CI
                       customRust # for static-site-gen platform
+                      perl # for ci/update_basic_cli_url.sh
 		                ] ++ linuxInputs;
 
                     # nix does not store libs in /usr/lib or /lib
