@@ -2,7 +2,7 @@
 
 ## Explanation
 
-Somtimes, you need to repeat a task, or a chain of tasks, multiple times until a paticular event occurs. In roc, you can use `Task.loop` to do this.
+Sometimes, you need to repeat a task, or a chain of tasks, multiple times until a paticular event occurs. In roc, you can use `Task.loop` to do this.
 
 The example process one by one a series of numbers read from stdin as lines of text until the input is finised (Ctrl-D or end of file).
 
