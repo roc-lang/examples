@@ -38,16 +38,15 @@ addNumberFromStdin = \total, line ->
                 # It is a valid number, return the completted `Step` with the new state, total + num
                 Ok num -> Ok (Step (total + num))
                 # The text cannot be concerted to a number, return a Task.err.
-                # `Task.loop` will return with error
-                Err InvalidNumStr -> Err (ErrorInvalidNumStr text total)
+                Err InvalidNumStr -> Err (InvalidNumToAdd text total)
 
-        # No more content in stdin, inform `Task.loop` that the loop is done with a final total.
+        # No more content, inform `Task.loop` that the loop is done with a final total.
         End -> Ok (Done total)
 
 handleErr = \err ->
     errorMsg =
         when err is
-            ErrorInvalidNumStr text total -> "\"\(text)\" is not a valid number string. Interrupted at a total of \(Num.toStr total)."
+            InvalidNumToAdd text total -> "\"\(text)\" is not a valid number string. Interrupted at a total of \(Num.toStr total)."
 
     Stderr.line "Error: \(errorMsg)"
 
@@ -58,4 +57,4 @@ expect addNumberFromStdin 1 (Input "123") == Ok (Step 124)
 expect addNumberFromStdin 124 End == Ok (Done 124)
 
 # Test when an invalid line is read from stdin
-expect addNumberFromStdin 1 (Input "something else") == Err (ErrorInvalidNumStr "something else" 1)
+expect addNumberFromStdin 1 (Input "something else") == Err (InvalidNumToAdd "something else" 1)
