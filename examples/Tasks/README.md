@@ -1,7 +1,5 @@
 # Tasks & Error Handling
 
-## Explanation
-
 This example shows how to use `Task` with the [basic-cli platform](https://github.com/roc-lang/basic-cli). We'll explain how tasks work while demonstrating how to read command line arguments and environment variables, write files, and fetch content through HTTP.
 
 We recommend you read the [tasks and backpassings sections in the tutorial](https://www.roc-lang.org/tutorial#tasks) first and open up the [documentation for the basic-cli platform](https://www.roc-lang.org/packages/basic-cli/Task) on the side.
