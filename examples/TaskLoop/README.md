@@ -1,18 +1,17 @@
 # Task.loop
 
-## Explanation
+Sometimes, you need to repeat a task, or a chain of tasks, multiple times until a particular event occurs. In roc, you can use `Task.loop` to do this.
 
-Sometimes, you need to repeat a task, or a chain of tasks, multiple times until a paticular event occurs. In roc, you can use `Task.loop` to do this.
+We'll demonstrate this by processing a series of numbers read from stdin line by line until the end of input (Ctrl-D or [end of file](https://en.wikipedia.org/wiki/End-of-file)).
 
-The example process one by one a series of numbers read from stdin as lines of text until the input is finised (Ctrl-D or end of file).
+The loop will also end if the input is not a valid number.
 
-It also stops if the input is not a valid number.
+`Task.loop` starts from an initial state and sends it to a provided function that will return a new Task.
+- If this new Task matches `Task.ok (Step newState)` then the loop continues with a new call of the same function, now using `newState`.
+- If it's of the form `Task.ok (Done finalState)` then the loop stops and returns `finalState`.
+- If the Task is a `Task.err err`, then the loop stops and returns the error.
 
-The example makes use of the [basic-cli platform](https://github.com/roc-lang/basic-cli) platform.
-
-`Task.loop` starts from an initial state and send it to a function that is supposed to return a new chain of `Task`s. If the final task is a `Task.ok (Step newState)` then the loop continues with a new call of the same function. If the final task is a `Task.ok (Done finalState)` then the loop stops and returns final state. And if the final task is a `Task.err err`, then the loop stops and returns the error.
-
-## Task.loop example
+## Code
 
 ```roc
 file:main.roc
