@@ -62,7 +62,7 @@ addNumberFromStdinT = \total ->
 
 This function process the input.
 
-If some input is avaliable, it tries to convert into a `I32`. If the conversion succeeds, it returns `Ok (Step (total + num)`. A new step can be start later with a new total.
+If a line of input is avaliable, it tries to convert it into a `I32`. If the conversion succeeds, it returns `Ok (Step (total + num)`. A new step can starts later with a new total.
 
 If it fails, it return an error. The loop needs to stop.
 
@@ -81,11 +81,11 @@ addNumberFromStdin = \total, line ->
 
 ### handleErr
 
-Funally, this fucntion will return a Task that prints the error message.
+In case of error, this fucntion returns a Task that prints the error message.
 
 ```roc
 handleErr = \err ->
-    errorMsg =
+    errorMsg =``
         when err is
             InvalidNumToAdd text total -> "\"\(text)\" is not a valid number string. Interrupted at a total of \(Num.toStr total)."
 
