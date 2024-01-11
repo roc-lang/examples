@@ -9,38 +9,22 @@ main =
     run |> Task.onErr handleErr
 
 run =
-    # Start the loop of tasks defined by `addNumberFromStdinT`. The initial state, the total, is 0.
-    # `total` will be set with the final step of the loop, when `addNumberFromStdinT` returns `Task.ok (Done total)`
     total <- Task.loop 0 addNumberFromStdinT |> Task.await
     Stdout.line "Total: \(Num.toStr total)"
 
-# This function read from stdin and return one of the following Tasks:
-# `Task.ok (Step aNewState)`: To inform Task.loop that a new Step has been completed with a new state.
-# `Task.ok (Done aFinalState)`: To inform Task.loop that the loop is done with a final state. No new steps will be executed.
-# `Task.err error`: To inform Task.loop that an error has occurred, in this case an unprocessable input, and the loop should be stopped.
 addNumberFromStdinT = \total ->
-    # Read a line from stdin
     line <- Stdin.line |> Task.await
-    # Use addNumberFromStdin to calculate the step
     when addNumberFromStdin total line is
-        # The step has been completed or no further steps to execute
         Ok stepOrDone -> Task.ok stepOrDone
-        # The inpput cannot be processed. `Task.loop` will return with error
         Err err -> Task.err err
 
-# This function takes the current state, the total, and a line from stdin and return one of the three possible values
 addNumberFromStdin = \total, line ->
     when line is
-        # If a line has been read from stdin
         Input text ->
-            # Try to concert to a number
             when Str.toI32 text is
-                # It is a valid number, return the completted `Step` with the new state, total + num
                 Ok num -> Ok (Step (total + num))
-                # The text cannot be concerted to a number, return a Task.err.
                 Err InvalidNumStr -> Err (InvalidNumToAdd text total)
 
-        # No more content, inform `Task.loop` that the loop is done with a final total.
         End -> Ok (Done total)
 
 handleErr = \err ->

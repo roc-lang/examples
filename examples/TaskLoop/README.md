@@ -11,10 +11,85 @@ The loop will also end if the input is not a valid number.
 - If it's of the form `Task.ok (Done finalState)` then the loop stops and returns `finalState`.
 - If the Task is a `Task.err err`, then the loop stops and returns the error.
 
-## Code
+### main
+
+The [roc-lang/basic-cli](https://github.com/roc-lang/basic-cli) platform requires an application to provide a Task, namely `main : Task {} *`.
+
+In this case, the task is provided by the `run` function.
+
+The function may return an error, so we send it to the `handlerErr``.
 
 ```roc
-file:main.roc
+main =
+    run |> Task.onErr handleErr
+```
+
+### run
+
+In `run` the main Task is started with `Task.loop`.
+
+The loop of tasks is defined by `addNumberFromStdinT`. 
+
+The initial state, the total, is 0.
+
+`total` will be set with the final step of the loop, when `addNumberFromStdinT` returns `Task.ok (Done total)`
+
+```roc
+run =
+    total <- Task.loop 0 addNumberFromStdinT |> Task.await
+    Stdout.line "Total: \(Num.toStr total)"
+```
+
+### addNumberFromStdinT
+
+This function read a from stdin a line and return one of the following Tasks:
+
+- `Task.ok (Step aNewState)`: To inform Task.loop that a new Step has been completed with a new state.
+- `Task.ok (Done aFinalState)`: To inform Task.loop that the loop is done with a final state. No new steps will be executed.
+- `Task.err error`: To inform Task.loop that an error has occurred, in this case an unprocessable input, and the loop should be stopped.
+
+It calls `addNumberFromStdin` to process the input and return the three possible results. Then this fuction wraps them into a `Task.ok` or `Task.err` task.
+
+``` roc
+addNumberFromStdinT = \total ->
+    line <- Stdin.line |> Task.await
+    when addNumberFromStdin total line is
+        Ok stepOrDone -> Task.ok stepOrDone
+        Err err -> Task.err err
+```
+
+### addNumberFromStdin
+
+This function process the input.
+
+If some input is avaliable, it tries to convert into a `I32`. If the conversion succeeds, it returns `Ok (Step (total + num)`. A new step can be start later with a new total.
+
+If it fails, it return an error. The loop needs to stop.
+
+If there is no more input, it returns `Ok (Done total)`. The loop needs to stop as well.
+
+```roc
+addNumberFromStdin = \total, line ->
+    when line is
+        Input text ->
+            when Str.toI32 text is
+                Ok num -> Ok (Step (total + num))
+                Err InvalidNumStr -> Err (InvalidNumToAdd text total)
+
+        End -> Ok (Done total)
+```
+
+### handleErr
+
+Funally, this fucntion will return a Task that prints the error message.
+
+```roc
+handleErr = \err ->
+    errorMsg =
+        when err is
+            InvalidNumToAdd text total -> "\"\(text)\" is not a valid number string. Interrupted at a total of \(Num.toStr total)."
+
+    Stderr.line "Error: \(errorMsg)"
 ```
 
 ## Output
