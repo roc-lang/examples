@@ -46,7 +46,7 @@ This function read a from stdin a line and return one of the following Tasks:
 
 - `Task.ok (Step aNewState)`: To inform Task.loop that a new Step has been completed with a new state.
 - `Task.ok (Done aFinalState)`: To inform Task.loop that the loop is done with a final state. No new steps will be executed.
-- `Task.err error`: To inform Task.loop that an error has occurred, in this case an unprocessable input, and the loop should be stopped.
+- `Task.err error`: To inform Task.loop that an error has occurred, in this case an unprocessable input. The loop should stop.
 
 It calls `addNumberFromStdin` to process the input and return the three possible results. Then this fuction wraps them into a `Task.ok` or `Task.err` task.
 
