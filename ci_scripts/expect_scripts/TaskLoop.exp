@@ -6,7 +6,6 @@
 set timeout 7
 
 #spawn ./roc_nightly/roc run ./examples/TaskLoop/main.roc
-spawn /home/username/gitrepos/roc4/roc/target/release/roc run ./examples/TaskLoop/main.roc
 
 expect "Enter some numbers on different lines, then press Ctrl-D to sum them up.\r\n"
 
