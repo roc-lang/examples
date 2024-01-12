@@ -5,40 +5,39 @@ app "task-usage"
     imports [pf.Stdin, pf.Stdout, pf.Stderr, pf.Task.{ Task }]
     provides [main] to pf
 
-main =
-    run |> Task.onErr handleErr
-
+run : Task {} [NotNum Str]
 run =
-    total <- Task.loop 0 addNumberFromStdinT |> Task.await
-    Stdout.line "Total: \(Num.toStr total)"
+    {} <- Stdout.line "Enter some numbers on different lines, then press Ctrl-D to sum them up." |> Task.await
+    sum <- Task.loop 0 addNumberFromStdin |> Task.await
 
-addNumberFromStdinT = \total ->
-    line <- Stdin.line |> Task.await
-    when addNumberFromStdin total line is
-        Ok stepOrDone -> Task.ok stepOrDone
-        Err err -> Task.err err
+    Stdout.line "Sum: \(Num.toStr sum)"
 
-addNumberFromStdin = \total, line ->
-    when line is
-        Input text ->
-            when Str.toI32 text is
-                Ok num -> Ok (Step (total + num))
-                Err InvalidNumStr -> Err (InvalidNumToAdd text total)
+addNumberFromStdin : I64 -> Task [Done I64, Step I64] [NotNum Str]
+addNumberFromStdin = \sum ->
+    input <- Stdin.line |> Task.await
 
-        End -> Ok (Done total)
+    addResult =
+        when input is
+            Input text ->
+                when Str.toI64 text is
+                    Ok num ->
+                        Ok (Step (sum + num))
 
-handleErr = \err ->
+                    Err InvalidNumStr ->
+                        Err (NotNum text)
+
+            End ->
+                Ok (Done sum)
+
+    Task.fromResult addResult
+
+main =
+    run |> Task.onErr printErr
+
+printErr : [NotNum Str] -> Task {} *
+printErr = \err ->
     errorMsg =
         when err is
-            InvalidNumToAdd text total -> "\"\(text)\" is not a valid number string. Interrupted at a total of \(Num.toStr total)."
+            NotNum text -> "\"\(text)\" is not a valid I64 number."
 
     Stderr.line "Error: \(errorMsg)"
-
-# Test when a valid line is read from stdin
-expect addNumberFromStdin 1 (Input "123") == Ok (Step 124)
-
-# Test when no more input is available
-expect addNumberFromStdin 124 End == Ok (Done 124)
-
-# Test when an invalid line is read from stdin
-expect addNumberFromStdin 1 (Input "something else") == Err (InvalidNumToAdd "something else" 1)

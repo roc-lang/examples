@@ -1,0 +1,43 @@
+#!/usr/bin/expect
+
+# uncomment line below for debugging
+# exp_internal 1
+
+set timeout 7
+
+#spawn ./roc_nightly/roc run ./examples/TaskLoop/main.roc
+spawn /home/username/gitrepos/roc4/roc/target/release/roc run ./examples/TaskLoop/main.roc
+
+expect "Enter some numbers on different lines, then press Ctrl-D to sum them up.\r\n"
+
+send -- "1\r"
+send -- "2\r"
+send -- "-1\r"
+
+# send Ctrl+D
+send "\004"
+
+expect "Sum: 2\r\n" {
+  expect eof {
+    spawn /home/username/gitrepos/roc4/roc/target/release/roc run ./examples/TaskLoop/main.roc
+
+    expect "Enter some numbers on different lines, then press Ctrl-D to sum them up.\r\n"
+
+    send -- "1\r"
+    send -- "a\r"
+
+    expect "\"a\" is not a valid I64 number." {
+        expect eof
+        exit 0
+    }
+
+    puts stderr "\nError: output was different than expected."
+    exit 1
+  }
+  
+  puts stderr "\nError: output was different than expected."
+  exit 1
+}
+
+puts stderr "\nError: output was different than expected."
+exit 1

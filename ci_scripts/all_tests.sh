@@ -56,7 +56,8 @@ $ROC test ./examples/TowersOfHanoi/Hanoi.roc
 $ROC build ./examples/Tasks/main.roc
 expect ci_scripts/expect_scripts/Tasks.exp
 
-$ROC test ./examples/TaskLoop/main.roc
+$ROC build ./examples/TaskLoop/main.roc
+expect ci_scripts/expect_scripts/TaskLoop.exp
 
 $ROC test ./examples/RecordBuilder/IDCounter.roc
 
