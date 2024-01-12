@@ -18,6 +18,7 @@ You can find the source code for all of these at [github.com/roc-lang/examples](
 - [Graph Traversal](/GraphTraversal/README.html)
 - [Parser](/Parser/README.html)
 - [Arithmetic](/Arithmetic/README.html)
+- [Looping Tasks](/TaskLoop/README.html)
 - [Least Squares](/LeastSquares/README.html)
 - [Towers of Hanoi](/TowersOfHanoi/README.html)
 - [Record Builder](/RecordBuilder/README.html)
