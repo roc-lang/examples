@@ -36,7 +36,7 @@ addNumberFromStdin = \sum ->
 
     addResult =
         when input is
-            Input text -
+            Input text ->
                 when Str.toI64 text is
                     Ok num ->
                         Ok (Step (sum + num))
