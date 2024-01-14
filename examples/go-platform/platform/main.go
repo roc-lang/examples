@@ -14,15 +14,15 @@ import (
 func main() {
 	var str C.struct_RocStr
 	C.roc__mainForHost_1_exposed_generic(&str)
-	fmt.Print(readRocStr(str))
+	fmt.Print(rocStrRead(str))
 }
 
 const is64Bit = uint64(^uintptr(0)) == ^uint64(0)
 
-func readRocStr(str C.struct_RocStr) string {
-	if int(str.capacity) < 0 {
+func rocStrRead(rocStr C.struct_RocStr) string {
+	if int(rocStr.capacity) < 0 {
 		// Small string
-		ptr := (*byte)(unsafe.Pointer(&str))
+		ptr := (*byte)(unsafe.Pointer(&rocStr))
 
 		byteLen := 12
 		if is64Bit {
@@ -34,8 +34,14 @@ func readRocStr(str C.struct_RocStr) string {
 		return shortStr[:len]
 	}
 
-	ptr := (*byte)(unsafe.Pointer(str.bytes))
-	return unsafe.String(ptr, str.len)
+	// Remove the bit for seamless string
+	seamlessBit := 31
+	if is64Bit {
+		seamlessBit = 63
+	}
+	len := uint64(rocStr.len) & ^uint64(1<<seamlessBit)
+	ptr := (*byte)(unsafe.Pointer(rocStr.bytes))
+	return unsafe.String(ptr, len)
 }
 
 //export roc_alloc
