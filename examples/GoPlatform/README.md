@@ -36,5 +36,6 @@ Build steps:
 cd examples/GoPlatform
 roc build --no-link main.roc
 go build platform/main.go
-./main
 ```
+
+Run the produced executable with `./main`.
