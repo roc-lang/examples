@@ -35,11 +35,7 @@ func rocStrRead(rocStr C.struct_RocStr) string {
 	}
 
 	// Remove the bit for seamless string
-	seamlessBit := 31
-	if is64Bit {
-		seamlessBit = 63
-	}
-	len := uint64(rocStr.len) & ^uint64(1<<seamlessBit)
+	len := (uint(rocStr.len) << 1) >> 1
 	ptr := (*byte)(unsafe.Pointer(rocStr.bytes))
 	return unsafe.String(ptr, len)
 }
