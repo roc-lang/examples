@@ -23,6 +23,7 @@ You can find the source code for all of these at [github.com/roc-lang/examples](
 - [Towers of Hanoi](/TowersOfHanoi/README.html)
 - [Record Builder](/RecordBuilder/README.html)
 - [Multi-line Comments](/MultiLineComments/README.html)
+- [Go Platform](/GoPlatform/README.html)
 
 ## External examples
 

@@ -3,4 +3,4 @@ app "rocLovesGo"
     imports []
     provides [main] to pf
 
-main = "hello world\n"
+main = "Roc <3 Go!\n"
