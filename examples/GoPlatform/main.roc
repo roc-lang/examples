@@ -1,5 +1,5 @@
 app "rocLovesGo"
-    packages {pf: "platform/main.roc"}
+    packages { pf: "platform/main.roc" }
     imports []
     provides [main] to pf
 
