@@ -65,3 +65,6 @@ $ROC test ./examples/BasicDict/BasicDict.roc
 
 $ROC build ./examples/MultipleRocFiles/main.roc
 expect ci_scripts/expect_scripts/MultipleRocFiles.exp
+
+$ROC build --no-link ./examples/GoPlatform/main.roc
+go build ./examples/GoPlatform/platform/main.go
