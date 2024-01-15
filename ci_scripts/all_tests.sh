@@ -67,4 +67,7 @@ $ROC build ./examples/MultipleRocFiles/main.roc
 expect ci_scripts/expect_scripts/MultipleRocFiles.exp
 
 $ROC build --no-link ./examples/GoPlatform/main.roc
-go build ./examples/GoPlatform/platform/main.go
+cd ./examples/GoPlatform
+go build ./platform/main.go
+cd ../..
+expect ci_scripts/expect_scripts/GoPlatform.exp
