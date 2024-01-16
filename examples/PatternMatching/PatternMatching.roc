@@ -74,4 +74,6 @@ expect
             [Foo, Count num, ..] if num > 0 -> FooBar
             _ -> Other
 
-    match [Foo, Count 1] == FooBar
+    (match [Foo, Count 1] == FooBar)
+    && (match [Foo, Count 0] != FooBar)
+    && (match [Baz, Count 1] != FooBar)
