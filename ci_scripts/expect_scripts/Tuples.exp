@@ -5,7 +5,7 @@
 
 set timeout 7
 
-spawn ./roc_nightly/roc run ./examples/Tuples/main.roc
+spawn ./examples/Tuples/main
 
 expect "First is: A String,\r\nSecond is: true, \r\nThird is: 15000000.\r\nYou also have some pears.\r\n" {
   expect eof

@@ -5,7 +5,7 @@
 
 set timeout 7
 
-spawn ./roc_nightly/roc run ./examples/HelloWorld/main.roc
+spawn ./examples/HelloWorld/main
 
 
 expect "Hello, World!\r\n" {

@@ -5,7 +5,7 @@
 
 set timeout 7
 
-spawn ./roc_nightly/roc run ./examples/MultipleRocFiles/main.roc
+spawn ./examples/MultipleRocFiles/main
 
 expect "Hello World from interface!\r\n" {
   expect eof
