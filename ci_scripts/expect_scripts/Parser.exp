@@ -5,7 +5,7 @@
 
 set timeout 7
 
-spawn ./roc_nightly/roc run ./examples/Parser/main.roc
+spawn ./examples/Parser/main
 
 
 expect "I counted 7 letter A's!\r\n" {

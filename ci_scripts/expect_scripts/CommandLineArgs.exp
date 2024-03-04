@@ -5,7 +5,7 @@
 
 set timeout 7
 
-spawn ./roc_nightly/roc run ./examples/CommandLineArgs/main.roc -- examples/CommandLineArgs/input.txt 
+spawn ./examples/CommandLineArgs/main examples/CommandLineArgs/input.txt 
 
 expect "file content: 42\r\n" {
   expect eof

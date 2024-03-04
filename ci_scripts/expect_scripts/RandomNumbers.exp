@@ -5,7 +5,7 @@
 
 set timeout 7
 
-spawn ./roc_nightly/roc run ./examples/RandomNumbers/main.roc
+spawn ./examples/RandomNumbers/main
 
 
 expect "Random numbers are: 29,30,71,64,48,33,55,68,53,28\r\n" {

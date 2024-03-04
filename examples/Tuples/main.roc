@@ -19,9 +19,9 @@ main =
 
     {} <- Stdout.line
             """
-            First is: \(firstItem),
-            Second is: \(secondItem), 
-            Third is: \(thirdItem).
+            First is: $(firstItem),
+            Second is: $(secondItem), 
+            Third is: $(thirdItem).
             """
         |> Task.await
 

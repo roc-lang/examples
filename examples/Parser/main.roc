@@ -14,7 +14,7 @@ main =
     many letterParser
     |> parseStr inputStr
     |> Result.map countLetterAs
-    |> Result.map \count -> "I counted \(count) letter A's!"
+    |> Result.map \count -> "I counted $(count) letter A's!"
     |> Result.withDefault "Ooops, something went wrong parsing"
     |> Stdout.line
 

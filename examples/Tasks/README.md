@@ -58,11 +58,11 @@ readEnvVar : Str -> Task Str *
 And print it (to [stdout](https://en.wikipedia.org/wiki/Standard_streams)):
 
 ```roc
-{} <- Stdout.line "HELLO env var was set to \(helloEnvVar)" |> Task.await
+{} <- Stdout.line "HELLO env var was set to $(helloEnvVar)" |> Task.await
 ```
 
 The `{} <- ` looks different then the previous steps of the chain, that's because the type of `Stdout.line` is `Str -> Task {} *`. The `Task` resolves to nothing (= the empty record) upon success.
-You can't just do `Stdout.line "HELLO env var was set to \(helloEnvVar)"` without `{} <- ... |> Task.await` like you could in other languages. By keeping it in the task chain we know which roc code is pure (no [side-effects](https://en.wikipedia.org/wiki/Side_effect_(computer_science))) and which isn't, which comes with [a lot of benefits](https://chat.openai.com/share/8cff0cbb-a4a3-4b4f-9ddf-8824ac5809ec)!
+You can't just do `Stdout.line "HELLO env var was set to $(helloEnvVar)"` without `{} <- ... |> Task.await` like you could in other languages. By keeping it in the task chain we know which roc code is pure (no [side-effects](https://en.wikipedia.org/wiki/Side_effect_(computer_science))) and which isn't, which comes with [a lot of benefits](https://chat.openai.com/share/8cff0cbb-a4a3-4b4f-9ddf-8824ac5809ec)!
 
 
 ### Command line arguments
@@ -117,7 +117,7 @@ We're going to finish up with something more involved:
             |> Str.joinWith ","
 
         |> Task.await \contentsStr ->
-            Stdout.line "Contents of current directory: \(contentsStr)"
+            Stdout.line "Contents of current directory: $(contentsStr)"
 
         |> Task.await 
 

@@ -7,4 +7,4 @@ app "ingested-file"
     provides [main] to pf
 
 main =
-    Stdout.line "\(sample)"
+    Stdout.line "$(sample)"

@@ -27,7 +27,7 @@ main =
         |> List.map Num.toStr
         |> Str.joinWith ","
 
-    Stdout.line "Random numbers are: \(numbersListStr)"
+    Stdout.line "Random numbers are: $(numbersListStr)"
 
 # Generate a list of numbers using the seed and generator provided
 # This is NOT cryptograhpically secure!
