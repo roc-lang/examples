@@ -8,7 +8,7 @@ app "example"
 main =
     nStr = Num.toStr (leastSquareDifference {})
 
-    Stdout.line "The least positive integer n, where the difference of n*n and (n-1)*(n-1) is greater than 1000, is \(nStr)"
+    Stdout.line "The least positive integer n, where the difference of n*n and (n-1)*(n-1) is greater than 1000, is $(nStr)"
 
 ## A recursive function that takes an `U32` as its input and returns the least
 ## positive integer number `n`, where the difference of `n*n` and `(n-1)*(n-1)`

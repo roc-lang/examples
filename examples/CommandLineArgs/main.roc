@@ -31,12 +31,12 @@ main =
 
         Err (ReadFileErr errMsg) ->
             indentedErrMsg = indentLines errMsg
-            {} <- Stderr.line "Error ReadFileErr:\n\(indentedErrMsg)" |> Task.await
+            {} <- Stderr.line "Error ReadFileErr:\n$(indentedErrMsg)" |> Task.await
 
             Task.err 1 # 1 is an exit code to indicate failure
 
         Ok fileContentStr ->
-            Stdout.line "file content: \(fileContentStr)"
+            Stdout.line "file content: $(fileContentStr)"
 
 # Task to read the first CLI arg (= Str)
 readFirstArgT : Task.Task Str [ZeroArgsGiven]_
@@ -59,10 +59,10 @@ readFileToStr = \path ->
             when fileReadErr is
                 FileReadErr _ readErr ->
                     readErrStr = File.readErrToStr readErr
-                    ReadFileErr "Failed to read file at:\n\t\(pathStr)\n\(readErrStr)"
+                    ReadFileErr "Failed to read file at:\n\t$(pathStr)\n$(readErrStr)"
 
                 FileReadUtf8Err _ _ ->
-                    ReadFileErr "I could not read the file:\n\t\(pathStr)\nIt contains charcaters that are not valid UTF-8:\n\t- Check if the file is encoded using a different format and convert it to UTF-8.\n\t- Check if the file is corrupted.\n\t- Find the characters that are not valid UTF-8 and fix or remove them."
+                    ReadFileErr "I could not read the file:\n\t$(pathStr)\nIt contains charcaters that are not valid UTF-8:\n\t- Check if the file is encoded using a different format and convert it to UTF-8.\n\t- Check if the file is corrupted.\n\t- Find the characters that are not valid UTF-8 and fix or remove them."
         )
 
 # indent all lines in a Str with a single tab

@@ -10,7 +10,7 @@ run =
     {} <- Stdout.line "Enter some numbers on different lines, then press Ctrl-D to sum them up." |> Task.await
     sum <- Task.loop 0 addNumberFromStdin |> Task.await
 
-    Stdout.line "Sum: \(Num.toStr sum)"
+    Stdout.line "Sum: $(Num.toStr sum)"
 
 addNumberFromStdin : I64 -> Task [Done I64, Step I64] [NotNum Str]
 addNumberFromStdin = \sum ->
@@ -38,6 +38,6 @@ printErr : [NotNum Str] -> Task {} *
 printErr = \err ->
     errorMsg =
         when err is
-            NotNum text -> "\"\(text)\" is not a valid I64 number."
+            NotNum text -> "\"$(text)\" is not a valid I64 number."
 
-    Stderr.line "Error: \(errorMsg)"
+    Stderr.line "Error: $(errorMsg)"

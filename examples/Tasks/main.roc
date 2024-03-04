@@ -14,17 +14,17 @@ run =
     # Read the HELLO environment variable
     helloEnvVar <- readEnvVar "HELLO" |> Task.await
 
-    {} <- Stdout.line "HELLO env var was set to \(helloEnvVar)" |> Task.await
+    {} <- Stdout.line "HELLO env var was set to $(helloEnvVar)" |> Task.await
     
     # Read command line arguments
     { url, outputPath } <- readArgs |> Task.await
 
-    {} <- Stdout.line "Fetching content from \(url)..." |> Task.await
+    {} <- Stdout.line "Fetching content from $(url)..." |> Task.await
     
     # Fetch the provided url using HTTP
     strHTML <- fetchHtml url |> Task.await
 
-    {} <- Stdout.line "Saving url HTML to \(Path.display outputPath)..." |> Task.await
+    {} <- Stdout.line "Saving url HTML to $(Path.display outputPath)..." |> Task.await
 
     # Write HTML string to a file
     {} <- 
@@ -40,14 +40,14 @@ run =
             |> Str.joinWith ","
 
         |> Task.await \contentsStr ->
-            Stdout.line "Contents of current directory: \(contentsStr)"
+            Stdout.line "Contents of current directory: $(contentsStr)"
 
         |> Task.await 
     
     endTime <- Utc.now |> Task.await
     runTime = Utc.deltaAsMillis startTime endTime |> Num.toStr
 
-    {} <- Stdout.line "Run time: \(runTime) ms" |> Task.await
+    {} <- Stdout.line "Run time: $(runTime) ms" |> Task.await
 
     # Final task doesn't need to be awaited
     Stdout.line "Done"
@@ -106,9 +106,9 @@ handleErr = \err ->
     usage = "HELLO=1 roc main.roc -- \"https://www.roc-lang.org\" roc.html"
 
     errorMsg = when err is
-        FailedToReadArgs -> "Failed to read command line arguments, usage: \(usage)"
-        FailedToFetchHtml httpErr -> "Failed to fetch URL \(httpErr), usage: \(usage)"
-        FailedToWriteFile path -> "Failed to write to file \(Path.display path), usage: \(usage)"
-        FailedToListCwd -> "Failed to list contents of current directory, usage: \(usage)"
+        FailedToReadArgs -> "Failed to read command line arguments, usage: $(usage)"
+        FailedToFetchHtml httpErr -> "Failed to fetch URL $(httpErr), usage: $(usage)"
+        FailedToWriteFile path -> "Failed to write to file $(Path.display path), usage: $(usage)"
+        FailedToListCwd -> "Failed to list contents of current directory, usage: $(usage)"
 
-    Stderr.line "Error: \(errorMsg)"
+    Stderr.line "Error: $(errorMsg)"

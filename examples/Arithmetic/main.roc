@@ -16,7 +16,7 @@ main =
         formatResult = \(operation, result) ->
             resultStr = Num.toStr result
 
-            "\(operation): \(resultStr)"
+            "$(operation): $(resultStr)"
 
         results =
             [

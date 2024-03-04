@@ -25,7 +25,7 @@ main =
 
     when decoded.result is
         Ok record ->
-            Stdout.line "Successfully decoded image, title:\"\(record.image.title)\""
+            Stdout.line "Successfully decoded image, title:\"$(record.image.title)\""
 
         Err _ ->
             {} <- Stdout.line "Error, failed to decode image" |> Task.await
