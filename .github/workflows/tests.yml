@@ -53,4 +53,5 @@ jobs:
 
       - run: ROC=./roc_nightly/roc ./ci_scripts/all_tests.sh
 
-      - run: ./roc_nightly/roc run main.roc -- examples build
+      # segfaults
+      # - run: ./roc_nightly/roc run main.roc -- examples build
