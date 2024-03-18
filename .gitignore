@@ -17,8 +17,6 @@ examples/RandomNumbers/main
 examples/CommandLineArgs/main
 examples/Tasks/main
 examples/Tuples/main
-examples/dotnet-interop/platform/bin
-examples/dotnet-interop/platform/obj
 roc_nightly/
 
 # macOS directory attributes

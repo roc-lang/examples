@@ -20,13 +20,8 @@ public unsafe struct RocStr
     public byte* Bytes;
     public UIntPtr Len;
     public UIntPtr Capacity;
-    
-    public ReadOnlySpan<char> ToCharSpan() =>
-        Encoding.UTF8.GetString(Bytes, (int)Len.ToUInt32());
 
-    public override string ToString() 
-        => ToCharSpan().ToString();
-    
-    public static implicit operator string(RocStr rocStr) 
-        => rocStr.ToString();
+    public override string ToString() => Encoding.UTF8.GetString(Bytes, (int)Len.ToUInt32());
+
+    public static implicit operator string(RocStr rocStr) => rocStr.ToString();
 }
