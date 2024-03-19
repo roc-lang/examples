@@ -72,9 +72,8 @@ go build ./platform/main.go
 cd ../..
 expect ci_scripts/expect_scripts/GoPlatform.exp
 
-cd ./examples/DotNetPlatform
-$ROC build main.roc --lib --output ./platform/interop
-cd platform
+$ROC build ./examples/DotNetPlatform/main.roc --lib --output ./examples/DotNetPlatform/platform/interop
+cd ./examples/DotNetPlatform/platform
 dotnet publish -c Release
 cd ../../..
 expect ci_scripts/expect_scripts/DotNetPlatform.exp
