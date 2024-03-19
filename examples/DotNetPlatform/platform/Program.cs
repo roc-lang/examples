@@ -1,13 +1,30 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using static System.Console;
 using static Platform;
+
+NativeLibrary.SetDllImportResolver(Assembly.GetExecutingAssembly(), CustomResolver);
 
 WriteLine("Hello from .NET!");
 
 MainFromRoc(out var rocStr);
 
 WriteLine(rocStr);
+
+//Load native library even when the name doesn't exactly match the name of the library defined in `LibraryImport`
+//eg: `interop.so.1.0` instead of `interop.so`
+static IntPtr CustomResolver(string libraryName, Assembly assembly, DllImportSearchPath? searchPath)
+{
+    var libFile = Directory.EnumerateFiles(Directory.GetCurrentDirectory()).FirstOrDefault(e => e.Contains(libraryName));
+    
+    if (libFile != null)
+    {
+        return NativeLibrary.Load(Path.GetFileName(libFile), assembly, searchPath);
+    }
+    
+    return IntPtr.Zero;
+}
 
 public static partial class Platform
 {
