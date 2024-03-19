@@ -1,5 +1,5 @@
 app "dotnetapp"
-    packages { platform: "./platform/roc_platform.roc" }
+    packages { platform: "./platform/main.roc" }
     imports []
     provides [main] to platform
 

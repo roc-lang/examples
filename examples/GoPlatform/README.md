@@ -9,6 +9,11 @@ main.roc:
 file:main.roc
 ```
 
+platform/main.roc:
+```
+file:platform/main.roc
+```
+
 platform/go.mod:
 ```
 file:platform/go.mod
