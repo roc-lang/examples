@@ -5,7 +5,10 @@
 
 set timeout 7
 
-spawn ./examples/DotNetPlatform/platform/publish/DotNetRocPlatform
+cd "./examples/DotNetPlatform/platform/publish"
+
+spawn ./DotNetRocPlatform
+
 
 expect "Hi from roc! (in a .NET platform) 🔥🦅🔥\r\n" {
   expect eof
