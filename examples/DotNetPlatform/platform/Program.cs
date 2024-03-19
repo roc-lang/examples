@@ -16,13 +16,15 @@ WriteLine(rocStr);
 //eg: `interop.so.1.0` instead of `interop.so`
 static IntPtr CustomResolver(string libraryName, Assembly assembly, DllImportSearchPath? searchPath)
 {
-    var libFile = Directory.EnumerateFiles(Directory.GetCurrentDirectory()).FirstOrDefault(e => e.Contains(libraryName));
-    
+    var libFile = Directory
+        .EnumerateFiles(Directory.GetCurrentDirectory())
+        .FirstOrDefault(e => e.Contains(libraryName));
+
     if (libFile != null)
     {
-        return NativeLibrary.Load(Path.GetFileName(libFile), assembly, searchPath);
+        return NativeLibrary.Load(libFile, assembly, searchPath);
     }
-    
+
     return IntPtr.Zero;
 }
 
