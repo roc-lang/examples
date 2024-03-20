@@ -71,3 +71,6 @@ cd ./examples/GoPlatform
 go build ./platform/main.go
 cd ../..
 expect ci_scripts/expect_scripts/GoPlatform.exp
+
+$ROC build ./examples/DotNetPlatform/main.roc --lib --output ./examples/DotNetPlatform/platform/interop
+expect ci_scripts/expect_scripts/DotNetPlatform.exp

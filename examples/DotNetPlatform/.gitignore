@@ -1,0 +1,6 @@
+# publish and debug artifacts
+bin
+obj
+platform/publish
+
+interop.*

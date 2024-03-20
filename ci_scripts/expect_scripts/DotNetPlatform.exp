@@ -1,0 +1,20 @@
+#!/usr/bin/expect
+
+# uncomment line below for debugging
+# exp_internal 1
+
+set timeout 25
+
+cd "./examples/DotNetPlatform/platform/"
+
+spawn dotnet run
+
+expect "Hello from .NET!\r\n" {
+  expect "Hi from roc! (in a .NET platform) 🔥🦅🔥\r\n" {
+    expect eof
+    exit 0
+  }
+}
+
+puts stderr "\nError: output was different from expected value."
+exit 1
