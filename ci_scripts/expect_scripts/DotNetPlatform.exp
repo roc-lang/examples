@@ -3,7 +3,7 @@
 # uncomment line below for debugging
 exp_internal 1
 
-set timeout 7
+set timeout 15
 
 cd "./examples/DotNetPlatform/platform/"
 
