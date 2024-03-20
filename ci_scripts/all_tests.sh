@@ -73,10 +73,4 @@ cd ../..
 expect ci_scripts/expect_scripts/GoPlatform.exp
 
 $ROC build ./examples/DotNetPlatform/main.roc --lib --output ./examples/DotNetPlatform/platform/interop
-cd ./examples/DotNetPlatform/platform
-dotnet publish -c Release -o ./publish
-sudo apt-get install -y tree
-sudo apt-get install -y libc6
-tree .
-cd ../../..
 expect ci_scripts/expect_scripts/DotNetPlatform.exp

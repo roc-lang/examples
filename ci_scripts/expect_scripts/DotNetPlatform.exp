@@ -5,14 +5,15 @@
 
 set timeout 7
 
-cd "./examples/DotNetPlatform/platform/publish"
+cd "./examples/DotNetPlatform/platform/"
 
-spawn ./DotNetRocPlatform
+spawn dotnet run
 
-
-expect "Hi from roc! (in a .NET platform) 🔥🦅🔥\r\n" {
-  expect eof
-  exit 0
+expect "Hello from .NET!\r\n" {
+  expect "Hi from roc! (in a .NET platform) 🔥🦅🔥\r\n" {
+    expect eof
+    exit 0
+  }
 }
 
 puts stderr "\nError: output was different from expected value."
