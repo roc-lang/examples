@@ -76,6 +76,7 @@ $ROC build ./examples/DotNetPlatform/main.roc --lib --output ./examples/DotNetPl
 cd ./examples/DotNetPlatform/platform
 dotnet publish -c Release -o ./publish
 sudo apt-get install -y tree
+sudo apt-get install -y libc6
 tree .
 cd ../../..
 expect ci_scripts/expect_scripts/DotNetPlatform.exp
