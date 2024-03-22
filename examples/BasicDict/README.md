@@ -29,7 +29,7 @@ The type of the key must implement the `Hash` and `Eq` abilities.
 Nearly all Roc builtin types (`Str`, `Bool`, `List`, `Int *`,...) implement these.
 
 If you are defining an [opaque type](https://www.roc-lang.org/tutorial#opaque-types), adding `implements [Hash, Eq]` is all you need to be able to use it as a key:
-```
+```roc
 Username := Str implements [Hash, Eq]
 ```
 
