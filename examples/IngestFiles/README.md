@@ -1,6 +1,6 @@
 # Ingest Files
 
-Statically importing files as a `Str` or a `List U8`.
+Statically importing files as a `Str` or a `List U8`:
 
 ```roc
 imports [

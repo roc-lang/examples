@@ -10,7 +10,7 @@ file:main.roc
 ```
 
 platform/main.roc:
-```
+```roc
 file:platform/main.roc
 ```
 
@@ -25,7 +25,7 @@ file:platform/main.go
 ```
 
 platform/host.h:
-```
+```c
 file:platform/host.h
 ```
 
@@ -38,9 +38,9 @@ For now, the compiled Roc binary and the go binary have to be manualy [linked](h
 Build steps:
 
 ```bash
-cd examples/GoPlatform
-roc build --no-link main.roc
-go build platform/main.go
+$ cd examples/GoPlatform
+$ roc build --no-link main.roc
+$ go build platform/main.go
 ```
 
 Run the produced executable with `./main`.
