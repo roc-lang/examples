@@ -32,15 +32,31 @@ file:platform/host.h
 ## Build Instructions
 
 The Roc compiler can't build a go platform by itself. [In the
-future](https://roc.zulipchat.com/#narrow/stream/304641-ideas/topic/Platform.20host.20build.20process) there will be a way for a platform to define the build process.
-For now, the compiled Roc binary and the go binary have to be manualy [linked](https://en.wikipedia.org/wiki/Linker_(computing)).
+future](https://github.com/roc-lang/roc/issues/6414) there will be a way for a
+platform to define the build process.
+
+### Preprocess host
+
+First, an example roc application has to be build as libary. Then the platform
+has to be compiled to a file called `dynhost`. As last step, two files for the
+surgical linker have to be generated.
+
+This method uses [zig](https://ziglang.org/) as the c compiler used by go.
 
 Build steps:
-
-```bash
-$ cd examples/GoPlatform
-$ roc build --no-link main.roc
-$ go build platform/main.go
+```
+roc build --lib main.roc --output platform/libapp.so
+CC="zig cc" go build -C platform -buildmode=pie -o dynhost
+roc preprocess-host main.roc
 ```
 
-Run the produced executable with `./main`.
+To build and run the final binary, use: `roc run --prebuilt-platform`
+
+
+### Publish the platform
+
+To publish the platform, call: `roc build --bundle .tar.br platform/main.roc`.
+
+The created `tar.br`-file can be published on a https-server. Afterwards, the
+platform can be used from that server without the `--prebuilt-platform`
+argument. roc uses `prebuilt-platform` automaticly, on non local platforms.

@@ -1,7 +1,7 @@
 package main
 
 /*
-#cgo LDFLAGS: ./main.o -ldl
+#cgo LDFLAGS: -L. -lapp
 #include "./host.h"
 */
 import "C"

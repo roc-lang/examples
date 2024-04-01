@@ -66,10 +66,10 @@ $ROC test ./examples/BasicDict/BasicDict.roc
 $ROC build ./examples/MultipleRocFiles/main.roc
 expect ci_scripts/expect_scripts/MultipleRocFiles.exp
 
-$ROC build --no-link ./examples/GoPlatform/main.roc
-cd ./examples/GoPlatform
-go build ./platform/main.go
-cd ../..
+$ROC build --lib ./examples/GoPlatform/main.roc --output examples/GoPlatform/platform/libapp.so
+CC="zig cc" go build -C examples/GoPlatform/platform -buildmode=pie -o dynhost
+$ROC preprocess-host ./examples/GoPlatform/main.roc
+$ROC build --prebuilt-platform ./examples/GoPlatform/main.roc
 expect ci_scripts/expect_scripts/GoPlatform.exp
 
 $ROC build ./examples/DotNetPlatform/main.roc --lib --output ./examples/DotNetPlatform/platform/interop
