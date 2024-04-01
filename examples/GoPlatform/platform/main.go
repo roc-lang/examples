@@ -8,6 +8,7 @@ import "C"
 
 import (
 	"fmt"
+	"os"
 	"unsafe"
 )
 
@@ -53,4 +54,17 @@ func roc_realloc(ptr unsafe.Pointer, newSize, _ C.ulong, alignment int) unsafe.P
 //export roc_dealloc
 func roc_dealloc(ptr unsafe.Pointer, alignment int) {
 	C.free(ptr)
+}
+
+//export roc_dbg
+func roc_dbg(loc *C.struct_RocStr, msg *C.struct_RocStr, src *C.struct_RocStr) {
+	locStr := rocStrRead(*loc)
+	msgStr := rocStrRead(*msg)
+	srcStr := rocStrRead(*src)
+
+	if srcStr == msgStr {
+		fmt.Fprintf(os.Stderr, "[%s] {%s}\n", locStr, msgStr)
+	} else {
+		fmt.Fprintf(os.Stderr, "[%s] {%s} = {%s}\n", locStr, srcStr, msgStr)
+	}
 }
