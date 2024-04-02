@@ -67,7 +67,7 @@ $ROC build ./examples/MultipleRocFiles/main.roc
 expect ci_scripts/expect_scripts/MultipleRocFiles.exp
 
 $ROC build --lib ./examples/GoPlatform/main.roc --output examples/GoPlatform/platform/libapp.so
-CC="zig cc" go build -C examples/GoPlatform/platform -buildmode=pie -o dynhost
+go build -C examples/GoPlatform/platform -buildmode=pie -o dynhost
 $ROC preprocess-host ./examples/GoPlatform/main.roc
 $ROC build --prebuilt-platform ./examples/GoPlatform/main.roc
 expect ci_scripts/expect_scripts/GoPlatform.exp

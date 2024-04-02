@@ -31,32 +31,53 @@ file:platform/host.h
 
 ## Build Instructions
 
-The Roc compiler can't build a go platform by itself. [In the
-future](https://github.com/roc-lang/roc/issues/6414) there will be a way for a
-platform to define the build process.
+The Roc compiler can't build a go platform by itself so we have to execute some commands manually. [In the future](https://github.com/roc-lang/roc/issues/6414) there will be a standardized way for a platform to define the build process.
 
-### Preprocess host
-
-First, an example roc application has to be build as libary. Then the platform
-has to be compiled to a file called `dynhost`. As last step, two files for the
-surgical linker have to be generated.
-
-This method uses [zig](https://ziglang.org/) as the c compiler used by go.
-
-Build steps:
-```
-roc build --lib main.roc --output platform/libapp.so
-CC="zig cc" go build -C platform -buildmode=pie -o dynhost
-roc preprocess-host main.roc
+1. Let's make sure we're in the right directory:
+```bash
+$ cd examples/GoPlatform
 ```
 
-To build and run the final binary, use: `roc run --prebuilt-platform`
+2. We turn our Roc app into a library so go can use it:
+```bash
+$ roc build --lib main.roc --output platform/libapp.so
+```
+
+3. We build a go package using the platform directory. `pie` is used to create a [Position Independent Executable](https://en.wikipedia.org/wiki/Position-independent_code). Roc expects a file called dynhost so that's what we'll provide.
+```bash
+$ go build -C platform -buildmode=pie -o dynhost
+```
+
+4. We use the subcommand `preprocess-host` to make the surgical linker preprocessor generate `.rh` and `.rm` files.
+```bash
+$ roc preprocess-host main.roc
+```
+
+5. With our platform built we can run our app:
+```bash
+$ roc run --prebuilt-platform
+```
 
 
-### Publish the platform
+## Publish the platform
 
-To publish the platform, call: `roc build --bundle .tar.br platform/main.roc`.
+1. Make sure you've [built the platform first](#build-instructions).
 
-The created `tar.br`-file can be published on a https-server. Afterwards, the
-platform can be used from that server without the `--prebuilt-platform`
-argument. roc uses `prebuilt-platform` automaticly, on non local platforms.
+2. We'll create a compressed archive of our platform so anyone can use it easily. You can use `tar.br` for maximal compression or `tar.gz` if you're in a hurry:
+```bash
+$ roc build --bundle .tar.br platform/main.roc
+```
+
+3. Put the created `tar.br` on a server. You can use github releases like we do with [basic-cli](https://github.com/roc-lang/basic-cli/releases).
+
+4. Now you can use the platform from inside a Roc file with:
+```roc
+app "goUsingRocApp"
+    packages { pf: "YOUR_URL" }
+    imports []
+    provides [main] to pf
+```
+
+When running with a platform from a URL, the `--prebuilt-platform` flag is not needed.
+
+‼ This build procedure only builds the platform for your kind of operating system and architecture. If you want to support users on all Roc supported operating systems and architectures, you'll need [this kind of setup](https://github.com/roc-lang/roc/blob/main/.github/workflows/basic_cli_build_release.yml).
