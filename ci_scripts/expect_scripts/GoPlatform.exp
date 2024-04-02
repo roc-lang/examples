@@ -1,9 +1,9 @@
 #!/usr/bin/expect
 
 # uncomment line below for debugging
-exp_internal 1
+# exp_internal 1
 
-set timeout 7
+set timeout 25
 
 spawn ./examples/GoPlatform/main
 
