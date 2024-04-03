@@ -71,6 +71,7 @@ go build -C examples/GoPlatform/platform -buildmode=pie -o dynhost
 $ROC preprocess-host ./examples/GoPlatform/main.roc
 $ROC build --prebuilt-platform ./examples/GoPlatform/main.roc
 # temp for debugging
+sudo apt install -y valgrind
 valgrind ./examples/GoPlatform/main
 expect ci_scripts/expect_scripts/GoPlatform.exp
 
