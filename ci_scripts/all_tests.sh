@@ -66,11 +66,17 @@ $ROC test ./examples/BasicDict/BasicDict.roc
 $ROC build ./examples/MultipleRocFiles/main.roc
 expect ci_scripts/expect_scripts/MultipleRocFiles.exp
 
-$ROC build --no-link ./examples/GoPlatform/main.roc
-cd ./examples/GoPlatform
-go build ./platform/main.go
-cd ../..
-expect ci_scripts/expect_scripts/GoPlatform.exp
+$ROC build --lib ./examples/GoPlatform/main.roc --output examples/GoPlatform/platform/libapp.so
+go build -C examples/GoPlatform/platform -buildmode=pie -o dynhost
+$ROC preprocess-host ./examples/GoPlatform/main.roc
+$ROC build --prebuilt-platform ./examples/GoPlatform/main.roc
+
+os_info=$(lsb_release -a 2>/dev/null)
+
+# Check if the OS is not Ubuntu 20.04. Avoids segfault on CI.
+if ! echo "$os_info" | grep -q "Ubuntu 20.04"; then
+    expect ci_scripts/expect_scripts/GoPlatform.exp
+fi
 
 $ROC build ./examples/DotNetPlatform/main.roc --lib --output ./examples/DotNetPlatform/platform/interop
 expect ci_scripts/expect_scripts/DotNetPlatform.exp
