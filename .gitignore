@@ -17,6 +17,7 @@ examples/RandomNumbers/main
 examples/CommandLineArgs/main
 examples/Tasks/main
 examples/Tuples/main
+examples/EncodeDecode/main
 roc_nightly/
 
 # macOS directory attributes

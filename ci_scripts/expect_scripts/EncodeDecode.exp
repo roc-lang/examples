@@ -1,0 +1,16 @@
+#!/usr/bin/expect
+
+# uncomment line below for debugging
+# exp_internal 1
+
+set timeout 7
+
+spawn ./examples/EncodeDecode/main
+
+expect "(@ItemKind Text)\r\n(@ItemKind Method)\r\n(@ItemKind Function)\r\n(@ItemKind Constructor)\r\n(@ItemKind Field)\r\n(@ItemKind Variable)\r\n(@ItemKind Class)\r\n(@ItemKind Interface)\r\n(@ItemKind Module)\r\n" {
+  expect eof
+  exit 0
+}
+
+puts stderr "\nError: output was different from expected value."
+exit 1

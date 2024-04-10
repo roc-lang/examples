@@ -25,6 +25,7 @@ You can find the source code for all of these at [github.com/roc-lang/examples](
 - [Multi-line Comments](/MultiLineComments/README.html)
 - [Go Platform](/GoPlatform/README.html)
 - [.NET Platform](/DotNetPlatform/README.html)
+- [Encoding & Decoding Abilities](/EncodeDecode/README.html)
 
 ## External examples
 
