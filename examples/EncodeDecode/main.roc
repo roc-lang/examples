@@ -3,7 +3,12 @@ app "example"
         pf: "https://github.com/roc-lang/basic-cli/releases/download/0.8.1/x8URkvfyi9I0QhmVG98roKBUs_AZRkLFwFJVJ3942YA.tar.br",
         json: "https://github.com/lukewilliamboswell/roc-json/releases/download/0.6.3/_2Dh4Eju2v_tFtZeMq8aZ9qw2outG04NbkmKpFhXS_4.tar.br",
     }
-    imports [pf.Stdout.{ line }, json.Core.{ json }]
+    imports [
+        pf.Stdout.{ line },
+        json.Core.{ json },
+        Decode.{ Decoder, DecoderFormatting, DecodeResult, DecodeError },
+        Encode.{ Encoder, EncoderFormatting },
+    ]
     provides [main] to pf
 
 ### start snippet impl
@@ -18,6 +23,7 @@ ItemKind := [
     Class,
     Interface,
     Module,
+    Property,
 ]
     implements [
         Decoding { decoder: decodeItems },
@@ -26,44 +32,48 @@ ItemKind := [
         Eq,
     ]
 
-decodeItems : Decoder ItemKind fmt
-decodeItems = Decode.custom \bytes, _ ->
+tryMapResult : DecodeResult U32, (U32 -> Result ItemKind DecodeError) -> DecodeResult ItemKind
+tryMapResult = \decoded, mapper ->
+    when decoded.result is
+        Err e -> { result: Err e, rest: decoded.rest }
+        Ok res -> { result: mapper res, rest: decoded.rest }
 
-    # helper to convert our tag to a DecodeResult
-    ok : _, List U8 -> DecodeResult ItemKind
-    ok = \tag, rest -> { result: Ok (@ItemKind tag), rest }
+decodeItems : Decoder ItemKind fmt where fmt implements DecoderFormatting
+decodeItems = Decode.custom \bytes, fmt ->
+    # Helper function to wrap our tag
+    ok = \tag -> Ok (@ItemKind tag)
 
-    when bytes is
-        ['1', .. as rest] -> ok Text rest
-        ['2', .. as rest] -> ok Method rest
-        ['3', .. as rest] -> ok Function rest
-        ['4', .. as rest] -> ok Constructor rest
-        ['5', .. as rest] -> ok Field rest
-        ['6', .. as rest] -> ok Variable rest
-        ['7', .. as rest] -> ok Class rest
-        ['8', .. as rest] -> ok Interface rest
-        ['9', .. as rest] -> ok Module rest
-        _ -> { result: Err TooShort, rest: bytes }
+    bytes
+    |> Decode.fromBytesPartial fmt
+    |> tryMapResult \val ->
+        when val is
+            1 -> ok Text
+            2 -> ok Method
+            3 -> ok Function
+            4 -> ok Constructor
+            5 -> ok Field
+            6 -> ok Variable
+            7 -> ok Class
+            8 -> ok Interface
+            9 -> ok Module
+            10 -> ok Property
+            _ -> Err TooShort
 
-encodeItems : ItemKind -> Encoder fmt
-encodeItems = \@ItemKind tag ->
-
-    Encode.custom \bytes, _ ->
-
-        # helper to append our encoded byte
-        append : U8 -> List U8
-        append = \u8 -> List.append bytes u8
-
-        when tag is
-            Text -> append '1'
-            Method -> append '2'
-            Function -> append '3'
-            Constructor -> append '4'
-            Field -> append '5'
-            Variable -> append '6'
-            Class -> append '7'
-            Interface -> append '8'
-            Module -> append '9'
+encodeItems : ItemKind -> Encoder fmt where fmt implements EncoderFormatting
+encodeItems = \@ItemKind val ->
+    num =
+        when val is
+            Text -> 1
+            Method -> 2
+            Function -> 3
+            Constructor -> 4
+            Field -> 5
+            Variable -> 6
+            Class -> 7
+            Interface -> 8
+            Module -> 9
+            Property -> 10
+    Encode.u32 num
 
 ### end snippet impl
 
@@ -81,6 +91,7 @@ originalList = [
     @ItemKind Class,
     @ItemKind Interface,
     @ItemKind Module,
+    @ItemKind Property,
 ]
 
 # encode them into JSON
@@ -92,7 +103,7 @@ expect encodedBytes == originalBytes
 
 # take a JSON encoded list
 originalBytes : List U8
-originalBytes = "[1,2,3,4,5,6,7,8,9]" |> Str.toUtf8
+originalBytes = "[1,2,3,4,5,6,7,8,9,10]" |> Str.toUtf8
 
 # decode into a list of ItemKind's
 decodedList : List ItemKind
