@@ -80,8 +80,8 @@ fetchHtml : Str -> Task Str [FailedToFetchHtml Str]_
 fetchHtml = \url ->
     { Http.defaultRequest & url } 
     |> Http.send 
-    |> Task.onErr \err ->
-        Task.err (FailedToFetchHtml (Http.errorToString err)) 
+    |> Task.await \resp -> resp |> Http.handleStringResponse |> Task.fromResult
+    |> Task.onErr \err -> Task.err (FailedToFetchHtml (Http.errorToString err))
 
 listCwdContent : Task (List Path) [FailedToListCwd]_
 listCwdContent = 
