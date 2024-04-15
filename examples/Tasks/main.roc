@@ -1,6 +1,6 @@
 app "task-usage"
     packages { 
-        pf: "https://github.com/roc-lang/basic-cli/releases/download/0.8.1/x8URkvfyi9I0QhmVG98roKBUs_AZRkLFwFJVJ3942YA.tar.br"
+        pf: "https://github.com/roc-lang/basic-cli/releases/download/0.9.0/oKWkaruh2zXxin_xfsYsCJobH1tO8_JvNkFzDwwzNUQ.tar.br"
     }
     imports [ pf.Stdout, pf.Stderr, pf.Arg, pf.Env, pf.Http, pf.Dir, pf.Utc, pf.File, pf.Path.{ Path }, pf.Task.{ Task } ]
     provides [ main ] to pf
@@ -80,8 +80,8 @@ fetchHtml : Str -> Task Str [FailedToFetchHtml Str]_
 fetchHtml = \url ->
     { Http.defaultRequest & url } 
     |> Http.send 
-    |> Task.onErr \err ->
-        Task.err (FailedToFetchHtml (Http.errorToString err)) 
+    |> Task.await \resp -> resp |> Http.handleStringResponse |> Task.fromResult
+    |> Task.onErr \err -> Task.err (FailedToFetchHtml (Http.errorToString err))
 
 listCwdContent : Task (List Path) [FailedToListCwd]_
 listCwdContent = 

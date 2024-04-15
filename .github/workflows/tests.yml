@@ -15,14 +15,23 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Get the archive from the url.
-        run: curl -fOL https://github.com/roc-lang/roc/releases/download/nightly/roc_nightly-linux_x86_64-latest.tar.gz
+      - id: try_fetching_testing_release
+        continue-on-error: true
+        run: |
+          curl -fOL https://github.com/roc-lang/roc/releases/download/nightly/roc_nightly-linux_x86_64-TESTING.tar.gz
+    
+      - name: There are no TESTING releases, checking regular releases instead
+        if: steps.try_fetching_testing_release.outcome == 'failure'
+        run: |
+          curl -fOL https://github.com/roc-lang/roc/releases/download/nightly/roc_nightly-linux_x86_64-latest.tar.gz
 
-      - name: extract nightly roc tar
-        run: tar -xf roc_nightly-linux_x86_64-latest.tar.gz
-
-      - name: delete tar
-        run: rm roc_nightly-linux_x86_64-latest.tar.gz
+      - name: rename nightly tar
+        run: mv $(ls | grep "roc_nightly.*tar\.gz") roc_nightly.tar.gz
+  
+      - name: decompress the tar
+        run: tar -xzf roc_nightly.tar.gz
+  
+      - run: rm roc_nightly.tar.gz
 
       - name: simplify nightly folder name
         run: mv roc_nightly* roc_nightly
