@@ -83,6 +83,8 @@ With our `Task.await` chain we can deal with errors at the end so it doesn't int
 
 The underscore (`_`) at the end of `[FailedToReadArgs]` is a temporary workaround for [an issue](https://github.com/roc-lang/roc/issues/5660).
 
+Note: running the formatter on the `readArgs` implementation currently results in a [parser issue](https://github.com/roc-lang/roc/issues/6074), so skip formatting as a temporary workaround until it's fixed.
+
 ### Fetch website content
 
 We'll use the `url` we obtained in the previous step and retrieve its contents:
