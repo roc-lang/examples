@@ -1,6 +1,6 @@
 app "task-usage"
     packages {
-        pf: "https://github.com/roc-lang/basic-cli/releases/download/0.9.0/oKWkaruh2zXxin_xfsYsCJobH1tO8_JvNkFzDwwzNUQ.tar.br",
+        pf: "https://github.com/roc-lang/basic-cli/releases/download/0.9.1/y_Ww7a2_ZGjp0ZTt9Y_pNdSqqMRdMLzHMKfdN8LWidk.tar.br",
     }
     imports [pf.Stdin, pf.Stdout, pf.Stderr, pf.Task.{ Task }]
     provides [main] to pf

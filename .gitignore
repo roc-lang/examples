@@ -22,3 +22,5 @@ roc_nightly/
 
 # macOS directory attributes
 .DS_Store
+
+roc.html
