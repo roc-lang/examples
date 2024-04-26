@@ -1,10 +1,11 @@
 app "random-numbers"
     packages {
-        pf: "https://github.com/roc-lang/basic-cli/releases/download/0.9.1/y_Ww7a2_ZGjp0ZTt9Y_pNdSqqMRdMLzHMKfdN8LWidk.tar.br",
+        pf: "../../../basic-cli/platform/main.roc",
         rand: "https://github.com/lukewilliamboswell/roc-random/releases/download/0.0.1/x_XwrgehcQI4KukXligrAkWTavqDAdE5jGamURpaX-M.tar.br",
     }
     imports [
         pf.Stdout,
+        pf.Task,
         rand.Random,
     ]
     provides [main] to pf
@@ -27,7 +28,7 @@ main =
         |> List.map Num.toStr
         |> Str.joinWith ","
 
-    Stdout.line "Random numbers are: $(numbersListStr)"
+    Stdout.line! "Random numbers are: $(numbersListStr)"
 
 # Generate a list of numbers using the seed and generator provided
 # This is NOT cryptograhpically secure!

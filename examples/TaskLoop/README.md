@@ -32,7 +32,7 @@ I64 -> Task [Done I64, Step I64] [NotNum Str]
 This is where the action happens:
 ```roc
 addNumberFromStdin = \sum ->
-    input <- Stdin.line |> Task.await
+    input = Stdin.line!
 
     addResult =
         when input is

@@ -1,10 +1,11 @@
 app "parser-basic"
     packages {
-        cli: "https://github.com/roc-lang/basic-cli/releases/download/0.9.1/y_Ww7a2_ZGjp0ZTt9Y_pNdSqqMRdMLzHMKfdN8LWidk.tar.br",
+        cli: "../../../basic-cli/platform/main.roc",
         parser: "https://github.com/lukewilliamboswell/roc-parser/releases/download/0.5.2/9VrPjwfQQ1QeSL3CfmWr2Pr9DESdDIXy97pwpuq84Ck.tar.br",
     }
     imports [
         cli.Stdout,
+        cli.Task,
         parser.Core.{ Parser, many, oneOf, map },
         parser.String.{ parseStr, codeunit, anyCodeunit },
     ]
@@ -16,7 +17,7 @@ main =
     |> Result.map countLetterAs
     |> Result.map \count -> "I counted $(count) letter A's!"
     |> Result.withDefault "Ooops, something went wrong parsing"
-    |> Stdout.line
+    |> Stdout.line!
 
 Letter : [A, B, C, Other]
 

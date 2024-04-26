@@ -1,5 +1,5 @@
 app "arithmetic"
-    packages { pf: "https://github.com/roc-lang/basic-cli/releases/download/0.9.1/y_Ww7a2_ZGjp0ZTt9Y_pNdSqqMRdMLzHMKfdN8LWidk.tar.br" }
+    packages { pf: "../../../basic-cli/platform/main.roc" }
     imports [
         pf.Stdout,
         pf.Task,
@@ -11,7 +11,7 @@ TaskErrors : [InvalidArg, InvalidNumStr]
 
 main =
     task =
-        args <- readArgs |> Task.await
+        args = readArgs!
 
         formatResult = \(operation, result) ->
             resultStr = Num.toStr result
@@ -36,15 +36,8 @@ main =
 
     when taskResult is
         Ok result -> Stdout.line result
-        Err InvalidArg ->
-            {} <- Stdout.line "Error: Please provide two integers between -1000 and 1000 as arguments." |> Task.await
-
-            Task.err 1 # 1 is an exit code to indicate failure
-
-        Err InvalidNumStr ->
-            {} <- Stdout.line "Error: Invalid number format. Please provide integers between -1000 and 1000." |> Task.await
-
-            Task.err 1 # 1 is an exit code to indicate failure
+        Err InvalidArg -> Task.err (Exit 1 "Error: Please provide two integers between -1000 and 1000 as arguments.")
+        Err InvalidNumStr -> Task.err (Exit 1 "Error: Invalid number format. Please provide integers between -1000 and 1000.")
 
 ## Reads two command-line arguments, attempts to parse them as `I32` numbers,
 ## and returns a task containing a record with two fields, `a` and `b`, holding
@@ -56,17 +49,19 @@ main =
 ## error `InvalidArg` or `InvalidNumStr`.
 readArgs : Task.Task { a : I32, b : I32 } TaskErrors
 readArgs =
-    Arg.list
-    |> Task.mapErr \_ -> InvalidArg
-    |> Task.await \args ->
-        aResult = List.get args 1 |> Result.try Str.toI32
-        bResult = List.get args 2 |> Result.try Str.toI32
 
-        when (aResult, bResult) is
-            (Ok a, Ok b) ->
-                if a < -1000 || a > 1000 || b < -1000 || b > 1000 then
-                    Task.err InvalidNumStr
-                else
-                    Task.ok { a, b }
+    args = 
+        Arg.list
+        |> Task.mapErr! \_ -> InvalidArg
 
-            _ -> Task.err InvalidNumStr
+    aResult = List.get args 1 |> Result.try Str.toI32
+    bResult = List.get args 2 |> Result.try Str.toI32
+
+    when (aResult, bResult) is
+        (Ok a, Ok b) ->
+            if a < -1000 || a > 1000 || b < -1000 || b > 1000 then
+                Task.err InvalidNumStr
+            else
+                Task.ok { a, b }
+
+        _ -> Task.err InvalidNumStr

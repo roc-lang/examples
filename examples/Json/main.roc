@@ -1,6 +1,6 @@
 app "json-basic"
     packages {
-        cli: "https://github.com/roc-lang/basic-cli/releases/download/0.9.1/y_Ww7a2_ZGjp0ZTt9Y_pNdSqqMRdMLzHMKfdN8LWidk.tar.br",
+        cli: "../../../basic-cli/platform/main.roc",
         json: "https://github.com/lukewilliamboswell/roc-json/releases/download/0.7.0/xuaMzXRVG_SEhOFZucS3iBozlRdObWsfKaYZMHVE_q0.tar.br",
     }
     imports [
@@ -24,13 +24,8 @@ main =
     decoded = fromBytesPartial requestBody decoder
 
     when decoded.result is
-        Ok record ->
-            Stdout.line "Successfully decoded image, title:\"$(record.image.title)\""
-
-        Err _ ->
-            {} <- Stdout.line "Error, failed to decode image" |> Task.await
-
-            Task.err 1 # 1 is an exit code to indicate failure
+        Ok record -> Stdout.line "Successfully decoded image, title:\"$(record.image.title)\""
+        Err _ -> Task.err (Exit 1 "Error, failed to decode image")
 
 ImageRequest : {
     image : {
