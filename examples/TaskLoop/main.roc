@@ -11,7 +11,8 @@ run : Task {} _
 run =
     Stdout.line! "Enter some numbers on different lines, then press Ctrl-D to sum them up."
 
-    sum = Task.loop! 0 addNumberFromStdin
+    startNum = 0
+    sum = Task.loop! startNum addNumberFromStdin
 
     Stdout.line! "Sum: $(Num.toStr sum)"
 

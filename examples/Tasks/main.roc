@@ -15,11 +15,15 @@ run =
     startTime = Utc.now!
 
     # Read the HELLO environment variable
-    helloEnvVar = 
+    helloEnvVarStateStr = 
         readEnvVar "HELLO"
-        |> Task.map! \msg -> if Str.isEmpty msg then "was empty" else "was set to $(msg)"
+        |> Task.map! \envVarStr ->
+            if Str.isEmpty envVarStr then
+                "HELLO env var was empty."
+            else
+                "HELLO env var was set to $(envVarStr)."
 
-    Stdout.line! "HELLO env var $(helloEnvVar)"
+    Stdout.line! helloEnvVarStateStr
     
     # Read command line arguments
     { url, outputPath } = readArgs!
