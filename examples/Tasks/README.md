@@ -37,19 +37,19 @@ This simplifies error handling so that a single `handleErr` function can be used
 We want to see how fast our app runs, so we'll start our `run` `Task` by getting the current time.
 
 ```roc
-startTime <- Utc.now |> Task.await
+startTime = Utc.now!
 ```
 
 To get the current time, we need to interact with state outside of the roc program.
 We can not just calculate the current time, so we use a task, `Utc.now`.
-It's type is `Task Utc *`. The task resolves to the [UTC time](https://en.wikipedia.org/wiki/Coordinated_Universal_Time) (since [Epoch](https://en.wikipedia.org/wiki/Unix_time)). `Task.await` allows us to chain tasks. We use this common [backpassing pattern](https://www.roc-lang.org/tutorial#backpassing) `... <- ... |> ...`  to make it look similar to `startTime = Utc.now` for readability.
+It's type is `Task Utc *`. The task resolves to the [UTC time](https://en.wikipedia.org/wiki/Coordinated_Universal_Time) (since [Epoch](https://en.wikipedia.org/wiki/Unix_time)).
 
 #### Read an environment variable
 
 Next up in the task chain we'll read the environment variable `HELLO`:
 
 ```roc
-helloEnvVar <- readEnvVar "HELLO" |> Task.await
+helloEnvVar = readEnvVar! "HELLO"
 
 # …
 
@@ -58,12 +58,8 @@ readEnvVar : Str -> Task Str *
 And print it (to [stdout](https://en.wikipedia.org/wiki/Standard_streams)):
 
 ```roc
-{} <- Stdout.line "HELLO env var was set to $(helloEnvVar)" |> Task.await
+Stdout.line! "HELLO env var was set to $(helloEnvVar)"
 ```
-
-The `{} <- ` looks different then the previous steps of the chain, that's because the type of `Stdout.line` is `Str -> Task {} *`. The `Task` resolves to nothing (= the empty record) upon success.
-You can't just do `Stdout.line "HELLO env var was set to $(helloEnvVar)"` without `{} <- ... |> Task.await` like you could in other languages. By keeping it in the task chain we know which roc code is pure (no [side-effects](https://en.wikipedia.org/wiki/Side_effect_(computer_science))) and which isn't, which comes with [a lot of benefits](https://chat.openai.com/share/8cff0cbb-a4a3-4b4f-9ddf-8824ac5809ec)!
-
 
 ### Command line arguments
 
@@ -71,7 +67,7 @@ You can't just do `Stdout.line "HELLO env var was set to $(helloEnvVar)"` withou
 When reading command line arguments, it's nice to be able to read multiple arguments. We can use [record destructuring](https://www.roc-lang.org/tutorial#record-destructuring) to fit these multiple arguments nicely in our chain:
 
 ```roc
-{ url, outputPath } <- readArgs |> Task.await
+{ url, outputPath } = readArgs!
 
 # …
 
@@ -79,7 +75,7 @@ readArgs : Task { url: Str, outputPath: Path } [FailedToReadArgs]_
 ```
 
 Notice that `readArgs` can actually return an error unlike the previous tasks, namely `FailedToReadArgs`.
-With our `Task.await` chain we can deal with errors at the end so it doesn't interrupt the flow of our code right now.
+By using `!` syntax to chain our tasks we can deal with errors at the end so it doesn't interrupt the flow of our code right now.
 
 The underscore (`_`) at the end of `[FailedToReadArgs]` is a temporary workaround for [an issue](https://github.com/roc-lang/roc/issues/5660).
 
@@ -90,7 +86,7 @@ Note: running the formatter on the `readArgs` implementation currently results i
 We'll use the `url` we obtained in the previous step and retrieve its contents:
 
 ```roc
-strHTML <- fetchHtml url |> Task.await
+strHTML = fetchHtml! url
 ```
 
 ### Write to a file
@@ -98,30 +94,24 @@ strHTML <- fetchHtml url |> Task.await
 Next up, we'll write our strHTML to a file located at `outputPath`.
 
 ```roc
-{} <- 
-    File.writeUtf8 outputPath strHTML
-    |> Task.onErr \_ -> Task.err (FailedToWriteFile outputPath)
-    |> Task.await
+File.writeUtf8 outputPath strHTML
+|> Task.onErr! \_ -> Task.err (FailedToWriteFile outputPath)
 ```
 
-The `File.writeUtf8` task resolves to an empty record if the provided `Str` is sucessfully written, so we're using `{} <-` again.
-The error type for `writeUtf8` is `[FileWriteErr Path WriteErr]` but we'd like to replace it with our own simpler error here. For that we use `Task.onErr`.
+The `File.writeUtf8` task resolves to an empty record if the provided `Str` is sucessfully written. The error type for `writeUtf8` is `[FileWriteErr Path WriteErr]` but we'd like to replace it with our own simpler error here. For that we use `Task.onErr`.
 
 ### List the contents of a directory
 
 We're going to finish up with something more involved:
 
 ```roc
-    {} <- 
-        listCwdContent
-        |> Task.map \dirContents ->
-            List.map dirContents Path.display
-            |> Str.joinWith ","
+listCwdContent
+|> Task.map \dirContents ->
+    List.map dirContents Path.display
+    |> Str.joinWith ","
 
-        |> Task.await \contentsStr ->
-            Stdout.line "Contents of current directory: $(contentsStr)"
-
-        |> Task.await 
+|> Task.await! \contentsStr ->
+    Stdout.line "Contents of current directory: $(contentsStr)"
 
 # …
 
@@ -130,7 +120,9 @@ listCwdContent : Task (List Path) [FailedToListCwd]_
 
 We call `listCwdContent` to list all files and folders in the current directory.
 Next, we take this list of paths, turn them all into `Str` using `Path.display`, and join/concatenate this list with a ",".
+
 We use `Task.map` to transform the success value of a `Task` into something that is not a `Task`, a `Str` in this case.
+
 Take a minute to look at the similarities and differences of `Task.map` and `Task.await`:
 
 ```roc
@@ -140,8 +132,6 @@ Task.await : Task a b, (a -> Task c b) -> Task c b
 ```
 
 Next, we write our `Str` of combined `dirContents` to `Stdout`. We use `Task.await` because we're passing it a function that returns a `Task` with `Stdout.line`.
-
-We end with `|> Task.await` to complete the typical backpassing pattern.
 
 ### Feedback
 

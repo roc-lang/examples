@@ -1,114 +1,95 @@
 app "task-usage"
-    packages { 
-        pf: "https://github.com/roc-lang/basic-cli/releases/download/0.9.1/y_Ww7a2_ZGjp0ZTt9Y_pNdSqqMRdMLzHMKfdN8LWidk.tar.br"
+    packages {
+        pf: "https://github.com/roc-lang/basic-cli/releases/download/0.10.0/vNe6s9hWzoTZtFmNkvEICPErI9ptji_ySjicO6CkucY.tar.br",
     }
-    imports [ pf.Stdout, pf.Stderr, pf.Arg, pf.Env, pf.Http, pf.Dir, pf.Utc, pf.File, pf.Path.{ Path }, pf.Task.{ Task } ]
-    provides [ main ] to pf
+    imports [pf.Stdout, pf.Stderr, pf.Arg, pf.Env, pf.Http, pf.Dir, pf.Utc, pf.File, pf.Path.{ Path }, pf.Task.{ Task }]
+    provides [main] to pf
 
-run : Task {} Error
+main : Task {} _
+main = run |> Task.onErr handleErr
+
+run : Task {} _
 run =
 
     # Get time since [Unix Epoch](https://en.wikipedia.org/wiki/Unix_time)
-    startTime <- Utc.now |> Task.await
+    startTime = Utc.now!
 
     # Read the HELLO environment variable
-    helloEnvVar <- readEnvVar "HELLO" |> Task.await
+    helloEnvVar =
+        readEnvVar "HELLO"
+            |> Task.map! \msg -> if Str.isEmpty msg then "was empty" else "was set to $(msg)"
+    Stdout.line! "HELLO env var $(helloEnvVar)"
 
-    {} <- Stdout.line "HELLO env var was set to $(helloEnvVar)" |> Task.await
-    
     # Read command line arguments
-    { url, outputPath } <- readArgs |> Task.await
+    { url, outputPath } = readArgs!
+    Stdout.line! "Fetching content from $(url)..."
 
-    {} <- Stdout.line "Fetching content from $(url)..." |> Task.await
-    
     # Fetch the provided url using HTTP
-    strHTML <- fetchHtml url |> Task.await
-
-    {} <- Stdout.line "Saving url HTML to $(Path.display outputPath)..." |> Task.await
+    strHTML = fetchHtml! url
+    Stdout.line! "Saving url HTML to $(Path.display outputPath)..."
 
     # Write HTML string to a file
-    {} <- 
-       File.writeUtf8 outputPath strHTML
-       |> Task.onErr \_ -> Task.err (FailedToWriteFile outputPath)
-       |> Task.await
+    File.writeUtf8 outputPath strHTML
+        |> Task.onErr! \_ -> Task.err (FailedToWriteFile outputPath)
 
     # Print contents of current working directory
-    {} <- 
-        listCwdContent
+    listCwdContent
         |> Task.map \dirContents ->
             List.map dirContents Path.display
             |> Str.joinWith ","
-
-        |> Task.await \contentsStr ->
+        |> Task.await! \contentsStr ->
             Stdout.line "Contents of current directory: $(contentsStr)"
 
-        |> Task.await 
-    
-    endTime <- Utc.now |> Task.await
+    endTime = Utc.now!
     runTime = Utc.deltaAsMillis startTime endTime |> Num.toStr
-
-    {} <- Stdout.line "Run time: $(runTime) ms" |> Task.await
-
+    Stdout.line! "Run time: $(runTime) ms"
     # Final task doesn't need to be awaited
-    Stdout.line "Done"
+    Stdout.line! "Done"
 
 # NOTE in the future the trailing underscore `_` character will not be necessary.
-# This is a temporary workaround until [this issue](https://github.com/roc-lang/roc/issues/5660) 
+# This is a temporary workaround until [this issue](https://github.com/roc-lang/roc/issues/5660)
 # is resolved.
 
-readArgs : Task { url: Str, outputPath: Path } [FailedToReadArgs]_
+readArgs : Task { url : Str, outputPath : Path } [FailedToReadArgs]_
 readArgs =
-    args <- Arg.list |> Task.attempt
-    
-    when args is
-        Ok ([ _, first, second, .. ]) ->
+    when Arg.list! is
+        [_, first, second, ..] ->
             Task.ok { url: first, outputPath: Path.fromStr second }
+
         _ ->
             Task.err FailedToReadArgs
 
-readEnvVar : Str -> Task Str *
+readEnvVar : Str -> Task Str []_
 readEnvVar = \envVarName ->
-    envVarResult <- Env.var envVarName |> Task.attempt
-
-    when envVarResult is
+    when Env.var envVarName |> Task.result! is
         Ok envVarStr if !(Str.isEmpty envVarStr) ->
             Task.ok envVarStr
+
         _ ->
             Task.ok ""
 
-fetchHtml : Str -> Task Str [FailedToFetchHtml Str]_
+fetchHtml : Str -> Task Str [FailedToFetchHtml _]_
 fetchHtml = \url ->
-    { Http.defaultRequest & url } 
-    |> Http.send 
+    { Http.defaultRequest & url }
+    |> Http.send
     |> Task.await \resp -> resp |> Http.handleStringResponse |> Task.fromResult
-    |> Task.onErr \err -> Task.err (FailedToFetchHtml (Http.errorToString err))
+    |> Task.mapErr FailedToFetchHtml
 
 listCwdContent : Task (List Path) [FailedToListCwd]_
-listCwdContent = 
+listCwdContent =
     Path.fromStr "."
     |> Dir.list
     |> Task.onErr \_ -> Task.err FailedToListCwd
 
-main : Task {} *
-main =
-    run
-    |> Task.onErr handleErr
-
-Error : [
-    FailedToReadArgs,
-    FailedToFetchHtml Str,
-    FailedToWriteFile Path,
-    FailedToListCwd,
-]
-
-handleErr : Error -> Task {} *
+handleErr : _ -> Task {} _
 handleErr = \err ->
     usage = "HELLO=1 roc main.roc -- \"https://www.roc-lang.org\" roc.html"
 
-    errorMsg = when err is
-        FailedToReadArgs -> "Failed to read command line arguments, usage: $(usage)"
-        FailedToFetchHtml httpErr -> "Failed to fetch URL $(httpErr), usage: $(usage)"
-        FailedToWriteFile path -> "Failed to write to file $(Path.display path), usage: $(usage)"
-        FailedToListCwd -> "Failed to list contents of current directory, usage: $(usage)"
-
-    Stderr.line "Error: $(errorMsg)"
+    errorMsg =
+        when err is
+            FailedToReadArgs -> "Failed to read command line arguments, usage: $(usage)"
+            FailedToFetchHtml httpErr -> "Failed to fetch URL $(Inspect.toStr httpErr), usage: $(usage)"
+            FailedToWriteFile path -> "Failed to write to file $(Path.display path), usage: $(usage)"
+            FailedToListCwd -> "Failed to list contents of current directory, usage: $(usage)"
+            _ -> Inspect.toStr err
+    Stderr.line! "Error: $(errorMsg)"

@@ -1,43 +1,33 @@
 app "task-usage"
     packages {
-        pf: "https://github.com/roc-lang/basic-cli/releases/download/0.9.1/y_Ww7a2_ZGjp0ZTt9Y_pNdSqqMRdMLzHMKfdN8LWidk.tar.br",
+        pf: "https://github.com/roc-lang/basic-cli/releases/download/0.10.0/vNe6s9hWzoTZtFmNkvEICPErI9ptji_ySjicO6CkucY.tar.br",
     }
     imports [pf.Stdin, pf.Stdout, pf.Stderr, pf.Task.{ Task }]
     provides [main] to pf
 
-run : Task {} [NotNum Str]
+main = run |> Task.onErr printErr
+
+run : Task {} _
 run =
-    {} <- Stdout.line "Enter some numbers on different lines, then press Ctrl-D to sum them up." |> Task.await
-    sum <- Task.loop 0 addNumberFromStdin |> Task.await
+    Stdout.line! "Enter some numbers on different lines, then press Ctrl-D to sum them up."
 
-    Stdout.line "Sum: $(Num.toStr sum)"
+    sum = Task.loop! 0 addNumberFromStdin
+    Stdout.line! "Sum: $(Num.toStr sum)"
 
-addNumberFromStdin : I64 -> Task [Done I64, Step I64] [NotNum Str]
+addNumberFromStdin : I64 -> Task [Done I64, Step I64] _
 addNumberFromStdin = \sum ->
-    input <- Stdin.line |> Task.await
+    when Stdin.line |> Task.result! is
+        Ok input ->
+            when Str.toI64 input is
+                Ok num -> Task.ok (Step (sum + num))
+                Err _ -> Task.err (NotNum input)
 
-    addResult =
-        when input is
-            Input text ->
-                when Str.toI64 text is
-                    Ok num ->
-                        Ok (Step (sum + num))
+        Err (StdinErr EndOfFile) -> Task.ok (Done sum)
+        Err err -> err |> Inspect.toStr |> NotNum |> Task.err
 
-                    Err InvalidNumStr ->
-                        Err (NotNum text)
-
-            End ->
-                Ok (Done sum)
-
-    Task.fromResult addResult
-
-main =
-    run |> Task.onErr printErr
-
-printErr : [NotNum Str] -> Task {} *
+printErr : _ -> Task {} _
 printErr = \err ->
-    errorMsg =
-        when err is
-            NotNum text -> "\"$(text)\" is not a valid I64 number."
+    when err is
+        NotNum text -> Stderr.line "Error: \"$(text)\" is not a valid I64 number."
+        _ -> Stderr.line "Error: $(Inspect.toStr err)"
 
-    Stderr.line "Error: $(errorMsg)"

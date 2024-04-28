@@ -1,11 +1,10 @@
 # Run with `roc ./examples/CommandLineArgs/main.roc -- examples/CommandLineArgs/input.txt`
 app "command-line-args"
     packages {
-        pf: "https://github.com/roc-lang/basic-cli/releases/download/0.9.1/y_Ww7a2_ZGjp0ZTt9Y_pNdSqqMRdMLzHMKfdN8LWidk.tar.br",
+        pf: "https://github.com/roc-lang/basic-cli/releases/download/0.10.0/vNe6s9hWzoTZtFmNkvEICPErI9ptji_ySjicO6CkucY.tar.br",
     }
     imports [
         pf.Stdout,
-        pf.Stderr,
         pf.File,
         pf.Path,
         pf.Task,
@@ -13,11 +12,10 @@ app "command-line-args"
     ]
     provides [main] to pf
 
-main : Task.Task {} I32
 main =
     finalTask =
         # try to read the first command line argument
-        pathArg <- Task.await readFirstArgT
+        pathArg = readFirstArgT!
 
         readFileToStr (Path.fromStr pathArg)
 
@@ -25,15 +23,12 @@ main =
 
     when finalResult is
         Err ZeroArgsGiven ->
-            {} <- Stderr.line "Error ZeroArgsGiven:\n\tI expected one argument, but I got none.\n\tRun the app like this: `roc command-line-args.roc -- path/to/input.txt`" |> Task.await
-
-            Task.err 1 # 1 is an exit code to indicate failure
+            Task.err (Exit 1 "Error ZeroArgsGiven:\n\tI expected one argument, but I got none.\n\tRun the app like this: `roc command-line-args.roc -- path/to/input.txt`")
 
         Err (ReadFileErr errMsg) ->
             indentedErrMsg = indentLines errMsg
-            {} <- Stderr.line "Error ReadFileErr:\n$(indentedErrMsg)" |> Task.await
 
-            Task.err 1 # 1 is an exit code to indicate failure
+            Task.err (Exit 1 "Error ReadFileErr:\n$(indentedErrMsg)")
 
         Ok fileContentStr ->
             Stdout.line "file content: $(fileContentStr)"
@@ -42,7 +37,7 @@ main =
 readFirstArgT : Task.Task Str [ZeroArgsGiven]_
 readFirstArgT =
     # read all command line arguments
-    args <- Arg.list |> Task.await
+    args = Arg.list!
 
     # get the second argument, the first is the executable's path
     List.get args 1 |> Result.mapErr (\_ -> ZeroArgsGiven) |> Task.fromResult

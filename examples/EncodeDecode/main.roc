@@ -1,10 +1,11 @@
 app "example"
     packages {
-        pf: "https://github.com/roc-lang/basic-cli/releases/download/0.9.1/y_Ww7a2_ZGjp0ZTt9Y_pNdSqqMRdMLzHMKfdN8LWidk.tar.br",
+        pf: "https://github.com/roc-lang/basic-cli/releases/download/0.10.0/vNe6s9hWzoTZtFmNkvEICPErI9ptji_ySjicO6CkucY.tar.br",
         json: "https://github.com/lukewilliamboswell/roc-json/releases/download/0.7.0/xuaMzXRVG_SEhOFZucS3iBozlRdObWsfKaYZMHVE_q0.tar.br",
     }
     imports [
         pf.Stdout.{ line },
+        pf.Task,
         json.Core.{ json },
         Decode.{ Decoder, DecoderFormatting, DecodeResult, DecodeError },
         Encode.{ Encoder, EncoderFormatting },

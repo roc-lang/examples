@@ -1,5 +1,5 @@
 app "tuples-example"
-    packages { pf: "https://github.com/roc-lang/basic-cli/releases/download/0.9.1/y_Ww7a2_ZGjp0ZTt9Y_pNdSqqMRdMLzHMKfdN8LWidk.tar.br" }
+    packages { pf: "https://github.com/roc-lang/basic-cli/releases/download/0.10.0/vNe6s9hWzoTZtFmNkvEICPErI9ptji_ySjicO6CkucY.tar.br" }
     imports [
         pf.Stdout,
         pf.Task,
@@ -16,14 +16,12 @@ main =
     firstItem = simpleTuple.0
     secondItem = if simpleTuple.1 then "true" else "false"
     thirdItem = Num.toStr simpleTuple.2
-
-    {} <- Stdout.line
-            """
-            First is: $(firstItem),
-            Second is: $(secondItem), 
-            Third is: $(thirdItem).
-            """
-        |> Task.await
+    Stdout.line!
+        """
+        First is: $(firstItem),
+        Second is: $(secondItem), 
+        Third is: $(thirdItem).
+        """
 
     # You can also use tuples with `when`:
     fruitSelection : [Apple, Pear, Banana]
