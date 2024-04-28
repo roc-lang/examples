@@ -16,7 +16,6 @@ main =
     firstItem = simpleTuple.0
     secondItem = if simpleTuple.1 then "true" else "false"
     thirdItem = Num.toStr simpleTuple.2
-
     Stdout.line!
         """
         First is: $(firstItem),

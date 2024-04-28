@@ -22,8 +22,7 @@ main =
     finalResult <- Task.attempt finalTask
 
     when finalResult is
-        Err ZeroArgsGiven -> 
-        
+        Err ZeroArgsGiven ->
             Task.err (Exit 1 "Error ZeroArgsGiven:\n\tI expected one argument, but I got none.\n\tRun the app like this: `roc command-line-args.roc -- path/to/input.txt`")
 
         Err (ReadFileErr errMsg) ->
@@ -32,7 +31,6 @@ main =
             Task.err (Exit 1 "Error ReadFileErr:\n$(indentedErrMsg)")
 
         Ok fileContentStr ->
-            
             Stdout.line "file content: $(fileContentStr)"
 
 # Task to read the first CLI arg (= Str)

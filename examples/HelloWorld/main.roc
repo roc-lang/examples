@@ -3,5 +3,5 @@ app "hello-world"
     imports [pf.Stdout, pf.Task]
     provides [main] to pf
 
-main = 
+main =
     Stdout.line! "Hello, World!"

@@ -11,25 +11,23 @@ run : Task {} _
 run =
     Stdout.line! "Enter some numbers on different lines, then press Ctrl-D to sum them up."
 
-    startNum = 0
-    sum = Task.loop! startNum addNumberFromStdin
-
+    sum = Task.loop! 0 addNumberFromStdin
     Stdout.line! "Sum: $(Num.toStr sum)"
 
 addNumberFromStdin : I64 -> Task [Done I64, Step I64] _
 addNumberFromStdin = \sum ->
-    when Stdin.line |> Task.result! is 
+    when Stdin.line |> Task.result! is
         Ok input ->
             when Str.toI64 input is
                 Ok num -> Task.ok (Step (sum + num))
                 Err _ -> Task.err (NotNum input)
+
         Err (StdinErr EndOfFile) -> Task.ok (Done sum)
         Err err -> err |> Inspect.toStr |> NotNum |> Task.err
 
 printErr : _ -> Task {} _
 printErr = \err ->
-    when err is 
+    when err is
         NotNum text -> Stderr.line "Error: \"$(text)\" is not a valid I64 number."
-        _ -> Stderr.line "Error: $(Inspect.toStr err)" 
-        
-    
+        _ -> Stderr.line "Error: $(Inspect.toStr err)"
+

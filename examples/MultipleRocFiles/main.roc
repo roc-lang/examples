@@ -4,5 +4,5 @@ app "interface-modules"
     imports [pf.Stdout, pf.Task, Hello]
     provides [main] to pf
 
-main = 
+main =
     Stdout.line! (Hello.hello "World")

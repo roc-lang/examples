@@ -27,7 +27,6 @@ main =
         result.numbers
         |> List.map Num.toStr
         |> Str.joinWith ","
-
     Stdout.line! "Random numbers are: $(numbersListStr)"
 
 # Generate a list of numbers using the seed and generator provided
