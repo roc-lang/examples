@@ -74,12 +74,7 @@ go build -C examples/GoPlatform/platform -buildmode=pie -o dynhost
 $ROC preprocess-host ./examples/GoPlatform/main.roc
 $ROC build --prebuilt-platform ./examples/GoPlatform/main.roc
 
-os_info=$(lsb_release -a 2>/dev/null)
-
-# Check if the OS is not Ubuntu 20.04. Avoids segfault on CI.
-if ! echo "$os_info" | grep -q "Ubuntu 20.04"; then
-    expect ci_scripts/expect_scripts/GoPlatform.exp
-fi
+expect ci_scripts/expect_scripts/GoPlatform.exp
 
 $ROC build ./examples/DotNetPlatform/main.roc --lib --output ./examples/DotNetPlatform/platform/interop
 expect ci_scripts/expect_scripts/DotNetPlatform.exp
