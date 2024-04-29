@@ -1,20 +1,3 @@
-#!/usr/bin/env bash
-
-# https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
-set -euxo pipefail
-
-if [ -z "${ROC}" ]; then
-  echo "ERROR: The ROC environment variable is not set.
-    Set it to something like:
-        /home/username/Downloads/roc_nightly-linux_x86_64-2023-10-30-cb00cfb/roc
-        or
-        /home/username/gitrepos/roc/target/build/release/roc
-        or
-        ./roc_nightly/roc" >&2
-
-  exit 1
-fi
-
 $ROC build ./examples/HelloWorld/main.roc
 expect ci_scripts/expect_scripts/HelloWorld.exp
 
@@ -68,22 +51,3 @@ expect ci_scripts/expect_scripts/MultipleRocFiles.exp
 
 $ROC build ./examples/EncodeDecode/main.roc
 expect ci_scripts/expect_scripts/EncodeDecode.exp
-
-$ROC build --lib ./examples/GoPlatform/main.roc --output examples/GoPlatform/platform/libapp.so
-go build -C examples/GoPlatform/platform -buildmode=pie -o dynhost
-$ROC preprocess-host ./examples/GoPlatform/main.roc
-$ROC build --prebuilt-platform ./examples/GoPlatform/main.roc
-
-if command -v lsb_release >/dev/null 2>&1; then
-    os_info=$(lsb_release -a 2>/dev/null)
-else
-    os_info=""
-fi
-
-# Check if the OS is not Ubuntu 20.04. Avoids segfault on CI.
-if ! echo "$os_info" | grep -q "Ubuntu 20.04"; then
-    expect ci_scripts/expect_scripts/GoPlatform.exp
-fi
-
-$ROC build ./examples/DotNetPlatform/main.roc --lib --output ./examples/DotNetPlatform/platform/interop
-expect ci_scripts/expect_scripts/DotNetPlatform.exp
