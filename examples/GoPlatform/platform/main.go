@@ -1,7 +1,7 @@
 package main
 
 /*
-#cgo LDFLAGS: -L. -lapp
+#cgo CFLAGS: -Wno-main-return-type
 #include "./host.h"
 */
 import "C"
@@ -12,6 +12,7 @@ import (
 	"unsafe"
 )
 
+// export main
 func main() {
 	var str C.struct_RocStr
 	C.roc__mainForHost_1_exposed_generic(&str)

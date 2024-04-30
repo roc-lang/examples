@@ -69,9 +69,12 @@ expect ci_scripts/expect_scripts/MultipleRocFiles.exp
 $ROC build ./examples/EncodeDecode/main.roc
 expect ci_scripts/expect_scripts/EncodeDecode.exp
 
-$ROC build --lib ./examples/GoPlatform/main.roc --output examples/GoPlatform/platform/libapp.so
-go build -C examples/GoPlatform/platform -buildmode=pie -o dynhost
-$ROC preprocess-host ./examples/GoPlatform/main.roc
+#$ROC build --lib ./examples/GoPlatform/main.roc --output examples/GoPlatform/platform/libapp.so
+#go build -C examples/GoPlatform/platform -buildmode=pie -o dynhost
+#$ROC preprocess-host ./examples/GoPlatform/main.roc
+go build -C examples/GoPlatform/platform -buildmode=c-archive -o libhost.a
+cp examples/GoPlatform/platform/libhost.a examples/GoPlatform/platform/macos-arm64.a
+
 $ROC build --prebuilt-platform ./examples/GoPlatform/main.roc
 
 os_info=$(lsb_release -a 2>/dev/null)
