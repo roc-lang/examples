@@ -1,6 +1,6 @@
 app [main] {
     cli: platform "https://github.com/roc-lang/basic-cli/releases/download/0.10.0/vNe6s9hWzoTZtFmNkvEICPErI9ptji_ySjicO6CkucY.tar.br",
-    json: "https://github.com/lukewilliamboswell/roc-json/releases/download/0.7.0/xuaMzXRVG_SEhOFZucS3iBozlRdObWsfKaYZMHVE_q0.tar.br",
+    json: "https://github.com/Anton-4/roc-json/releases/download/patch26/L5rrSODQWRomTzNf3qeZmrTI6CUe5dqW6rd2m2Pp7Nc.tar.br",
 }
 
 import cli.Stdout
