@@ -1,16 +1,13 @@
-app "example"
-    packages {
-        pf: "https://github.com/roc-lang/basic-cli/releases/download/0.10.0/vNe6s9hWzoTZtFmNkvEICPErI9ptji_ySjicO6CkucY.tar.br",
-        json: "https://github.com/lukewilliamboswell/roc-json/releases/download/0.7.0/xuaMzXRVG_SEhOFZucS3iBozlRdObWsfKaYZMHVE_q0.tar.br",
-    }
-    imports [
-        pf.Stdout.{ line },
-        pf.Task,
-        json.Core.{ json },
-        Decode.{ Decoder, DecoderFormatting, DecodeResult, DecodeError },
-        Encode.{ Encoder, EncoderFormatting },
-    ]
-    provides [main] to pf
+app [main] {
+    pf: platform "https://github.com/roc-lang/basic-cli/releases/download/0.10.0/vNe6s9hWzoTZtFmNkvEICPErI9ptji_ySjicO6CkucY.tar.br",
+    json: "https://github.com/lukewilliamboswell/roc-json/releases/download/0.7.0/xuaMzXRVG_SEhOFZucS3iBozlRdObWsfKaYZMHVE_q0.tar.br",
+}
+
+import pf.Stdout exposing [line]
+import pf.Task
+import json.Core exposing [json]
+import Decode exposing [Decoder, DecoderFormatting, DecodeResult, DecodeError]
+import Encode exposing [Encoder, EncoderFormatting]
 
 ### start snippet impl
 

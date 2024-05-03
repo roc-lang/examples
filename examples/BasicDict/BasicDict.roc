@@ -1,6 +1,4 @@
-interface BasicDict
-    exposes []
-    imports []
+module []
 
 # the dictionary type is: Dict key value
 # Both key and value are type variables

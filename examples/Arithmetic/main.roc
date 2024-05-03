@@ -1,11 +1,8 @@
-app "arithmetic"
-    packages { pf: "https://github.com/roc-lang/basic-cli/releases/download/0.10.0/vNe6s9hWzoTZtFmNkvEICPErI9ptji_ySjicO6CkucY.tar.br" }
-    imports [
-        pf.Stdout,
-        pf.Task,
-        pf.Arg,
-    ]
-    provides [main] to pf
+app [main] { pf: platform "https://github.com/roc-lang/basic-cli/releases/download/0.10.0/vNe6s9hWzoTZtFmNkvEICPErI9ptji_ySjicO6CkucY.tar.br" }
+
+import pf.Stdout
+import pf.Task
+import pf.Arg
 
 TaskErrors : [InvalidArg, InvalidNumStr]
 
