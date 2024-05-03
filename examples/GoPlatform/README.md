@@ -72,10 +72,7 @@ $ roc build --bundle .tar.br platform/main.roc
 
 4. Now you can use the platform from inside a Roc file with:
 ```roc
-app "goUsingRocApp"
-    packages { pf: "YOUR_URL" }
-    imports []
-    provides [main] to pf
+app [goUsingRocApp] { pf: platform "YOUR_URL" }
 ```
 
 When running with a platform from a URL, the `--prebuilt-platform` flag is not needed.

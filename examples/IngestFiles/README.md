@@ -1,12 +1,10 @@
 # Ingest Files
 
-Statically importing files as a `Str` or a `List U8`:
+Statically importing files as a `Str` or a `List U8` (list of bytes):
 
 ```roc
-imports [
-    "some-file" as someStr : Str,
-    "some-file" as someBytes : List U8,
-]
+import "some-file" as someStr : Str
+import "some-file" as someBytes : List U8
 ```
 
 ## Code
