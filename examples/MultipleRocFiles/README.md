@@ -1,6 +1,6 @@
 # Multiple Roc Files
 
-You can use Interface modules to organize your code into multiple files.
+You can use modules to organize your code into multiple files.
 
 ## Code
 

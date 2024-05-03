@@ -2,15 +2,13 @@
 ## using an [adjacency list](https://en.wikipedia.org/wiki/Adjacency_list)
 ## and exposes functions for working with graphs, such as creating one from a list and
 ## performing a depth-first or breadth-first search.
-interface Graph
-    exposes [
-        Graph,
-        fromList,
-        fromDict,
-        dfs,
-        bfs,
-    ]
-    imports []
+module [
+    Graph,
+    fromList,
+    fromDict,
+    dfs,
+    bfs,
+]
 
 ## Graph type representing a graph as a dictionary of adjacency lists,
 ## where each key is a vertex and each value is a list of its adjacent vertices.

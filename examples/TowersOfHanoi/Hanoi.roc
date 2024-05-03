@@ -1,8 +1,6 @@
-interface Hanoi
-    exposes [
-        hanoi,
-    ]
-    imports []
+module [
+    hanoi,
+]
 
 ## Solves the Tower of Hanoi problem using recursion. Returns a list of moves
 ## which represent the solution.

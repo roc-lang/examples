@@ -1,7 +1,6 @@
-interface Hello
+module
     # Only what's in 'exposes' is accessible to other modules
-    exposes [hello]
-    imports []
+    [hello]
 
 hello : Str -> Str
 hello = \name ->

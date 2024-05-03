@@ -1,11 +1,9 @@
-interface IDCounter
-    exposes [
-        IDCount,
-        initIDCount,
-        incID,
-        extractState,
-    ]
-    imports []
+module [
+    IDCount,
+    initIDCount,
+    incID,
+    extractState,
+]
 
 ID : U32
 

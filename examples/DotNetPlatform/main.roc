@@ -1,6 +1,3 @@
-app "dotnetapp"
-    packages { platform: "./platform/main.roc" }
-    imports []
-    provides [main] to platform
+app [main] { platform: platform "./platform/main.roc" }
 
 main = "Hi from roc! (in a .NET platform) 🔥🦅🔥"

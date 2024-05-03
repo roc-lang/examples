@@ -1,6 +1,4 @@
-interface PatternMatching
-    exposes []
-    imports []
+module []
 
 # Match an empty list
 expect
