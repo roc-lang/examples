@@ -1,6 +1,6 @@
 app [main] {
     pf: platform "https://github.com/roc-lang/basic-cli/releases/download/0.10.0/vNe6s9hWzoTZtFmNkvEICPErI9ptji_ySjicO6CkucY.tar.br",
-    json: "https://github.com/Anton-4/roc-json/releases/download/patch26/L5rrSODQWRomTzNf3qeZmrTI6CUe5dqW6rd2m2Pp7Nc.tar.br",
+    json: "https://github.com/lukewilliamboswell/roc-json/releases/download/0.8.0/BlWJJh_ouV7c_IwvecYpgpR3jOCzVO-oyk-7ISdl2S4.tar.br",
 }
 
 import pf.Task
