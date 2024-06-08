@@ -11,6 +11,7 @@ You can find the source code for all of these at [github.com/roc-lang/examples](
 - [Pattern Matching](/PatternMatching/README.html)
 - [Tasks & Error Handling](/Tasks/README.html)
 - [Import Files](/IngestFiles/README.html)
+- [Import from Directory](/ImportFromDirectory/README.html)
 - [Multiple Roc Files](/MultipleRocFiles/README.html)
 - [JSON](/Json/README.html)
 - [Random Numbers](/RandomNumbers/README.html)

@@ -66,6 +66,9 @@ $ROC test ./examples/BasicDict/BasicDict.roc
 $ROC build ./examples/MultipleRocFiles/main.roc
 expect ci_scripts/expect_scripts/MultipleRocFiles.exp
 
+$ROC build ./examples/ImportFromDirectory/main.roc
+expect ci_scripts/expect_scripts/ImportFromDirectory.exp
+
 $ROC build ./examples/EncodeDecode/main.roc
 expect ci_scripts/expect_scripts/EncodeDecode.exp
 
@@ -74,7 +77,10 @@ go build -C examples/GoPlatform/platform -buildmode=pie -o dynhost
 $ROC preprocess-host ./examples/GoPlatform/main.roc
 $ROC build --prebuilt-platform ./examples/GoPlatform/main.roc
 
+# temporarily allow failure of lsb_release in case it is not installed
+set +e
 os_info=$(lsb_release -a 2>/dev/null)
+set -e
 
 # Check if the OS is not Ubuntu 20.04. Avoids segfault on CI.
 if ! echo "$os_info" | grep -q "Ubuntu 20.04"; then
