@@ -1,5 +1,5 @@
 module
-    # Only what's in 'exposes' is accessible to other modules
+    # Only what's listed here is accessible to other modules
     [hello]
 
 hello : Str -> Str
