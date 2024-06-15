@@ -1,4 +1,5 @@
 # Run with `roc ./examples/CommandLineArgs/main.roc -- examples/CommandLineArgs/input.txt`
+# This currently does not work in combination with --linker=legacy, see https://github.com/roc-lang/basic-cli/issues/82
 app [main] {
     pf: platform "https://github.com/roc-lang/basic-cli/releases/download/0.10.0/vNe6s9hWzoTZtFmNkvEICPErI9ptji_ySjicO6CkucY.tar.br",
 }
