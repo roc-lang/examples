@@ -1,6 +1,7 @@
 
 # local dev website files
 dist
+build
 main
 
 # generated docs
