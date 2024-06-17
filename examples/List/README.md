@@ -1,6 +1,6 @@
 # List Pattern Matching
 
-A Roc solution to one of the 99 Lisp problems - Find the number of elements in a list & Find an element in a list. Here we can use pattern matching on a list to count the number of elements recursively.
+A Roc solution to finding an element in a list. Here we use pattern matching on a list to check if the searched element is present in the list. If the head matches we return True if not, we continue searching the tail of the list. A base case of empty list is included which will always return false.
 
 ## Code
 ```roc
