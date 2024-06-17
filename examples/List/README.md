@@ -13,9 +13,7 @@ Run this from the directory that has `main.roc` in it:
 
 ```
 $ roc run
-List [1,2,3,4,5,6,7,8,9,10] has a length of 10
-5 found at index 4 in the list [1,2,3,4,5,6,7,8,9,10]
-
+5 exists in [1,2,3,4,5,6,7,8,9,10]
 ```
 
 You can also use `roc test` to run the tests.
