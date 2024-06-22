@@ -76,7 +76,7 @@ expect
     && (match [Foo, Count 0] != FooCountIf)
     && (match [Baz, Count 1] != FooCountIf)
 
-# Use `as` to create a variable equal to the part of the list that matches `..` 
+# Use `as` to create a variable equal to the part of the list that matches `..`
 expect
     match = \input ->
         when input is
