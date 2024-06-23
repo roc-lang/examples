@@ -5,10 +5,10 @@
 
 set timeout 7
 
-spawn ./roc_nightly/roc run ./examples/SafeMath/main.roc
+spawn ./examples/SafeMath/main
 
 
-expect "σ² = 147.66666666666666\r\n" {
+expect "σ² = 147.666666666666666666\r\n" {
   expect eof
   exit 0
 }
