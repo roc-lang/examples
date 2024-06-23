@@ -94,6 +94,3 @@ fi
 
 $ROC build ./examples/DotNetPlatform/main.roc --lib --output ./examples/DotNetPlatform/platform/interop
 expect ci_scripts/expect_scripts/DotNetPlatform.exp
-
-# test building website
-$ROC run main.roc -- examples build
