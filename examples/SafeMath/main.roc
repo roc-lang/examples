@@ -33,10 +33,10 @@ safeVariance = \maybeEmptyList ->
             |> List.walkTry
                 0.0
                 (\state, elem ->
-                    mean # X - µ :
-                    |> Result.try (\m -> Num.subChecked elem m) # ² :
-                    |> Result.try (\y -> Num.mulChecked y y) # ∑ :
-                    |> Result.try (\z -> Num.addChecked z state))
+                    mean
+                    |> Result.try (\m -> Num.subChecked elem m) # X - µ
+                    |> Result.try (\y -> Num.mulChecked y y) # ²
+                    |> Result.try (\z -> Num.addChecked z state)) # ∑
             |> Result.map (\x -> x / n)
 
 main =
