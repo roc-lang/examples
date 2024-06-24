@@ -72,8 +72,13 @@ expect ci_scripts/expect_scripts/ImportFromDirectory.exp
 $ROC build ./examples/EncodeDecode/main.roc
 expect ci_scripts/expect_scripts/EncodeDecode.exp
 
+$ROC build ./examples/SafeMath/main.roc
+$ROC test ./examples/SafeMath/main.roc
+expect ci_scripts/expect_scripts/SafeMath.exp
+
 $ROC build --lib ./examples/GoPlatform/main.roc --output examples/GoPlatform/platform/libapp.so
 go build -C examples/GoPlatform/platform -buildmode=pie -o dynhost
+
 $ROC preprocess-host ./examples/GoPlatform/main.roc
 $ROC build --prebuilt-platform ./examples/GoPlatform/main.roc
 

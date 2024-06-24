@@ -16,6 +16,7 @@ You can find the source code for all of these at [github.com/roc-lang/examples](
 - [JSON](/Json/README.html)
 - [Random Numbers](/RandomNumbers/README.html)
 - [CLI Args](/CommandLineArgs/README.html)
+- [Safe Math](/SafeMath/README.html)
 - [Graph Traversal](/GraphTraversal/README.html)
 - [Parser](/Parser/README.html)
 - [Arithmetic](/Arithmetic/README.html)
