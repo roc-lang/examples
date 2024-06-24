@@ -1,6 +1,23 @@
 # Safe Maths
 
-This example shows an example which safely calculates the variance of a population.
+This example shows how to perform calculations while avoiding overflows.
+For example; `+` actually uses `Num.add`, which can crash if the bytes of the result can not fit in the provided type:
+```cli
+» Num.maxU64 + Num.maxU64
+This Roc code crashed with: "Integer addition overflowed!"
+
+* : U64
+```
+If you want to avoid a program-ending crash, you can instead use:
+```
+» Num.addChecked Num.maxU64 Num.maxU64
+
+Err Overflow : Result U64 [Overflow]
+```
+That would allow you to display a clean error to the user or handle the failure in an intelligent way.
+Use `Checked` math functions if [reliability is important for your application](https://arstechnica.com/information-technology/2015/05/boeing-787-dreamliners-contain-a-potentially-catastrophic-software-bug/).
+
+For a realistic demonstration, we will use `Checked` math functions to calculate the variance of a population.
 
 The variance formula is: `σ² = ∑(X - µ)² / N` where:
 - `σ²` = variance
