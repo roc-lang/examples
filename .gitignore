@@ -19,6 +19,7 @@ examples/CommandLineArgs/main
 examples/Tasks/main
 examples/Tuples/main
 examples/EncodeDecode/main
+examples/SafeMath/main
 examples/GoPlatform/platform/*.dylib
 roc_nightly/
 
