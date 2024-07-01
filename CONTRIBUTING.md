@@ -29,18 +29,24 @@ Clone the Roc repo if you don't have it already:
 git clone https://github.com/roc-lang/roc.git
 ```
 
-Update the path in the file `./main.roc` (of the example repo):
-```
-packages { pf: "/PATH_TO_ROC_REPO/examples/static-site-gen/platform/main.roc" }
-```
 Generate the html files:
 ```
-roc run main.roc -- examples build 
+roc run main.roc -- examples build
 ```
 
-Copy the static assets from `./www` to `./build`:
+Copy the static assets from `./www` to `./build` (only need to do this one time):
 ```
-cp ./wwww/* ./build
+wget -O build/site.js https://www.roc-lang.org/site.js
+wget -O build/site.css https://www.roc-lang.org/site.css
+
+mkdir -p build/fonts/lato-v23-latin
+wget -O build/fonts/lato-v23-latin/lato-v23-latin-regular.woff2 https://www.roc-lang.org/fonts/lato-v23-latin/lato-v23-latin-regular.woff2
+
+mkdir -p build/fonts/permanent-marker-v16-latin
+wget -O build/fonts/permanent-marker-v16-latin/permanent-marker-v16-latin-regular.woff2 https://www.roc-lang.org/fonts/permanent-marker-v16-latin/permanent-marker-v16-latin-regular.woff2
+
+mkdir -p build/fonts/source-code-pro-v22-latin
+wget -O build/fonts/source-code-pro-v22-latin/source-code-pro-v22-latin-regular.woff2 https://www.roc-lang.org/fonts/source-code-pro-v22-latin/source-code-pro-v22-latin-regular.woff2
 ```
 
 If you're using the nix flake, simple-http-server will already be installed. Without nix you can do `cargo install simple-http-server`.
