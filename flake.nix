@@ -44,6 +44,7 @@
                 devShell = pkgs.mkShell {
                     packages = with pkgs; [
                       rocPkgs.cli
+                      rocPkgs.lang-server
                       simple-http-server # to be able to view the website when developing
                       expect # to test examples on CI
                       customRust # for static-site-gen platform

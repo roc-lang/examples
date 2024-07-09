@@ -1,4 +1,4 @@
-app [main] { pf: platform "https://github.com/roc-lang/basic-cli/releases/download/0.12.0/cf_TpThUd4e69C7WzHxCbgsagnDmk3xlb_HmEKXTICw.tar.br" }
+app [main] { pf: platform "https://github.com/roc-lang/basic-cli/releases/download/0.12.0/Lb8EgiejTUzbggO2HVVuPJFkwvvsfW6LojkLR20kTVE.tar.br" }
 
 import pf.Stdout
 import pf.Task
@@ -48,7 +48,7 @@ readArgs : Task.Task { a : I32, b : I32 } TaskErrors
 readArgs =
 
     args =
-        Arg.list
+        Arg.list {}
             |> Task.mapErr! \_ -> InvalidArg
 
     aResult = List.get args 1 |> Result.try Str.toI32

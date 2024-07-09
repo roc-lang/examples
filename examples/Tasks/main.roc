@@ -1,5 +1,5 @@
 app [main] {
-    pf: platform "https://github.com/roc-lang/basic-cli/releases/download/0.12.0/cf_TpThUd4e69C7WzHxCbgsagnDmk3xlb_HmEKXTICw.tar.br",
+    pf: platform "https://github.com/roc-lang/basic-cli/releases/download/0.12.0/Lb8EgiejTUzbggO2HVVuPJFkwvvsfW6LojkLR20kTVE.tar.br",
 }
 
 import pf.Stdout
@@ -9,7 +9,6 @@ import pf.Env
 import pf.Http
 import pf.Dir
 import pf.Utc
-import pf.File
 import pf.Path exposing [Path]
 import pf.Task exposing [Task]
 
@@ -36,7 +35,7 @@ run =
     strHTML = fetchHtml! url
     Stdout.line! "Saving url HTML to $(Path.display outputPath)..."
     # Write HTML string to a file
-    File.writeUtf8 outputPath strHTML
+    Path.writeUtf8 outputPath strHTML
         |> Task.onErr! \_ -> Task.err (FailedToWriteFile outputPath)
     # Print contents of current working directory
     listCwdContent
@@ -58,7 +57,7 @@ run =
 
 readArgs : Task { url : Str, outputPath : Path } [FailedToReadArgs]_
 readArgs =
-    when Arg.list! is
+    when Arg.list! {} is
         [_, first, second, ..] ->
             Task.ok { url: first, outputPath: Path.fromStr second }
 
@@ -83,8 +82,7 @@ fetchHtml = \url ->
 
 listCwdContent : Task (List Path) [FailedToListCwd]_
 listCwdContent =
-    Path.fromStr "."
-    |> Dir.list
+    Dir.list "."
     |> Task.onErr \_ -> Task.err FailedToListCwd
 
 handleErr : _ -> Task {} _
