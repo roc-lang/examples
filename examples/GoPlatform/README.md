@@ -50,12 +50,12 @@ $ go build -C platform -buildmode=pie -o dynhost
 
 4. We use the subcommand `preprocess-host` to make the surgical linker preprocessor generate `.rh` and `.rm` files.
 ```bash
-$ roc preprocess-host main.roc
+$ roc preprocess-host platform/dynhost platform/main.roc platform/libapp.so
 ```
 
 5. With our platform built we can run our app:
 ```bash
-$ roc run --prebuilt-platform
+$ roc run
 ```
 
 
