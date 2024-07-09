@@ -79,8 +79,8 @@ expect ci_scripts/expect_scripts/SafeMath.exp
 $ROC build --lib ./examples/GoPlatform/main.roc --output examples/GoPlatform/platform/libapp.so
 go build -C examples/GoPlatform/platform -buildmode=pie -o dynhost
 
-$ROC preprocess-host ./examples/GoPlatform/main.roc
-$ROC build --prebuilt-platform ./examples/GoPlatform/main.roc
+$ROC preprocess-host ./examples/GoPlatform/platform/dynhost ./examples/GoPlatform/platform/main.roc ./examples/GoPlatform/platform/libapp.so
+$ROC build ./examples/GoPlatform/main.roc
 
 # temporarily allow failure of lsb_release in case it is not installed
 set +e
