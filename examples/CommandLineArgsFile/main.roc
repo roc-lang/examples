@@ -21,10 +21,9 @@ main =
             fileContentStr = readFileToStr! (Path.fromStr arg)
 
             Stdout.line! "file content: $(fileContentStr)"
-    
+
         Err ZeroArgsGiven ->
             Task.err (Exit 1 "Error ZeroArgsGiven:\n\tI expected one argument, but I got none.\n\tRun the app like this: `roc main.roc -- path/to/input.txt`")
-
 
 # reads a file and puts all lines in one Str
 readFileToStr : Path -> Task Str [ReadFileErr Str]_
@@ -39,7 +38,6 @@ readFileToStr = \path ->
             when fileReadErr is
                 FileReadErr _ readErr ->
                     readErrStr = Inspect.toStr readErr
-                    
 
                     ReadFileErr "Failed to read file:\n\t$(pathStr)\nWith error:\n\t$(readErrStr)"
 
