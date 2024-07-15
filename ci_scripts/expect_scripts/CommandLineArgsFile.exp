@@ -5,9 +5,9 @@
 
 set timeout 7
 
-spawn ./examples/CommandLineArgs/main some_argument 
+spawn ./examples/CommandLineArgsFile/main examples/CommandLineArgsFile/input.txt 
 
-expect "received argument: some_argument\r\n" {
+expect "file content: 42\r\n" {
   expect eof
   exit 0
 }

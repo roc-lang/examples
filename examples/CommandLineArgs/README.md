@@ -1,6 +1,9 @@
 # CLI Args
 
-Use command line arguments to read a file using the [basic-cli platform](https://github.com/roc-lang/basic-cli).
+Shows how to read command line arguments.
+To pass an argument: `roc main.roc some_argument` or `roc -- some_argument` or `roc build && ./main some_argument`.
+
+We also have [a more complex example that uses a filename as argument](https://www.roc-lang.org/examples/CommandLineArgsFile/README.html).
 
 ## Code
 ```roc
@@ -12,6 +15,6 @@ file:main.roc
 Run this from the directory that has `main.roc` in it:
 
 ```
-$ roc run -- input.txt
-file content: 42
+$ roc main.roc some_argument
+received argument: some_argument
 ```

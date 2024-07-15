@@ -1,66 +1,22 @@
-# Run with `roc ./examples/CommandLineArgs/main.roc -- examples/CommandLineArgs/input.txt`
-# This currently does not work in combination with --linker=legacy, see https://github.com/roc-lang/basic-cli/issues/82
+# Run with `roc ./examples/CommandLineArgs/main.roc some_argument`
+# !! This currently does not work in combination with --linker=legacy, see https://github.com/roc-lang/basic-cli/issues/82
 app [main] {
-    pf: platform "https://github.com/roc-lang/basic-cli/releases/download/0.10.0/vNe6s9hWzoTZtFmNkvEICPErI9ptji_ySjicO6CkucY.tar.br",
+    pf: platform "https://github.com/roc-lang/basic-cli/releases/download/0.12.0/Lb8EgiejTUzbggO2HVVuPJFkwvvsfW6LojkLR20kTVE.tar.br",
 }
 
 import pf.Stdout
-import pf.File
-import pf.Path
 import pf.Task
 import pf.Arg
 
 main =
-    finalTask =
-        # try to read the first command line argument
-        pathArg = readFirstArgT!
-
-        readFileToStr (Path.fromStr pathArg)
-
-    finalResult <- Task.attempt finalTask
-
-    when finalResult is
-        Err ZeroArgsGiven ->
-            Task.err (Exit 1 "Error ZeroArgsGiven:\n\tI expected one argument, but I got none.\n\tRun the app like this: `roc command-line-args.roc -- path/to/input.txt`")
-
-        Err (ReadFileErr errMsg) ->
-            indentedErrMsg = indentLines errMsg
-
-            Task.err (Exit 1 "Error ReadFileErr:\n$(indentedErrMsg)")
-
-        Ok fileContentStr ->
-            Stdout.line "file content: $(fileContentStr)"
-
-# Task to read the first CLI arg (= Str)
-readFirstArgT : Task.Task Str [ZeroArgsGiven]_
-readFirstArgT =
-    # read all command line arguments
-    args = Arg.list!
+    args = Arg.list! {} # {} is necessary as a temporary workaround
 
     # get the second argument, the first is the executable's path
-    List.get args 1 |> Result.mapErr (\_ -> ZeroArgsGiven) |> Task.fromResult
+    argResult = List.get args 1 |> Result.mapErr (\_ -> ZeroArgsGiven)
 
-# reads a file and puts all lines in one Str
-readFileToStr : Path.Path -> Task.Task Str [ReadFileErr Str]_
-readFileToStr = \path ->
-    path
-    |> File.readUtf8 # Make a nice error message
-    |> Task.mapErr
-        (\fileReadErr ->
-            pathStr = Path.display path
-            # TODO use FileReadErrToErrMsg when it is implemented: https://github.com/roc-lang/basic-cli/issues/44
-            when fileReadErr is
-                FileReadErr _ readErr ->
-                    readErrStr = File.readErrToStr readErr
-                    ReadFileErr "Failed to read file at:\n\t$(pathStr)\n$(readErrStr)"
+    when argResult is
+        Err ZeroArgsGiven ->
+            Task.err (Exit 1 "Error ZeroArgsGiven:\n\tI expected one argument, but I got none.\n\tRun the app like this: `roc main.roc -- input.txt`")
 
-                FileReadUtf8Err _ _ ->
-                    ReadFileErr "I could not read the file:\n\t$(pathStr)\nIt contains charcaters that are not valid UTF-8:\n\t- Check if the file is encoded using a different format and convert it to UTF-8.\n\t- Check if the file is corrupted.\n\t- Find the characters that are not valid UTF-8 and fix or remove them."
-        )
-
-# indent all lines in a Str with a single tab
-indentLines : Str -> Str
-indentLines = \inputStr ->
-    Str.split inputStr "\n"
-    |> List.map (\line -> Str.concat "\t" line)
-    |> Str.joinWith "\n"
+        Ok firstArgument ->
+            Stdout.line "received argument: $(firstArgument)"
