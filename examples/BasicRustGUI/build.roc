@@ -18,7 +18,7 @@ main : Task {} _
 main =
 
     cliParser =
-        Arg.Opt.maybeStr { short: "p", long: "roc", help: "Path to the roc executable. Can be just `roc` or a full path."}
+        Arg.Opt.maybeStr { short: "p", long: "roc", help: "Path to the roc executable. Can be just `roc` or a full path." }
         |> Arg.Cli.finish {
             name: "basic-gui-builder",
             version: "",
@@ -36,24 +36,18 @@ run = \maybeRoc ->
 
     # rocCmd may be a path or just roc
     rocCmd = maybeRoc |> Result.withDefault "roc"
-
     rocVersion! rocCmd
 
     # target is MacosArm64, LinuxX64,...
     target = getNativeTarget!
 
     stubLibPath = "platform/libapp.$(stubExt target)"
-
     buildStubAppLib! rocCmd stubLibPath
-
     cargoBuildHost!
-
     copyHostLib! target
-
     preprocessHost! rocCmd stubLibPath
 
     info! "Successfully built platform files!"
-
 
 rocVersion : Str -> Task {} _
 rocVersion = \rocCmd ->
@@ -61,7 +55,7 @@ rocVersion = \rocCmd ->
     info! "Checking provided roc; executing `$(rocCmd) version`:"
 
     rocCmd
-        |> Cmd.exec  ["version"]
+        |> Cmd.exec ["version"]
         |> Task.mapErr! RocVersionCheckFailed
 
 getNativeTarget : Task RocTarget _
@@ -78,7 +72,7 @@ buildStubAppLib = \rocCmd, stubLibPath ->
     info! "Building stubbed app shared library ..."
 
     rocCmd
-        |> Cmd.exec  ["build", "--lib", "platform/libapp.roc", "--output", stubLibPath, "--optimize"]
+        |> Cmd.exec ["build", "--lib", "platform/libapp.roc", "--output", stubLibPath, "--optimize"]
         |> Task.mapErr! ErrBuildingAppStub
 
 cargoBuildHost : Task {} _
@@ -94,12 +88,10 @@ copyHostLib : RocTarget -> Task {} _
 copyHostLib = \target ->
     hostBuildPath = "target/release/libhost.a"
     hostDestPath = "platform/$(prebuiltStaticLibrary target)"
-
     info! "Moving the prebuilt binary from $(hostBuildPath) to $(hostDestPath) ..."
     "cp"
-        |> Cmd.exec  [hostBuildPath, hostDestPath]
+        |> Cmd.exec [hostBuildPath, hostDestPath]
         |> Task.mapErr! ErrMovingPrebuiltLegacyBinary
-
 
 RocTarget : [
     MacosArm64,
@@ -111,7 +103,7 @@ RocTarget : [
 ]
 
 convertNativeTarget : _ -> Task RocTarget _
-convertNativeTarget =\{os, arch} ->
+convertNativeTarget = \{ os, arch } ->
     when (os, arch) is
         (MACOS, AARCH64) -> Task.ok MacosArm64
         (MACOS, X64) -> Task.ok MacosX64
@@ -123,8 +115,8 @@ stubExt : RocTarget -> Str
 stubExt = \target ->
     when target is
         MacosX64 | MacosArm64 -> "dylib"
-        LinuxArm64 | LinuxX64-> "so"
-        WindowsX64| WindowsArm64 -> "dll"
+        LinuxArm64 | LinuxX64 -> "so"
+        WindowsX64 | WindowsArm64 -> "dll"
 
 prebuiltStaticLibrary : RocTarget -> Str
 prebuiltStaticLibrary = \target ->
@@ -142,7 +134,7 @@ preprocessHost = \rocCmd, stubLibPath ->
     surgicalBuildPath = "target/release/host"
 
     rocCmd
-        |> Cmd.exec  ["preprocess-host", surgicalBuildPath, "platform/main.roc", stubLibPath]
+        |> Cmd.exec ["preprocess-host", surgicalBuildPath, "platform/main.roc", stubLibPath]
         |> Task.mapErr! ErrPreprocessingSurgicalBinary
 
 info : Str -> Task {} _

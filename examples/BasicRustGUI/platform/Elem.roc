@@ -18,7 +18,7 @@ Elem state : [
 ]
 
 ## Used internally in the type definition of Lazy
-#Cached state : { state, elem : Elem state }
+# Cached state : { state, elem : Elem state }
 
 ButtonConfig state : { onPress : state, PressEvent -> Action state }
 
