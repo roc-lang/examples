@@ -1,5 +1,5 @@
 app [main] {
-    pf: platform "https://github.com/roc-lang/basic-cli/releases/download/0.12.0/Lb8EgiejTUzbggO2HVVuPJFkwvvsfW6LojkLR20kTVE.tar.br",
+    pf: platform "https://github.com/roc-lang/basic-cli/releases/download/0.13.0/zsDHOdxyAcj6EhyNZx_3qhIICVlnho-OZ5X2lFDLi0k.tar.br",
 }
 
 import pf.Stdin
@@ -32,4 +32,3 @@ printErr = \err ->
     when err is
         NotNum text -> Stderr.line "Error: \"$(text)\" is not a valid I64 number."
         _ -> Stderr.line "Error: $(Inspect.toStr err)"
-
