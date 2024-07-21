@@ -29,6 +29,7 @@ You can find the source code for all of these at [github.com/roc-lang/examples](
 - [Go Platform](/GoPlatform/README.html)
 - [.NET Platform](/DotNetPlatform/README.html)
 - [Encoding & Decoding Abilities](/EncodeDecode/README.html)
+- [Basic GUI using Rust](/BasicRustGUI/README.html)
 
 ## External examples
 

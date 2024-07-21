@@ -1,0 +1,16 @@
+platform/*.a
+platform/*.dylib
+platform/*.so
+platform/*.rh
+platform/*.rm
+
+target/
+
+build
+
+# executables
+hello-gui
+inspect-gui
+
+# glue generated files not used
+crates/roc_app/
