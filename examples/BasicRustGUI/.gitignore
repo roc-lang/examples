@@ -8,6 +8,9 @@ target/
 
 build
 
+# executables
 hello-gui
+inspect-gui
 
+# glue generated files not used
 crates/roc_app/
