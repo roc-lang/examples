@@ -9,6 +9,7 @@ pub struct RectsAndTexts {
     pub rects_front: Vec<RectElt>, // displayed in front of text_sections_behind, behind text_sections_front
 }
 
+#[allow(dead_code)]
 impl RectsAndTexts {
     pub fn new() -> Self {
         Self {

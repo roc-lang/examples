@@ -9,3 +9,5 @@ target/
 build
 
 hello-gui
+
+crates/roc_app/

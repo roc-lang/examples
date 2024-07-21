@@ -65,7 +65,7 @@ pub fn create_rect_buffers(
         mapped_at_creation: false,
     });
 
-    let quads: Vec<Quad> = rects.iter().map(|rect| to_quad(rect)).collect();
+    let quads: Vec<Quad> = rects.iter().map(to_quad).collect();
 
     let buffer_size = (quads.len() as u64) * Quad::SIZE;
 

@@ -2,8 +2,6 @@ use crate::graphics::colors::Rgba;
 use core::ffi::c_void;
 use core::mem::{self, ManuallyDrop};
 use roc_std::{RocList, RocStr};
-use std::ffi::CStr;
-use std::os::raw::c_char;
 
 #[no_mangle]
 pub unsafe extern "C" fn roc_alloc(size: usize, _alignment: u32) -> *mut c_void {

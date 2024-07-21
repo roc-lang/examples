@@ -74,7 +74,8 @@ impl RocStr {
             Self(RocStrInner { small_string })
         } else {
             let heap_allocated = RocList::from_slice(slice);
-            let big_string = unsafe { std::mem::transmute(heap_allocated) };
+            let big_string =
+                unsafe { std::mem::transmute::<RocList<u8>, BigString>(heap_allocated) };
             Self(RocStrInner {
                 heap_allocated: ManuallyDrop::new(big_string),
             })

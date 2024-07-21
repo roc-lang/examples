@@ -20,6 +20,8 @@ pub struct Text<'a> {
     pub color: Rgba,
     pub text: &'a str,
     pub size: f32,
+
+    #[allow(dead_code)]
     pub visible: bool,
     pub centered: bool,
 }
@@ -28,7 +30,7 @@ impl<'a> Default for Text<'a> {
     fn default() -> Self {
         Self {
             position: (0.0, 0.0).into(),
-            area_bounds: (std::f32::INFINITY, std::f32::INFINITY).into(),
+            area_bounds: (f32::INFINITY, f32::INFINITY).into(),
             color: Rgba::WHITE,
             text: "",
             size: DEFAULT_FONT_SIZE,
@@ -46,6 +48,7 @@ pub fn layout_from_text(text: &Text) -> wgpu_glyph::Layout<wgpu_glyph::BuiltInLi
     })
 }
 
+#[allow(dead_code)]
 fn section_from_text<'a>(
     text: &'a Text,
     layout: wgpu_glyph::Layout<wgpu_glyph::BuiltInLineBreaker>,
@@ -63,6 +66,7 @@ fn section_from_text<'a>(
     )
 }
 
+#[allow(dead_code)]
 pub fn owned_section_from_text(text: &Text) -> OwnedSection {
     let layout = layout_from_text(text);
 
@@ -79,6 +83,7 @@ pub fn owned_section_from_text(text: &Text) -> OwnedSection {
     )
 }
 
+#[allow(dead_code)]
 pub fn owned_section_from_glyph_texts(
     text: Vec<glyph_brush::OwnedText>,
     screen_position: (f32, f32),
@@ -93,6 +98,7 @@ pub fn owned_section_from_glyph_texts(
     }
 }
 
+#[allow(dead_code)]
 pub fn queue_text_draw(text: &Text, glyph_brush: &mut GlyphBrush<()>) {
     let layout = layout_from_text(text);
 
@@ -101,6 +107,7 @@ pub fn queue_text_draw(text: &Text, glyph_brush: &mut GlyphBrush<()>) {
     glyph_brush.queue(section.clone());
 }
 
+#[allow(dead_code)]
 fn glyph_to_rect(glyph: &wgpu_glyph::SectionGlyph) -> Rect {
     let position = glyph.glyph.position;
     let px_scale = glyph.glyph.scale;
@@ -115,12 +122,14 @@ fn glyph_to_rect(glyph: &wgpu_glyph::SectionGlyph) -> Rect {
     }
 }
 
+#[allow(dead_code)]
 pub fn glyph_top_y(glyph: &Glyph) -> f32 {
     let height = glyph.scale.y;
 
     glyph.position.y - height * 0.75
 }
 
+#[allow(dead_code)]
 pub fn glyph_width(glyph: &Glyph) -> f32 {
     glyph.scale.x * 0.4765
 }

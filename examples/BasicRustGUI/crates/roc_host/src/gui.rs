@@ -376,6 +376,7 @@ enum DrawableContent {
     Offset(Vec<(Vector2<f32>, Drawable)>),
 }
 
+#[allow(clippy::too_many_arguments)]
 fn process_drawable(
     drawable: Drawable,
     staging_belt: &mut wgpu::util::StagingBelt,
@@ -407,6 +408,7 @@ fn process_drawable(
     );
 }
 
+#[allow(clippy::too_many_arguments)]
 fn draw(
     bounds: Bounds,
     content: DrawableContent,
@@ -512,7 +514,7 @@ fn to_drawable(
         Button => {
             let button = unsafe { &elem.entry().button };
             let styles = button.styles;
-            let (child_bounds, child_drawable) = to_drawable(&*button.child, bounds, glyph_brush);
+            let (child_bounds, child_drawable) = to_drawable(&button.child, bounds, glyph_brush);
 
             let button_drawable = Drawable {
                 bounds: child_bounds,
@@ -579,7 +581,7 @@ fn to_drawable(
             let mut offset_entries = Vec::with_capacity(row.children.len());
 
             for child in row.children.as_slice().iter() {
-                let (child_bounds, child_drawable) = to_drawable(&child, bounds, glyph_brush);
+                let (child_bounds, child_drawable) = to_drawable(child, bounds, glyph_brush);
 
                 offset_entries.push((offset, child_drawable));
 
@@ -587,7 +589,7 @@ fn to_drawable(
                 final_bounds.height = final_bounds.height.max(child_bounds.height);
 
                 // Add the child's width to the final width
-                final_bounds.width = final_bounds.width + child_bounds.width;
+                final_bounds.width += child_bounds.width;
 
                 // Offset the next child to make sure it appears after this one.
                 offset.x += child_bounds.width;
@@ -616,7 +618,7 @@ fn to_drawable(
                 final_bounds.width = final_bounds.width.max(child_bounds.width);
 
                 // Add the child's height to the final height
-                final_bounds.height = final_bounds.height + child_bounds.height;
+                final_bounds.height += child_bounds.height;
 
                 // Offset the next child to make sure it appears after this one.
                 offset.y += child_bounds.height;
