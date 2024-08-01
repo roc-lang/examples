@@ -8,7 +8,7 @@ set timeout 7
 spawn ./examples/HelloWorld/main
 
 
-expect "Name: Harrison, George\r\nBorn:  1943\r\nName: Lennon, John\r\nBorn:  1940\r\nName: McCartney, Paul\r\nBorn:  1942" {
+expect "Name: Harrison, George\r\nBorn:  1943\r\n\r\nName: Lennon, John\r\nBorn:  1940\r\n\r\nName: McCartney, Paul\r\nBorn:  1942\r\n\r\n" {
   expect eof
   exit 0
 }

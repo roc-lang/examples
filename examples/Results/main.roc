@@ -5,102 +5,100 @@ app [main] {
 import pf.Stdout
 import pf.Task exposing [Task]
 
-# This function parses a string formatted like "{FirstName} {LastName} was born in {Year}"
-# This is the most verbose version. It's a bit too nested, we will do better below.
-parsePersonVerbose = \line ->
-    when line |> Str.split " was born in " is
-        [fullName, birthYearStr] ->
-            when fullName |> Str.split " " is
-                [firstName, lastName] ->
+## This function parses strings like "{FirstName} {LastName} was born in {Year}"
+## and if successful returns `Ok { firstName, lastName, birthYear}`.
+## This is the most verbose version, we will do better below.
+parseVerbose = \line ->
+    when line |> Str.splitFirst " was born in " is
+        Ok { before: fullName, after: birthYearStr } ->
+            when fullName |> Str.splitFirst " " is
+                Ok { before: firstName, after: lastName } ->
                     when Str.toU16 birthYearStr is
                         Ok birthYear ->
                             Ok { firstName, lastName, birthYear }
 
-                        Err _ -> Err (ParsingErr InvalidBirthYearFormat)
+                        Err _ -> Err InvalidBirthYearFormat
 
-                _ -> Err (ParsingErr InvalidNameFormat)
+                _ -> Err InvalidNameFormat
 
-        _ -> Err (ParsingErr InvalidRecordFormat)
+        _ -> Err InvalidRecordFormat
 
-## This is a utility function, used below to convert [a, b] to Result (a, b)
-toPair = \listWithTwoItems ->
-    when listWithTwoItems is
-        [a, b] -> Ok (a, b)
-        _ -> Err NotAPair
+## Here's a very slightly shorter version using `Result.try` to chain multiple
+## functions that each could return an error. It's a bit nicer, don't you think?
+## Note: this version returns "raw" errors (`Err NotFound` or `Err InvalidNumStr`).
+parseWithTry = \line ->
+    line
+    |> Str.splitFirst " was born in "
+    |> Result.try \{ before: fullName, after: birthYearStr } ->
+        fullName
+        |> Str.splitFirst " "
+        |> Result.try \{ before: firstName, after: lastName } ->
+            Str.toU16 birthYearStr
+            |> Result.try \birthYear ->
+                Ok { firstName, lastName, birthYear }
 
-## This is a much nicer parser, using the backpassing syntax.
-## See https://github.com/roc-lang/roc/blob/main/roc-for-elm-programmers.md#backpassing
-## This version returns "raw" errors (i.e., `Err NotAPair` or `Err InvalidNumStr`).
-parsePersonBackpassing = \line ->
-    (fullName, birthYearStr) <- line |> Str.split " was born in " |> toPair |> Result.try
-    (firstName, lastName) <- fullName |> Str.split " " |> toPair |> Result.try
-    birthYear <- Str.toU16 birthYearStr |> Result.try
-    Ok { firstName, lastName, birthYear }
+## This function is like `parseWithTry`, except it uses `Result.mapErr`
+## to return more informative errors, just like the ones in `parseVerbose`.
+parseWithTryV2 = \line ->
+    line
+    |> Str.splitFirst " was born in "
+    |> Result.mapErr \_ -> Err InvalidRecordFormat
+    |> Result.try \{ before: fullName, after: birthYearStr } ->
+        fullName
+        |> Str.splitFirst " "
+        |> Result.mapErr \_ -> Err InvalidNameFormat
+        |> Result.try \{ before: firstName, after: lastName } ->
+            Str.toU16 birthYearStr
+            |> Result.mapErr \_ -> Err InvalidBirthYearFormat
+            |> Result.try \birthYear ->
+                Ok { firstName, lastName, birthYear }
 
-## This function is the same as the previous one, except it uses `Result.mapErr` to
-## return more informative errors, just like `parsePersonVerbose`.
-parsePersonBackpassingV2 = \line ->
-    (fullName, birthYearStr) <- line
-        |> Str.split " was born in "
-        |> toPair
-        |> Result.mapErr (\_ -> Err (ParsingErr InvalidRecordFormat))
-        |> Result.try
-    (firstName, lastName) <- fullName
-        |> Str.split " "
-        |> toPair
-        |> Result.mapErr (\_ -> Err (ParsingErr InvalidNameFormat))
-        |> Result.try
-    birthYear <- Str.toU16 birthYearStr
-        |> Result.mapErr (\_ -> Err (ParsingErr InvalidBirthYearFormat))
-        |> Result.try
-    Ok { firstName, lastName, birthYear }
-
-## A new operator ? (the "try" operator) will replace backpassing.
+## A new operator `?` (the "try" operator) will soon be added to the language:
+## it will offer a much cleaner, less nested syntax for such `Result.try` chaining.
 ## See https://github.com/roc-lang/roc/issues/6828 for more details.
-## It will look something like this:
-# parsePersonTryOperator = \line ->
-#     (fullName, birthYearStr) = line |> Str.split " was born in " |> toPair?
-#     (firstName, lastName) = fullName |> Str.split " " |> toPair?
+## The following function will be equivalent to `parseWithTry`:
+# parseWithTryOp = \line ->
+#     { before: fullName, after: birthYearStr } = Str.splitFirst? line " was born in "
+#     { before: firstName, after: lastName } = Str.splitFirst? fullName " "
 #     birthYear = Str.toU16? birthYearStr
 #     Ok { firstName, lastName, birthYear }
 
-## This function also uses the ? operator, but this time it uses `Result.mapErr`
-## to return more informative errors, much like in `parsePersonBackpassingV2`.
-## Note that the `?` operator has moved from `toPair` and `Str.toU16` to `mapErr`:
-# parsePersonTryOperatorV2 = \line ->
-#     (fullName, birthYearStr) =
+## And lastly the following function will be equivalent to `parseWithTryV2`.
+## Note that the `?` operator has moved from `splitFirst` & `toU16` to `mapErr`:
+# parseWithTryOpV2 = \line ->
+#     { before: fullName, after: birthYearStr } =
 #         line
-#         |> Str.split " was born in "
-#         |> toPair
-#         |> Result.mapErr? (\_ -> Err (ParsingErr InvalidRecordFormat))
-#     (firstName, lastName) =
+#         |> Str.splitFirst " was born in "
+#         |> Result.mapErr? \_ -> Err InvalidRecordFormat
+#     { before: firstName, after: lastName } =
 #         fullName
-#         |> Str.split " "
-#         |> toPair
-#         |> Result.mapErr? (\_ -> Err (ParsingErr InvalidNameFormat))
-#     birthYear =
+#         |> Str.splitFirst " "
+#         |> Result.mapErr? \_ -> Err InvalidNameFormat
+#     birthYear = 
 #         Str.toU16 birthYearStr
-#         |> Result.mapErr? (\_ -> Err (ParsingErr InvalidBirthYearFormat))
+#         |> Result.mapErr? \_ -> Err InvalidBirthYearFormat
 #     Ok { firstName, lastName, birthYear }
 
-## This function parses a line using a given parser, and gets the string to display
-parseWith = \line, parser ->
+## This function parses a string using a given parser and returns a string to
+## display to the user. Note how we can handle errors individually or in bulk.
+parse = \line, parser ->
     when parser line is
-        Ok person ->
+        Ok { firstName, lastName, birthYear } ->
             """
-            Name: $(person.lastName), $(person.firstName)
-            Born:  $(person.birthYear |> Num.toStr)
+            Name: $(lastName), $(firstName)
+            Born:  $(birthYear |> Num.toStr)
+
             """
 
-        Err (ParsingErr InvalidNameFormat) -> "What kind of a name is this?"
-        Err (ParsingErr InvalidBirthYearFormat) -> "Hey! That's not a birth year!"
-        Err (ParsingErr InvalidRecordFormat) -> "This record is unreadable."
-        _ -> "This record is just wrong."
-# As you can see, you can handle errors individually, or in bulk
+        Err InvalidNameFormat -> "What kind of a name is this?"
+        Err InvalidBirthYearFormat -> "That birth year looks fishy."
+        Err InvalidRecordFormat -> "Oh wow, that's a weird looking record!"
+        _  -> "Something unexpected happened" # Err NotFound or Err InvalidNumStr
+
 
 main =
-    "George Harrison was born in 1943" |> parseWith parsePersonVerbose |> Stdout.line!
-    "John Lennon was born in 1940" |> parseWith parsePersonBackpassing |> Stdout.line!
-    "Paul McCartney was born in 1942" |> parseWith parsePersonBackpassingV2 |> Stdout.line!
-# "Ringo Starr was born in 1940" |> parseWith parsePersonTryOperator |> Stdout.line!
-# "Stuart Sutcliffe was born in 1940" |> parseWith parsePersonTryOperatorV2 |> Stdout.line!
+    "George Harrison was born in 1943" |> parse parseVerbose |> Stdout.line!
+    "John Lennon was born in 1940" |> parse parseWithTry |> Stdout.line!
+    "Paul McCartney was born in 1942" |> parse parseWithTryV2 |> Stdout.line!
+# "Ringo Starr was born in 1940" |> parse parseWithTryOp |> Stdout.line!
+# "Stuart Sutcliffe was born in 1940" |> parse parseWithTryOpV2 |> Stdout.line!
