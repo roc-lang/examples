@@ -103,4 +103,4 @@ main =
     "John Lennon was born in 1940" |> parseWith parsePersonBackpassing |> Stdout.line!
     "Paul McCartney was born in 1942" |> parseWith parsePersonBackpassingV2 |> Stdout.line!
 # "Ringo Starr was born in 1940" |> parseWith parsePersonTryOperator |> Stdout.line!
-# "Stuart Sutcliffe, 1940" |> parseWith parsePersonTryOperatorV2 |> Stdout.line!
+# "Stuart Sutcliffe was born in 1940" |> parseWith parsePersonTryOperatorV2 |> Stdout.line!
