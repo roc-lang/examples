@@ -1,0 +1,17 @@
+#!/usr/bin/expect
+
+# uncomment line below for debugging
+# exp_internal 1
+
+set timeout 7
+
+spawn ./examples/HelloWorld/main
+
+
+expect "Name: Harrison, George\r\nBorn:  1943\r\nName: Lennon, John\r\nBorn:  1940\r\nName: McCartney, Paul\r\nBorn:  1942" {
+  expect eof
+  exit 0
+}
+
+puts stderr "\nError: output was different from expected value."
+exit 1
