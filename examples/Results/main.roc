@@ -74,7 +74,7 @@ parseWithTryV2 = \line ->
 #         fullName
 #         |> Str.splitFirst " "
 #         |> Result.mapErr? \_ -> Err InvalidNameFormat
-#     birthYear = 
+#     birthYear =
 #         Str.toU16 birthYearStr
 #         |> Result.mapErr? \_ -> Err InvalidBirthYearFormat
 #     Ok { firstName, lastName, birthYear }
@@ -93,8 +93,7 @@ parse = \line, parser ->
         Err InvalidNameFormat -> "What kind of a name is this?"
         Err InvalidBirthYearFormat -> "That birth year looks fishy."
         Err InvalidRecordFormat -> "Oh wow, that's a weird looking record!"
-        _  -> "Something unexpected happened" # Err NotFound or Err InvalidNumStr
-
+        _ -> "Something unexpected happened" # Err NotFound or Err InvalidNumStr
 
 main =
     "George Harrison was born in 1943" |> parse parseVerbose |> Stdout.line!
