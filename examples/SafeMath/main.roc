@@ -55,8 +55,8 @@ main =
 
     Stdout.line outputStr
 
-# expect (safeVariance []) == Err EmptyInputList
-# expect (safeVariance [0]) == Ok 0
-# expect (safeVariance [100]) == Ok 0
-# expect (safeVariance [4, 22, 99, 204, 18, 20]) == Ok 5032.138888888888888888
-# expect (safeVariance [46, 69, 32, 60, 52, 41]) == Ok 147.666666666666666666
+expect (safeVariance []) == Err EmptyInputList
+expect (safeVariance [0]) == Ok 0
+expect (safeVariance [100]) == Ok 0
+expect (safeVariance [4, 22, 99, 204, 18, 20]) == Ok 5032.138888888888888888
+expect (safeVariance [46, 69, 32, 60, 52, 41]) == Ok 147.666666666666666666
