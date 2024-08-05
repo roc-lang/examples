@@ -9,6 +9,7 @@ You can find the source code for all of these at [github.com/roc-lang/examples](
 - [Basic Dict Usage](/BasicDict/README.html)
 - [Tuples](/Tuples/README.html)
 - [Pattern Matching on Lists](/PatternMatching/README.html)
+- [Results & Error Handling](/Results/README.html)
 - [Tasks & Error Handling](/Tasks/README.html)
 - [Import Files](/IngestFiles/README.html)
 - [Import from Directory](/ImportFromDirectory/README.html)
