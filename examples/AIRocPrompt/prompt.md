@@ -4,7 +4,7 @@ Roc is a novel programming language, focused on being fast, friendly and functio
 
 Here are examples of Roc programs:
   
-  hello-world.roc:
+hello-world.roc:
 ```
 app [main] { pf: platform "https://github.com/roc-lang/basic-cli/releases/download/0.12.0/Lb8EgiejTUzbggO2HVVuPJFkwvvsfW6LojkLR20kTVE.tar.br" }
 
@@ -14,7 +14,7 @@ import pf.Task
 main =
     Stdout.line! "Hello, World!"
 ```
-  fizz-buzz.roc:
+fizz-buzz.roc:
 ```
 app [main] { pf: platform "https://github.com/roc-lang/basic-cli/releases/download/0.12.0/Lb8EgiejTUzbggO2HVVuPJFkwvvsfW6LojkLR20kTVE.tar.br" }
 
@@ -61,7 +61,7 @@ expect fizzBuzz 20 == "Buzz"
 expect fizzBuzz 15 == "FizzBuzz"
 expect fizzBuzz 45 == "FizzBuzz"
 ```
-  hello-web.roc:
+hello-web.roc:
 ```
 app [main] { pf: platform "https://github.com/roc-lang/basic-webserver/releases/download/0.6.0/LQS_Avcf8ogi1SqwmnytRD4SMYiZ4UcRCZwmAjj1RNY.tar.gz" }
 
@@ -79,7 +79,7 @@ main = \req ->
 
     Task.ok { status: 200, headers: [], body: Str.toUtf8 "<b>Hello, world!</b>\n" }
 ```
-  todos.roc:
+todos.roc:
 ```
 # Webapp for todos using a SQLite 3 database
 app [main] { pf: platform "https://github.com/roc-lang/basic-webserver/releases/download/0.6.0/LQS_Avcf8ogi1SqwmnytRD4SMYiZ4UcRCZwmAjj1RNY.tar.gz" }
@@ -248,7 +248,7 @@ handleErr = \appErr ->
         body: Str.toUtf8 "Internal Server Error.\n",
     }
 ```
-  http-get-json.roc:
+http-get-json.roc:
 ```
 app [main] {
     pf: platform "https://github.com/roc-lang/basic-cli/releases/download/0.12.0/Lb8EgiejTUzbggO2HVVuPJFkwvvsfW6LojkLR20kTVE.tar.br",
@@ -274,7 +274,7 @@ run =
 
     Stdout.line! "The json I received was: { foo: \"$(foo)\" }"
 ```
-  parser.roc:
+parser.roc:
 ```
 app [main] {
     cli: platform "https://github.com/roc-lang/basic-cli/releases/download/0.12.0/Lb8EgiejTUzbggO2HVVuPJFkwvvsfW6LojkLR20kTVE.tar.br",
@@ -332,7 +332,7 @@ expect
     result = parseStr parser input
     result == Ok [B, C, Other, A]
 ```
-  looping-tasks.roc:
+looping-tasks.roc:
 ```
 app [main] {
     pf: platform "https://github.com/roc-lang/basic-cli/releases/download/0.12.0/Lb8EgiejTUzbggO2HVVuPJFkwvvsfW6LojkLR20kTVE.tar.br",
@@ -370,28 +370,28 @@ printErr = \err ->
         _ -> Stderr.line "Error: $(Inspect.toStr err)"
 ```
 
-  multiple Roc files:
-    Hello.roc:
-    ```
-    module
-        # Only what's listed here is accessible/exposed to other modules
-        [hello]
+multiple Roc files:
+  Hello.roc:
+  ```
+  module
+      # Only what's listed here is accessible/exposed to other modules
+      [hello]
 
-    hello : Str -> Str
-    hello = \name ->
-        "Hello $(name) from interface!"
-    ```
-    main.roc:
-    ```
-    app [main] { pf: platform "https://github.com/roc-lang/basic-cli/releases/download/0.12.0/Lb8EgiejTUzbggO2HVVuPJFkwvvsfW6LojkLR20kTVE.tar.br" }
+  hello : Str -> Str
+  hello = \name ->
+      "Hello $(name) from interface!"
+  ```
+  main.roc:
+  ```
+  app [main] { pf: platform "https://github.com/roc-lang/basic-cli/releases/download/0.12.0/Lb8EgiejTUzbggO2HVVuPJFkwvvsfW6LojkLR20kTVE.tar.br" }
 
-    import pf.Stdout
-    import pf.Task
-    import Hello
+  import pf.Stdout
+  import pf.Task
+  import Hello
 
-    main =
-        Stdout.line! (Hello.hello "World")
-    ```
+  main =
+      Stdout.line! (Hello.hello "World")
+  ```
 
 Make sure to avoid mixing up the URLs for basic-cli "https://github.com/roc-lang/basic-cli/releases/download/0.12.0/Lb8EgiejTUzbggO2HVVuPJFkwvvsfW6LojkLR20kTVE.tar.br" and basic-webserver "https://github.com/roc-lang/basic-webserver/releases/download/0.6.0/LQS_Avcf8ogi1SqwmnytRD4SMYiZ4UcRCZwmAjj1RNY.tar.gz".
 

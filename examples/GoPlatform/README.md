@@ -55,7 +55,7 @@ $ roc preprocess-host platform/dynhost platform/main.roc platform/libapp.so
 
 5. With our platform built we can run our app:
 ```bash
-$ roc run
+$ roc main.roc
 ```
 
 

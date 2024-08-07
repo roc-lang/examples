@@ -12,7 +12,9 @@ I personally use the prompt below by pasting it into the system prompt at https:
 That will require you to sign up for the anthropic API, you pay per request depending on the length of the input and
 model output. A typical question and answer costs me $0.03.
 
-It's beneficial to provide the AI with code examples similar to your own. If you are only using the [basic-cli platform](https://github.com/roc-lang/basic-cli), you probably want to remove any examples that use other platforms.
+Note: if you try to paste this into the regular chatGPT (`https://chatgpt.com/`) or claude (`https://claude.ai/new`) instead of the API, it will probably cut off a large part of the prompt because of the limited context window in that mode.
+
+It's beneficial to provide the AI with code examples similar to your own. If you are only using the [basic-cli platform](https://github.com/roc-lang/basic-cli), you may want to remove any examples that use other platforms, if you want to minimize API expenses.
 
 [Full Prompt](https://raw.githubusercontent.com/roc-lang/examples/main/examples/AIRocPrompt/prompt.md)
 

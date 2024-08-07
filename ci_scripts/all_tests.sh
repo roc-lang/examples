@@ -18,6 +18,9 @@ fi
 $ROC build ./examples/HelloWorld/main.roc
 expect ci_scripts/expect_scripts/HelloWorld.exp
 
+$ROC build ./examples/HelloWeb/main.roc
+expect ci_scripts/expect_scripts/HelloWeb.exp
+
 $ROC build ./examples/Arithmetic/main.roc
 expect ci_scripts/expect_scripts/Arithmetic.exp
 
