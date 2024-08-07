@@ -18,6 +18,6 @@ file:main.roc
 Run this from the directory that has `main.roc` in it:
 
 ```
-$ roc run
+$ roc main.roc
 Random numbers are: 29,30,71,64,48,33,55,68,53,28
 ```

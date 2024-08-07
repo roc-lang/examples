@@ -60,7 +60,7 @@ file:main.roc
 Run this from the directory that has `main.roc` in it:
 
 ```
-$ roc run main.roc < numbers.txt 
+$ roc main.roc < numbers.txt 
 Enter some numbers on different lines, then press Ctrl-D to sum them up.
 Sum: 178
 ```

@@ -35,7 +35,7 @@ packages { pf: "/PATH_TO_ROC_REPO/examples/static-site-gen/platform/main.roc" }
 ```
 Generate the html files:
 ```
-roc run main.roc -- examples build 
+roc main.roc -- examples build 
 ```
 
 Copy the static assets from `./www` to `./build`:
