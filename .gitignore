@@ -19,6 +19,8 @@ examples/Tasks/main
 examples/Tuples/main
 examples/EncodeDecode/main
 examples/SafeMath/main
+examples/ElmWithRoc/webserver
+examples/ElmWithRoc/frontend/elm-stuff/*
 examples/GoPlatform/platform/*.dylib
 roc_nightly/
 
