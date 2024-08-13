@@ -5,9 +5,9 @@
 
 set timeout 7
 
-spawn ./examples/ElmFrontendRocBackend/backend
+spawn ./examples/ElmWebApp/backend
 
-cd ./examples/ElmFrontendRocBackend/frontend
+cd ./examples/ElmWebApp/frontend
 spawn elm reactor --port 8001
 cd ../../..
 
