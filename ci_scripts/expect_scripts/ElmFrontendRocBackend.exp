@@ -1,0 +1,25 @@
+#!/usr/bin/expect
+
+# uncomment line below for debugging
+# exp_internal 1
+
+set timeout 7
+
+spawn ./examples/ElmFrontendRocBackend/backend
+
+cd ./examples/ElmFrontendRocBackend/frontend
+spawn elm reactor --port 8001
+cd ../../..
+
+# wait for elm to start up
+sleep 3 
+
+set curlOutput [exec curl -sS localhost:8001/index.html]
+
+# We don't actually run the elm js here, selenium or puppeteer could be used in the future for a complete test
+if {[string match "*Elm.Main.init*" $curlOutput]} {
+    exit 0
+} else {
+    puts "Error: curl output was different than expected: $curlOutput"
+    exit 1
+}
