@@ -1,10 +1,10 @@
 app [main] {
-    pf: platform "https://github.com/roc-lang/basic-cli/releases/download/0.12.0/Lb8EgiejTUzbggO2HVVuPJFkwvvsfW6LojkLR20kTVE.tar.br",
-    json: "https://github.com/lukewilliamboswell/roc-json/releases/download/0.8.0/BlWJJh_ouV7c_IwvecYpgpR3jOCzVO-oyk-7ISdl2S4.tar.br",
+    pf: platform "https://github.com/roc-lang/basic-cli/releases/download/0.14.0/dC5ceT962N_4jmoyoffVdphJ_4GlW3YMhAPyGPr-nU0.tar.br",
+    json: "https://github.com/lukewilliamboswell/roc-json/releases/download/0.10.1/jozYCvOqoYa-cV6OdTcxw3uDGn61cLvzr5dK1iKf1ag.tar.br",
 }
 
 import pf.Task
-import json.Core exposing [json]
+import json.Json
 import pf.Stdout
 ### start snippet impl
 
@@ -91,7 +91,7 @@ originalList = [
 
 # encode them into JSON
 encodedBytes : List U8
-encodedBytes = Encode.toBytes originalList json
+encodedBytes = Encode.toBytes originalList Json.utf8
 
 # test we have encoded correctly
 expect encodedBytes == originalBytes
@@ -102,7 +102,7 @@ originalBytes = "[1,2,3,4,5,6,7,8,9,10]" |> Str.toUtf8
 
 # decode into a list of ItemKind's
 decodedList : List ItemKind
-decodedList = Decode.fromBytes originalBytes json |> Result.withDefault []
+decodedList = Decode.fromBytes originalBytes Json.utf8 |> Result.withDefault []
 
 # test we have decoded correctly
 expect decodedList == originalList
