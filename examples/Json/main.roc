@@ -1,11 +1,11 @@
 app [main] {
-    cli: platform "https://github.com/roc-lang/basic-cli/releases/download/0.12.0/Lb8EgiejTUzbggO2HVVuPJFkwvvsfW6LojkLR20kTVE.tar.br",
-    json: "https://github.com/lukewilliamboswell/roc-json/releases/download/0.8.0/BlWJJh_ouV7c_IwvecYpgpR3jOCzVO-oyk-7ISdl2S4.tar.br",
+    cli: platform "https://github.com/roc-lang/basic-cli/releases/download/0.14.0/dC5ceT962N_4jmoyoffVdphJ_4GlW3YMhAPyGPr-nU0.tar.br",
+    json: "https://github.com/lukewilliamboswell/roc-json/releases/download/0.10.1/jozYCvOqoYa-cV6OdTcxw3uDGn61cLvzr5dK1iKf1ag.tar.br",
 }
 
 import cli.Stdout
 import cli.Task
-import json.Core exposing [jsonWithOptions]
+import json.Json
 import Decode exposing [fromBytesPartial]
 
 main =
@@ -15,7 +15,7 @@ main =
     # incoming JSON fields from PascalCase (first letter capitalized)
     # to camelCase (first letter uncapitalized), which is what
     # Roc field names always use.
-    decoder = jsonWithOptions { fieldNameMapping: PascalCase }
+    decoder = Json.utf8With { fieldNameMapping: PascalCase }
 
     decoded : DecodeResult ImageRequest
     decoded = fromBytesPartial requestBody decoder

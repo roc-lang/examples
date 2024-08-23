@@ -1,7 +1,7 @@
-app [main] { pf: platform "https://github.com/roc-lang/basic-cli/releases/download/0.12.0/Lb8EgiejTUzbggO2HVVuPJFkwvvsfW6LojkLR20kTVE.tar.br" }
+app [main] { pf: platform "https://github.com/roc-lang/basic-cli/releases/download/0.14.0/dC5ceT962N_4jmoyoffVdphJ_4GlW3YMhAPyGPr-nU0.tar.br" }
 
 import pf.Stdout
-import pf.Task
+import pf.Task exposing [Task]
 
 main =
 
@@ -29,12 +29,13 @@ main =
     when (fruitSelection, quantity) is
         # TODO re-enable when github.com/roc-lang/roc/issues/5530 is fixed.
         # (_, qty) if qty == 0 ->
-        #    Stdout.line "You also have no fruit."
+        #    Stdout.line! "You also have no fruit."
         (Apple, _) ->
-            Stdout.line "You also have some apples."
+            Stdout.line! "You also have some apples."
 
         (Pear, _) ->
-            Stdout.line "You also have some pears."
+            Stdout.line! "You also have some pears."
 
         (Banana, _) ->
-            Stdout.line "You also have some bananas."
+            Stdout.line! "You also have some bananas."
+

@@ -1,4 +1,4 @@
-app [main] { pf: platform "https://github.com/roc-lang/basic-cli/releases/download/0.12.0/Lb8EgiejTUzbggO2HVVuPJFkwvvsfW6LojkLR20kTVE.tar.br" }
+app [main] { pf: platform "https://github.com/roc-lang/basic-cli/releases/download/0.14.0/dC5ceT962N_4jmoyoffVdphJ_4GlW3YMhAPyGPr-nU0.tar.br" }
 
 import pf.Stdout
 import pf.Task
@@ -29,9 +29,7 @@ main =
 
         Task.ok results
 
-    taskResult <- Task.attempt task
-
-    when taskResult is
+    when Task.result! task is
         Ok result -> Stdout.line result
         Err InvalidArg -> Task.err (Exit 1 "Error: Please provide two integers between -1000 and 1000 as arguments.")
         Err InvalidNumStr -> Task.err (Exit 1 "Error: Invalid number format. Please provide integers between -1000 and 1000.")
