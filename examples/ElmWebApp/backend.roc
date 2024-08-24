@@ -1,5 +1,5 @@
 app [Model, server] {
-    pf: platform "https://github.com/roc-lang/basic-webserver/releases/download/0.8.0/jz2EfGAtz_y06nN7f8tU9AvmzhKK-jnluXQQGa9rZoQ.tar.br"
+    pf: platform "https://github.com/roc-lang/basic-webserver/releases/download/0.8.0/jz2EfGAtz_y06nN7f8tU9AvmzhKK-jnluXQQGa9rZoQ.tar.br",
 }
 
 import pf.Stdout
