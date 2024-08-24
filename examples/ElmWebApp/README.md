@@ -14,22 +14,22 @@ We've also enjoyed using [htmx with Roc](https://github.com/lukewilliamboswell/r
 
 src/Main.elm:
 ```elm
-file:src/Main.elm
+file:frontend/src/Main.elm
 ```
 
 elm.json:
 ```json
-file:elm.json
+file:frontend/elm.json
 ```
 
 index.html:
 ```html
-file:index.html
+file:frontend/index.html
 ```
 
-webserver.roc:
+backend.roc:
 ```roc
-file:webserver.roc
+file:backend.roc
 ```
 ## Running
 
@@ -40,10 +40,10 @@ You can change the port on which the Roc server runs with ROC_BASIC_WEBSERVER_PO
 cd examples/ElmWebApp/
 
 # development
-roc backend.roc
+roc backend.roc --linker=legacy
 
 # production
-roc build backend.roc --optimize
+roc build backend.roc --optimize --linker=legacy
 ./backend
 ```
 
@@ -67,4 +67,4 @@ elm reactor --port 8001 # Roc backend will be on 8000
 ```
 For production; use a [battle-tested HTTP server](https://chatgpt.com/share/5809a606-10ea-4ee6-b821-732465016254) instead of elm reactor.
 
-Open localhost:8001/index.html in your browser.
+Open [localhost:8001/index.html](localhost:8001/index.html) in your browser.
