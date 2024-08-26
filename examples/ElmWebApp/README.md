@@ -51,8 +51,7 @@ roc build backend.roc --optimize --linker=legacy
 
 > Note: for non-trivial Elm development we recommend using [elm-watch](https://github.com/lydell/elm-watch).
 
-Compile elm code to javascript.
-
+Compile elm code to javascript:
 ```
 cd examples/ElmWebApp/frontend
 # development
