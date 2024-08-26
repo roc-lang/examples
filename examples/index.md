@@ -22,13 +22,14 @@ You can find the source code for all of these at [github.com/roc-lang/examples](
 - [Parser](/Parser/README.html)
 - [Arithmetic](/Arithmetic/README.html)
 - [Looping Tasks](/TaskLoop/README.html)
+- [Record Builder](/RecordBuilder/README.html)
+- [Encoding & Decoding Abilities](/EncodeDecode/README.html)
 - [Least Squares](/LeastSquares/README.html)
 - [Towers of Hanoi](/TowersOfHanoi/README.html)
-- [Record Builder](/RecordBuilder/README.html)
 - [Multi-line Comments](/MultiLineComments/README.html)
 - [Go Platform](/GoPlatform/README.html)
 - [.NET Platform](/DotNetPlatform/README.html)
-- [Encoding & Decoding Abilities](/EncodeDecode/README.html)
+- [Elm Web App](/ElmWebApp/README.html)
 
 ## External examples
 
