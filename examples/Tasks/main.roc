@@ -18,7 +18,7 @@ run : Task {} _
 run =
 
     # Get time since [Unix Epoch](https://en.wikipedia.org/wiki/Unix_time)
-    startTime = Utc.now!
+    startTime = Utc.now! {}
 
     # Read the HELLO environment variable
     helloEnvVar =
@@ -44,7 +44,7 @@ run =
         |> Task.await! \contentsStr ->
             Stdout.line "Contents of current directory: $(contentsStr)"
 
-    endTime = Utc.now!
+    endTime = Utc.now! {}
     runTime = Utc.deltaAsMillis startTime endTime |> Num.toStr
     Stdout.line! "Run time: $(runTime) ms"
     # Final task doesn't need to be awaited
