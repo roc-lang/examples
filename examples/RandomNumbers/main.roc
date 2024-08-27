@@ -4,7 +4,6 @@ app [main] {
 }
 
 import pf.Stdout
-import pf.Task
 import rand.Random
 
 # Print a list of 10 random numbers in the range 25-75 inclusive.

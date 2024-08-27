@@ -3,7 +3,6 @@ app [main] {
     json: "https://github.com/lukewilliamboswell/roc-json/releases/download/0.10.1/jozYCvOqoYa-cV6OdTcxw3uDGn61cLvzr5dK1iKf1ag.tar.br",
 }
 
-import pf.Task
 import json.Json
 import pf.Stdout
 ### start snippet impl

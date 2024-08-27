@@ -5,7 +5,6 @@ app [main] {
 }
 
 import pf.Stdout
-import pf.Task exposing [Task]
 import pf.Path exposing [Path]
 import pf.Arg
 

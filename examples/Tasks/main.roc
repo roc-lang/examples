@@ -10,7 +10,6 @@ import pf.Http
 import pf.Dir
 import pf.Utc
 import pf.Path exposing [Path]
-import pf.Task exposing [Task]
 
 main : Task {} _
 main = run |> Task.onErr handleErr

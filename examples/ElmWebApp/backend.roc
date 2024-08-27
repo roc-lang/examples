@@ -3,7 +3,6 @@ app [Model, server] {
 }
 
 import pf.Stdout
-import pf.Task exposing [Task]
 import pf.Http exposing [Request, Response]
 import pf.Utc
 

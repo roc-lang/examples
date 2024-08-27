@@ -5,7 +5,6 @@ app [main] {
 }
 
 import pf.Stdout
-import pf.Task
 import pf.Arg
 
 main =

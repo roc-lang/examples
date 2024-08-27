@@ -5,7 +5,6 @@ app [main] {
 import pf.Stdin
 import pf.Stdout
 import pf.Stderr
-import pf.Task exposing [Task]
 
 main = run |> Task.onErr printErr
 

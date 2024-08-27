@@ -4,7 +4,6 @@ app [main] {
 }
 
 import cli.Stdout
-import cli.Task
 import parser.Core exposing [Parser, many, oneOf, map]
 import parser.String exposing [parseStr, codeunit, anyCodeunit]
 

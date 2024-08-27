@@ -4,7 +4,6 @@ app [main] {
 }
 
 import cli.Stdout
-import cli.Task
 import json.Json
 import Decode exposing [fromBytesPartial]
 
