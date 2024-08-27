@@ -1,7 +1,7 @@
 # Run with `roc ./examples/CommandLineArgs/main.roc some_argument`
 # !! This currently does not work in combination with --linker=legacy, see https://github.com/roc-lang/basic-cli/issues/82
 app [main] {
-    pf: platform "https://github.com/roc-lang/basic-cli/releases/download/0.14.0/dC5ceT962N_4jmoyoffVdphJ_4GlW3YMhAPyGPr-nU0.tar.br",
+    pf: platform "https://github.com/roc-lang/basic-cli/releases/download/0.15.0-testing/libzR-AkVEn_dTBg2bKuXqMNZ9rYEfz3HSEQU8inoGk.tar.br",
 }
 
 import pf.Stdout

@@ -1,5 +1,5 @@
 app [main] {
-    cli: platform "https://github.com/roc-lang/basic-cli/releases/download/0.14.0/dC5ceT962N_4jmoyoffVdphJ_4GlW3YMhAPyGPr-nU0.tar.br",
+    cli: platform "https://github.com/roc-lang/basic-cli/releases/download/0.15.0-testing/libzR-AkVEn_dTBg2bKuXqMNZ9rYEfz3HSEQU8inoGk.tar.br",
     parser: "https://github.com/Anton-4/roc-parser/releases/download/0.7.2/xcLMjkUXqAJoSsfKblZhVn3slAv3sdFcBxRbqBDoUJk.tar.br",
 }
 
