@@ -5,6 +5,7 @@ Here are some small examples of ways to do various things in Roc.
 You can find the source code for all of these at [github.com/roc-lang/examples](https://github.com/roc-lang/examples/)
 
 - [Hello, World!](/HelloWorld/README.html)
+- [Hello Webserver!](/HelloWorld/README.html)
 - [FizzBuzz](/FizzBuzz/README.html)
 - [Basic Dict Usage](/BasicDict/README.html)
 - [Tuples](/Tuples/README.html)
@@ -14,6 +15,7 @@ You can find the source code for all of these at [github.com/roc-lang/examples](
 - [Import from Directory](/ImportFromDirectory/README.html)
 - [Multiple Roc Files](/MultipleRocFiles/README.html)
 - [JSON](/Json/README.html)
+- [AI Roc Prompt](/AIRocPrompt/README.html)
 - [Random Numbers](/RandomNumbers/README.html)
 - [CLI Args Simple](/CommandLineArgs/README.html)
 - [CLI Args File](/CommandLineArgsFile/README.html)
