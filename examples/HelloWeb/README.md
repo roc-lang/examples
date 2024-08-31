@@ -1,6 +1,6 @@
 # Hello Web
 
-A webserver that serves one web page showing `Hello, world!` using the [basic-webserver platform](https://github.com/roc-lang/basic-webserver).
+A webserver that serves one web page showing `Hello, web!` using the [basic-webserver platform](https://github.com/roc-lang/basic-webserver).
 
 There are much more [basic-webserver examples](https://github.com/roc-lang/basic-webserver/tree/main/examples).
 
