@@ -1,9 +1,8 @@
 app [main] {
-    pf: platform "https://github.com/roc-lang/basic-cli/releases/download/0.12.0/Lb8EgiejTUzbggO2HVVuPJFkwvvsfW6LojkLR20kTVE.tar.br",
+    pf: platform "https://github.com/roc-lang/basic-cli/releases/download/0.15.0/SlwdbJ-3GR7uBWQo6zlmYWNYOxnvo8r6YABXD-45UOw.tar.br",
 }
 
 import pf.Stdout
-import pf.Task exposing [Task]
 
 ## This function parses strings like "{FirstName} {LastName} was born in {Year}"
 ## and if successful returns `Ok { firstName, lastName, birthYear}`.
