@@ -12,6 +12,7 @@ You can find the source code for all of these at [github.com/roc-lang/examples](
 - [Tasks & Error Handling](/Tasks/README.html)
 - [Import Files](/IngestFiles/README.html)
 - [Import from Directory](/ImportFromDirectory/README.html)
+- [Import Package from Module](/ImportPackageFromModule/README.html)
 - [Multiple Roc Files](/MultipleRocFiles/README.html)
 - [JSON](/Json/README.html)
 - [Hello, Webserver!](/HelloWeb/README.html)
