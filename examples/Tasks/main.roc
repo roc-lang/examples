@@ -1,5 +1,5 @@
 app [main] {
-    pf: platform "https://github.com/roc-lang/basic-cli/releases/download/0.12.0/Lb8EgiejTUzbggO2HVVuPJFkwvvsfW6LojkLR20kTVE.tar.br",
+    pf: platform "https://github.com/roc-lang/basic-cli/releases/download/0.15.0/SlwdbJ-3GR7uBWQo6zlmYWNYOxnvo8r6YABXD-45UOw.tar.br",
 }
 
 import pf.Stdout
@@ -10,7 +10,6 @@ import pf.Http
 import pf.Dir
 import pf.Utc
 import pf.Path exposing [Path]
-import pf.Task exposing [Task]
 
 main : Task {} _
 main = run |> Task.onErr handleErr
@@ -19,7 +18,7 @@ run : Task {} _
 run =
 
     # Get time since [Unix Epoch](https://en.wikipedia.org/wiki/Unix_time)
-    startTime = Utc.now!
+    startTime = Utc.now! {}
 
     # Read the HELLO environment variable
     helloEnvVar =
@@ -45,7 +44,7 @@ run =
         |> Task.await! \contentsStr ->
             Stdout.line "Contents of current directory: $(contentsStr)"
 
-    endTime = Utc.now!
+    endTime = Utc.now! {}
     runTime = Utc.deltaAsMillis startTime endTime |> Num.toStr
     Stdout.line! "Run time: $(runTime) ms"
     # Final task doesn't need to be awaited
