@@ -17,6 +17,6 @@ file:main.roc
 Run this from the directory that has `main.roc` in it:
 
 ```
-$ roc run main.roc
+$ roc main.roc
 The quick brown fox jumps over the lazy dog
 ```
