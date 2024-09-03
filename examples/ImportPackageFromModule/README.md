@@ -14,7 +14,7 @@ file:main.roc
 ```
 And we put the unicode import in the module:
 ```
-file:module.roc
+file:Module.roc
 ```
 
 ## Output
