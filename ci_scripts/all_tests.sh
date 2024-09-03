@@ -91,6 +91,8 @@ go build -C examples/GoPlatform/platform -buildmode=pie -o dynhost
 $ROC preprocess-host ./examples/GoPlatform/platform/dynhost ./examples/GoPlatform/platform/main.roc ./examples/GoPlatform/platform/libapp.so
 $ROC build ./examples/GoPlatform/main.roc
 
+$ROC test ./examples/CustomInspect/OpaqueTypes.roc
+
 # temporarily allow failure of lsb_release in case it is not installed
 set +e
 os_info=$(lsb_release -a 2>/dev/null)
