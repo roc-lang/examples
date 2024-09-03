@@ -51,6 +51,7 @@
                       perl # for ci/update_basic_cli_url.sh
                       go # for GoPlatform example
                       dotnet-sdk_8 # for DotnetPlatform example
+                      elmPackages.elm # for ElmWebApp example
 		                ] ++ linuxInputs;
 
                     # nix does not store libs in /usr/lib or /lib
