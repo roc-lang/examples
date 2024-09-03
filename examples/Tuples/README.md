@@ -18,7 +18,7 @@ file:main.roc
 Run this from the directory that has `main.roc` in it:
 
 ```
-$ roc run
+$ roc main.roc
 First is: A String,
 Second is: true,
 Third is: 15000000.

@@ -65,4 +65,4 @@ jobs:
         run: bash ./ci_scripts/check_index.sh
 
       # segfaults
-      # - run: ./roc_nightly/roc run main.roc -- examples build
+      # - run: ./roc_nightly/roc main.roc -- examples build

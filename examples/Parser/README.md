@@ -13,7 +13,7 @@ file:main.roc
 Run this from the directory that has `main.roc` in it:
 
 ```
-$ roc run
+$ roc main.roc
 I counted 7 letter A's!
 ```
 
