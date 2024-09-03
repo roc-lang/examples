@@ -24,8 +24,8 @@ expect Inspect.toStr (@Color Blue) == "\"_BLUE_\""
 
 ### start snippet secret
 MySecret := Str implements [
-    Inspect { toInspector: mySecretInspector },
-]
+        Inspect { toInspector: mySecretInspector },
+    ]
 
 mySecretInspector : MySecret -> Inspector f where f implements InspectFormatter
 mySecretInspector = \@MySecret _ -> Inspect.str "******* REDACTED *******"
