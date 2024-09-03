@@ -32,6 +32,7 @@ You can find the source code for all of these at [github.com/roc-lang/examples](
 - [Go Platform](/GoPlatform/README.html)
 - [.NET Platform](/DotNetPlatform/README.html)
 - [Elm Web App](/ElmWebApp/README.html)
+- [Custom Inspect](/CustomInspect/README.html)
 
 ## External examples
 
