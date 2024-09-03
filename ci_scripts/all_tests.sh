@@ -85,6 +85,9 @@ expect ci_scripts/expect_scripts/SafeMath.exp
 $ROC build ./examples/HelloWeb/main.roc --linker=legacy
 expect ci_scripts/expect_scripts/HelloWeb.exp
 
+$ROC build ./examples/ImportPackageFromModule/main.roc
+expect ci_scripts/expect_scripts/ImportPackageFromModule.exp
+
 $ROC build --lib ./examples/GoPlatform/main.roc --output examples/GoPlatform/platform/libapp.so
 go build -C examples/GoPlatform/platform -buildmode=pie -o dynhost
 

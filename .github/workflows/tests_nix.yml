@@ -7,8 +7,10 @@ concurrency:
     group: ${{ github.workflow }}-${{ github.ref }}
     cancel-in-progress: true
 
+name: Test examples on Nix
+
 jobs:
-    build-and-test:
+    test-examples:
         runs-on: [ubuntu-22.04]
         steps:
             - uses: actions/checkout@v3
