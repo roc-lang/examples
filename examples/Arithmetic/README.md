@@ -12,7 +12,7 @@ file:main.roc
 Run this from the directory that has `main.roc` in it:
 
 ```
-$ roc run -- 20 4
+$ roc main.roc -- 20 4
 sum: 24
 difference: 16
 product: 80

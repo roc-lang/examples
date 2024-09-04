@@ -56,6 +56,9 @@ expect ci_scripts/expect_scripts/Tuples.exp
 
 $ROC test ./examples/TowersOfHanoi/Hanoi.roc
 
+$ROC build ./examples/Results/main.roc
+expect ci_scripts/expect_scripts/Results.exp
+
 $ROC build ./examples/Tasks/main.roc
 expect ci_scripts/expect_scripts/Tasks.exp
 

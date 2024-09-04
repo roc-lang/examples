@@ -14,7 +14,7 @@ file:main.roc
 Run this from the directory that has `main.roc` in it:
 
 ```
-$ roc run
+$ roc main.roc
 The least positive integer n, where the difference of n*n and (n-1)*(n-1) is greater than 1000, is 501
 ```
 
