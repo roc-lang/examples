@@ -1,12 +1,12 @@
 app [main] {
-    pf: platform "https://github.com/roc-lang/basic-cli/releases/download/0.12.0/Lb8EgiejTUzbggO2HVVuPJFkwvvsfW6LojkLR20kTVE.tar.br",
+    pf: platform "https://github.com/roc-lang/basic-cli/releases/download/0.15.0/SlwdbJ-3GR7uBWQo6zlmYWNYOxnvo8r6YABXD-45UOw.tar.br",
 }
 
 import pf.Stdout
-import pf.Task exposing [Task]
 
 ## This function parses strings like "{FirstName} {LastName} was born in {Year}"
-## and if successful returns `Ok { firstName, lastName, birthYear}`.
+## and if successful returns `Ok {firstName, lastName, birthYear}`. Otherwise
+## it returns an `Err` containing a descriptive tag.
 ## This is the most verbose version, we will do better below.
 parseVerbose = \line ->
     when line |> Str.splitFirst " was born in " is
@@ -37,7 +37,7 @@ parseWithTry = \line ->
             |> Result.try \birthYear ->
                 Ok { firstName, lastName, birthYear }
 
-## This function is like `parseWithTry`, except it uses `Result.mapErr`
+## This version is like `parseWithTry`, except it uses `Result.mapErr`
 ## to return more informative errors, just like the ones in `parseVerbose`.
 parseWithTryV2 = \line ->
     line
@@ -53,31 +53,30 @@ parseWithTryV2 = \line ->
             |> Result.try \birthYear ->
                 Ok { firstName, lastName, birthYear }
 
-## A new operator `?` (the "try" operator) will soon be added to the language:
-## it will offer a much cleaner, less nested syntax for such `Result.try` chaining.
-## See https://github.com/roc-lang/roc/issues/6828 for more details.
-## The following function will be equivalent to `parseWithTry`:
-# parseWithTryOp = \line ->
-#     { before: fullName, after: birthYearStr } = Str.splitFirst? line " was born in "
-#     { before: firstName, after: lastName } = Str.splitFirst? fullName " "
-#     birthYear = Str.toU16? birthYearStr
-#     Ok { firstName, lastName, birthYear }
+## The `?` operator, called the "try operator", is syntax sugar for Result.try.
+## It makes the code much less nested and easier to read.
+## The following function is equivalent to `parseWithTry`:
+parseWithTryOp = \line ->
+    { before: fullName, after: birthYearStr } = Str.splitFirst? line " was born in "
+    { before: firstName, after: lastName } = Str.splitFirst? fullName " "
+    birthYear = Str.toU16? birthYearStr
+    Ok { firstName, lastName, birthYear }
 
-## And lastly the following function will be equivalent to `parseWithTryV2`.
+## And lastly the following function is equivalent to `parseWithTryV2`.
 ## Note that the `?` operator has moved from `splitFirst` & `toU16` to `mapErr`:
-# parseWithTryOpV2 = \line ->
-#     { before: fullName, after: birthYearStr } =
-#         line
-#         |> Str.splitFirst " was born in "
-#         |> Result.mapErr? \_ -> Err InvalidRecordFormat
-#     { before: firstName, after: lastName } =
-#         fullName
-#         |> Str.splitFirst " "
-#         |> Result.mapErr? \_ -> Err InvalidNameFormat
-#     birthYear =
-#         Str.toU16 birthYearStr
-#         |> Result.mapErr? \_ -> Err InvalidBirthYearFormat
-#     Ok { firstName, lastName, birthYear }
+parseWithTryOpV2 = \line ->
+    { before: fullName, after: birthYearStr } =
+        line
+            |> Str.splitFirst " was born in "
+            |> Result.mapErr? \_ -> Err InvalidRecordFormat
+    { before: firstName, after: lastName } =
+        fullName
+            |> Str.splitFirst " "
+            |> Result.mapErr? \_ -> Err InvalidNameFormat
+    birthYear =
+        Str.toU16 birthYearStr
+            |> Result.mapErr? \_ -> Err InvalidBirthYearFormat
+    Ok { firstName, lastName, birthYear }
 
 ## This function parses a string using a given parser and returns a string to
 ## display to the user. Note how we can handle errors individually or in bulk.
@@ -99,5 +98,5 @@ main =
     "George Harrison was born in 1943" |> parse parseVerbose |> Stdout.line!
     "John Lennon was born in 1940" |> parse parseWithTry |> Stdout.line!
     "Paul McCartney was born in 1942" |> parse parseWithTryV2 |> Stdout.line!
-# "Ringo Starr was born in 1940" |> parse parseWithTryOp |> Stdout.line!
-# "Stuart Sutcliffe was born in 1940" |> parse parseWithTryOpV2 |> Stdout.line!
+    "Ringo Starr was born in 1940" |> parse parseWithTryOp |> Stdout.line!
+    "Stuart Sutcliffe was born in 1940" |> parse parseWithTryOpV2 |> Stdout.line!
