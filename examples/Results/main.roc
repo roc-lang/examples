@@ -53,7 +53,8 @@ parseWithTryV2 = \line ->
             |> Result.try \birthYear ->
                 Ok { firstName, lastName, birthYear }
 
-## The `?` operator, called the "try operator", is [syntactic sugar](en.wikipedia.org/wiki/Syntactic_sugar) for `Result.try`.
+## The `?` operator, called the "try operator", is 
+## [syntactic sugar](en.wikipedia.org/wiki/Syntactic_sugar) for `Result.try`.
 ## It makes the code much less nested and easier to read.
 ## The following function is equivalent to `parseWithTry`:
 parseWithTryOp = \line ->
