@@ -27,6 +27,7 @@ You can find the source code for all of these at [github.com/roc-lang/examples](
 - [Looping Tasks](/TaskLoop/README.html)
 - [Record Builder](/RecordBuilder/README.html)
 - [Encoding & Decoding Abilities](/EncodeDecode/README.html)
+- [Custom Inspect](/CustomInspect/README.html)
 - [Least Squares](/LeastSquares/README.html)
 - [Towers of Hanoi](/TowersOfHanoi/README.html)
 - [Multi-line Comments](/MultiLineComments/README.html)
