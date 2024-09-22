@@ -94,17 +94,17 @@ go build -C examples/GoPlatform/platform -buildmode=pie -o dynhost
 $ROC preprocess-host ./examples/GoPlatform/platform/dynhost ./examples/GoPlatform/platform/main.roc ./examples/GoPlatform/platform/libapp.so
 $ROC build ./examples/GoPlatform/main.roc
 
-$ROC test ./examples/CustomInspect/OpaqueTypes.roc
-
 # temporarily allow failure of lsb_release in case it is not installed
 set +e
 os_info=$(lsb_release -a 2>/dev/null)
 set -e
 
-# Check if the OS is not Ubuntu 20.04. Avoids segfault on CI.
-if ! echo "$os_info" | grep -q "Ubuntu 20.04"; then
+# Check if the OS is not Ubuntu. Avoids segfault on CI. See https://github.com/roc-lang/examples/issues/164
+if ! echo "$os_info" | grep -q "Ubuntu"; then
     expect ci_scripts/expect_scripts/GoPlatform.exp
 fi
+
+$ROC test ./examples/CustomInspect/OpaqueTypes.roc
 
 $ROC build ./examples/DotNetPlatform/main.roc --lib --output ./examples/DotNetPlatform/platform/interop
 expect ci_scripts/expect_scripts/DotNetPlatform.exp
