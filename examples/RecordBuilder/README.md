@@ -1,128 +1,122 @@
-
 # Record Builder 
 
-This example demonstrates the Record Builder pattern in Roc. This pattern leverages the functional programming concept of [applicative functors](https://lucamug.medium.com/functors-applicatives-and-monads-in-pictures-784c2b5786f7), to provide a flexible method for constructing complex types.
+Record builders are a syntax sugar for sequencing actions and collecting the intermediate results as fields in a record. All you need to build a record is a `map2`-style function that takes two values of the same type and combines them using a provided combiner fnuction. There are many convenient APIs we can build with this simple syntax.
 
 ## The Basics
 
-Let's assume we want to develop a module that supplies a type-safe yet versatile method for users to obtain user IDs that are guaranteed to be sequential. The record builder pattern can be helpful here.
+Let's assume we want to develop a module that parses any text with segments delimited by dashes. The record builder pattern can help us here to parse each segment in their own way, and short circuit on the first failure.
 
-> Note: it is possible to achieve this sequential ID mechanism with simpler code but more "real world" record builder examples may be too complex to easily understand the mechanism. If you want to contribute, we would love to have a real world record builder example that is well explained.
+> Note: it is possible to parse dash-delimited text in a specific format with simpler code. However, generic APIs built with record builders can be much simpler and readable than any such specific implementation.
 
-### Defining Types
+## Defining Types
 
 ```roc
-ID : U32
+ParserGroup a := List Str -> Result (a, List Str) ParserErr
 ```
-We define a type alias `ID` which we set to a 32 bit unsigned integer.
-A type alias improves readability. Otherwise we'd have a bunch of functions that work with `U32`
-where you'd need to look at the context to figure out what the type actually represents.
-If you ever want to switch your ID's to use a `U64`, you would only need to change one line!
 
-We want to protect our ID counter, other modules should not be able to alter it, otherwise two users may end up with the same ID! 
-For this protection we use an [opaque type](https://www.roc-lang.org/tutorial#opaque-types) that will also accumulate our state:
-```roc
-IDCount state := (ID, state)
-```
-This type takes a type variable `state`. In our case `state` will be either a record or a function that produces a record.
-`:=` is used to define an opaque type.
-`(ID, state)` is a [tuple](https://www.roc-lang.org/examples/Tuples/README.html) of an `ID`(=`U32`) and our `state` type variable. 
+We start by defining a `ParserGroup`, which is a [parser combinator](https://en.wikipedia.org/wiki/Parser_combinator) that takes in a list of string segments to parse, and returns parsed data as well as the remaining, unparsed segments. All of the parsers that render to our builder's fields are `ParserGroup` values, and get chained together into one big `ParserGroup`.
 
-### End Goal
+You'll notice that record builders all tend to deal with a single wrapping type, as we can only combine said values with our `map2`-style function if all combined values are the same type. On the plus side, this allows record builders to work with a single value, two fields, or ten, allowing for great composability.
+
+## End Goal
 
 It's useful to visualize our desired result. The record builder pattern we're aiming for looks like:
 
 ```roc
 expect
-    { aliceID, bobID, trudyID } = 
-        initIDCount {
-            aliceID: <- incID,
-            bobID: <- incID,
-            trudyID: <- incID,
-        } |> extractState
+    dateParser : ParserGroup Date
+    dateParser =
+        { chainParsers <-
+            month: parseWith Ok,
+            day: parseWith Str.toU64,
+            year: parseWith Str.toU64,
+        }
+        |> buildSegmentParser
 
-    aliceID == 1 && bobID == 2 && trudyID == 3
+    date = dateParser "Mar-10-2015"
+
+    date == Ok { month: "Mar", day: 10, year: 2015 }
 ```
 
-This generates a record with fields `aliceID`, `bobID`, and `trudyID`, all possessing sequential IDs (= `U32`). Note the slight deviation from the conventional record syntax, using a `: <-` instead of `:`, this is the Record Builder syntax.
+This generates a record with fields `month`, `day`, and `year`, all possessing specific parts of the provided date. Note the slight deviation from the conventional record syntax, with the `chainParsers <-` at the top, which is our `map2`-style function.
 
-### Under the Hood
+## Under the Hood
 
 The record builder pattern is syntax sugar which converts the preceding into:
 
 ```roc
 expect
-    { aliceID, bobID, trudyID } =
-        initIDCount (\aID -> \bID -> \cID -> { aliceID: aID, bobID: bID, trudyID: cID })
-        |> incID
-        |> incID
-        |> incID
-        |> extractState
-
-    aliceID == 1 && bobID == 2 && trudyID == 3
+    dateParser : ParserGroup Date
+    dateParser =
+        chainParsers
+            (parseWith Ok)
+            (chainParsers
+                (parseWith Str.toU64)
+                (parseWith Str.toU64)
+                (\day, year -> (day, year))
+            )
+            (\month, (day, year) -> { month, day, year })
 ```
-To make this work, we will define the functions `initIDCount`, `incID`, and `extractState`.
 
-## Initial Value
+In short, we chain together all pairs of field values with the `map2` combining function, pairing them into tuples until the final grouping of values is structured as a record.
 
-Let's start with `initIDCount`:
+To make the above possible, we'll need to define the `parseWith` function that turns a parser into a `ParserGroup`, and the `chainParsers` function that acts as our `map2` combining function.
+
+## Defining Our Functions
+
+Let's start with `parseWith`:
 
 ```roc
-initIDCount : state -> IDCount state
-initIDCount = \advanceF ->
-    @IDCount (0, advanceF)
+parseWith : (Str -> Result a ParserErr) -> ParserGroup a
+parseWith = \parser ->
+    @ParserGroup \segments ->
+        when segments is
+            [] -> Err OutOfSegments
+            [first, .. as rest] ->
+                parsed = parser? first
+                Ok (parsed, rest)
 ```
-`initIDCount` initiates the `IDCount state` value with the `ID` (= `U32`) set to `0` and stores the advanceF function, which is wrapped by `@IDCount` into our opaque type.
 
-## Applicative
-
-`incID` is defined as:
+This parses the first segment available, and returns the parsed data along with all remaining segments not yet parsed. We could already use this to parse a single-segment string without even using a record builder, but that wouldn't be very useful. Let's see how our `chainParsers` function will manage combining two `ParserGroup`s in serial:
 
 ```roc
-incID : IDCount (ID -> state) -> IDCount state
-incID = \@IDCount (currID, advanceF) ->
-    nextID = currID + 1
+chainParsers : ParserGroup a, ParserGroup b, (a, b -> c) -> ParserGroup c
+chainParsers = \@ParserGroup first, @ParserGroup second, combiner ->
+    @ParserGroup \segments ->
+        (a, afterFirst) = first? segments
+        (b, afterSecond) = second? afterFirst
 
-    @IDCount (nextID, advanceF nextID)
+        Ok (combiner a b, afterSecond)
 ```
 
-`incID` unwraps the argument `@IDCount (currID, advanceF)`; calculates a new state value `nextID = currID + 1`; applies this new value to the provided advanceF function `@IDCount (nextID, advanceF nextID)`; returning a new `IDCount` value.
+Just parse the two groups, and then combine their results? That was easy!
 
-If you haven't seen this pattern before, it can be difficult to grasp. Let's break it down and follow the type of `state` at each step in our builder pattern.
+Finally, we'll need to wrap up our parsers into one that breaks a string into segments and then applies our parsers on said segments. We can call it `buildSegmentParser`:
 
 ```roc
-initIDCount (\aID -> \bID -> \cID -> { aliceID: aID, bobID: bID, trudyID: cID }) # IDCount (ID -> ID -> ID -> { foo: ID, bar: ID, trudyID: ID  })
-|> incID                                           # IDCount (ID -> ID -> { aliceID: ID, bobID: ID, trudyID: ID })
-|> incID                                           # IDCount (ID -> { aliceID: ID, bobID: ID, trudyID: ID })
-|> incID                                           # IDCount ({ aliceID: ID, bobID: ID, trudyID: ID })
-|> extractState                                    # { aliceID: ID, bobID: ID, trudyID: ID }
+buildSegmentParser : ParserGroup a -> (Str -> Result a ParserErr)
+buildSegmentParser = \@ParserGroup parserGroup ->
+    \text ->
+        segments = Str.split text "-"
+        (date, _remaining) = parserGroup? segments
+
+        Ok date
 ```
 
-Above you can see the type of `state` is advanced at each step by applying an `ID` value to the function. This is also known as an applicative pipeline, and can be a flexible way to build up complex types.
-
-## Unwrap
-
-Finally, `extractState` unwraps the `IDCount` value and returns our record. 
-
-```roc
-extractState : IDCount state -> state
-extractState = \@IDCount (_, finalState) -> finalState
-```
-
-In our case, we don't need the `ID` count anymore and just return the record we have built.
+Now we're ready to use our parser as much as we want on any input text!
 
 ## Full Code
 
 ```roc
-file:IDCounter.roc
+file:DateParser.roc
 ```
 
 ## Output
 
-Code for the above example is available in `IDCounter.roc` which you can run like this:
+Code for the above example is available in `DateParser.roc` which you can run like this:
 
 ```sh
 % roc test IDCounter.roc
 
-0 failed and 1 passed in 698 ms.
+0 failed and 1 passed in 190 ms.
 ```
