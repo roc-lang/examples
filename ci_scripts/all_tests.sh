@@ -3,9 +3,6 @@
 # https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
 set -euxo pipefail
 
-echo $IN_NIX_SHELL
-exit 1
-
 if [ -z "${ROC}" ]; then
   echo "ERROR: The ROC environment variable is not set.
     Set it to something like:
@@ -104,6 +101,7 @@ set -e
 
 # Only run go tests if os is not Ubuntu and we're not inside nix. This avoids a segfault on CI. See https://github.com/roc-lang/examples/issues/164
 if ! echo "$os_info" | grep -q "Ubuntu" && [ -z "$IN_NIX_SHELL" ]; then
+    echo "Running Go test..."
     expect ci_scripts/expect_scripts/GoPlatform.exp
 fi
 
