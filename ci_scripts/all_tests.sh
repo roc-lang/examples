@@ -100,7 +100,7 @@ os_info=$(lsb_release -a 2>/dev/null)
 set -e
 
 # Skip Go tests if os is Ubuntu and we're not inside nix. This avoids a segfault on CI. See https://github.com/roc-lang/examples/issues/164
-if echo "$os_info" | grep -q "Ubuntu" && [ -z "$IN_NIX_SHELL" ]; then
+if echo "$os_info" | grep -q "Ubuntu" && [ -z "${IN_NIX_SHELL}" ]; then
     echo "Skipping Go test due to https://github.com/roc-lang/examples/issues/164"
 else
     echo "Running Go test..."
