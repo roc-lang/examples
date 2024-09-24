@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
-set -euxo pipefail
+set -exo pipefail
 
 if [ -z "${ROC}" ]; then
   echo "ERROR: The ROC environment variable is not set.
@@ -99,8 +99,11 @@ set +e
 os_info=$(lsb_release -a 2>/dev/null)
 set -e
 
-# Check if the OS is not Ubuntu. Avoids segfault on CI. See https://github.com/roc-lang/examples/issues/164
-if ! echo "$os_info" | grep -q "Ubuntu"; then
+# Skip Go tests if os is Ubuntu and we're not inside nix. This avoids a segfault on CI. See https://github.com/roc-lang/examples/issues/164
+if echo "$os_info" | grep -q "Ubuntu" && [ -z "${IN_NIX_SHELL}" ]; then
+    echo "Skipping Go test due to https://github.com/roc-lang/examples/issues/164"
+else
+    echo "Running Go test..."
     expect ci_scripts/expect_scripts/GoPlatform.exp
 fi
 
