@@ -99,8 +99,8 @@ set +e
 os_info=$(lsb_release -a 2>/dev/null)
 set -e
 
-# Check if the OS is not Ubuntu. Avoids segfault on CI. See https://github.com/roc-lang/examples/issues/164
-if ! echo "$os_info" | grep -q "Ubuntu"; then
+# Only run go tests if os is not Ubuntu and we're not inside nix. This avoids a segfault on CI. See https://github.com/roc-lang/examples/issues/164
+if ! echo "$os_info" | grep -q "Ubuntu" && [ -z "$IN_NIX_SHELL" ]; then
     expect ci_scripts/expect_scripts/GoPlatform.exp
 fi
 
