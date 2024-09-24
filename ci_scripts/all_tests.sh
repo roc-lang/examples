@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
-set -euxo pipefail
+set -exo pipefail
 
 if [ -z "${ROC}" ]; then
   echo "ERROR: The ROC environment variable is not set.
