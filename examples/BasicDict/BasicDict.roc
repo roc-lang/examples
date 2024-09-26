@@ -48,13 +48,13 @@ expect
 
     # We need to account for the case when a key (=fruit) is not in the Dict.
     # So we need a function like this:
-    addFruit : [Present U64, Missing] -> [Present U64, Missing]
+    addFruit : Result U64 [Missing] -> Result U64 [Missing]
     addFruit = \valueTag ->
         when valueTag is
             # If the fruit is not in the dict (=missing), we set the count to 1
-            Missing -> Present 1
+            Err Missing -> Ok 1
             # If the fruit is in the dict (=present), we increase the count
-            Present count -> Present (count + 1)
+            Ok count -> Ok (count + 1)
 
     Dict.get updatedDict "Apple" == (Ok 4)
 
