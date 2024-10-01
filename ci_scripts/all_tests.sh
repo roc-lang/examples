@@ -51,6 +51,12 @@ expect ci_scripts/expect_scripts/CommandLineArgs.exp
 $ROC build ./examples/CommandLineArgsFile/main.roc
 expect ci_scripts/expect_scripts/CommandLineArgsFile.exp
 
+$ROC build ./examples/DesugaringAwait/main.roc
+expect ci_scripts/expect_scripts/DesugaringAwait.exp
+
+$ROC build ./examples/DesugaringTry/main.roc
+expect ci_scripts/expect_scripts/DesugaringTry.exp
+
 $ROC build ./examples/Tuples/main.roc
 expect ci_scripts/expect_scripts/Tuples.exp
 
