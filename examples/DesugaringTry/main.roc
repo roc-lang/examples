@@ -3,28 +3,29 @@ app [main] { pf: platform "https://github.com/roc-lang/basic-cli/releases/downlo
 import pf.Stdout
 
 main =
-    Result.mapErr
-        (getLetter "2")
-        \_ -> Task.err (Exit 1 "Something went wrong")
+    Stdout.line! (Inspect.toStr (parseNameAndYear "Alice was born in 1990"))
+    Stdout.line! (Inspect.toStr (parseNameAndYearTry "Alice was born in 1990"))
+    
+### begin snippet question
+parseNameAndYear : Str -> Result { name: Str, birthYear: U16 } _
+parseNameAndYear = \str ->
+    { before: name, after: birthYearStr } = Str.splitFirst? str " was born in "
+    birthYear = Str.toU16? birthYearStr
+    Ok { name, birthYear }
+### end snippet question
+    
+parseNameAndYearTry = \str ->
+### begin snippet try
+    str
+    |> Str.splitFirst " was born in "
+    |> Result.try \{ before: name, after: birthYearStr } ->
+        Str.toU16 birthYearStr
+        |> Result.try \birthYear ->
+            Ok { name, birthYear }
+### end snippet try
 
-# The ? suffix is syntax sugar for Result.try
-#
-# The following code:
-getLetter : Str -> Result Str [OutOfBounds, InvalidNumStr]
-getLetter = \indexStr ->
-    index = Str.toU64? indexStr
-    List.get ["a", "b", "c", "d"] index
-#
-# desugars to this:
-#
-# getLetter = \indexStr ->
-#     Result.try (Str.toU64 indexStr) \index ->
-#         List.get ["a", "b", "c", "d"] index
-#
-# Try commenting out the first block and uncommenting the second block.
-# You will find that they behave exactly the same.
-#
-# For more information see the following:
-#
-# https://www.roc-lang.org/tutorial#error-handling
-# https://www.roc-lang.org/builtins/Result#try
+expect
+    parseNameAndYear "Alice was born in 1990" == Ok { name: "Alice", birthYear: 1990 }
+    
+expect
+    parseNameAndYearTry "Alice was born in 1990" == Ok { name: "Alice", birthYear: 1990 }
