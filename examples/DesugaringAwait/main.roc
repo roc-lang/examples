@@ -11,14 +11,14 @@ main =
 
 ### start snippet bang
 helloBang =
-  Stdout.line! "Hello Alice"
-  Stdout.line "Hello Bob"
-### end snippet bang
-  
-helloAwait =
-### start snippet await
-  Task.await (Stdout.line "Hello Alice") \_ ->
+    Stdout.line! "Hello Alice"
     Stdout.line "Hello Bob"
+### end snippet bang
+
+helloAwait =
+    ### start snippet await
+    Task.await (Stdout.line "Hello Alice") \_ ->
+        Stdout.line "Hello Bob"
 ### end snippet await
 
 ### start snippet bangInput

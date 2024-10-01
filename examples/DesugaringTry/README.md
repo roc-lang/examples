@@ -21,6 +21,10 @@ After desugaring, this becomes:
 file:main.roc:snippet:try
 ```
 
+[Result.try](https://www.roc-lang.org/builtins/Result#try) takes the success
+value from a given Result and uses that to generate a new Result.
+It's type is `Result a err, (a -> Result b err) -> Result b err`.
+
 `birthYear = Str.toU16? birthYearStr` is converted to `Str.toU16 birthYearStr |> Result.try \birthYear ->`.
 As you can see, the first version is a lot nicer!
 

@@ -19,7 +19,7 @@ After desugaring, this becomes:
 file:main.roc:snippet:await
 ```
 [Task.await](https://www.roc-lang.org/builtins/Task#await) takes the success value from a given
-Task and use that to generate a new Task.
+Task and uses that to generate a new Task.
 It's type is `Task a b, (a -> Task c b) -> Task c b`.
 
 The type of `Stdout.line` is `Str -> Task {} [StdoutErr Err]`.
@@ -45,6 +45,8 @@ file:main.roc:snippet:awaitInput
 This is similar to before but now the `input = Stdin.line!` gets converted to `Task.await Stdin.line \input ->`.
 With `!` you can write code in a mostly familiar way while also getting the benefits of Roc's
 error handling and the seperation of pure and effectful code.
+
+Note: this desugaring is very similar to that of [`?`](https://www.roc-lang.org/examples/DesugaringTry/README.html).
 
 ## Full Code
 ```roc
