@@ -6,7 +6,7 @@ main =
     Stdout.line! (Inspect.toStr (parseNameAndYear "Alice was born in 1990"))
     Stdout.line! (Inspect.toStr (parseNameAndYearTry "Alice was born in 1990"))
 
-### begin snippet question
+### start snippet question
 parseNameAndYear : Str -> Result { name : Str, birthYear : U16 } _
 parseNameAndYear = \str ->
     { before: name, after: birthYearStr } = Str.splitFirst? str " was born in "
@@ -15,7 +15,7 @@ parseNameAndYear = \str ->
 ### end snippet question
 
 parseNameAndYearTry = \str ->
-    ### begin snippet try
+    ### start snippet try
     str
     |> Str.splitFirst " was born in "
     |> Result.try \{ before: name, after: birthYearStr } ->
