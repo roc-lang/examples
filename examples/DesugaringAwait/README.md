@@ -8,7 +8,7 @@
   convenient way without adding new functionality to the language itself.
 </details>
 
-Desugaring converts syntax sugar (like `x += 1`) into more fundamental operations (like `x = x + 1`).
+Desugaring converts syntax sugar (like `x + 1`) into more fundamental operations (like `Num.add x 1`).
 
 Let's see how `!` is desugared, we'll start with a simple example:
 ```roc
