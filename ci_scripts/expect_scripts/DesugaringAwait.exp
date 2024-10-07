@@ -1,0 +1,26 @@
+#!/usr/bin/expect
+
+# uncomment line below for debugging
+# exp_internal 1
+
+set timeout 7
+
+spawn ./examples/DesugaringAwait/main
+
+expect "Hello Alice\r\n"
+expect "Hello Bob\r\n"
+expect "Hello Alice\r\n"
+expect "Hello Bob\r\n"
+
+expect "Type in something and press Enter:\r\n"
+send "hello\r\n"
+expect "Your input was: hello\r\n"
+expect "Type in something and press Enter:\r\n"
+send "yo\r\n"
+expect "Your input was: \r\nyo\r\n" {
+  expect eof
+  exit 0
+}
+
+puts stderr "\nError: output was different from expected value."
+exit 1
