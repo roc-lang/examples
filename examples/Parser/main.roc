@@ -9,11 +9,11 @@ import parser.String exposing [parseStr, codeunit, anyCodeunit]
 
 main =
     many letterParser
-        |> parseStr inputStr
-        |> Result.map countLetterAs
-        |> Result.map \count -> "I counted $(count) letter A's!"
-        |> Result.withDefault "Ooops, something went wrong parsing"
-        |> Stdout.line!
+    |> parseStr inputStr
+    |> Result.map countLetterAs
+    |> Result.map \count -> "I counted $(count) letter A's!"
+    |> Result.withDefault "Ooops, something went wrong parsing"
+    |> Stdout.line!
 
 Letter : [A, B, C, Other]
 

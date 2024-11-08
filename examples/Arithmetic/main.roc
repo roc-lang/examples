@@ -46,7 +46,7 @@ readArgs =
 
     args =
         Arg.list {}
-            |> Task.mapErr! \_ -> InvalidArg
+        |> Task.mapErr! \_ -> InvalidArg
 
     aResult = List.get args 1 |> Result.try Str.toI32
     bResult = List.get args 2 |> Result.try Str.toI32
