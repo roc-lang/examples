@@ -38,18 +38,6 @@ jobs:
       - name: get short commit SHA
         run: echo "SHORT_COMMIT_SHA=$(./roc_nightly/roc version | grep -oP 'commit \K[a-f0-9]+' )" >> $GITHUB_ENV
 
-      - name: get roc repo for static-site-gen platform and its dependencies
-        run: |
-          cd roc_nightly
-          find . -mindepth 1 ! -name 'roc' -exec rm -rf {} +
-          mkdir gitrepo
-          cd gitrepo
-          git clone https://github.com/roc-lang/roc.git
-          cd roc
-          git checkout ${{ env.SHORT_COMMIT_SHA }}
-          mv * ../../
-
-
       - name: install expect # used to check if output is correct
         run: sudo apt install -y expect
 
@@ -63,6 +51,3 @@ jobs:
 
       - name: Checks if every folder in examples is mentioned in ./examples/index.md
         run: bash ./ci_scripts/check_index.sh
-
-      # segfaults
-      # - run: ./roc_nightly/roc main.roc -- examples build

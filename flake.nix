@@ -8,31 +8,20 @@
 
     # to easily make configs for multiple architectures
     flake-utils.url = "github:numtide/flake-utils";
-
-    # rust is used for the static-site-gen platform
-    # rust from nixpkgs has some libc problems, this is patched in the rust-overlay
-    rust-overlay = {
-      url = "github:oxalica/rust-overlay";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
-  outputs = { self, nixpkgs, flake-utils, rust-overlay, roc }:
+  outputs = { self, nixpkgs, flake-utils, roc }:
     let
       supportedSystems = [ "aarch64-linux" "x86_64-linux" "x86_64-darwin" "aarch64-darwin" ];
     in
       flake-utils.lib.eachSystem supportedSystems (system:
         let
-            overlays = [ (import rust-overlay) ];
 
             pkgs = import nixpkgs {
-              inherit system overlays;
+              inherit system;
             };
 
             rocPkgs = roc.packages.${system};
-
-            customRust =
-              pkgs.rust-bin.stable."1.72.1".default; # keep this in sync with https://github.com/roc-lang/roc/blob/main/rust-toolchain.toml
 
             linuxInputs = with pkgs;
               lib.optionals stdenv.isLinux [
@@ -45,9 +34,7 @@
                     packages = with pkgs; [
                       rocPkgs.cli
                       rocPkgs.lang-server
-                      simple-http-server # to be able to view the website when developing
                       expect # to test examples on CI
-                      customRust # for static-site-gen platform
                       perl # for ci/update_basic_cli_url.sh
                       go # for GoPlatform example
                       dotnet-sdk_8 # for DotnetPlatform example
