@@ -75,6 +75,4 @@ $ roc build --bundle .tar.br platform/main.roc
 app [goUsingRocApp] { pf: platform "YOUR_URL" }
 ```
 
-When running with a platform from a URL, the `--prebuilt-platform` flag is not needed.
-
 ‼ This build procedure only builds the platform for your kind of operating system and architecture. If you want to support users on all Roc supported operating systems and architectures, you'll need [this kind of setup](https://github.com/roc-lang/roc/blob/main/.github/workflows/basic_cli_build_release.yml).
