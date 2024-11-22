@@ -97,7 +97,7 @@ Finally, we'll need to wrap up our parsers into one that breaks a string into se
 buildSegmentParser : ParserGroup a -> (Str -> Result a ParserErr)
 buildSegmentParser = \@ParserGroup parserGroup ->
     \text ->
-        segments = Str.split text "-"
+        segments = Str.splitOn text "-"
         (date, _remaining) = parserGroup? segments
 
         Ok date

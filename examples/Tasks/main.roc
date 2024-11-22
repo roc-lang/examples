@@ -1,5 +1,5 @@
 app [main] {
-    pf: platform "https://github.com/roc-lang/basic-cli/releases/download/0.16.0/O00IPk-Krg_diNS2dVWlI0ZQP794Vctxzv0ha96mK0E.tar.br",
+    pf: platform "https://github.com/roc-lang/basic-cli/releases/download/0.17.0/lZFLstMUCUvd5bjnnpYromZJXkQUrdhbva4xdBInicE.tar.br",
 }
 
 import pf.Stdout
@@ -34,7 +34,7 @@ run =
     strHTML = fetchHtml! url
     Stdout.line! "Saving url HTML to $(Path.display outputPath)..."
     # Write HTML string to a file
-    Path.writeUtf8 outputPath strHTML
+    Path.writeUtf8 strHTML outputPath 
         |> Task.onErr! \_ -> Task.err (FailedToWriteFile outputPath)
     # Print contents of current working directory
     listCwdContent
