@@ -1,10 +1,10 @@
 app [main] {
-    cli: platform "https://github.com/roc-lang/basic-cli/releases/download/0.16.0/O00IPk-Krg_diNS2dVWlI0ZQP794Vctxzv0ha96mK0E.tar.br",
-    parser: "https://github.com/Anton-4/roc-parser/releases/download/0.7.2/xcLMjkUXqAJoSsfKblZhVn3slAv3sdFcBxRbqBDoUJk.tar.br",
+    cli: platform "https://github.com/roc-lang/basic-cli/releases/download/0.17.0/lZFLstMUCUvd5bjnnpYromZJXkQUrdhbva4xdBInicE.tar.br",
+    parser: "https://github.com/lukewilliamboswell/roc-parser/releases/download/0.9.0/w8YKp2YAgQt5REYk912HfKAHBjcXsrnvtjI0CBzoAT4.tar.br",
 }
 
 import cli.Stdout
-import parser.Core exposing [Parser, many, oneOf, map]
+import parser.Parser exposing [Parser, many, oneOf, map]
 import parser.String exposing [parseStr, codeunit, anyCodeunit]
 
 main =
