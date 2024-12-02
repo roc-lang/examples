@@ -68,15 +68,15 @@ parseWithTryOp = \line ->
 parseWithTryOpV2 = \line ->
     { before: fullName, after: birthYearStr } =
         line
-            |> Str.splitFirst " was born in "
-            |> Result.mapErr? \_ -> Err InvalidRecordFormat
+        |> Str.splitFirst " was born in "
+        |> Result.mapErr? \_ -> Err InvalidRecordFormat
     { before: firstName, after: lastName } =
         fullName
-            |> Str.splitFirst " "
-            |> Result.mapErr? \_ -> Err InvalidNameFormat
+        |> Str.splitFirst " "
+        |> Result.mapErr? \_ -> Err InvalidNameFormat
     birthYear =
         Str.toU16 birthYearStr
-            |> Result.mapErr? \_ -> Err InvalidBirthYearFormat
+        |> Result.mapErr? \_ -> Err InvalidBirthYearFormat
     Ok { firstName, lastName, birthYear }
 
 ## This function parses a string using a given parser and returns a string to
