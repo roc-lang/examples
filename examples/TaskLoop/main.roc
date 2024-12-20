@@ -1,34 +1,37 @@
-app [main] {
-    pf: platform "https://github.com/roc-lang/basic-cli/releases/download/0.17.0/lZFLstMUCUvd5bjnnpYromZJXkQUrdhbva4xdBInicE.tar.br",
+app [main!] {
+    pf: platform "../../../basic-cli/platform/main.roc",
 }
 
 import pf.Stdin
 import pf.Stdout
 import pf.Stderr
 
-main = run |> Task.onErr printErr
+main! = \_ ->
+    when run! {} is
+        Ok {} -> Ok {}
+        Err err -> print_err! err
 
-run : Task {} _
-run =
-    Stdout.line! "Enter some numbers on different lines, then press Ctrl-D to sum them up."
+run! : {} => Result {} _
+run! = \_ ->
+    try Stdout.line! "Enter some numbers on different lines, then press Ctrl-D to sum them up."
 
-    sum = Task.loop! 0 addNumberFromStdin
+    sum = try add_number_from_stdin! 0
+
     Stdout.line! "Sum: $(Num.toStr sum)"
 
-addNumberFromStdin : I64 -> Task [Done I64, Step I64] _
-addNumberFromStdin = \sum ->
-    when Stdin.line |> Task.result! is
+add_number_from_stdin! : I64 => Result I64 _
+add_number_from_stdin! = \sum ->
+    when Stdin.line! {} is
         Ok input ->
             when Str.toI64 input is
-                Ok num -> Task.ok (Step (sum + num))
-                Err _ -> Task.err (NotNum input)
+                Ok num -> add_number_from_stdin! (sum + num)
+                Err _ -> Err (NotNum input)
 
-        Err (StdinErr EndOfFile) -> Task.ok (Done sum)
-        Err err -> err |> Inspect.toStr |> NotNum |> Task.err
+        Err EndOfFile -> Ok sum
+        Err err -> err |> Inspect.toStr |> NotNum |> Err
 
-printErr : _ -> Task {} _
-printErr = \err ->
+print_err! : _ => Result {} _
+print_err! = \err ->
     when err is
-        NotNum text -> Stderr.line "Error: \"$(text)\" is not a valid I64 number."
-        _ -> Stderr.line "Error: $(Inspect.toStr err)"
-
+        NotNum text -> Stderr.line! "Error: \"$(text)\" is not a valid I64 number."
+        _ -> Stderr.line! "Error: $(Inspect.toStr err)"
