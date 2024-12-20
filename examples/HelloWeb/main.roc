@@ -1,4 +1,4 @@
-app [Model, server] { pf: platform "https://github.com/roc-lang/basic-webserver/releases/download/0.10.0/BgDDIykwcg51W8HA58FE_BjdzgXVk--ucv6pVb_Adik.tar.br" }
+app [Model, init!, respond!] { pf: platform "../../../basic-webserver/platform/main.roc" }
 
 import pf.Stdout
 import pf.Http exposing [Request, Response]
@@ -11,13 +11,18 @@ Model : {}
 # generate css by running `tailwindcss`,...
 # In this case we don't have anything to initialize, so it is just `Task.ok {}`.
 
-server = { init: Task.ok {}, respond }
+init! : {} => Result Model []
+init! = \_ -> Ok {}
 
-respond : Request, Model -> Task Response [ServerErr Str]_
-respond = \req, _ ->
+respond! : Request, Model => Result Response [ServerErr Str]_
+respond! = \req, _ ->
     # Log request datetime, method and url
-    datetime = Utc.now! |> Utc.toIso8601Str
+    datetime = Utc.to_iso_8601 (Utc.now! {})
 
-    Stdout.line! "$(datetime) $(Http.methodToStr req.method) $(req.url)"
+    try Stdout.line! "$(datetime) $(Inspect.toStr req.method) $(req.uri)"
 
-    Task.ok { status: 200, headers: [], body: Str.toUtf8 "<b>Hello, web!</b></br>" }
+    Ok {
+        status: 200,
+        headers: [],
+        body: Str.toUtf8 "<b>Hello, web!</b></br>",
+    }
