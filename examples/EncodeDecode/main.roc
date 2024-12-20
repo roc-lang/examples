@@ -1,5 +1,5 @@
-app [main] {
-    pf: platform "https://github.com/roc-lang/basic-cli/releases/download/0.17.0/lZFLstMUCUvd5bjnnpYromZJXkQUrdhbva4xdBInicE.tar.br",
+app [main!] {
+    pf: platform "../../../basic-cli/platform/main.roc",
     json: "https://github.com/lukewilliamboswell/roc-json/releases/download/0.11.0/z45Wzc-J39TLNweQUoLw3IGZtkQiEN3lTBv3BXErRjQ.tar.br",
 }
 
@@ -20,26 +20,26 @@ ItemKind := [
     Property,
 ]
     implements [
-        Decoding { decoder: decodeItems },
-        Encoding { toEncoder: encodeItems },
+        Decoding { decoder: decode_items },
+        Encoding { toEncoder: encode_items },
         Inspect,
         Eq,
     ]
 
-tryMapResult : DecodeResult U32, (U32 -> Result ItemKind DecodeError) -> DecodeResult ItemKind
-tryMapResult = \decoded, mapper ->
+try_map_result : DecodeResult U32, (U32 -> Result ItemKind DecodeError) -> DecodeResult ItemKind
+try_map_result = \decoded, mapper ->
     when decoded.result is
         Err e -> { result: Err e, rest: decoded.rest }
         Ok res -> { result: mapper res, rest: decoded.rest }
 
-decodeItems : Decoder ItemKind fmt where fmt implements DecoderFormatting
-decodeItems = Decode.custom \bytes, fmt ->
+decode_items : Decoder ItemKind fmt where fmt implements DecoderFormatting
+decode_items = Decode.custom \bytes, fmt ->
     # Helper function to wrap our tag
     ok = \tag -> Ok (@ItemKind tag)
 
     bytes
     |> Decode.fromBytesPartial fmt
-    |> tryMapResult \val ->
+    |> try_map_result \val ->
         when val is
             1 -> ok Text
             2 -> ok Method
@@ -53,9 +53,9 @@ decodeItems = Decode.custom \bytes, fmt ->
             10 -> ok Property
             _ -> Err TooShort
 
-encodeItems : ItemKind -> Encoder fmt where fmt implements EncoderFormatting
-encodeItems = \@ItemKind val ->
-    num =
+encode_items : ItemKind -> Encoder fmt where fmt implements EncoderFormatting
+encode_items = \@ItemKind val ->
+    Encode.u32 (
         when val is
             Text -> 1
             Method -> 2
@@ -67,15 +67,15 @@ encodeItems = \@ItemKind val ->
             Interface -> 8
             Module -> 9
             Property -> 10
-    Encode.u32 num
+    )
 
 ### end snippet impl
 
 ### start snippet demo
 
 # make a list of ItemKind's
-originalList : List ItemKind
-originalList = [
+original_list : List ItemKind
+original_list = [
     @ItemKind Text,
     @ItemKind Method,
     @ItemKind Function,
@@ -89,28 +89,28 @@ originalList = [
 ]
 
 # encode them into JSON
-encodedBytes : List U8
-encodedBytes = Encode.toBytes originalList Json.utf8
+encoded_bytes : List U8
+encoded_bytes = Encode.toBytes original_list Json.utf8
 
 # test we have encoded correctly
-expect encodedBytes == originalBytes
+expect encoded_bytes == original_bytes
 
 # take a JSON encoded list
-originalBytes : List U8
-originalBytes = "[1,2,3,4,5,6,7,8,9,10]" |> Str.toUtf8
+original_bytes : List U8
+original_bytes = "[1,2,3,4,5,6,7,8,9,10]" |> Str.toUtf8
 
 # decode into a list of ItemKind's
-decodedList : List ItemKind
-decodedList = Decode.fromBytes originalBytes Json.utf8 |> Result.withDefault []
+decoded_list : List ItemKind
+decoded_list = Decode.fromBytes original_bytes Json.utf8 |> Result.withDefault []
 
 # test we have decoded correctly
-expect decodedList == originalList
+expect decoded_list == original_list
 
-main =
+main! = \_ ->
     # debug print decoded items to stdio
-    decodedList
+    decoded_list
     |> List.map Inspect.toStr
     |> Str.joinWith "\n"
-    |> Stdout.line
+    |> Stdout.line!
 
 ### end snippet demo

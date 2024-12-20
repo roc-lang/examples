@@ -1,36 +1,25 @@
-app [main] { pf: platform "https://github.com/roc-lang/basic-cli/releases/download/0.17.0/lZFLstMUCUvd5bjnnpYromZJXkQUrdhbva4xdBInicE.tar.br" }
+app [main!] { pf: platform "../../../basic-cli/platform/main.roc" }
 
 import pf.Stdin
 import pf.Stdout
 
-main =
-    helloBang!
-    helloAwait!
-    readInputBang!
-    readInputAwait!
+# TODO update README ... for this example
+
+main! = \_ ->
+    try hello! {}
+    try read_input! {}
+
+    Ok {}
 
 ### start snippet bang
-helloBang =
-    Stdout.line! "Hello Alice"
-    Stdout.line "Hello Bob"
+hello! = \_ ->
+    try Stdout.line! "Hello Alice"
+    Stdout.line! "Hello Bob"
 ### end snippet bang
 
-helloAwait =
-    ### start snippet await
-    Task.await (Stdout.line "Hello Alice") \_ ->
-        Stdout.line "Hello Bob"
-### end snippet await
-
 ### start snippet bangInput
-readInputBang =
-    Stdout.line! "Type in something and press Enter:"
-    input = Stdin.line!
+read_input! = \_ ->
+    try Stdout.line! "Type in something and press Enter:"
+    input = try Stdin.line! {}
     Stdout.line! "Your input was: $(input)"
 ### end snippet bangInput
-
-### start snippet awaitInput
-readInputAwait =
-    Task.await (Stdout.line "Type in something and press Enter:") \_ ->
-        Task.await Stdin.line \input ->
-            Stdout.line "Your input was: $(input)"
-### end snippet awaitInput

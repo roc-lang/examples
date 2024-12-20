@@ -7,7 +7,7 @@ set timeout 7
 
 spawn ./examples/DesugaringTry/main
 
-expect -exact "(Ok {birthYear: 1990, name: \"Alice\"})\r\n(Ok {birthYear: 1990, name: \"Alice\"})\r\n" {
+expect -exact "(Ok {birth_year: 1990, name: \"Alice\"})\r\n(Ok {birth_year: 1990, name: \"Alice\"})\r\n" {
     expect eof
     exit 0
 }
