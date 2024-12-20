@@ -7,7 +7,7 @@ main! : List Arg.Arg => Result {} _
 main! = \raw_args ->
 
     args : { a : I32, b : I32 }
-    args = try readArgs raw_args
+    args = try read_args raw_args
 
     result =
         [
@@ -19,9 +19,9 @@ main! = \raw_args ->
             ("exponentiation", Num.powInt args.a args.b),
         ]
         |> List.map \(operation, answer) ->
-            answerStr = Num.toStr answer
+            answer_str = Num.toStr answer
 
-            "$(operation): $(answerStr)"
+            "$(operation): $(answer_str)"
         |> Str.joinWith "\n"
 
     Stdout.line! result
@@ -34,22 +34,22 @@ main! = \raw_args ->
 ## as `I32` numbers, or if the parsed numbers are outside the expected range
 ## (-1000 to 1000), the function will return a task that fails with an
 ## error `InvalidArg` or `InvalidNumStr`.
-readArgs : List Arg -> Result { a : I32, b : I32 } [Exit I32 Str]
-readArgs = \raw_args ->
+read_args : List Arg -> Result { a : I32, b : I32 } [Exit I32 Str]
+read_args = \raw_args ->
 
     invalid_args = Exit 1 "Error: Please provide two integers between -1000 and 1000 as arguments."
     invalid_num_str = Exit 1 "Error: Invalid number format. Please provide integers between -1000 and 1000."
 
     args =
         if List.len raw_args != 3 then
-            return (Err invalid_args)
+            return Err invalid_args
         else
             List.map raw_args Arg.display
 
-    aResult = List.get args 1 |> Result.try Str.toI32
-    bResult = List.get args 2 |> Result.try Str.toI32
+    a_result = List.get args 1 |> Result.try Str.toI32
+    b_result = List.get args 2 |> Result.try Str.toI32
 
-    when (aResult, bResult) is
+    when (a_result, b_result) is
         (Ok a, Ok b) ->
             if a < -1000 || a > 1000 || b < -1000 || b > 1000 then
                 Err invalid_num_str
