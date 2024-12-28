@@ -1,4 +1,4 @@
-app [Model, init!, respond!] { pf: platform "../../../basic-webserver/platform/main.roc" }
+app [Model, init!, respond!] { pf: platform "https://github.com/roc-lang/basic-webserver/releases/download/0.11.0/yWHkcVUt_WydE1VswxKFmKFM5Tlu9uMn6ctPVYaas7I.tar.br" }
 
 import pf.Stdout
 import pf.Http exposing [Request, Response]
