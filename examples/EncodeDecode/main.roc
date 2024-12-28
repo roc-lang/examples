@@ -55,19 +55,20 @@ decode_items = Decode.custom \bytes, fmt ->
 
 encode_items : ItemKind -> Encoder fmt where fmt implements EncoderFormatting
 encode_items = \@ItemKind val ->
-    Encode.u32 (
-        when val is
-            Text -> 1
-            Method -> 2
-            Function -> 3
-            Constructor -> 4
-            Field -> 5
-            Variable -> 6
-            Class -> 7
-            Interface -> 8
-            Module -> 9
-            Property -> 10
-    )
+    Encode.u32
+        (
+            when val is
+                Text -> 1
+                Method -> 2
+                Function -> 3
+                Constructor -> 4
+                Field -> 5
+                Variable -> 6
+                Class -> 7
+                Interface -> 8
+                Module -> 9
+                Property -> 10
+        )
 
 ### end snippet impl
 

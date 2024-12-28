@@ -13,7 +13,8 @@ main! = \_ ->
     second_item = if simple_tuple.1 then "true" else "false"
     third_item = Num.toStr simple_tuple.2
 
-    try Stdout.line!
+    try
+        Stdout.line!
         """
         First is: $(first_item),
         Second is: $(second_item),

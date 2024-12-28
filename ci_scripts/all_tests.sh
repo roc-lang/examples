@@ -95,29 +95,27 @@ expect ci_scripts/expect_scripts/HelloWeb.exp
 $ROC build ./examples/ImportPackageFromModule/main.roc
 expect ci_scripts/expect_scripts/ImportPackageFromModule.exp
 
-# TODO -- RESTORE -- SKIPPING BECUASE IT DOESN"T RUN LOCALLY FOR ME??
-# $ROC build --lib ./examples/GoPlatform/main.roc --output examples/GoPlatform/platform/libapp.so
-# go build -C examples/GoPlatform/platform -buildmode=pie -o dynhost
+$ROC build --lib ./examples/GoPlatform/main.roc --output examples/GoPlatform/platform/libapp.so
+go build -C examples/GoPlatform/platform -buildmode=pie -o dynhost
 
-# TODO -- RESTORE -- SKIPPING BECUASE IT DOESN"T RUN LOCALLY FOR ME??
-# $ROC preprocess-host ./examples/GoPlatform/platform/dynhost ./examples/GoPlatform/platform/main.roc ./examples/GoPlatform/platform/libapp.so
-# $ROC build ./examples/GoPlatform/main.roc
+$ROC preprocess-host ./examples/GoPlatform/platform/dynhost ./examples/GoPlatform/platform/main.roc ./examples/GoPlatform/platform/libapp.so
+$ROC build ./examples/GoPlatform/main.roc
 
 # temporarily allow failure of lsb_release in case it is not installed
-# set +e
-# os_info=$(lsb_release -a 2>/dev/null)
-# set -e
+set +e
+os_info=$(lsb_release -a 2>/dev/null)
+set -e
 
-# # Skip Go tests if os is Ubuntu and we're not inside nix. This avoids a segfault on CI. See https://github.com/roc-lang/examples/issues/164
-# if echo "$os_info" | grep -q "Ubuntu" && [ -z "${IN_NIX_SHELL}" ]; then
-#     echo "Skipping Go test due to https://github.com/roc-lang/examples/issues/164"
-# else
-#     echo "Running Go test..."
-#     expect ci_scripts/expect_scripts/GoPlatform.exp
-# fi
+# Skip Go tests if os is Ubuntu and we're not inside nix. This avoids a segfault on CI. See https://github.com/roc-lang/examples/issues/164
+if echo "$os_info" | grep -q "Ubuntu" && [ -z "${IN_NIX_SHELL}" ]; then
+    echo "Skipping Go test due to https://github.com/roc-lang/examples/issues/164"
+else
+    echo "Running Go test..."
+    expect ci_scripts/expect_scripts/GoPlatform.exp
+fi
 
 $ROC test ./examples/CustomInspect/OpaqueTypes.roc
 
-# TODO -- RESTORE -- SKIPPING BECUASE IT DOESN"T RUN LOCALLY FOR ME??
-# $ROC build ./examples/DotNetPlatform/main.roc --lib --output ./examples/DotNetPlatform/platform/interop
-# expect ci_scripts/expect_scripts/DotNetPlatform.exp
+
+$ROC build ./examples/DotNetPlatform/main.roc --lib --output ./examples/DotNetPlatform/platform/interop
+expect ci_scripts/expect_scripts/DotNetPlatform.exp
