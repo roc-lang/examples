@@ -97,14 +97,14 @@ expect ci_scripts/expect_scripts/ImportPackageFromModule.exp
 
 $ROC test ./examples/CustomInspect/OpaqueTypes.roc
 
-$ROC build --lib ./examples/GoPlatform/main.roc --output examples/GoPlatform/platform/libapp.so
-go build -C examples/GoPlatform/platform -buildmode=pie -o dynhost
-
-$ROC preprocess-host ./examples/GoPlatform/platform/dynhost ./examples/GoPlatform/platform/main.roc ./examples/GoPlatform/platform/libapp.so
-$ROC build ./examples/GoPlatform/main.roc
-
 # Check if we're not on macOS, these examples don't work on macos yet
 if [[ "$(uname)" != "Darwin" ]]; then
+  $ROC build --lib ./examples/GoPlatform/main.roc --output examples/GoPlatform/platform/libapp.so
+  go build -C examples/GoPlatform/platform -buildmode=pie -o dynhost
+  
+  $ROC preprocess-host ./examples/GoPlatform/platform/dynhost ./examples/GoPlatform/platform/main.roc ./examples/GoPlatform/platform/libapp.so
+  $ROC build ./examples/GoPlatform/main.roc
+
   # temporarily allow failure of lsb_release in case it is not installed
   set +e
   os_info=$(lsb_release -a 2>/dev/null)
