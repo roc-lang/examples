@@ -2,27 +2,38 @@ on:
   pull_request:
   workflow_dispatch:
 
-name: Test examples on Ubuntu
+name: Test examples without nix
 
 jobs:
   test-examples:
     runs-on: ${{ matrix.operating-system }}
     strategy:
       matrix:
-        operating-system: [ubuntu-20.04, ubuntu-24.04]
+        operating-system: [ubuntu-20.04, ubuntu-24.04, macos-13, macos-14]
     timeout-minutes: 90
     steps:
       - uses: actions/checkout@v3
 
+      - name: Set OS-specific variables
+        id: vars
+        run: |
+          if [[ "${{ matrix.operating-system }}" =~ ^ubuntu- ]]; then
+            echo "os_pattern=linux_x86_64" >> $GITHUB_OUTPUT
+          elif [ "${{ matrix.operating-system }}" = "macos-13" ]; then
+            echo "os_pattern=macos_x86_64" >> $GITHUB_OUTPUT
+          else
+            echo "os_pattern=macos_apple_silicon" >> $GITHUB_OUTPUT
+          fi
+
       - id: try_fetching_testing_release
         continue-on-error: true
         run: |
-          curl -fOL https://github.com/roc-lang/roc/releases/download/nightly/roc_nightly-linux_x86_64-TESTING.tar.gz
-    
+          curl -fOL https://github.com/roc-lang/roc/releases/download/nightly/roc_nightly-${{ steps.vars.outputs.os_pattern }}-TESTING.tar.gz
+
       - name: There are no TESTING releases, checking regular releases instead
         if: steps.try_fetching_testing_release.outcome == 'failure'
         run: |
-          curl -fOL https://github.com/roc-lang/roc/releases/download/nightly/roc_nightly-linux_x86_64-latest.tar.gz
+          curl -fOL https://github.com/roc-lang/roc/releases/download/nightly/roc_nightly-${{ steps.vars.outputs.os_pattern }}-latest.tar.gz
 
       - name: rename nightly tar
         run: mv $(ls | grep "roc_nightly.*tar\.gz") roc_nightly.tar.gz
@@ -38,11 +49,23 @@ jobs:
       - name: get short commit SHA
         run: echo "SHORT_COMMIT_SHA=$(./roc_nightly/roc version | grep -oP 'commit \K[a-f0-9]+' )" >> $GITHUB_ENV
 
-      - name: install expect # used to check if output is correct
+      - name: Install dependencies (Ubuntu)
+        if: startsWith(matrix.operating-system, 'ubuntu-')
         run: sudo apt install -y expect
 
-      - name: print runner CPU
+      - name: Install dependencies (macOS)
+        if: startsWith(matrix.operating-system, 'macos-')
+        run: |
+          brew install expect
+          brew install z3
+
+      - name: print runner CPU (Ubuntu)
+        if: startsWith(matrix.operating-system, 'ubuntu-')
         run: lscpu
+
+      - name: print runner CPU (macOS)
+        if: startsWith(matrix.operating-system, 'macos-')
+        run: sysctl -n machdep.cpu.brand_string
 
       - name: check if roc files are properly formatted
         run: ROC=./roc_nightly/roc ./ci_scripts/check_format.sh
