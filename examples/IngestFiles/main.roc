@@ -3,5 +3,5 @@ app [main!] { pf: platform "https://github.com/roc-lang/basic-cli/releases/downl
 import pf.Stdout
 import "sample.txt" as sample : Str
 
-main! = \_ ->
+main! = \_args ->
     Stdout.line! "$(sample)"

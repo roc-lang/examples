@@ -107,7 +107,7 @@ decoded_list = Decode.fromBytes original_bytes Json.utf8 |> Result.withDefault [
 # test we have decoded correctly
 expect decoded_list == original_list
 
-main! = \_ ->
+main! = \_args ->
     # debug print decoded items to stdio
     decoded_list
     |> List.map Inspect.toStr

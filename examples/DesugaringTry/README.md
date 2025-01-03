@@ -31,8 +31,6 @@ As you can see, the first version is a lot nicer!
 Thanks to `?`, you can write code in a mostly familiar way while also getting the benefits of Roc's
 error handling.
 
-Note: this desugaring is very similar to that of [`!`](https://www.roc-lang.org/examples/DesugaringAwait/README.html).
-
 ## Full Code
 ```roc
 file:main.roc

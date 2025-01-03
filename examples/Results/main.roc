@@ -95,7 +95,7 @@ parse = \line, parser ->
         Err InvalidRecordFormat -> "Oh wow, that's a weird looking record!"
         _ -> "Something unexpected happened" # Err NotFound or Err InvalidNumStr
 
-main! = \_ ->
+main! = \_args ->
     try Stdout.line! (parse "George Harrison was born in 1943" parse_verbose)
     try Stdout.line! (parse "John Lennon was born in 1940" parse_with_try)
     try Stdout.line! (parse "Paul McCartney was born in 1942" parse_with_try_v2)

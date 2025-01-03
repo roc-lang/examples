@@ -7,7 +7,7 @@ import cli.Stdout
 import parser.Parser exposing [Parser, many, oneOf, map]
 import parser.String exposing [parseStr, codeunit, anyCodeunit]
 
-main! = \_ ->
+main! = \_args ->
 
     letters = try parseStr (many letter_parser) input_str
 

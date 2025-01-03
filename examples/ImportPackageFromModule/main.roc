@@ -8,5 +8,5 @@ app [main!] {
 import pf.Stdout
 import Module
 
-main! = \_ ->
+main! = \_args ->
     Stdout.line! (Inspect.toStr (Module.split_graphemes "hello"))

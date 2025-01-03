@@ -3,6 +3,6 @@ app [main!] { pf: platform "https://github.com/roc-lang/basic-cli/releases/downl
 import pf.Stdout
 import Dir.Hello exposing [hello]
 
-main! = \_ ->
+main! = \_args ->
     # here we're calling the `hello` function from the Hello module
     Stdout.line! (hello "World")

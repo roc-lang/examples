@@ -2,7 +2,7 @@ app [main!] { pf: platform "https://github.com/roc-lang/basic-cli/releases/downl
 
 import pf.Stdout
 
-main! = \_ ->
+main! = \_args ->
     List.range { start: At 1, end: At 100 }
     |> List.map fizz_buzz
     |> Str.joinWith ","

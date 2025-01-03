@@ -2,7 +2,7 @@ app [main!] { pf: platform "https://github.com/roc-lang/basic-cli/releases/downl
 
 import pf.Stdout
 
-main! = \_ ->
+main! = \_args ->
     nStr = Num.toStr (least_square_difference {})
 
     Stdout.line! "The least positive integer n, where the difference of n*n and (n-1)*(n-1) is greater than 1000, is $(nStr)"

@@ -39,7 +39,7 @@ safe_variance = \maybe_empty_list ->
                     |> Result.try (\z -> Num.addChecked z state)) # ∑
             |> Result.map (\x -> x / n)
 
-main! = \_ ->
+main! = \_args ->
 
     variance_result =
         [46, 69, 32, 60, 52, 41]

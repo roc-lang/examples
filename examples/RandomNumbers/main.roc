@@ -6,7 +6,7 @@ app [main!] {
 import pf.Stdout
 import rand.Random
 
-main! = \_ ->
+main! = \_args ->
 
     # Print a list of 10 random numbers in the range 25-75 inclusive.
     numbers_str =
@@ -17,6 +17,7 @@ main! = \_ ->
     Stdout.line! numbers_str
 
 # Generate a list random numbers using the seed `1234`.
+# This is NOT cryptograhpically secure!
 randomNumbers : List U32
 randomNumbers =
     { value: numbers } = Random.step (Random.seed 1234) numbersGenerator
@@ -24,6 +25,7 @@ randomNumbers =
     numbers
 
 # A generator that will produce a list of 10 random numbers in the range 25-75 inclusive.
+# This is NOT cryptograhpically secure!
 numbersGenerator : Random.Generator (List U32)
 numbersGenerator =
     Random.list (Random.boundedU32 25 75) 10

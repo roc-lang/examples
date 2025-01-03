@@ -2,7 +2,7 @@ app [main!] { pf: platform "https://github.com/roc-lang/basic-cli/releases/downl
 
 import pf.Stdout
 
-main! = \_ ->
+main! = \_args ->
     try Stdout.line! (Inspect.toStr (parse_name_and_year "Alice was born in 1990"))
     try Stdout.line! (Inspect.toStr (parse_name_and_year_try "Alice was born in 1990"))
 

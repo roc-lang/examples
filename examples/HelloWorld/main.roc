@@ -2,5 +2,5 @@ app [main!] { pf: platform "https://github.com/roc-lang/basic-cli/releases/downl
 
 import pf.Stdout
 
-main! = \_ ->
+main! = \_args ->
     Stdout.line! "Hello, World!"

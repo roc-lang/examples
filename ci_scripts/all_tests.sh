@@ -51,9 +51,6 @@ expect ci_scripts/expect_scripts/CommandLineArgs.exp
 $ROC build ./examples/CommandLineArgsFile/main.roc
 expect ci_scripts/expect_scripts/CommandLineArgsFile.exp
 
-$ROC build ./examples/DesugaringAwait/main.roc
-expect ci_scripts/expect_scripts/DesugaringAwait.exp
-
 $ROC build ./examples/DesugaringTry/main.roc
 $ROC test ./examples/DesugaringTry/main.roc
 expect ci_scripts/expect_scripts/DesugaringTry.exp
@@ -66,11 +63,11 @@ $ROC test ./examples/TowersOfHanoi/Hanoi.roc
 $ROC build ./examples/Results/main.roc
 expect ci_scripts/expect_scripts/Results.exp
 
-$ROC build ./examples/Tasks/main.roc
-expect ci_scripts/expect_scripts/Tasks.exp
+$ROC build ./examples/ErrorHandling/main.roc
+expect ci_scripts/expect_scripts/ErrorHandling.exp
 
-$ROC build ./examples/TaskLoop/main.roc
-expect ci_scripts/expect_scripts/TaskLoop.exp
+$ROC build ./examples/LoopEffect/main.roc
+expect ci_scripts/expect_scripts/LoopEffect.exp
 
 $ROC test ./examples/RecordBuilder/DateParser.roc
 

@@ -58,10 +58,6 @@ main! = \args ->
 
     Ok {}
 
-# NOTE in the future the trailing underscore `_` character will not be necessary.
-# This is a temporary workaround until [this issue](https://github.com/roc-lang/roc/issues/5660)
-# is resolved.
-
 parse_args! : List Arg => Result { url : Str, output_path : Path } _
 parse_args! = \args ->
     when List.map args Arg.display is

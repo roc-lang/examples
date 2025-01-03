@@ -6,7 +6,7 @@ import pf.Stdin
 import pf.Stdout
 import pf.Stderr
 
-main! = \_ ->
+main! = \_args ->
     when run! {} is
         Ok {} -> Ok {}
         Err err -> print_err! err
