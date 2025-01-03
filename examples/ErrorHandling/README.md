@@ -1,6 +1,6 @@
 # Error handling with try and Result
 
-A more complex "real world" example that demonstartes the use of `try`, `Result` and error handling in Roc. 
+A more complex "real world" example that demonstrates the use of `try`, `Result` and error handling in Roc. 
 
 ## Full Code
 
