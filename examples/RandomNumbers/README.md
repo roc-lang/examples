@@ -19,5 +19,14 @@ Run this from the directory that has `main.roc` in it:
 
 ```
 $ roc main.roc
-Random numbers are: 29,30,71,64,48,33,55,68,53,28
+52
+34
+26
+69
+34
+35
+51
+74
+70
+39
 ```

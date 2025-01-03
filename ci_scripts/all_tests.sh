@@ -51,9 +51,6 @@ expect ci_scripts/expect_scripts/CommandLineArgs.exp
 $ROC build ./examples/CommandLineArgsFile/main.roc
 expect ci_scripts/expect_scripts/CommandLineArgsFile.exp
 
-$ROC build ./examples/DesugaringAwait/main.roc
-expect ci_scripts/expect_scripts/DesugaringAwait.exp
-
 $ROC build ./examples/DesugaringTry/main.roc
 $ROC test ./examples/DesugaringTry/main.roc
 expect ci_scripts/expect_scripts/DesugaringTry.exp
@@ -66,11 +63,11 @@ $ROC test ./examples/TowersOfHanoi/Hanoi.roc
 $ROC build ./examples/Results/main.roc
 expect ci_scripts/expect_scripts/Results.exp
 
-$ROC build ./examples/Tasks/main.roc
-expect ci_scripts/expect_scripts/Tasks.exp
+$ROC build ./examples/ErrorHandling/main.roc
+expect ci_scripts/expect_scripts/ErrorHandling.exp
 
-$ROC build ./examples/TaskLoop/main.roc
-expect ci_scripts/expect_scripts/TaskLoop.exp
+$ROC build ./examples/LoopEffect/main.roc
+expect ci_scripts/expect_scripts/LoopEffect.exp
 
 $ROC test ./examples/RecordBuilder/DateParser.roc
 
@@ -95,26 +92,30 @@ expect ci_scripts/expect_scripts/HelloWeb.exp
 $ROC build ./examples/ImportPackageFromModule/main.roc
 expect ci_scripts/expect_scripts/ImportPackageFromModule.exp
 
-$ROC build --lib ./examples/GoPlatform/main.roc --output examples/GoPlatform/platform/libapp.so
-go build -C examples/GoPlatform/platform -buildmode=pie -o dynhost
-
-$ROC preprocess-host ./examples/GoPlatform/platform/dynhost ./examples/GoPlatform/platform/main.roc ./examples/GoPlatform/platform/libapp.so
-$ROC build ./examples/GoPlatform/main.roc
-
-# temporarily allow failure of lsb_release in case it is not installed
-set +e
-os_info=$(lsb_release -a 2>/dev/null)
-set -e
-
-# Skip Go tests if os is Ubuntu and we're not inside nix. This avoids a segfault on CI. See https://github.com/roc-lang/examples/issues/164
-if echo "$os_info" | grep -q "Ubuntu" && [ -z "${IN_NIX_SHELL}" ]; then
-    echo "Skipping Go test due to https://github.com/roc-lang/examples/issues/164"
-else
-    echo "Running Go test..."
-    expect ci_scripts/expect_scripts/GoPlatform.exp
-fi
-
 $ROC test ./examples/CustomInspect/OpaqueTypes.roc
 
-$ROC build ./examples/DotNetPlatform/main.roc --lib --output ./examples/DotNetPlatform/platform/interop
-expect ci_scripts/expect_scripts/DotNetPlatform.exp
+# Check if we're not on macOS, these examples don't work on macos yet
+if [[ "$(uname)" != "Darwin" ]]; then
+  $ROC build --lib ./examples/GoPlatform/main.roc --output examples/GoPlatform/platform/libapp.so
+  go build -C examples/GoPlatform/platform -buildmode=pie -o dynhost
+  
+  $ROC preprocess-host ./examples/GoPlatform/platform/dynhost ./examples/GoPlatform/platform/main.roc ./examples/GoPlatform/platform/libapp.so
+  $ROC build ./examples/GoPlatform/main.roc
+
+  # temporarily allow failure of lsb_release in case it is not installed
+  set +e
+  os_info=$(lsb_release -a 2>/dev/null)
+  set -e
+
+  # Skip Go tests if os is Ubuntu and we're not inside nix. This avoids a segfault on CI. See https://github.com/roc-lang/examples/issues/164
+  if echo "$os_info" | grep -q "Ubuntu" && [ -z "${IN_NIX_SHELL}" ]; then
+      echo "Skipping Go test due to https://github.com/roc-lang/examples/issues/164"
+  else
+      echo "Running Go test..."
+      expect ci_scripts/expect_scripts/GoPlatform.exp
+  fi
+
+
+  $ROC build ./examples/DotNetPlatform/main.roc --lib --output ./examples/DotNetPlatform/platform/interop
+  expect ci_scripts/expect_scripts/DotNetPlatform.exp
+fi

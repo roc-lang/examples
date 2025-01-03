@@ -5,7 +5,7 @@
 
 set timeout 7
 
-spawn ./examples/TaskLoop/main
+spawn ./examples/LoopEffect/main
 
 expect "Enter some numbers on different lines, then press Ctrl-D to sum them up.\r\n"
 
@@ -18,7 +18,7 @@ send "\004"
 
 expect "Sum: 2\r\n" {
   expect eof {
-    spawn ./examples/TaskLoop/main
+    spawn ./examples/LoopEffect/main
 
     expect "Enter some numbers on different lines, then press Ctrl-D to sum them up.\r\n"
 

@@ -1,6 +1,5 @@
-module [splitGraphemes]
+module [split_graphemes]
 
 import unicode.Grapheme
 
-splitGraphemes = \string -> Grapheme.split string
-
+split_graphemes = \string -> Grapheme.split string
