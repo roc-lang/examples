@@ -7,8 +7,7 @@ set timeout 7
 
 spawn ./examples/RandomNumbers/main
 
-
-expect "Random numbers are: 29,30,71,64,48,33,55,68,53,28\r\n" {
+expect "52\r\n34\r\n26\r\n69\r\n34\r\n35\r\n51\r\n74\r\n70\r\n39\r\n" {
   expect eof
   exit 0
 }
