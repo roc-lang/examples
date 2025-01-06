@@ -24,7 +24,7 @@ You can find the source code for all of these at [github.com/roc-lang/examples](
 - [Graph Traversal](/GraphTraversal/README.html)
 - [Parser](/Parser/README.html)
 - [Arithmetic](/Arithmetic/README.html)
-- [Looping Tasks](/LoopEffect/README.html)
+- [Looping Effectful Functions](/LoopEffect/README.html)
 - [Record Builder](/RecordBuilder/README.html)
 - [Encoding & Decoding Abilities](/EncodeDecode/README.html)
 - [Desugaring ?](/DesugaringTry/README.html)
