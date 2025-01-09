@@ -1,13 +1,13 @@
-app [main!] { pf: platform "https://github.com/roc-lang/basic-cli/releases/download/0.18.0/0APbwVN1_p1mJ96tXjaoiUCr8NBGamr8G8Ac_DrXR-o.tar.br" }
+app [main!] { cli: platform "../../../basic-cli/platform/main.roc" }
 
-import pf.Stdout
-import pf.Arg exposing [Arg]
+import cli.Stdout
+import cli.Arg exposing [Arg]
 
 main! : List Arg.Arg => Result {} _
 main! = \raw_args ->
 
     args : { a : I32, b : I32 }
-    args = try read_args raw_args
+    args = read_args(raw_args)?
 
     result =
         [
@@ -16,15 +16,14 @@ main! = \raw_args ->
             ("product", args.a * args.b),
             ("integer quotient", args.a // args.b),
             ("remainder", args.a % args.b),
-            ("exponentiation", Num.powInt args.a args.b),
+            ("exponentiation", Num.pow_int(args.a, args.b)),
         ]
-        |> List.map \(operation, answer) ->
-            answer_str = Num.toStr answer
+        |> List.map(
+            \(operation, answer) -> "$(operation): $(Num.to_str(answer))",
+        )
+        |> Str.join_with("\n")
 
-            "$(operation): $(answer_str)"
-        |> Str.joinWith "\n"
-
-    Stdout.line! result
+    Stdout.line!(result)
 
 ## Reads two command-line arguments, attempts to parse them as `I32` numbers,
 ## and returns a task containing a record with two fields, `a` and `b`, holding
@@ -37,23 +36,23 @@ main! = \raw_args ->
 read_args : List Arg -> Result { a : I32, b : I32 } [Exit I32 Str]
 read_args = \raw_args ->
 
-    invalid_args = Exit 1 "Error: Please provide two integers between -1000 and 1000 as arguments."
-    invalid_num_str = Exit 1 "Error: Invalid number format. Please provide integers between -1000 and 1000."
+    invalid_args = Exit(1, "Error: Please provide two integers between -1000 and 1000 as arguments.")
+    invalid_num_str = Exit(1, "Error: Invalid number format. Please provide integers between -1000 and 1000.")
 
     args =
-        if List.len raw_args != 3 then
-            return Err invalid_args
+        if List.len(raw_args) != 3 then
+            return Err(invalid_args)
         else
-            List.map raw_args Arg.display
+            List.map(raw_args, Arg.display)
 
-    a_result = List.get args 1 |> Result.try Str.toI32
-    b_result = List.get args 2 |> Result.try Str.toI32
+    a_result = List.get(args, 1) |> Result.try(Str.to_i32)
+    b_result = List.get(args, 2) |> Result.try(Str.to_i32)
 
     when (a_result, b_result) is
-        (Ok a, Ok b) ->
+        (Ok(a), Ok(b)) ->
             if a < -1000 || a > 1000 || b < -1000 || b > 1000 then
-                Err invalid_num_str
+                Err(invalid_num_str)
             else
-                Ok { a, b }
+                Ok({ a, b })
 
-        _ -> Err invalid_num_str
+        _ -> Err(invalid_num_str)
