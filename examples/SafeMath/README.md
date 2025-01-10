@@ -3,14 +3,14 @@
 This example shows how to perform calculations while avoiding overflows.
 For example; `+` actually uses `Num.add`, which can crash if the bytes of the result can not fit in the provided type:
 ```cli
-» Num.maxU64 + Num.maxU64
+» Num.max_u64 + Num.max_u64
 This Roc code crashed with: "Integer addition overflowed!"
 
 * : U64
 ```
 If you want to avoid a program-ending crash, you can instead use:
 ```
-» Num.addChecked Num.maxU64 Num.maxU64
+» Num.addChecked Num.max_u64 Num.max_u64
 
 Err Overflow : Result U64 [Overflow]
 ```
