@@ -26,23 +26,33 @@ ItemKind := [
         Eq,
     ]
 
-try_map_result : DecodeResult U32, (U32 -> Result ItemKind DecodeError) -> DecodeResult ItemKind
-try_map_result = \decoded, mapper ->
-    when decoded.result is
-        Err(e) -> { result: Err(e), rest: decoded.rest }
-        Ok(res) -> { result: mapper(res), rest: decoded.rest }
+encode_items : ItemKind -> Encoder fmt where fmt implements EncoderFormatting
+encode_items = \@ItemKind(kind) ->
+    Encode.u32(
+        when kind is
+            Text -> 1
+            Method -> 2
+            Function -> 3
+            Constructor -> 4
+            Field -> 5
+            Variable -> 6
+            Class -> 7
+            Interface -> 8
+            Module -> 9
+            Property -> 10,
+    )
 
 decode_items : Decoder ItemKind fmt where fmt implements DecoderFormatting
 decode_items = Decode.custom(
     \bytes, fmt ->
-        # Helper function to wrap our tag
+        # Helper function to wrap our [tag](https://www.roc-lang.org/tutorial#tags)
         ok = \tag -> Ok(@ItemKind(tag))
 
         bytes
         |> Decode.from_bytes_partial(fmt)
         |> try_map_result(
-            \val ->
-                when val is
+            \num ->
+                when num is
                     1 -> ok(Text)
                     2 -> ok(Method)
                     3 -> ok(Function)
@@ -57,21 +67,12 @@ decode_items = Decode.custom(
         ),
 )
 
-encode_items : ItemKind -> Encoder fmt where fmt implements EncoderFormatting
-encode_items = \@ItemKind(val) ->
-    Encode.u32(
-        when val is
-            Text -> 1
-            Method -> 2
-            Function -> 3
-            Constructor -> 4
-            Field -> 5
-            Variable -> 6
-            Class -> 7
-            Interface -> 8
-            Module -> 9
-            Property -> 10,
-    )
+# Converts `DecodeResult U32` to `DecodeResult ItemKind` using a given function
+try_map_result : DecodeResult U32, (U32 -> Result ItemKind DecodeError) -> DecodeResult ItemKind
+try_map_result = \decoded, num_to_item_kind_fun ->
+    when decoded.result is
+        Err(e) -> { result: Err(e), rest: decoded.rest }
+        Ok(res) -> { result: num_to_item_kind_fun(res), rest: decoded.rest }
 
 ### end snippet impl
 
@@ -92,26 +93,27 @@ original_list = [
     @ItemKind(Property),
 ]
 
-# encode them into JSON
+# encode them into JSON bytes
 encoded_bytes : List U8
 encoded_bytes = Encode.to_bytes(original_list, Json.utf8)
 
-# test we have encoded correctly
-expect encoded_bytes == original_bytes
+# check that encoding is correct
+expect
+    expected_bytes : List U8
+    expected_bytes = "[1,2,3,4,5,6,7,8,9,10]" |> Str.to_utf8
 
-# take a JSON encoded list
-original_bytes : List U8
-original_bytes = "[1,2,3,4,5,6,7,8,9,10]" |> Str.to_utf8
+    encoded_bytes == expected_bytes
 
-# decode into a list of ItemKind's
+# decode back to a list of ItemKind's
 decoded_list : List ItemKind
-decoded_list = Decode.from_bytes(original_bytes, Json.utf8) |> Result.with_default([])
+decoded_list = Decode.from_bytes(encoded_bytes, Json.utf8) |> Result.with_default([])
+# don't use `Result.with_default([])` for professional applications; check https://www.roc-lang.org/examples/ErrorHandling/README.html
 
-# test we have decoded correctly
+# check that decoding is correct
 expect decoded_list == original_list
 
 main! = \_args ->
-    # debug print decoded items to stdio
+    # prints decoded items to stdout
     decoded_list
     |> List.map(Inspect.to_str)
     |> Str.join_with("\n")

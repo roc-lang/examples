@@ -10,7 +10,7 @@ Color := [
         Inspect { to_inspector: color_inspector },
     ]
 
-color_inspector : Color -> Inspector f where f implements InspectFormatter
+color_inspector : Color -> Inspector fmt where fmt implements InspectFormatter
 color_inspector = \@Color(color) ->
     when color is
         Red -> Inspect.str("_RED_")
@@ -27,7 +27,7 @@ MySecret := Str implements [
         Inspect { to_inspector: my_secret_inspector },
     ]
 
-my_secret_inspector : MySecret -> Inspector f where f implements InspectFormatter
+my_secret_inspector : MySecret -> Inspector fmt where fmt implements InspectFormatter
 my_secret_inspector = \@MySecret(_) -> Inspect.str("******* REDACTED *******")
 
 expect Inspect.to_str(@MySecret("password1234")) == "\"******* REDACTED *******\""

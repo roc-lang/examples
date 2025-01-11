@@ -1,5 +1,4 @@
 # Run with `roc ./examples/CommandLineArgs/main.roc some_argument`
-# !! This currently does not work in combination with --linker=legacy, see https://github.com/roc-lang/basic-cli/issues/82
 app [main!] {
     cli: platform "../../../basic-cli/platform/main.roc",
 }

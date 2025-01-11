@@ -23,12 +23,16 @@ main! = \args ->
     hello_env : Str
     hello_env =
         read_env_var!("HELLO")?
-        |> \msg -> if Str.is_empty(msg) then "was empty" else "was set to $(msg)"
+        |> \env_var_content ->
+            if Str.is_empty(env_var_content) then
+                "was empty"
+            else
+                "was set to $(env_var_content)"
 
     Stdout.line!( "HELLO env var $(hello_env)")?
 
     # Read command line arguments
-    { url, output_path } = parse_args!( args)?
+    { url, output_path } = parse_args!(args)?
 
     Stdout.line!( "Fetching content from $(url)...")?
 
@@ -78,6 +82,7 @@ fetch_html! = \url ->
     Http.get_utf8!(url)
     |> Result.map_err(\err -> FailedToFetchHtml("Failed to fetch URL $(Inspect.to_str(err)), usage: $(usage)"))
 
+# effects need to be functions so we use the empty input type `{}`
 list_cwd_contents! : {} => Result {} _
 list_cwd_contents! = \_ ->
 
