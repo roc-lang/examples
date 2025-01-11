@@ -7,7 +7,7 @@ import cli.Stdout
 Person : { first_name : Str, last_name : Str, birth_year : U16 }
 
 ## This function parses strings like "{FirstName} {LastName} was born in {Year}"
-## and if successful returns `Ok {firstName, lastName, birthYear}`. Otherwise
+## and if successful returns `Ok {first_name, last_name, birth_year}`. Otherwise
 ## it returns an `Err` containing a descriptive tag.
 ## This is the most verbose version, we will do better below.
 parse_verbose : Str -> Result Person [InvalidRecordFormat, InvalidNameFormat, InvalidBirthYearFormat]
@@ -46,7 +46,7 @@ parse_with_try = \line ->
             ),
     )
 
-## This version is like `parseWithTry`, except it uses `Result.mapErr`
+## This version is like `parse_with_try`, except it uses `Result.mapErr`
 ## to return more informative errors, just like the ones in `parse_verbose`.
 parse_with_try_v2 : Str -> Result Person [InvalidRecordFormat, InvalidNameFormat, InvalidBirthYearFormat]
 parse_with_try_v2 = \line ->
@@ -72,7 +72,7 @@ parse_with_try_v2 = \line ->
 ## The `?` operator, called the "try operator", is
 ## [syntactic sugar](en.wikipedia.org/wiki/Syntactic_sugar) for `Result.try`.
 ## It makes the code much less nested and easier to read.
-## The following function is equivalent to `parseWithTry`:
+## The following function is equivalent to `parse_with_try`:
 parse_with_try_op : Str -> Result Person [NotFound, InvalidNumStr]
 parse_with_try_op = \line ->
     { before: full_name, after: birth_year_str } = Str.split_first(line, " was born in ")?
@@ -81,8 +81,8 @@ parse_with_try_op = \line ->
 
     Ok({ first_name, last_name, birth_year })
 
-## And lastly the following function is equivalent to `parseWithTryV2`.
-## Note that the `?` operator has moved from `splitFirst` & `toU16` to `mapErr`:
+## And lastly the following function is equivalent to `parse_with_try_v2`.
+## Note that the `?` operator has moved from `split_first` & `to_u16` to `map_err`:
 parse_with_try_op_v2 : Str -> Result Person [InvalidRecordFormat, InvalidNameFormat, InvalidBirthYearFormat]
 parse_with_try_op_v2 = \line ->
     { before: full_name, after: birth_year_str } =

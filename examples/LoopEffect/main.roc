@@ -15,10 +15,11 @@ run! : {} => Result {} _
 run! = \_ ->
     Stdout.line!( "Enter some numbers on different lines, then press Ctrl-D to sum them up.")?
 
-    sum = add_number_from_stdin!( 0)?
+    sum = add_number_from_stdin!(0)?
 
     Stdout.line!("Sum: $(Num.to_str(sum))")
 
+## recursive function that sums every number that is provided through stdin
 add_number_from_stdin! : I64 => Result I64 _
 add_number_from_stdin! = \sum ->
     when Stdin.line!({}) is

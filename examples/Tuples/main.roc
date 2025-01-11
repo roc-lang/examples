@@ -29,7 +29,7 @@ main! = \_args ->
 
     when (fruit_selection, quantity) is
         # TODO re-enable when github.com/roc-lang/roc/issues/5530 is fixed.
-        # (_, qty) if qty == 0 -> Stdout.line! "You also have no fruit."
+        # (_, qty) if qty == 0 -> Stdout.line! "You have no fruit."
         (Apple, _) -> Stdout.line!("You also have some apples.")
         (Pear, _) -> Stdout.line!("You also have some pears.")
         (Banana, _) -> Stdout.line!("You also have some bananas.")

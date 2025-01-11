@@ -13,9 +13,9 @@ when input is
 
     [Foo, Bar, ..] -> StartsWithFooBar
 
-    [Foo, Bar, Baz "Hi"] -> FooBarBazStr
+    [Foo, Bar, Baz("Hi")] -> FooBarBazStr
 
-    [Foo, Count num, ..] if num > 0 -> FooCountIf
+    [Foo, Count(num), ..] if num > 0 -> FooCountIf
 
     [head, .. as tail] -> HeadAndTail head tail
 

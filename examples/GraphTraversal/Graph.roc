@@ -1,4 +1,4 @@
-## The Graph interface represents a [graph](https://en.wikipedia.org/wiki/Graph_(discrete_mathematics))
+## The Graph module represents a [graph](https://en.wikipedia.org/wiki/Graph_(discrete_mathematics))
 ## using an [adjacency list](https://en.wikipedia.org/wiki/Adjacency_list)
 ## and exposes functions for working with graphs, such as creating one from a list and
 ## performing a depth-first or breadth-first search.
@@ -31,7 +31,7 @@ from_dict = @Graph
 ## Perform a depth-first search on a graph to find a target vertex.
 ## [Algorithm animation](https://en.wikipedia.org/wiki/Depth-first_search#/media/File:Depth-First-Search.gif)
 ##
-## - `isTarget` : A function that returns true if a vertex is the target.
+## - `is_target` : A function that returns true if a vertex is the target.
 ## - `root`     : The starting vertex for the search.
 ## - `graph`    : The graph to perform the search on.
 dfs : (a -> Bool), a, Graph a -> Result a [NotFound]
@@ -40,7 +40,7 @@ dfs = \is_target, root, @Graph(graph) ->
 
 # A helper function for performing the depth-first search.
 #
-# `isTarget` : A function that returns true if a vertex is the target.
+# `is_target` : A function that returns true if a vertex is the target.
 # `stack`    : A List of vertices to visit.
 # `visited`  : A Set of visited vertices.
 # `graph`    : The graph to perform the search on.
@@ -79,7 +79,7 @@ dfs_helper = \is_target, stack, visited, graph ->
 ## Perform a breadth-first search on a graph to find a target vertex.
 ## [Algorithm animation](https://en.wikipedia.org/wiki/Breadth-first_search#/media/File:Animated_BFS.gif)
 ##
-## - `isTarget` : A function that returns true if a vertex is the target.
+## - `is_target` : A function that returns true if a vertex is the target.
 ## - `root`     : The starting vertex for the search.
 ## - `graph`    : The graph to perform the search on.
 bfs : (a -> Bool), a, Graph a -> Result a [NotFound]
@@ -88,7 +88,7 @@ bfs = \is_target, root, @Graph(graph) ->
 
 # A helper function for performing the breadth-first search.
 #
-# `isTarget` : A function that returns true if a vertex is the target.
+# `is_target` : A function that returns true if a vertex is the target.
 # `queue`    : A List of vertices to visit.
 # `seen`  : A Set of all seen vertices.
 # `graph`    : The graph to perform the search on.

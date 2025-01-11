@@ -8,7 +8,7 @@ import rand.Random
 
 main! = \_args ->
 
-    # Print a list of 10 random numbers in the range 25-75 inclusive.
+    # Print a list of 10 random numbers.
     numbers_str =
         random_numbers
         |> List.map(Num.to_str)
@@ -16,7 +16,7 @@ main! = \_args ->
 
     Stdout.line!(numbers_str)
 
-# Generate a list random numbers using the seed `1234`.
+# Generate a list of random numbers using the seed `1234`.
 # This is NOT cryptograhpically secure!
 random_numbers : List U32
 random_numbers =
@@ -24,7 +24,8 @@ random_numbers =
 
     numbers
 
-# A generator that will produce a list of 10 random numbers in the range 25-75 inclusive.
+# A generator that will produce a list of 10 random numbers in the range 25-75.
+# This includes the boundaries, so the numbers can be 25 or 75.
 # This is NOT cryptograhpically secure!
 numbers_generator : Random.Generator (List U32)
 numbers_generator =
