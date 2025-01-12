@@ -1,6 +1,6 @@
 # Multi-line comments
 
-Roc does not support native multi-line comments like `/*...*/` in other languages.
+Roc does not support native multi-line comments like `/*...*/` in other languages (see below for why).
 It's `#` all the way:
 
 ```roc

@@ -1,7 +1,7 @@
-app [main!] { pf: platform "https://github.com/roc-lang/basic-cli/releases/download/0.18.0/0APbwVN1_p1mJ96tXjaoiUCr8NBGamr8G8Ac_DrXR-o.tar.br" }
+app [main!] { cli: platform "../../../basic-cli/platform/main.roc" }
 
-import pf.Stdout
+import cli.Stdout
 import Hello
 
 main! = \_args ->
-    Stdout.line! (Hello.hello "World")
+    Stdout.line!(Hello.hello("World"))

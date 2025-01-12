@@ -41,12 +41,12 @@ To run:
 $ cd platform
 $ dotnet run
 ```
-This should print "Hello from .NET".
+This should print "Hello from .NET" and "Hi from roc! (in a .NET platform) 🔥🦅🔥".
 
 
 ## Build & Run Binary
 
-If you want to build a binary for the app using native AOT:
+To build a binary for the app using Ahead-Of-Time compilation:
 
 1. Publish the dotnet app
 ```cli

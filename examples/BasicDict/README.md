@@ -10,11 +10,11 @@ A `Dict` (dictionary) lets you save a value under a key, so that you end up with
 For example, you can create a Dict to keep track of how much fruit you have:
 
 ```roc
-fruitDict : Dict Str U64
-fruitDict =
-    Dict.empty {}
-    |> Dict.insert "Apple" 3
-    |> Dict.insert "Banana" 2
+fruit_dict : Dict Str U64
+fruit_dict =
+    Dict.empty({})
+    |> Dict.insert("Apple", 3)
+    |> Dict.insert("Banana", 2)
 ``` 
 
 ## Basic Dict Examples

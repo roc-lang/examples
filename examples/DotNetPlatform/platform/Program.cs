@@ -30,7 +30,7 @@ static IntPtr CustomResolver(string libraryName, Assembly assembly, DllImportSea
 
 public static partial class Platform
 {
-    [LibraryImport("interop", EntryPoint = "roc__mainForHost_1_exposed_generic")]
+    [LibraryImport("interop", EntryPoint = "roc__main_for_host_1_exposed_generic")]
     internal static partial void MainFromRoc(out RocStr rocStr);
 }
 

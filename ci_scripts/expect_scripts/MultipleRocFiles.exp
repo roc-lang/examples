@@ -7,7 +7,7 @@ set timeout 7
 
 spawn ./examples/MultipleRocFiles/main
 
-expect "Hello World from interface!\r\n" {
+expect "Hello World from module!\r\n" {
   expect eof
   exit 0
 }

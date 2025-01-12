@@ -22,5 +22,5 @@ Run this from the directory that has `main.roc` in it:
 
 ```
 $ roc main.roc
-Hello World from interface!
+Hello World from module!
 ```

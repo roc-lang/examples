@@ -89,8 +89,9 @@ expect ci_scripts/expect_scripts/SafeMath.exp
 $ROC build ./examples/HelloWeb/main.roc --linker=legacy
 expect ci_scripts/expect_scripts/HelloWeb.exp
 
-$ROC build ./examples/ImportPackageFromModule/main.roc
-expect ci_scripts/expect_scripts/ImportPackageFromModule.exp
+# TODO re-enable after unicode is updated
+# $ROC build ./examples/ImportPackageFromModule/main.roc
+# expect ci_scripts/expect_scripts/ImportPackageFromModule.exp
 
 $ROC test ./examples/CustomInspect/OpaqueTypes.roc
 
