@@ -19,7 +19,7 @@ main! = \raw_args ->
         Ok(arg) ->
             file_content_str = read_file_to_str!(Path.from_str(arg))?
 
-            Stdout.line!("file content: $(file_content_str)")
+            Stdout.line!("file content: ${file_content_str}")
 
         Err(ZeroArgsGiven(_)) ->
             Err(Exit(1, "Error ZeroArgsGiven:\n\tI expected one argument, but I got none.\n\tRun the app like this: `roc main.roc -- path/to/input.txt`"))
@@ -36,8 +36,8 @@ read_file_to_str! = \path ->
 
             when file_read_err is
                 FileReadErr(_, read_err) ->
-                    ReadFileErr("Failed to read file:\n\t$(path_str)\nWith error:\n\t$(Inspect.to_str(read_err))")
+                    ReadFileErr("Failed to read file:\n\t${path_str}\nWith error:\n\t${Inspect.to_str(read_err)}")
 
                 FileReadUtf8Err(_, _) ->
-                    ReadFileErr("I could not read the file:\n\t$(path_str)\nIt contains charcaters that are not valid UTF-8:\n\t- Check if the file is encoded using a different format and convert it to UTF-8.\n\t- Check if the file is corrupted.\n\t- Find the characters that are not valid UTF-8 and fix or remove them."),
+                    ReadFileErr("I could not read the file:\n\t${path_str}\nIt contains charcaters that are not valid UTF-8:\n\t- Check if the file is encoded using a different format and convert it to UTF-8.\n\t- Check if the file is corrupted.\n\t- Find the characters that are not valid UTF-8 and fix or remove them."),
     )

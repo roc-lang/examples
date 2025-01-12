@@ -14,7 +14,7 @@ main! = \_args ->
     msg =
         letters
         |> count_letter_a
-        |> \count -> "I counted $(count) letter A's!"
+        |> \count -> "I counted ${count} letter A's!"
 
     Stdout.line!(msg)
 

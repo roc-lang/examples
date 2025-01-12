@@ -5,7 +5,7 @@ import cli.Stdout
 main! = \_args ->
     n_str = Num.to_str(least_square_difference)
 
-    Stdout.line!("The least positive integer n, where the difference of n*n and (n-1)*(n-1) is greater than 1000, is $(n_str)")
+    Stdout.line!("The least positive integer n, where the difference of n*n and (n-1)*(n-1) is greater than 1000, is ${n_str}")
 
 ## The smallest positive integer number `n`, where the difference
 ## of `n*n` and `(n-1)*(n-1)` is greater than 1000.

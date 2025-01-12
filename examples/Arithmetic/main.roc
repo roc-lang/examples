@@ -19,7 +19,7 @@ main! = \raw_args ->
             ("exponentiation", Num.pow_int(args.a, args.b)),
         ]
         |> List.map(
-            \(operation, answer) -> "$(operation): $(Num.to_str(answer))",
+            \(operation, answer) -> "${operation}: ${Num.to_str(answer)}",
         )
         |> Str.join_with("\n")
 
@@ -44,8 +44,8 @@ read_args = \raw_args ->
     arg_range_min_str = Inspect.to_str(arg_range_min)
     arg_range_max_str = Inspect.to_str(arg_range_max)
     # TODO this function should not use Exit for modularity. Only perform this change after static dispatch has landed!
-    invalid_args = Exit(1, "Error: Please provide two integers between $(arg_range_min_str) and $(arg_range_max_str) as arguments.")
-    invalid_num_str = Exit(1, "Error: Invalid number format. Please provide integers between $(arg_range_min_str) and $(arg_range_max_str).")
+    invalid_args = Exit(1, "Error: Please provide two integers between ${arg_range_min_str} and ${arg_range_max_str} as arguments.")
+    invalid_num_str = Exit(1, "Error: Invalid number format. Please provide integers between ${arg_range_min_str} and ${arg_range_max_str}.")
 
     args =
         if List.len(raw_args) != expected_nr_of_args then

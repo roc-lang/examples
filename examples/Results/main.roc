@@ -101,8 +101,8 @@ parse = \line, parser ->
     when parser(line) is
         Ok({ first_name, last_name, birth_year }) ->
             """
-            Name: $(last_name), $(first_name)
-            Born:  $(Num.to_str(birth_year))
+            Name: ${last_name}, ${first_name}
+            Born:  ${Num.to_str(birth_year)}
 
             """
 

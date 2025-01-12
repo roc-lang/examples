@@ -13,11 +13,11 @@ main! = \_args ->
 
 run! : {} => Result {} _
 run! = \_ ->
-    Stdout.line!( "Enter some numbers on different lines, then press Ctrl-D to sum them up.")?
+    Stdout.line!("Enter some numbers on different lines, then press Ctrl-D to sum them up.")?
 
     sum = add_number_from_stdin!(0)?
 
-    Stdout.line!("Sum: $(Num.to_str(sum))")
+    Stdout.line!("Sum: ${Num.to_str(sum)}")
 
 ## recursive function that sums every number that is provided through stdin
 add_number_from_stdin! : I64 => Result I64 _
@@ -34,5 +34,5 @@ add_number_from_stdin! = \sum ->
 print_err! : _ => Result {} _
 print_err! = \err ->
     when err is
-        NotNum(text) -> Stderr.line!("Error: \"$(text)\" is not a valid I64 number.")
-        _ -> Stderr.line!("Error: $(Inspect.to_str(err))")
+        NotNum(text) -> Stderr.line!("Error: \"${text}\" is not a valid I64 number.")
+        _ -> Stderr.line!("Error: ${Inspect.to_str(err)}")

@@ -15,10 +15,10 @@ main! = \_args ->
 
     Stdout.line!(
         """
-        First is: $(first_item),
-        Second is: $(second_item),
-        Third is: $(third_item).
-        """
+        First is: ${first_item},
+        Second is: ${second_item},
+        Third is: ${third_item}.
+        """,
     )?
 
     # You can also use tuples with `when`:

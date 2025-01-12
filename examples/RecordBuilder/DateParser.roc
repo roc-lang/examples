@@ -53,14 +53,16 @@ expect
 
 expect
     date_parser =
-        build_segment_parser(chain_parsers(
-            parse_with(Ok),
+        build_segment_parser(
             chain_parsers(
-                parse_with(Str.to_u64),
-                parse_with(Str.to_u64),
-                \day, year -> (day, year),
+                parse_with(Ok),
+                chain_parsers(
+                    parse_with(Str.to_u64),
+                    parse_with(Str.to_u64),
+                    \day, year -> (day, year),
+                ),
+                \month, (day, year) -> { month, day, year },
             ),
-            \month, (day, year) -> { month, day, year },
-        ))
+        )
 
     date_parser("Mar-10-2015") == Ok({ month: "Mar", day: 10, year: 2015 })

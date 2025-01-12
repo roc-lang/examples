@@ -46,7 +46,7 @@ main! = \_args ->
         [46, 69, 32, 60, 52, 41]
         |> safe_variance
         |> Result.map(Num.to_str)
-        |> Result.map(\v -> "σ² = $(v)")
+        |> Result.map(\v -> "σ² = ${v}")
 
     output_str =
         when variance_result is

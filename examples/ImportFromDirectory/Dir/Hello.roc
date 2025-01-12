@@ -3,4 +3,4 @@ module [hello]
 
 hello : Str -> Str
 hello = \name ->
-    "Hello $(name) from inside Dir!"
+    "Hello ${name} from inside Dir!"
