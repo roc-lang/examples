@@ -16,7 +16,7 @@ import cli.Stdout
 safe_variance : List (Frac a) -> Result (Frac a) [EmptyInputList, Overflow]
 safe_variance = \maybe_empty_list ->
 
-    # Check length to prevent DivByZero
+    # Check length to prevent division by zero
     when List.len(maybe_empty_list) is
         0 -> Err(EmptyInputList)
         _ ->
@@ -36,8 +36,8 @@ safe_variance = \maybe_empty_list ->
                     mean
                     |> Result.try(\m -> Num.sub_checked(elem, m)) # X - µ
                     |> Result.try(\y -> Num.mul_checked(y, y)) # ²
-                    |> Result.try(\z -> Num.add_checked(z, state)),
-            ) # ∑
+                    |> Result.try(\z -> Num.add_checked(z, state)), # ∑
+            )
             |> Result.map(\x -> x / n)
 
 main! = \_args ->

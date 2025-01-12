@@ -1,7 +1,5 @@
 app [main!] {
-    # TODO replace with release URL
     cli: platform "../../../basic-cli/platform/main.roc",
-    # TODO replace with release URL
     parser: "../../../roc-parser/package/main.roc",
 }
 
@@ -31,7 +29,7 @@ count_letter_a = \letters ->
     |> List.count_if(\l -> l == A)
     |> Num.to_str
 
-# Parser to convert utf8 input into Letter tags
+# Parser to convert utf8 input into Letter [tags](https://www.roc-lang.org/tutorial#tags)
 letter_parser : Parser (List U8) Letter
 letter_parser =
     one_of(
@@ -43,14 +41,14 @@ letter_parser =
         ],
     )
 
-# Test we can parse a single B letter
+# Test parsing a single letter B
 expect
     input = "B"
     parser = letter_parser
     result = parse_str(parser, input)
     result == Ok(B)
 
-# Test we can parse a number of different letters
+# Test parsing a number of different letters
 expect
     input = "BCXA"
     parser = many(letter_parser)

@@ -53,7 +53,7 @@ expect
         when value_tag is
             # If the fruit is not in the dict (=missing), we set the count to 1
             Err(Missing) -> Ok(1)
-            # If the fruit is in the dict (=present), we increase the count
+            # If the fruit is in the dict, we increase the count
             Ok(count) -> Ok((count + 1))
 
     Dict.get(updated_dict, "Apple") == (Ok(4))

@@ -7,7 +7,7 @@ State : {
     from : Str, # identifier of the source rod
     to : Str, # identifier of the target rod
     using : Str, # identifier of the auxiliary rod
-    moves : List (Str, Str), # list of moves accumulated so far
+    moves : List (Str, Str), # list of moves done so far
 }
 
 ## Solves the Tower of Hanoi problem using recursion. Returns a list of moves

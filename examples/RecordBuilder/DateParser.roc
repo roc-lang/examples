@@ -6,6 +6,7 @@ module [
     build_segment_parser,
 ]
 
+# see README.md for explanation of code
 ParserErr : [InvalidNumStr, OutOfSegments]
 
 ParserGroup a := List Str -> Result (a, List Str) ParserErr
