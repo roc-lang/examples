@@ -16,16 +16,20 @@ parse_name_and_year = |str|
     Ok({ name, birth_year })
 ### end snippet question
 
+### start snippet desugared
 parse_name_and_year_try = |str|
-    ### start snippet try
     when Str.split_first(str, " was born in ") is
-        Err(err1) -> return Err(err)
+        Err(err1) ->
+            return Err(err1)
+
         Ok({ before: name, after: birth_year_str }) ->
-            when Str.to_u16(birth_year_str)? is
-                Err(err2) -> return Err(err2)
+            when Str.to_u16(birth_year_str) is
+                Err(err2) ->
+                    return Err(err2)
+
                 Ok(birth_year) ->
                     Ok({ name, birth_year })
-### end snippet try
+### end snippet desugared
 
 expect parse_name_and_year("Alice was born in 1990") == Ok({ name: "Alice", birth_year: 1990 })
 expect parse_name_and_year_try("Alice was born in 1990") == Ok({ name: "Alice", birth_year: 1990 })

@@ -18,14 +18,10 @@ file:main.roc:snippet:question
 
 After desugaring, this becomes:
 ```roc
-file:main.roc:snippet:try
+file:main.roc:snippet:desugared
 ```
 
-[Result.try](https://www.roc-lang.org/builtins/Result#try) takes the success
-value from a given Result and uses that to generate a new Result.
-It's type is `Result a err, (a -> Result b err) -> Result b err`.
-
-`birth_year = Str.to_u16?(birth_year_str)` is converted to
+So `birth_year = Str.to_u16(birth_year_str)?` is converted to
 
 ```roc
 when Str.to_u16(birth_year_str) is

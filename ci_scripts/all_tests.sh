@@ -51,10 +51,9 @@ expect ci_scripts/expect_scripts/CommandLineArgs.exp
 $ROC build ./examples/CommandLineArgsFile/main.roc
 expect ci_scripts/expect_scripts/CommandLineArgsFile.exp
 
-# TODO re-enable before merging, see https://roc.zulipchat.com/#narrow/channel/395097-compiler-development/topic/return.20in.20when.20branch/near/495706247
-#$ROC build ./examples/DesugaringTry/main.roc
-#$ROC test ./examples/DesugaringTry/main.roc
-#expect ci_scripts/expect_scripts/DesugaringTry.exp
+$ROC build ./examples/DesugaringTry/main.roc
+$ROC test ./examples/DesugaringTry/main.roc
+expect ci_scripts/expect_scripts/DesugaringTry.exp
 
 $ROC build ./examples/Tuples/main.roc
 expect ci_scripts/expect_scripts/Tuples.exp
