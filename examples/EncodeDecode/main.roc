@@ -1,6 +1,6 @@
 app [main!] {
-    cli: platform "../../../basic-cli/platform/main.roc",
-    json: "https://github.com/lukewilliamboswell/roc-json/releases/download/0.12.0-testing/PfiXmq2sMeuYM_WZl4_-Dak5bbVkQ4SulTzFTDyiy1A.tar.gz",
+    cli: platform "https://github.com/roc-lang/basic-cli/releases/download/0.19.0/bi5zubJ-_Hva9vxxPq4kNx4WHX6oFs8OP6Ad0tCYlrY.tar.br",
+    json: "https://github.com/lukewilliamboswell/roc-json/releases/download/0.12.0/1trwx8sltQ-e9Y2rOB4LWUWLS_sFVyETK8Twl0i9qpw.tar.gz",
 }
 
 import json.Json
