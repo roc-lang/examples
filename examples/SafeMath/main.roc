@@ -14,7 +14,7 @@ import cli.Stdout
 ## Performance note: safe or checked math prevents crashes but also runs slower.
 ##
 safe_variance : List (Frac a) -> Result (Frac a) [EmptyInputList, Overflow]
-safe_variance = \maybe_empty_list ->
+safe_variance = |maybe_empty_list|
 
     # Check length to prevent division by zero
     when List.len(maybe_empty_list) is
@@ -26,27 +26,27 @@ safe_variance = \maybe_empty_list ->
 
             mean =
                 non_empty_list # sum of all elements:
-                |> List.walk_try(0.0, \state, elem -> Num.add_checked(state, elem))
-                |> Result.map(\x -> x / n)
+                |> List.walk_try(0.0, |state, elem| Num.add_checked(state, elem))
+                |> Result.map_ok(|x| x / n)
 
             non_empty_list
             |> List.walk_try(
                 0.0,
-                \state, elem ->
+                |state, elem|
                     mean
-                    |> Result.try(\m -> Num.sub_checked(elem, m)) # X - µ
-                    |> Result.try(\y -> Num.mul_checked(y, y)) # ²
-                    |> Result.try(\z -> Num.add_checked(z, state)), # ∑
+                    |> Result.try(|m| Num.sub_checked(elem, m)) # X - µ
+                    |> Result.try(|y| Num.mul_checked(y, y)) # ²
+                    |> Result.try(|z| Num.add_checked(z, state)), # ∑
             )
-            |> Result.map(\x -> x / n)
+            |> Result.map_ok(|x| x / n)
 
-main! = \_args ->
+main! = |_args|
 
     variance_result =
         [46, 69, 32, 60, 52, 41]
         |> safe_variance
-        |> Result.map(Num.to_str)
-        |> Result.map(\v -> "σ² = ${v}")
+        |> Result.map_ok(Num.to_str)
+        |> Result.map_ok(|v| "σ² = ${v}")
 
     output_str =
         when variance_result is

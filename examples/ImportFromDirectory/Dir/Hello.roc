@@ -2,5 +2,5 @@
 module [hello]
 
 hello : Str -> Str
-hello = \name ->
+hello = |name|
     "Hello ${name} from inside Dir!"

@@ -11,7 +11,7 @@ Color := [
     ]
 
 color_inspector : Color -> Inspector fmt where fmt implements InspectFormatter
-color_inspector = \@Color(color) ->
+color_inspector = |@Color(color)|
     when color is
         Red -> Inspect.str("_RED_")
         Green -> Inspect.str("_GREEN_")
@@ -28,7 +28,7 @@ MySecret := Str implements [
     ]
 
 my_secret_inspector : MySecret -> Inspector fmt where fmt implements InspectFormatter
-my_secret_inspector = \@MySecret(_) -> Inspect.str("******* REDACTED *******")
+my_secret_inspector = |@MySecret(_)| Inspect.str("******* REDACTED *******")
 
 expect Inspect.to_str(@MySecret("password1234")) == "\"******* REDACTED *******\""
 ### end snippet secret

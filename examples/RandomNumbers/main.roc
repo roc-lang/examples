@@ -6,7 +6,7 @@ app [main!] {
 import cli.Stdout
 import rand.Random
 
-main! = \_args ->
+main! = |_args|
 
     # Print a list of 10 random numbers.
     numbers_str =

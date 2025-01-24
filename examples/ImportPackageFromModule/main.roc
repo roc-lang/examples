@@ -8,7 +8,7 @@ app [main!] {
 import cli.Stdout
 import Module
 
-main! = \_args ->
+main! = |_args|
     Module.split_graphemes("hello")
     |> Inspect.to_str
     |> Stdout.line!

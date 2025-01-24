@@ -16,10 +16,10 @@ Graph a := Dict a (List a) where a implements Eq
 
 ## Create a Graph from an adjacency list.
 from_list : List (a, List a) -> Graph a
-from_list = \adjacency_list ->
+from_list = |adjacency_list|
     empty_dict = Dict.with_capacity(List.len(adjacency_list))
 
-    update = \dict, (vertex, edges) ->
+    update = |dict, (vertex, edges)|
         Dict.insert(dict, vertex, edges)
 
     @Graph(List.walk(adjacency_list, empty_dict, update))
@@ -35,7 +35,7 @@ from_dict = @Graph
 ## - `root`     : The starting vertex for the search.
 ## - `graph`    : The graph to perform the search on.
 dfs : (a -> Bool), a, Graph a -> Result a [NotFound]
-dfs = \is_target, root, @Graph(graph) ->
+dfs = |is_target, root, @Graph(graph)|
     dfs_helper(is_target, [root], Set.empty({}), graph)
 
 # A helper function for performing the depth-first search.
@@ -45,7 +45,7 @@ dfs = \is_target, root, @Graph(graph) ->
 # `visited`  : A Set of visited vertices.
 # `graph`    : The graph to perform the search on.
 dfs_helper : (a -> Bool), List a, Set a, Dict a (List a) -> Result a [NotFound]
-dfs_helper = \is_target, stack, visited, graph ->
+dfs_helper = |is_target, stack, visited, graph|
     when stack is
         [] ->
             Err(NotFound)
@@ -65,7 +65,7 @@ dfs_helper = \is_target, stack, visited, graph ->
                         # filter out all visited neighbors
                         filtered =
                             neighbors
-                            |> List.keep_if(\n -> !(Set.contains(new_visited, n)))
+                            |> List.keep_if(|n| !(Set.contains(new_visited, n)))
                             |> List.reverse
 
                         # newly explored nodes are added to LIFO stack
@@ -83,7 +83,7 @@ dfs_helper = \is_target, stack, visited, graph ->
 ## - `root`     : The starting vertex for the search.
 ## - `graph`    : The graph to perform the search on.
 bfs : (a -> Bool), a, Graph a -> Result a [NotFound]
-bfs = \is_target, root, @Graph(graph) ->
+bfs = |is_target, root, @Graph(graph)|
     bfs_helper(is_target, [root], Set.single(root), graph)
 
 # A helper function for performing the breadth-first search.
@@ -93,7 +93,7 @@ bfs = \is_target, root, @Graph(graph) ->
 # `seen`  : A Set of all seen vertices.
 # `graph`    : The graph to perform the search on.
 bfs_helper : (a -> Bool), List a, Set a, Dict a (List a) -> Result a [NotFound]
-bfs_helper = \is_target, queue, seen, graph ->
+bfs_helper = |is_target, queue, seen, graph|
     when queue is
         [] ->
             Err(NotFound)
@@ -107,7 +107,7 @@ bfs_helper = \is_target, queue, seen, graph ->
                 when Dict.get(graph, current) is
                     Ok(neighbors) ->
                         # filter out all seen neighbors
-                        filtered = List.keep_if(neighbors, \n -> !(Set.contains(seen, n)))
+                        filtered = List.keep_if(neighbors, |n| !(Set.contains(seen, n)))
 
                         # newly explored nodes are added to the FIFO queue
                         new_queue = List.concat(rest, filtered)
@@ -122,56 +122,56 @@ bfs_helper = \is_target, queue, seen, graph ->
 
 # Test DFS with multiple paths
 expect
-    actual = dfs(\v -> Str.starts_with(v, "C"), "A", test_graph_multipath)
+    actual = dfs(|v| Str.starts_with(v, "C"), "A", test_graph_multipath)
     expected = Ok("Ccorrect")
 
     actual == expected
 
 # Test BFS with multiple paths
 expect
-    actual = bfs(\v -> Str.starts_with(v, "C"), "A", test_graph_multipath)
+    actual = bfs(|v| Str.starts_with(v, "C"), "A", test_graph_multipath)
     expected = Ok("Ccorrect")
 
     actual == expected
 
 # Test DFS
 expect
-    actual = dfs(\v -> Str.starts_with(v, "F"), "A", test_graph_small)
+    actual = dfs(|v| Str.starts_with(v, "F"), "A", test_graph_small)
     expected = Ok("F-DFS")
 
     actual == expected
 
 ## Test BFS
 expect
-    actual = bfs(\v -> Str.starts_with(v, "F"), "A", test_graph_small)
+    actual = bfs(|v| Str.starts_with(v, "F"), "A", test_graph_small)
     expected = Ok("F-BFS")
 
     actual == expected
 
 # Test NotFound DFS
 expect
-    actual = dfs(\v -> v == "not a node", "A", test_graph_small)
+    actual = dfs(|v| v == "not a node", "A", test_graph_small)
     expected = Err(NotFound)
 
     actual == expected
 
 # Test NotFound BFS
 expect
-    actual = dfs(\v -> v == "not a node", "A", test_graph_small)
+    actual = dfs(|v| v == "not a node", "A", test_graph_small)
     expected = Err(NotFound)
 
     actual == expected
 
 # Test DFS large
 expect
-    actual = dfs(\v -> v == "AE", "A", test_graph_large)
+    actual = dfs(|v| v == "AE", "A", test_graph_large)
     expected = Ok("AE")
 
     actual == expected
 
 ## Test BFS large
 expect
-    actual = bfs(\v -> v == "AE", "A", test_graph_large)
+    actual = bfs(|v| v == "AE", "A", test_graph_large)
     expected = Ok("AE")
 
     actual == expected

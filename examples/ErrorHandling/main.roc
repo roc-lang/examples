@@ -13,7 +13,7 @@ import cli.Path exposing [Path]
 usage = "HELLO=1 roc main.roc -- \"https://www.roc-lang.org\" roc.html"
 
 main! : List Arg => Result {} _
-main! = \args ->
+main! = |args|
 
     # Get time since [Unix Epoch](https://en.wikipedia.org/wiki/Unix_time)
     start_time : Utc
@@ -23,7 +23,7 @@ main! = \args ->
     hello_env : Str
     hello_env =
         read_env_var!("HELLO")?
-        |> \env_var_content ->
+        |> |env_var_content|
             if Str.is_empty(env_var_content) then
                 "was empty"
             else
@@ -45,7 +45,7 @@ main! = \args ->
     # Write HTML string to a file
     Result.map_err(
         Path.write_utf8!(html_str, output_path),
-        \_ -> FailedToWriteFile("Failed to write to file ${Path.display(output_path)}, usage: ${usage}"),
+        |_| FailedToWriteFile("Failed to write to file ${Path.display(output_path)}, usage: ${usage}"),
     )?
 
     # Print contents of current working directory
@@ -63,7 +63,7 @@ main! = \args ->
     Ok({})
 
 parse_args! : List Arg => Result { url : Str, output_path : Path } _
-parse_args! = \args ->
+parse_args! = |args|
     when List.map(args, Arg.display) is
         [_, first, second, ..] ->
             Ok({ url: first, output_path: Path.from_str(second) })
@@ -72,24 +72,24 @@ parse_args! = \args ->
             Err(FailedToReadArgs("Failed to read command line arguments, usage: ${usage}"))
 
 read_env_var! : Str => Result Str []
-read_env_var! = \env_var_name ->
+read_env_var! = |env_var_name|
     when Env.var!(env_var_name) is
         Ok(env_var_str) if !Str.is_empty(env_var_str) -> Ok(env_var_str)
         _ -> Ok("")
 
 fetch_html! : Str => Result Str _
-fetch_html! = \url ->
+fetch_html! = |url|
     Http.get_utf8!(url)
-    |> Result.map_err(\err -> FailedToFetchHtml("Failed to fetch URL ${Inspect.to_str(err)}, usage: ${usage}"))
+    |> Result.map_err(|err| FailedToFetchHtml("Failed to fetch URL ${Inspect.to_str(err)}, usage: ${usage}"))
 
 # effects need to be functions so we use the empty input type `{}`
 list_cwd_contents! : {} => Result {} _
-list_cwd_contents! = \_ ->
+list_cwd_contents! = |_|
 
     dir_contents =
         Result.map_err(
             Dir.list!("."),
-            \_ -> FailedToListCwd("Failed to list contents of current directory, usage: ${usage}"),
+            |_| FailedToListCwd("Failed to list contents of current directory, usage: ${usage}"),
         )?
 
     contents_str =

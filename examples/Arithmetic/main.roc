@@ -4,7 +4,7 @@ import cli.Stdout
 import cli.Arg exposing [Arg]
 
 main! : List Arg.Arg => Result {} _
-main! = \raw_args ->
+main! = |raw_args|
 
     args : { a : I32, b : I32 }
     args = read_args(raw_args)?
@@ -19,7 +19,7 @@ main! = \raw_args ->
             ("exponentiation", Num.pow_int(args.a, args.b)),
         ]
         |> List.map(
-            \(operation, answer) -> "${operation}: ${Num.to_str(answer)}",
+            |(operation, answer)| "${operation}: ${Num.to_str(answer)}",
         )
         |> Str.join_with("\n")
 
@@ -36,7 +36,7 @@ main! = \raw_args ->
 ## expected range (-1000 to 1000). Then the [`Result`](https://www.roc-lang.org/builtins/Result) will contain
 ## an `Exit I32 Str` error.
 read_args : List Arg -> Result { a : I32, b : I32 } [Exit I32 Str]
-read_args = \raw_args ->
+read_args = |raw_args|
     arg_range_min = -1000
     arg_range_max = 1000
     expected_nr_of_args = 2 + 1 # +1 because first will be name or path of the program
@@ -58,7 +58,7 @@ read_args = \raw_args ->
 
     when (a_result, b_result) is
         (Ok(a), Ok(b)) ->
-            if a < arg_range_min || a > arg_range_max || b < arg_range_min || b > arg_range_max then
+            if a < arg_range_min or a > arg_range_max or b < arg_range_min or b > arg_range_max then
                 Err(invalid_num_str)
             else
                 Ok({ a, b })

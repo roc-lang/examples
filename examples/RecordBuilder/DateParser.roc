@@ -12,9 +12,9 @@ ParserErr : [InvalidNumStr, OutOfSegments]
 ParserGroup a := List Str -> Result (a, List Str) ParserErr
 
 parse_with : (Str -> Result a ParserErr) -> ParserGroup a
-parse_with = \parser ->
+parse_with = |parser|
     @ParserGroup(
-        \segments ->
+        |segments|
             when segments is
                 [] -> Err(OutOfSegments)
                 [first, .. as rest] ->
@@ -23,9 +23,9 @@ parse_with = \parser ->
     )
 
 chain_parsers : ParserGroup a, ParserGroup b, (a, b -> c) -> ParserGroup c
-chain_parsers = \@ParserGroup(first), @ParserGroup(second), combiner ->
+chain_parsers = |@ParserGroup(first), @ParserGroup(second), combiner|
     @ParserGroup(
-        \segments ->
+        |segments|
             (a, after_first) = first(segments)?
             (b, after_second) = second(after_first)?
 
@@ -33,8 +33,8 @@ chain_parsers = \@ParserGroup(first), @ParserGroup(second), combiner ->
     )
 
 build_segment_parser : ParserGroup a -> (Str -> Result a ParserErr)
-build_segment_parser = \@ParserGroup(parser_group) ->
-    \text ->
+build_segment_parser = |@ParserGroup(parser_group)|
+    |text|
         segments = Str.split_on(text, "-")
         (date, _remaining) = parser_group(segments)?
 
@@ -59,9 +59,9 @@ expect
                 chain_parsers(
                     parse_with(Str.to_u64),
                     parse_with(Str.to_u64),
-                    \day, year -> (day, year),
+                    |day, year| (day, year),
                 ),
-                \month, (day, year) -> { month, day, year },
+                |month, (day, year)| { month, day, year },
             ),
         )
 

@@ -13,7 +13,7 @@ State : {
 ## Solves the Tower of Hanoi problem using recursion. Returns a list of moves
 ## which represent the solution.
 hanoi : State -> List (Str, Str)
-hanoi = \{ num_disks, from, to, using, moves } ->
+hanoi = |{ num_disks, from, to, using, moves }|
     if num_disks == 1 then
         List.concat(moves, [(from, to)])
     else

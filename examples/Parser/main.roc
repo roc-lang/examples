@@ -7,14 +7,14 @@ import cli.Stdout
 import parser.Parser exposing [Parser, many, one_of, map]
 import parser.String exposing [parse_str, codeunit, any_codeunit]
 
-main! = \_args ->
+main! = |_args|
 
     letters = parse_str(many(letter_parser), input_str)?
 
     msg =
         letters
         |> count_letter_a
-        |> \count -> "I counted ${count} letter A's!"
+        |> |count| "I counted ${count} letter A's!"
 
     Stdout.line!(msg)
 
@@ -24,9 +24,9 @@ input_str = "AAAiBByAABBwBtCCCiAyArBBx"
 
 # Count the number of Letter A's
 count_letter_a : List Letter -> Str
-count_letter_a = \letters ->
+count_letter_a = |letters|
     letters
-    |> List.count_if(\l -> l == A)
+    |> List.count_if(|l| l == A)
     |> Num.to_str
 
 # Parser to convert utf8 input into Letter [tags](https://www.roc-lang.org/tutorial#tags)
@@ -34,10 +34,10 @@ letter_parser : Parser (List U8) Letter
 letter_parser =
     one_of(
         [
-            codeunit('A') |> map(\_ -> A),
-            codeunit('B') |> map(\_ -> B),
-            codeunit('C') |> map(\_ -> C),
-            any_codeunit |> map(\_ -> Other),
+            codeunit('A') |> map(|_| A),
+            codeunit('B') |> map(|_| B),
+            codeunit('C') |> map(|_| C),
+            any_codeunit |> map(|_| Other),
         ],
     )
 

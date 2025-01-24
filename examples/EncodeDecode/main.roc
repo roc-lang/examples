@@ -27,7 +27,7 @@ ItemKind := [
     ]
 
 encode_items : ItemKind -> Encoder fmt where fmt implements EncoderFormatting
-encode_items = \@ItemKind(kind) ->
+encode_items = |@ItemKind(kind)|
     Encode.u32(
         when kind is
             Text -> 1
@@ -44,14 +44,14 @@ encode_items = \@ItemKind(kind) ->
 
 decode_items : Decoder ItemKind fmt where fmt implements DecoderFormatting
 decode_items = Decode.custom(
-    \bytes, fmt ->
+    |bytes, fmt|
         # Helper function to wrap our [tag](https://www.roc-lang.org/tutorial#tags)
-        ok = \tag -> Ok(@ItemKind(tag))
+        ok = |tag| Ok(@ItemKind(tag))
 
         bytes
         |> Decode.from_bytes_partial(fmt)
         |> try_map_result(
-            \num ->
+            |num|
                 when num is
                     1 -> ok(Text)
                     2 -> ok(Method)
@@ -69,7 +69,7 @@ decode_items = Decode.custom(
 
 # Converts `DecodeResult U32` to `DecodeResult ItemKind` using a given function
 try_map_result : DecodeResult U32, (U32 -> Result ItemKind DecodeError) -> DecodeResult ItemKind
-try_map_result = \decoded, num_to_item_kind_fun ->
+try_map_result = |decoded, num_to_item_kind_fun|
     when decoded.result is
         Err(e) -> { result: Err(e), rest: decoded.rest }
         Ok(res) -> { result: num_to_item_kind_fun(res), rest: decoded.rest }
@@ -112,7 +112,7 @@ decoded_list = Decode.from_bytes(encoded_bytes, Json.utf8) |> Result.with_defaul
 # check that decoding is correct
 expect decoded_list == original_list
 
-main! = \_args ->
+main! = |_args|
     # prints decoded items to stdout
     decoded_list
     |> List.map(Inspect.to_str)

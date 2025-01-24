@@ -2,7 +2,7 @@ app [main!] { cli: platform "../../../basic-cli/platform/main.roc" }
 
 import cli.Stdout
 
-main! = \_args ->
+main! = |_args|
     List.range({ start: At(1), end: At(100) })
     |> List.map(fizz_buzz)
     |> Str.join_with(",")
@@ -13,11 +13,11 @@ main! = \_args ->
 ## multiples of 5, "FizzBuzz" for multiples of both
 ## 3 and 5, and the original number for anything else.
 fizz_buzz : I32 -> Str
-fizz_buzz = \n ->
+fizz_buzz = |n|
     fizz = n % 3 == 0
     buzz = n % 5 == 0
 
-    if fizz && buzz then
+    if fizz and buzz then
         "FizzBuzz"
     else if fizz then
         "Fizz"

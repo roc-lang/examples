@@ -55,9 +55,9 @@ expect
             chain_parsers(
                 parse_with(Str.to_u64),
                 parse_with(Str.to_u64),
-                \day, year -> (day, year),
+                |day, year| (day, year),
             ),
-            \month, (day, year) -> { month, day, year },
+            |month, (day, year)| { month, day, year },
         ))
 
     date_parser("Mar-10-2015") == Ok({ month: "Mar", day: 10, year: 2015 })
@@ -73,9 +73,9 @@ Let's start with `parse_with`:
 
 ```roc
 parse_with : (Str -> Result a ParserErr) -> ParserGroup a
-parse_with = \parser ->
+parse_with = |parser|
     @ParserGroup(
-        \segments ->
+        |segments|
             when segments is
                 [] -> Err(OutOfSegments)
                 [first, .. as rest] ->
@@ -90,9 +90,9 @@ Let's see how our `chain_parsers` function will manage combining two `ParserGrou
 
 ```roc
 chain_parsers : ParserGroup a, ParserGroup b, (a, b -> c) -> ParserGroup c
-chain_parsers = \@ParserGroup(first), @ParserGroup(second), combiner ->
+chain_parsers = |@ParserGroup(first), @ParserGroup(second), combiner|
     @ParserGroup(
-        \segments ->
+        |segments|
             (a, after_first) = first(segments)?
             (b, after_second) = second(after_first)?
 
@@ -107,8 +107,8 @@ We can call it `build_segment_parser`:
 
 ```roc
 build_segment_parser : ParserGroup a -> (Str -> Result a ParserErr)
-build_segment_parser = \@ParserGroup(parser_group) ->
-    \text ->
+build_segment_parser = |@ParserGroup(parser_group)|
+    |text|
         segments = Str.split_on(text, "-")
         (date, _remaining) = parser_group(segments)?
 

@@ -6,7 +6,7 @@ app [main!] {
 import cli.Stdout
 import cli.Arg
 
-main! = \raw_args ->
+main! = |raw_args|
     args = List.map(raw_args, Arg.display)
 
     # get the second argument, the first is the executable's path

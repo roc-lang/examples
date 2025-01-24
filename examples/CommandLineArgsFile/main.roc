@@ -7,7 +7,7 @@ import cli.Stdout
 import cli.Path exposing [Path]
 import cli.Arg
 
-main! = \raw_args ->
+main! = |raw_args|
 
     # read all command line arguments
     args = List.map(raw_args, Arg.display)
@@ -26,12 +26,12 @@ main! = \raw_args ->
 
 # reads a file and puts all lines in one Str
 read_file_to_str! : Path => Result Str [ReadFileErr Str]_
-read_file_to_str! = \path ->
+read_file_to_str! = |path|
 
     path
     |> Path.read_utf8!
     |> Result.map_err(
-        \file_read_err ->
+        |file_read_err|
             path_str = Path.display(path)
 
             when file_read_err is

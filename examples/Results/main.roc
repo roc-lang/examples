@@ -11,7 +11,7 @@ Person : { first_name : Str, last_name : Str, birth_year : U16 }
 ## it returns an `Err` containing a descriptive tag.
 ## This is the most verbose version, we will do better below.
 parse_verbose : Str -> Result Person [InvalidRecordFormat, InvalidNameFormat, InvalidBirthYearFormat]
-parse_verbose = \line ->
+parse_verbose = |line|
     when line |> Str.split_first(" was born in ") is
         Ok({ before: full_name, after: birth_year_str }) ->
             when full_name |> Str.split_first(" ") is
@@ -29,41 +29,41 @@ parse_verbose = \line ->
 ## Here's a very slightly shorter version using `Result.try` to chain multiple
 ## functions that each could return an error. It's a bit nicer, don't you think?
 parse_with_try : Str -> Result Person [InvalidNumStr, NotFound]
-parse_with_try = \line ->
+parse_with_try = |line|
     line
     |> Str.split_first(" was born in ")
     |> Result.try(
-        \{ before: full_name, after: birth_year_str } ->
+        |{ before: full_name, after: birth_year_str }|
             full_name
             |> Str.split_first(" ")
             |> Result.try(
-                \{ before: first_name, after: last_name } ->
+                |{ before: first_name, after: last_name }|
                     Str.to_u16(birth_year_str)
                     |> Result.try(
-                        \birth_year ->
+                        |birth_year|
                             Ok({ first_name, last_name, birth_year }),
                     ),
             ),
     )
 
-## This version is like `parse_with_try`, except it uses `Result.mapErr`
+## This version is like `parse_with_try`, except it uses `Result.map_err`
 ## to return more informative errors, just like the ones in `parse_verbose`.
 parse_with_try_v2 : Str -> Result Person [InvalidRecordFormat, InvalidNameFormat, InvalidBirthYearFormat]
-parse_with_try_v2 = \line ->
+parse_with_try_v2 = |line|
     line
     |> Str.split_first(" was born in ")
-    |> Result.map_err(\_ -> InvalidRecordFormat)
+    |> Result.map_err(|_| InvalidRecordFormat)
     |> Result.try(
-        \{ before: full_name, after: birth_year_str } ->
+        |{ before: full_name, after: birth_year_str }|
             full_name
             |> Str.split_first(" ")
-            |> Result.map_err(\_ -> InvalidNameFormat)
+            |> Result.map_err(|_| InvalidNameFormat)
             |> Result.try(
-                \{ before: first_name, after: last_name } ->
+                |{ before: first_name, after: last_name }|
                     Str.to_u16(birth_year_str)
-                    |> Result.map_err(\_ -> InvalidBirthYearFormat)
+                    |> Result.map_err(|_| InvalidBirthYearFormat)
                     |> Result.try(
-                        \birth_year ->
+                        |birth_year|
                             Ok({ first_name, last_name, birth_year }),
                     ),
             ),
@@ -74,7 +74,7 @@ parse_with_try_v2 = \line ->
 ## It makes the code much less nested and easier to read.
 ## The following function is equivalent to `parse_with_try`:
 parse_with_try_op : Str -> Result Person [NotFound, InvalidNumStr]
-parse_with_try_op = \line ->
+parse_with_try_op = |line|
     { before: full_name, after: birth_year_str } = Str.split_first(line, " was born in ")?
     { before: first_name, after: last_name } = Str.split_first(full_name, " ")?
     birth_year = Str.to_u16(birth_year_str)?
@@ -84,20 +84,20 @@ parse_with_try_op = \line ->
 ## And lastly the following function is equivalent to `parse_with_try_v2`.
 ## Note that the `?` operator has moved from `split_first` & `to_u16` to `map_err`:
 parse_with_try_op_v2 : Str -> Result Person [InvalidRecordFormat, InvalidNameFormat, InvalidBirthYearFormat]
-parse_with_try_op_v2 = \line ->
+parse_with_try_op_v2 = |line|
     { before: full_name, after: birth_year_str } =
-        (Str.split_first(line, " was born in ") |> Result.map_err(\_ -> InvalidRecordFormat))?
+        (Str.split_first(line, " was born in ") |> Result.map_err(|_| InvalidRecordFormat))?
 
     { before: first_name, after: last_name } =
-        (Str.split_first(full_name, " ") |> Result.map_err(\_ -> InvalidNameFormat))?
+        (Str.split_first(full_name, " ") |> Result.map_err(|_| InvalidNameFormat))?
 
-    birth_year = Result.map_err(Str.to_u16(birth_year_str), \_ -> InvalidBirthYearFormat)?
+    birth_year = Result.map_err(Str.to_u16(birth_year_str), |_| InvalidBirthYearFormat)?
 
     Ok({ first_name, last_name, birth_year })
 
 ## This function parses a string using a given parser and returns a string to
 ## display to the user. Note how we can handle errors individually or in bulk.
-parse = \line, parser ->
+parse = |line, parser|
     when parser(line) is
         Ok({ first_name, last_name, birth_year }) ->
             """
@@ -111,7 +111,7 @@ parse = \line, parser ->
         Err(InvalidRecordFormat) -> "Oh wow, that's a weird looking record!"
         _ -> "Something unexpected happened" # Err NotFound or Err InvalidNumStr
 
-main! = \_args ->
+main! = |_args|
     Stdout.line!(parse("George Harrison was born in 1943", parse_verbose))?
     Stdout.line!(parse("John Lennon was born in 1940", parse_with_try))?
     Stdout.line!(parse("Paul McCartney was born in 1942", parse_with_try_v2))?

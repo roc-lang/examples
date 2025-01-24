@@ -49,7 +49,7 @@ expect
     # We need to account for the case when a key (=fruit) is not in the Dict.
     # So we need a function like this:
     add_fruit : Result U64 [Missing] -> Result U64 [Missing]
-    add_fruit = \value_tag ->
+    add_fruit = |value_tag|
         when value_tag is
             # If the fruit is not in the dict (=missing), we set the count to 1
             Err(Missing) -> Ok(1)
