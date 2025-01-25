@@ -42,30 +42,31 @@ encode_items = |@ItemKind(kind)|
             Property -> 10,
     )
 
-decode_items : Decoder ItemKind fmt where fmt implements DecoderFormatting
-decode_items = Decode.custom(
-    |bytes, fmt|
-        # Helper function to wrap our [tag](https://www.roc-lang.org/tutorial#tags)
-        ok = |tag| Ok(@ItemKind(tag))
+decode_items : Decoder ItemKind _
+decode_items =
+    Decode.custom(
+        |bytes, fmt|
+            # Helper function to wrap our [tag](https://www.roc-lang.org/tutorial#tags)
+            ok = |tag| Ok(@ItemKind(tag))
 
-        bytes
-        |> Decode.from_bytes_partial(fmt)
-        |> try_map_result(
-            |num|
-                when num is
-                    1 -> ok(Text)
-                    2 -> ok(Method)
-                    3 -> ok(Function)
-                    4 -> ok(Constructor)
-                    5 -> ok(Field)
-                    6 -> ok(Variable)
-                    7 -> ok(Class)
-                    8 -> ok(Interface)
-                    9 -> ok(Module)
-                    10 -> ok(Property)
-                    _ -> Err(TooShort),
-        ),
-)
+            bytes
+            |> Decode.from_bytes_partial(fmt)
+            |> try_map_result(
+                |num|
+                    when num is
+                        1 -> ok(Text)
+                        2 -> ok(Method)
+                        3 -> ok(Function)
+                        4 -> ok(Constructor)
+                        5 -> ok(Field)
+                        6 -> ok(Variable)
+                        7 -> ok(Class)
+                        8 -> ok(Interface)
+                        9 -> ok(Module)
+                        10 -> ok(Property)
+                        _ -> Err(TooShort),
+            ),
+    )
 
 # Converts `DecodeResult U32` to `DecodeResult ItemKind` using a given function
 try_map_result : DecodeResult U32, (U32 -> Result ItemKind DecodeError) -> DecodeResult ItemKind
