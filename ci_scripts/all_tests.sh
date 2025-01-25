@@ -79,9 +79,8 @@ expect ci_scripts/expect_scripts/MultipleRocFiles.exp
 $ROC build ./examples/ImportFromDirectory/main.roc
 expect ci_scripts/expect_scripts/ImportFromDirectory.exp
 
-# TODO re-enable before merging, strange TYPE VARIABLE IS NOT GENERIC error
-#$ROC build ./examples/EncodeDecode/main.roc
-#expect ci_scripts/expect_scripts/EncodeDecode.exp
+$ROC build ./examples/EncodeDecode/main.roc
+expect ci_scripts/expect_scripts/EncodeDecode.exp
 
 $ROC build ./examples/SafeMath/main.roc
 $ROC test ./examples/SafeMath/main.roc
@@ -99,7 +98,7 @@ $ROC test ./examples/CustomInspect/OpaqueTypes.roc
 if [[ "$(uname)" != "Darwin" ]]; then
   $ROC build --lib ./examples/GoPlatform/main.roc --output examples/GoPlatform/platform/libapp.so
   go build -C examples/GoPlatform/platform -buildmode=pie -o dynhost
-  
+
   $ROC preprocess-host ./examples/GoPlatform/platform/dynhost ./examples/GoPlatform/platform/main.roc ./examples/GoPlatform/platform/libapp.so
   $ROC build ./examples/GoPlatform/main.roc
 
@@ -120,3 +119,5 @@ if [[ "$(uname)" != "Darwin" ]]; then
   $ROC build ./examples/DotNetPlatform/main.roc --lib --output ./examples/DotNetPlatform/platform/interop
   expect ci_scripts/expect_scripts/DotNetPlatform.exp
 fi
+
+echo "All tests passed!"
