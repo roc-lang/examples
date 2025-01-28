@@ -1,5 +1,5 @@
 app [Model, init!, respond!] {
-    web: platform "https://github.com/roc-lang/basic-webserver/releases/download/0.12.0/R1hdxNa8jTMBl_Dh_35sI_oGPhJIUYahDMTFQMr1U0k.tar.br",
+    web: platform "https://github.com/roc-lang/basic-webserver/releases/download/0.12.0/Q4h_In-sz1BqAvlpmCsBHhEJnn_YvfRRMiNACB_fBbk.tar.br",
 }
 
 import web.Stdout
