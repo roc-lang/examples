@@ -14,7 +14,7 @@ import (
 
 func main() {
 	var str C.struct_RocStr
-	C.roc__mainForHost_1_exposed_generic(&str)
+	C.roc__main_for_host_1_exposed_generic(&str)
 	fmt.Print(rocStrRead(str))
 }
 

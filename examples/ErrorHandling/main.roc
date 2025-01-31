@@ -1,91 +1,100 @@
 app [main!] {
-    pf: platform "https://github.com/roc-lang/basic-cli/releases/download/0.18.0/0APbwVN1_p1mJ96tXjaoiUCr8NBGamr8G8Ac_DrXR-o.tar.br",
+    cli: platform "https://github.com/roc-lang/basic-cli/releases/download/0.19.0/Hj-J_zxz7V9YurCSTFcFdu6cQJie4guzsPMUi5kBYUk.tar.br",
 }
 
-import pf.Stdout
-import pf.Arg exposing [Arg]
-import pf.Env
-import pf.Http
-import pf.Dir
-import pf.Utc exposing [Utc]
-import pf.Path exposing [Path]
+import cli.Stdout
+import cli.Arg exposing [Arg]
+import cli.Env
+import cli.Http
+import cli.Dir
+import cli.Utc exposing [Utc]
+import cli.Path exposing [Path]
 
 usage = "HELLO=1 roc main.roc -- \"https://www.roc-lang.org\" roc.html"
 
 main! : List Arg => Result {} _
-main! = \args ->
+main! = |args|
 
     # Get time since [Unix Epoch](https://en.wikipedia.org/wiki/Unix_time)
     start_time : Utc
-    start_time = Utc.now! {}
+    start_time = Utc.now!({})
 
     # Read the HELLO environment variable
     hello_env : Str
     hello_env =
-        read_env_var! "HELLO"
-        |> try
-        |> \msg -> if Str.isEmpty msg then "was empty" else "was set to $(msg)"
+        read_env_var!("HELLO")?
+        |> |env_var_content|
+            if Str.is_empty(env_var_content) then
+                "was empty"
+            else
+                "was set to ${env_var_content}"
 
-    try Stdout.line! "HELLO env var $(hello_env)"
+    Stdout.line!("HELLO env var ${hello_env}")?
 
     # Read command line arguments
-    { url, output_path } = try parse_args! args
+    { url, output_path } = parse_args!(args)?
 
-    try Stdout.line! "Fetching content from $(url)..."
+    Stdout.line!("Fetching content from ${url}...")?
 
     # Fetch the provided url using HTTP
     html_str : Str
-    html_str = try fetch_html! url
+    html_str = fetch_html!(url)?
 
-    try Stdout.line! "Saving url HTML to $(Path.display output_path)..."
+    Stdout.line!("Saving url HTML to ${Path.display(output_path)}...")?
 
     # Write HTML string to a file
-    Path.write_utf8! html_str output_path
-    |> Result.mapErr \_ -> FailedToWriteFile "Failed to write to file $(Path.display output_path), usage: $(usage)"
-    |> try
+    Result.map_err(
+        Path.write_utf8!(html_str, output_path),
+        |_| FailedToWriteFile("Failed to write to file ${Path.display(output_path)}, usage: ${usage}"),
+    )?
 
     # Print contents of current working directory
-    try list_cwd_contents! {}
+    list_cwd_contents!({})?
 
     end_time : Utc
-    end_time = Utc.now! {}
+    end_time = Utc.now!({})
 
-    run_duration = Utc.delta_as_millis start_time end_time
+    run_duration = Utc.delta_as_millis(start_time, end_time)
 
-    try Stdout.line! "Run time: $(Num.toStr run_duration) ms"
+    Stdout.line!("Run time: ${Num.to_str(run_duration)} ms")?
 
-    try Stdout.line! "Done"
+    Stdout.line!("Done")?
 
-    Ok {}
+    Ok({})
 
 parse_args! : List Arg => Result { url : Str, output_path : Path } _
-parse_args! = \args ->
-    when List.map args Arg.display is
+parse_args! = |args|
+    when List.map(args, Arg.display) is
         [_, first, second, ..] ->
-            Ok { url: first, output_path: Path.from_str second }
+            Ok({ url: first, output_path: Path.from_str(second) })
 
         _ ->
-            Err (FailedToReadArgs "Failed to read command line arguments, usage: $(usage)")
+            Err(FailedToReadArgs("Failed to read command line arguments, usage: ${usage}"))
 
 read_env_var! : Str => Result Str []
-read_env_var! = \envVarName ->
-    when Env.var! envVarName is
-        Ok envVarStr if !(Str.isEmpty envVarStr) -> Ok envVarStr
-        _ -> Ok ""
+read_env_var! = |env_var_name|
+    when Env.var!(env_var_name) is
+        Ok(env_var_str) if !Str.is_empty(env_var_str) -> Ok(env_var_str)
+        _ -> Ok("")
 
 fetch_html! : Str => Result Str _
-fetch_html! = \url ->
-    Http.get_utf8! url
-    |> Result.mapErr \err -> FailedToFetchHtml "Failed to fetch URL $(Inspect.toStr err), usage: $(usage)"
+fetch_html! = |url|
+    Http.get_utf8!(url)
+    |> Result.map_err(|err| FailedToFetchHtml("Failed to fetch URL ${Inspect.to_str(err)}, usage: ${usage}"))
 
+# effects need to be functions so we use the empty input type `{}`
 list_cwd_contents! : {} => Result {} _
-list_cwd_contents! = \_ ->
+list_cwd_contents! = |_|
 
-    dirContents =
-        Dir.list! "."
-        |> Result.mapErr \_ -> FailedToListCwd "Failed to list contents of current directory, usage: $(usage)"
-        |> try
+    dir_contents =
+        Result.map_err(
+            Dir.list!("."),
+            |_| FailedToListCwd("Failed to list contents of current directory, usage: ${usage}"),
+        )?
 
-    contentsStr = List.map dirContents Path.display |> Str.joinWith ","
+    contents_str =
+        dir_contents
+        |> List.map(Path.display)
+        |> Str.join_with(",")
 
-    Stdout.line! "Contents of current directory: $(contentsStr)"
+    Stdout.line!("Contents of current directory: ${contents_str}")

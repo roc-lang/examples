@@ -1,10 +1,10 @@
-app [Model, server] {
-    pf: platform "https://github.com/roc-lang/basic-webserver/releases/download/0.8.0/jz2EfGAtz_y06nN7f8tU9AvmzhKK-jnluXQQGa9rZoQ.tar.br",
+app [Model, init!, respond!] {
+    web: platform "https://github.com/roc-lang/basic-webserver/releases/download/0.12.0/Q4h_In-sz1BqAvlpmCsBHhEJnn_YvfRRMiNACB_fBbk.tar.br",
 }
 
-import pf.Stdout
-import pf.Http exposing [Request, Response]
-import pf.Utc
+import web.Stdout
+import web.Http exposing [Request, Response]
+import web.Utc
 
 # [backend](https://chatgpt.com/share/7ac35a32-dab5-46d0-bb17-9d584469556f) Roc server
 
@@ -13,24 +13,26 @@ Model : {}
 
 # With `init` you can set up a database connection once at server startup,
 # generate css by running `tailwindcss`,...
-# In this case we don't have anything to initialize, so it is just `Task.ok {}`.
+# In this case we don't have anything to initialize, so it is just `Ok({})`.
 
-server = { init: Task.ok {}, respond }
+init! = |{}| Ok({})
 
-respond : Request, Model -> Task Response [ServerErr Str]_
-respond = \req, _ ->
+respond! : Request, Model => Result Response [ServerErr Str]_
+respond! = |req, _|
     # Log request datetime, method and url
-    datetime = Utc.now! |> Utc.toIso8601Str
+    datetime = Utc.to_iso_8601(Utc.now!({}))
 
-    Stdout.line! "$(datetime) $(Http.methodToStr req.method) $(req.url)"
+    Stdout.line!("${datetime} ${Inspect.to_str(req.method)} ${req.uri}")?
 
-    Task.ok {
-        status: 200,
-        headers: [
-            # !!
-            # Change http://localhost:8001 to your domain for production usage
-            # !!
-            { name: "Access-Control-Allow-Origin", value: "http://localhost:8001" },
-        ],
-        body: Str.toUtf8 "Hi, Elm! This is from Roc: 🎁\n",
-    }
+    Ok(
+        {
+            status: 200,
+            headers: [
+                # !!
+                # Change http://localhost:8001 to your domain for production usage
+                # !!
+                { name: "Access-Control-Allow-Origin", value: "http://localhost:8001" },
+            ],
+            body: Str.to_utf8("Hi, Elm! This is from Roc: 🎁\n"),
+        },
+    )

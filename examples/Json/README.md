@@ -1,6 +1,6 @@
 # JSON
 
-Decode JSON data.
+Decode JSON data into a Roc record.
 
 ## Code
 ```roc

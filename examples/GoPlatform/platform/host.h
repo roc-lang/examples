@@ -6,4 +6,4 @@ struct RocStr {
     size_t capacity;
 };
 
-extern void roc__mainForHost_1_exposed_generic(const struct RocStr *data);
+extern void roc__main_for_host_1_exposed_generic(const struct RocStr *data);
