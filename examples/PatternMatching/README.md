@@ -17,7 +17,7 @@ when input is
 
     [Foo, Count(num), ..] if num > 0 -> FooCountIf
 
-    [head, .. as tail] -> HeadAndTail head tail
+    [head, .. as tail] -> HeadAndTail(head, tail)
 
     _ -> Other
 ```
