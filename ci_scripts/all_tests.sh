@@ -94,8 +94,8 @@ expect ci_scripts/expect_scripts/ImportPackageFromModule.exp
 
 $ROC test ./examples/CustomInspect/OpaqueTypes.roc
 
-# Check if we're not on macOS, these examples don't work on macos yet
-if [[ "$(uname)" != "Darwin" ]]; then
+# these examples don't work on macos and aarch64 linux yet #225 #226 #231
+if [[ "$(uname)" == "Linux" && "$(uname -m)" == "x86_64" ]]; then
   $ROC build --lib ./examples/GoPlatform/main.roc --output examples/GoPlatform/platform/libapp.so
   go build -C examples/GoPlatform/platform -buildmode=pie -o dynhost
 
