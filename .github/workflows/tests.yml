@@ -19,7 +19,7 @@ jobs:
         run: |
           if [[ "${{ matrix.operating-system }}" =~ ^ubuntu- ]]; then
             if [[ "${{ matrix.operating-system }}" =~ -arm$ ]]; then
-              echo "os_pattern=linux_aarch64" >> $GITHUB_OUTPUT
+              echo "os_pattern=linux_arm64" >> $GITHUB_OUTPUT
             else
               echo "os_pattern=linux_x86_64" >> $GITHUB_OUTPUT
             fi
