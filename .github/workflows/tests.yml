@@ -9,7 +9,7 @@ jobs:
     runs-on: ${{ matrix.operating-system }}
     strategy:
       matrix:
-        operating-system: [ubuntu-22.04, ubuntu-24.04, macos-13, macos-14]
+        operating-system: [ubuntu-22.04, ubuntu-24.04, ubuntu-24.04-arm, macos-13, macos-14]
     timeout-minutes: 90
     steps:
       - uses: actions/checkout@v3
@@ -18,7 +18,11 @@ jobs:
         id: vars
         run: |
           if [[ "${{ matrix.operating-system }}" =~ ^ubuntu- ]]; then
-            echo "os_pattern=linux_x86_64" >> $GITHUB_OUTPUT
+            if [[ "${{ matrix.operating-system }}" =~ -arm$ ]]; then
+              echo "os_pattern=linux_aarch64" >> $GITHUB_OUTPUT
+            else
+              echo "os_pattern=linux_x86_64" >> $GITHUB_OUTPUT
+            fi
           elif [ "${{ matrix.operating-system }}" = "macos-13" ]; then
             echo "os_pattern=macos_x86_64" >> $GITHUB_OUTPUT
           else
