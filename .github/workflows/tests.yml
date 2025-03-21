@@ -4,6 +4,14 @@ on:
 
 name: Test examples without nix
 
+# this cancels workflows currently in progress if you start a new one
+concurrency:
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
+
+# Do not add permissions here! Configure them at the job level!
+permissions: {}
+
 jobs:
   test-examples:
     runs-on: ${{ matrix.operating-system }}

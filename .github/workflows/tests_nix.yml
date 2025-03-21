@@ -2,12 +2,15 @@ on:
     pull_request:
     workflow_dispatch:
 
+name: Test examples on Nix
+
 # this cancels workflows currently in progress if you start a new one
 concurrency:
     group: ${{ github.workflow }}-${{ github.ref }}
     cancel-in-progress: true
 
-name: Test examples on Nix
+# Do not add permissions here! Configure them at the job level!
+permissions: {}
 
 jobs:
     test-examples:
