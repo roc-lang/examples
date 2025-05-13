@@ -5,6 +5,7 @@ app [main!] {
 
 import json.Json
 import cli.Stdout
+import cli.Arg exposing [Arg]
 ### start snippet impl
 
 ItemKind := [
@@ -113,6 +114,7 @@ decoded_list = Decode.from_bytes(encoded_bytes, Json.utf8) |> Result.with_defaul
 # check that decoding is correct
 expect decoded_list == original_list
 
+main! : List Arg => Result {} _
 main! = |_args|
     # prints decoded items to stdout
     decoded_list

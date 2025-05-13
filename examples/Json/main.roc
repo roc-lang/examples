@@ -4,8 +4,10 @@ app [main!] {
 }
 
 import cli.Stdout
+import cli.Arg exposing [Arg]
 import json.Json
 
+main! : List Arg => Result {} _
 main! = |_args|
     request_body = Str.to_utf8("{\"Image\":{\"Animated\":false,\"Height\":600,\"Ids\":[116,943,234,38793],\"Thumbnail\":{\"Height\":125,\"Url\":\"http:\\/\\/www.example.com\\/image\\/481989943\",\"Width\":100},\"Title\":\"View from 15th Floor\",\"Width\":800}}")
 

@@ -3,6 +3,7 @@ app [main!] {
 }
 
 import cli.Stdout
+import cli.Arg exposing [Arg]
 
 Person : { first_name : Str, last_name : Str, birth_year : U16 }
 
@@ -111,6 +112,7 @@ parse = |line, parser|
         Err(InvalidRecordFormat) -> "Oh wow, that's a weird looking record!"
         _ -> "Something unexpected happened" # Err NotFound or Err InvalidNumStr
 
+main! : List Arg => Result {} _
 main! = |_args|
     Stdout.line!(parse("George Harrison was born in 1943", parse_verbose))?
     Stdout.line!(parse("John Lennon was born in 1940", parse_with_try))?
