@@ -4,8 +4,10 @@ app [main!] {
 }
 
 import cli.Stdout
+import cli.Arg exposing [Arg]
 import rand.Random
 
+main! : List Arg => Result {} _
 main! = |_args|
 
     # Print a list of 10 random numbers.

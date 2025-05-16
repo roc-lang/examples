@@ -6,8 +6,10 @@ app [main!] {
 ### end snippet header
 
 import cli.Stdout
+import cli.Arg exposing [Arg]
 import Module
 
+main! : List Arg => Result {} _
 main! = |_args|
     Module.split_graphemes("hello")
     |> Inspect.to_str

@@ -5,7 +5,9 @@ app [main!] {
 import cli.Stdin
 import cli.Stdout
 import cli.Stderr
+import cli.Arg exposing [Arg]
 
+main! : List Arg => Result {} _
 main! = |_args|
     when run!({}) is
         Ok({}) -> Ok({})

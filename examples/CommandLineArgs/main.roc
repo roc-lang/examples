@@ -4,8 +4,9 @@ app [main!] {
 }
 
 import cli.Stdout
-import cli.Arg
+import cli.Arg exposing [Arg]
 
+main! : List Arg => Result {} _
 main! = |raw_args|
     args = List.map(raw_args, Arg.display)
 

@@ -4,9 +4,11 @@ app [main!] {
 }
 
 import cli.Stdout
+import cli.Arg exposing [Arg]
 import parser.Parser exposing [Parser, many, one_of, map]
 import parser.String exposing [parse_str, codeunit, any_codeunit]
 
+main! : List Arg => Result {} _
 main! = |_args|
 
     letters = parse_str(many(letter_parser), input_str)?
