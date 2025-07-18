@@ -1,6 +1,6 @@
 # Parser
 
-A custom [parser](https://www.techopedia.com/definition/3854/parser) for counting certain letters, implemented with the [roc-parser](https://github.com/lukewilliamboswell/roc-parser) package.
+A custom [parser](https://github.com/roc-lang/roc/blob/main/Glossary.md#parsing) for counting certain letters, implemented with the [roc-parser](https://github.com/lukewilliamboswell/roc-parser) package.
 
 ## Code
 
