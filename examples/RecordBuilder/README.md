@@ -1,7 +1,7 @@
 # Record Builder
 
 Record builders are a syntax sugar for sequencing actions and collecting the intermediate results as fields in a record.
-All you need to build a record is a `map2`-style function that takes two values of the same type and combines them using a provided combiner fnuction. There are many convenient APIs we can build with this simple syntax.
+All you need to build a record is a `map2`-style function that takes two values of the same type and combines them using a provided combiner function. There are many convenient APIs we can build with this simple syntax.
 
 ## The Basics
 

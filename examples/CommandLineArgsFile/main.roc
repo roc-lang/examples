@@ -40,5 +40,5 @@ read_file_to_str! = |path|
                     ReadFileErr("Failed to read file:\n\t${path_str}\nWith error:\n\t${Inspect.to_str(read_err)}")
 
                 FileReadUtf8Err(_, _) ->
-                    ReadFileErr("I could not read the file:\n\t${path_str}\nIt contains charcaters that are not valid UTF-8:\n\t- Check if the file is encoded using a different format and convert it to UTF-8.\n\t- Check if the file is corrupted.\n\t- Find the characters that are not valid UTF-8 and fix or remove them."),
+                    ReadFileErr("I could not read the file:\n\t${path_str}\nIt contains characters that are not valid UTF-8:\n\t- Check if the file is encoded using a different format and convert it to UTF-8.\n\t- Check if the file is corrupted.\n\t- Find the characters that are not valid UTF-8 and fix or remove them."),
     )

@@ -123,14 +123,14 @@ bfs_helper = |is_target, queue, seen, graph|
 # Test DFS with multiple paths
 expect
     actual = dfs(|v| Str.starts_with(v, "C"), "A", test_graph_multipath)
-    expected = Ok("Ccorrect")
+    expected = Ok("Correct")
 
     actual == expected
 
 # Test BFS with multiple paths
 expect
     actual = bfs(|v| Str.starts_with(v, "C"), "A", test_graph_multipath)
-    expected = Ok("Ccorrect")
+    expected = Ok("Correct")
 
     actual == expected
 
@@ -227,9 +227,9 @@ test_graph_large =
 
 test_graph_multipath =
     [
-        ("A", ["B", "Ccorrect"]),
-        ("B", ["Ccorrect", "Cwrong"]),
-        ("Ccorrect", []),
+        ("A", ["B", "Correct"]),
+        ("B", ["Correct", "Cwrong"]),
+        ("Correct", []),
         ("Cwrong", []),
     ]
     |> from_list
