@@ -1,5 +1,6 @@
 Here are some links to up to date Roc scripts used in the real world:
 - [website build script](https://github.com/roc-lang/www.roc-lang.org/blob/main/website/build_website.roc)
+- [benchmarking script](https://github.com/roc-lang/roc/blob/main/src/PROFILING/exec_bench.roc)
 - [CI script 1](https://github.com/roc-lang/basic-cli/blob/main/ci/check_all_exposed_funs_tested.roc) (uses basic-cli main branch)
 - [CI script 2](https://github.com/roc-lang/basic-cli/blob/main/ci/check_cargo_versions_match.roc) (uses basic-cli main branch)
 
