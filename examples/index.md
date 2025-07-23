@@ -17,6 +17,7 @@ You can find the source code for all of these at [github.com/roc-lang/examples](
 - [Multiple Roc Files](/MultipleRocFiles/README.html)
 - [JSON](/Json/README.html)
 - [Hello, Webserver!](/HelloWeb/README.html)
+- [Scripting](/Scripting/README.html)
 - [Random Numbers](/RandomNumbers/README.html)
 - [CLI Args Simple](/CommandLineArgs/README.html)
 - [CLI Args File](/CommandLineArgsFile/README.html)
