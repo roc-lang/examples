@@ -5,11 +5,14 @@
 
 set timeout 7
 
+source ./ci_scripts/expect_scripts/shared-code.exp
+
 spawn ./examples/IngestFiles/main
 
 expect "The quick brown fox jumps over the lazy dog" {
-  expect eof
-  exit 0
+    expect eof {
+        check_exit_and_segfault
+    }
 }
 
 puts stderr "\nError: output was different from expected value."

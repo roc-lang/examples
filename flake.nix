@@ -23,6 +23,10 @@
 
             rocPkgs = roc.packages.${system};
 
+            aliases = ''
+              alias testcmd='export ROC=roc && ./ci_scripts/all_tests.sh'
+            '';
+
             linuxInputs = with pkgs;
               lib.optionals stdenv.isLinux [
                 #valgrind # for debugging
@@ -48,6 +52,14 @@
                     # for crti.o, crtn.o, and Scrt1.o
                     NIX_GLIBC_PATH =
                       if pkgs.stdenv.isLinux then "${pkgs.glibc.out}/lib" else "";
+
+                    shellHook = ''
+                      ${aliases}
+                      
+                      echo "Some convenient command aliases:"
+                      echo "${aliases}" | grep -E "alias .*" -o | sed 's/alias /  /' | sed 's/=/ = /'
+                      echo ""
+                    '';
                 };
             });
 }

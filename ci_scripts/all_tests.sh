@@ -94,6 +94,10 @@ expect ci_scripts/expect_scripts/ImportPackageFromModule.exp
 
 $ROC test ./examples/CustomInspect/OpaqueTypes.roc
 
+$ROC build ./examples/SortStrings/main.roc
+$ROC ./examples/SortStrings/main.roc
+expect ci_scripts/expect_scripts/SortStrings.exp
+
 # these examples don't work on macos and aarch64 linux yet #225 #226 #231
 if [[ "$(uname)" == "Linux" && "$(uname -m)" == "x86_64" ]]; then
   $ROC build --lib ./examples/GoPlatform/main.roc --output examples/GoPlatform/platform/libapp.so

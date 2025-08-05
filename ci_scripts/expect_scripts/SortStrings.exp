@@ -1,0 +1,25 @@
+#!/usr/bin/expect
+
+# uncomment line below for debugging
+# exp_internal 1
+
+set timeout 7
+
+source ./ci_scripts/expect_scripts/shared-code.exp
+
+spawn ./examples/SortStrings/main
+
+set expected_output [normalize_output {
+Sorted fruits:
+	ascending order: apple, banana, cherry
+	descending order: cherry, banana, apple
+}]
+
+expect $expected_output {
+    expect eof {
+        check_exit_and_segfault
+    }
+}
+
+puts stderr "\nExpect script failed: output was not as expected, uncomment `exp_internal 1` to debug."
+exit 1

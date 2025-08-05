@@ -5,12 +5,15 @@
 
 set timeout 7
 
+source ./ci_scripts/expect_scripts/shared-code.exp
+
 spawn ./examples/Results/main
 
 
 expect "Name: Harrison, George\r\nBorn:  1943\r\n\r\nName: Lennon, John\r\nBorn:  1940\r\n\r\nName: McCartney, Paul\r\nBorn:  1942\r\n\r\n" {
-  expect eof
-  exit 0
+    expect eof {
+        check_exit_and_segfault
+    }
 }
 
 puts stderr "\nError: output was different from expected value."
