@@ -7,14 +7,14 @@ import cli.Stdout
 import cli.Arg exposing [Arg]
 import ascii.Ascii
 
-# TODO unicode example 
+# TODO unicode example
 
 main! : List Arg => Result {} _
 main! = |_args|
     fruits = [
         "banana",
         "apple",
-        "cherry"
+        "cherry",
     ]
 
     # If you copy this code, make sure that your strings are valid ASCII.
