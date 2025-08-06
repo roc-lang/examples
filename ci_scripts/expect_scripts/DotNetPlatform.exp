@@ -5,14 +5,17 @@
 
 set timeout 30
 
+source ./ci_scripts/expect_scripts/shared-code.exp
+
 cd "./examples/DotNetPlatform/platform/"
 
 spawn dotnet run
 
 expect "Hello from .NET!\r\n" {
   expect "Hi from roc! (in a .NET platform) 🔥🦅🔥\r\n" {
-    expect eof
-    exit 0
+    expect eof {
+        check_exit_and_segfault
+    }
   }
 }
 

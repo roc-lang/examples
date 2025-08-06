@@ -5,6 +5,8 @@
 
 set timeout 7
 
+source ./ci_scripts/expect_scripts/shared-code.exp
+
 spawn ./examples/ElmWebApp/backend
 
 cd ./examples/ElmWebApp/frontend

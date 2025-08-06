@@ -5,12 +5,15 @@
 
 set timeout 7
 
+source ./ci_scripts/expect_scripts/shared-code.exp
+
 spawn ./examples/Json/main
 
 
 expect "Successfully decoded image, title:\"View from 15th Floor\"\r\n" {
-  expect eof
-  exit 0
+    expect eof {
+        check_exit_and_segfault
+    }
 }
 
 puts stderr "\nError: output was different from expected value."

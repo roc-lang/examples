@@ -5,12 +5,15 @@
 
 set timeout 25
 
+source ./ci_scripts/expect_scripts/shared-code.exp
+
 spawn ./examples/GoPlatform/main
 
 
 expect "Roc <3 Go!\r\n" {
-  expect eof
-  exit 0
+    expect eof {
+        check_exit_and_segfault
+    }
 }
 
 puts stderr "\nError: output was different from expected value."
