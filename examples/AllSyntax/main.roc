@@ -59,6 +59,19 @@ patterns = |lst|
         _ ->
             100
 
+string_stuff : Str
+string_stuff = 
+    planet = "Venus"
+
+    Str.concat(
+        "Hello, ${planet}!",
+        """
+        This is a multiline string.
+        You can call functions inside $... too: ${Num.to_str(1+1)}
+        Unicode escape sequence: \u(00A0)
+        """
+    )
+
 pattern_match_tag_union : Result {} _ -> Str
 pattern_match_tag_union = |result|
     # `Result a b` is the tag union `[Ok a, Err b]` under the hood.
@@ -74,7 +87,7 @@ pattern_match_tag_union = |result|
 
 # end name with `!` for effectful functions
 # `=>` shows effectfulness in the type signature 
-effect_demo! : Str => Result {} [ StdoutErr _, StdoutLineFailed [StdoutErr _] ]
+effect_demo! : Str => Result {} [ StdoutErr(_), StdoutLineFailed [StdoutErr _] ]
 effect_demo! = |msg|
 
     # `?` to return the error if there is one
@@ -127,7 +140,6 @@ tuple_demo = |{}|
     # they are allocated on the stack
     ("Roc", 1)
 
-# TODO: destructuring tuples, records
 
 tag_union_demo : Str -> [Red, Green, Yellow]
 tag_union_demo = |string|
@@ -136,6 +148,9 @@ tag_union_demo = |string|
         "green" -> Green
         # We can't list all possible strings, so we use `_` to match all other cases.
         _ -> Yellow
+
+# TODO: destructuring tuples, records
+# TODO: default value records
 
 main! : List Arg => Result {} _
 main! = |_args|
@@ -146,6 +161,7 @@ main! = |_args|
     Stdout.line!("${Inspect.to_str(pizza_out)}")?
 
     Stdout.line!("${Inspect.to_str(patterns([1, 2, 3, 4]))}")?
+    Stdout.line!("${string_stuff}")?
     Stdout.line!("${Inspect.to_str(pattern_match_tag_union(Ok({})))}")?
     Stdout.line!("${Inspect.to_str(effect_demo!("Hello, world!"))}")?
     Stdout.line!("${Inspect.to_str(if_demo(Bool.true))}")?
