@@ -9,7 +9,7 @@ However, functions in Roc are guaranteed to return the same answer when given th
 But this also means something like `Math.random` couldn’t possibly be a valid Roc function!
 So, we use a different approach to generate random numbers in Roc.
 
-This example uses a `Generator` which generates pseudorandom numbers using an initial seed value and the [PCG algorithm](https://www.pcg-random.org/).
+This example uses a `Generator` which generates pseudorandom numbers using an initial seed value and the [PCG algorithm](https://en.wikipedia.org/wiki/Permuted_congruential_generator).
 If the same seed is provided, then the same number sequence will be generated every time!
 The appearance of randomness comes entirely from deterministic math being done on that initial seed.
 The same is true of `Math.random()`, except that `Math.random()` silently chooses a seed for you at runtime.
