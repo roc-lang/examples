@@ -1,6 +1,6 @@
 # Web App with Elm
 
-A minimal web app with an Elm [frontend](https://chatgpt.com/share/93575daf-49ef-48ba-b39d-ab04672e4019) and Roc [backend](https://chatgpt.com/share/7ac35a32-dab5-46d0-bb17-9d584469556f). The Roc backend uses the [basic-webserver](https://github.com/roc-lang/basic-webserver) platform.
+A minimal web app with an Elm frontend and Roc backend. The Roc backend uses the [basic-webserver](https://github.com/roc-lang/basic-webserver) platform.
 
 ## Why Elm + Roc?
 
@@ -64,6 +64,6 @@ Serve the frontend:
 ```
 elm reactor --port 8001 # Roc backend will be on 8000
 ```
-For production; use a [battle-tested HTTP server](https://chatgpt.com/share/5809a606-10ea-4ee6-b821-732465016254) instead of elm reactor.
+For production; use a battle-tested HTTP server instead of elm reactor.
 
 Open [localhost:8001/index.html](localhost:8001/index.html) in your browser.
