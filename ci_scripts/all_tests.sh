@@ -51,9 +51,9 @@ expect ci_scripts/expect_scripts/CommandLineArgs.exp
 $ROC build ./examples/CommandLineArgsFile/main.roc
 expect ci_scripts/expect_scripts/CommandLineArgsFile.exp
 
-$ROC build ./examples/DesugaringTry/main.roc
-$ROC test ./examples/DesugaringTry/main.roc
-expect ci_scripts/expect_scripts/DesugaringTry.exp
+$ROC build ./examples/TryOperatorDesugaring/main.roc
+$ROC test ./examples/TryOperatorDesugaring/main.roc
+expect ci_scripts/expect_scripts/TryOperatorDesugaring.exp
 
 $ROC build ./examples/Tuples/main.roc
 expect ci_scripts/expect_scripts/Tuples.exp
@@ -63,8 +63,10 @@ $ROC test ./examples/TowersOfHanoi/Hanoi.roc
 $ROC build ./examples/Results/main.roc
 expect ci_scripts/expect_scripts/Results.exp
 
-$ROC build ./examples/ErrorHandling/main.roc
-expect ci_scripts/expect_scripts/ErrorHandling.exp
+$ROC test ./examples/ErrorHandlingBasic/ErrorHandlingBasic.roc
+
+$ROC build ./examples/ErrorHandlingRealWorld/main.roc
+expect ci_scripts/expect_scripts/ErrorHandlingRealWorld.exp
 
 $ROC build ./examples/LoopEffect/main.roc
 expect ci_scripts/expect_scripts/LoopEffect.exp

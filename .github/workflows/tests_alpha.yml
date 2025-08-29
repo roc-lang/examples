@@ -1,0 +1,82 @@
+on:
+  pull_request:
+  workflow_dispatch:
+
+name: Test examples without nix using alpha release
+
+# this cancels workflows currently in progress if you start a new one
+concurrency:
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
+
+# Do not add permissions here! Configure them at the job level!
+permissions: {}
+
+jobs:
+  test-examples:
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      matrix:
+        operating-system: [ubuntu-22.04, ubuntu-24.04, ubuntu-24.04-arm, macos-13, macos-15]
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set OS-specific variables
+        id: vars
+        run: |
+          if [[ "${{ matrix.operating-system }}" =~ ^ubuntu- ]]; then
+            if [[ "${{ matrix.operating-system }}" =~ -arm$ ]]; then
+              echo "os_pattern=linux_arm64" >> $GITHUB_OUTPUT
+            else
+              echo "os_pattern=linux_x86_64" >> $GITHUB_OUTPUT
+            fi
+          elif [ "${{ matrix.operating-system }}" = "macos-13" ]; then
+            echo "os_pattern=macos_x86_64" >> $GITHUB_OUTPUT
+          else
+            echo "os_pattern=macos_apple_silicon" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Download alpha release
+        run: |
+          curl -fOL https://github.com/roc-lang/roc/releases/download/alpha4-rolling/roc-${{ steps.vars.outputs.os_pattern }}-alpha4-rolling.tar.gz
+
+      - name: rename alpha tar
+        run: mv $(ls | grep "roc-.*tar\.gz") roc_alpha.tar.gz
+  
+      - name: decompress the tar
+        run: tar -xzf roc_alpha.tar.gz
+  
+      - run: rm roc_alpha.tar.gz
+
+      - name: simplify nightly folder name
+        run: mv roc_nightly* roc_alpha
+
+      - name: get short commit SHA
+        run: echo "SHORT_COMMIT_SHA=$(./roc_alpha/roc version | grep -oP 'commit \K[a-f0-9]+' )" >> $GITHUB_ENV
+
+      - name: Install dependencies (Ubuntu)
+        if: startsWith(matrix.operating-system, 'ubuntu-')
+        run: sudo apt install -y expect
+
+      - name: Install dependencies (macOS)
+        if: startsWith(matrix.operating-system, 'macos-')
+        run: |
+          brew install expect
+          brew install z3
+
+      - name: print runner CPU (Ubuntu)
+        if: startsWith(matrix.operating-system, 'ubuntu-')
+        run: lscpu
+
+      - name: print runner CPU (macOS)
+        if: startsWith(matrix.operating-system, 'macos-')
+        run: sysctl -n machdep.cpu.brand_string
+
+      - name: check if roc files are properly formatted
+        run: ROC=./roc_alpha/roc ./ci_scripts/check_format.sh
+
+      - run: ROC=./roc_alpha/roc ./ci_scripts/all_tests.sh
+
+      - name: Checks if every folder in examples is mentioned in ./examples/index.md
+        run: bash ./ci_scripts/check_index.sh

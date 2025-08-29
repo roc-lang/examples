@@ -1,3 +1,4 @@
+# TODO share code with tests_alpha.yml
 on:
   pull_request:
   workflow_dispatch:
@@ -17,7 +18,7 @@ jobs:
     runs-on: ${{ matrix.operating-system }}
     strategy:
       matrix:
-        operating-system: [ubuntu-22.04, ubuntu-24.04, ubuntu-24.04-arm, macos-13, macos-14]
+        operating-system: [ubuntu-22.04, ubuntu-24.04, ubuntu-24.04-arm, macos-13, macos-15]
     timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
@@ -37,13 +38,7 @@ jobs:
             echo "os_pattern=macos_apple_silicon" >> $GITHUB_OUTPUT
           fi
 
-      - id: try_fetching_testing_release
-        continue-on-error: true
-        run: |
-          curl -fOL https://github.com/roc-lang/roc/releases/download/nightly/roc_nightly-${{ steps.vars.outputs.os_pattern }}-TESTING.tar.gz
-
-      - name: There are no TESTING releases, checking regular releases instead
-        if: steps.try_fetching_testing_release.outcome == 'failure'
+      - name: Download latest nightly release
         run: |
           curl -fOL https://github.com/roc-lang/roc/releases/download/nightly/roc_nightly-${{ steps.vars.outputs.os_pattern }}-latest.tar.gz
 

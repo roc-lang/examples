@@ -7,7 +7,9 @@ set timeout 7
 
 source ./ci_scripts/expect_scripts/shared-code.exp
 
-spawn ./examples/ErrorHandling/main "https://www.roc-lang.org" roc.html
+set env(HELLO) 1
+
+spawn ./examples/ErrorHandlingRealWorld/main "https://www.roc-lang.org" roc.html
 
 expect "Done\r\n" {
     expect eof {

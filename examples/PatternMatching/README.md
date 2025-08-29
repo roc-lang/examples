@@ -21,7 +21,7 @@ when input is
 
     _ -> Other
 ```
-Note that this specific snippet would not typecheck because it uses lists of different types.
+Note: this specific snippet would not typecheck because it uses lists of different types.
 This is just meant to be a compact overview. See the code section below for valid Roc.
 
 ## Code
