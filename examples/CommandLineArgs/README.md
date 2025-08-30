@@ -1,7 +1,14 @@
 # CLI Args
 
 Shows how to read command line arguments.
-To pass an argument: `roc main.roc some_argument` or `roc -- some_argument` or `roc build && ./main some_argument`.
+To pass an argument:
+```
+roc main.roc some_argument
+# or
+roc -- some_argument
+# or
+roc build && ./main some_argument
+```
 
 We also have [a more complex example that uses a filename as argument](https://www.roc-lang.org/examples/CommandLineArgsFile/README.html).
 

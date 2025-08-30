@@ -4,41 +4,32 @@ app [main!] {
 }
 
 import cli.Stdout
-import cli.Path exposing [Path]
+import cli.File
 import cli.Arg exposing [Arg]
 
-main! : List Arg => Result {} _
-main! = |raw_args|
-
+run! = |raw_args|
     # read all command line arguments
     args = List.map(raw_args, Arg.display)
 
     # get the second argument, the first is the executable's path
-    arg_result = List.get(args, 1) |> Result.map_err(ZeroArgsGiven)
+    first_arg =
+        List.get(args, 1) ? |_| ZeroArgsGiven
 
-    when arg_result is
-        Ok(arg) ->
-            file_content_str = read_file_to_str!(Path.from_str(arg))?
+    file_content_str = File.read_utf8!(first_arg) ? |err| FileReadFailed(first_arg, err)
 
-            Stdout.line!("file content: ${file_content_str}")
+    Stdout.line!("file content: ${file_content_str}")
 
-        Err(ZeroArgsGiven(_)) ->
-            Err(Exit(1, "Error ZeroArgsGiven:\n\tI expected one argument, but I got none.\n\tRun the app like this: `roc main.roc -- path/to/input.txt`"))
+main! : List Arg => Result {} _
+main! = |raw_args|
+    when run!(raw_args) is
+        Ok(_) -> Ok({})
 
-# reads a file and puts all lines in one Str
-read_file_to_str! : Path => Result Str [ReadFileErr Str]_
-read_file_to_str! = |path|
+        Err(ZeroArgsGiven) ->
+            Err(Exit(1, "Error ZeroArgsGiven:\n\tI expected one argument, but I got none.\n\tRun the app like this: `roc main.roc -- input.txt`"))
 
-    path
-    |> Path.read_utf8!
-    |> Result.map_err(
-        |file_read_err|
-            path_str = Path.display(path)
+        Err(FileReadFailed(first_arg, file_err)) -> 
+            Err(Exit(1, "Error FileReadFailed:\n\tI tried to read the file at path: `${first_arg}`\n\tBut I got this error: `${Inspect.to_str(file_err)}`"))
 
-            when file_read_err is
-                FileReadErr(_, read_err) ->
-                    ReadFileErr("Failed to read file:\n\t${path_str}\nWith error:\n\t${Inspect.to_str(read_err)}")
+        Err(err) -> Err(err)
 
-                FileReadUtf8Err(_, _) ->
-                    ReadFileErr("I could not read the file:\n\t${path_str}\nIt contains characters that are not valid UTF-8:\n\t- Check if the file is encoded using a different format and convert it to UTF-8.\n\t- Check if the file is corrupted.\n\t- Find the characters that are not valid UTF-8 and fix or remove them."),
-    )
+

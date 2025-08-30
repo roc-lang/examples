@@ -1,6 +1,7 @@
 # Arithmetic
 
 A Roc program which accepts two integers from the command line and prints their sum, difference, product, quotient, remainder, and exponentiation.
+See the [safe math example](https://www.roc-lang.org/examples/SafeMath/README) if you don't want your program to crash on e.g. a division by zero.
 
 ## Code
 ```roc
