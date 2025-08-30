@@ -19,6 +19,7 @@ You can find the source code for all of these at [github.com/roc-lang/examples](
 - [JSON](/Json/README.html)
 - [Hello, Webserver!](/HelloWeb/README.html)
 - [Scripting](/Scripting/README.html)
+- [Terminal Commands](/Commands/README.html)
 - [Sort Strings](/SortStrings/README.html)
 - [Random Numbers](/RandomNumbers/README.html)
 - [CLI Args Simple](/CommandLineArgs/README.html)

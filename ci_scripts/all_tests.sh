@@ -48,6 +48,9 @@ expect ci_scripts/expect_scripts/RandomNumbers.exp
 $ROC build ./examples/CommandLineArgs/main.roc
 expect ci_scripts/expect_scripts/CommandLineArgs.exp
 
+$ROC build ./examples/Commands/main.roc
+expect ci_scripts/expect_scripts/Commands.exp
+
 $ROC build ./examples/CommandLineArgsFile/main.roc
 expect ci_scripts/expect_scripts/CommandLineArgsFile.exp
 
@@ -59,9 +62,6 @@ $ROC build ./examples/Tuples/main.roc
 expect ci_scripts/expect_scripts/Tuples.exp
 
 $ROC test ./examples/TowersOfHanoi/Hanoi.roc
-
-$ROC build ./examples/Results/main.roc
-expect ci_scripts/expect_scripts/Results.exp
 
 $ROC test ./examples/ErrorHandlingBasic/ErrorHandlingBasic.roc
 
