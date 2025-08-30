@@ -6,7 +6,7 @@ import cli.Stdout
 import cli.Cmd
 import cli.Arg exposing [Arg]
 
-# Different ways to run commands like you do in a terminal. 
+# Different ways to run commands like you do in a terminal.
 
 main! : List Arg => Result {} _
 main! = |_args|

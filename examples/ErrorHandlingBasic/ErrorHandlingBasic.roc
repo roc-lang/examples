@@ -2,7 +2,7 @@ module []
 
 Person : { first_name : Str, last_name : Str, birth_year : U16 }
 
-parse_person : Str -> Result Person [InvalidSentenceFormat(Str), InvalidNameFormat(Str), InvalidBirthYearFormat(Str)]
+parse_person : Str -> Result Person [InvalidSentenceFormat Str, InvalidNameFormat Str, InvalidBirthYearFormat Str]
 parse_person = |line|
     { before: full_name, after: birth_year_str } =
         # The NotFound error is not very informative, so we discard it with `_` and provide our own.
@@ -15,4 +15,4 @@ parse_person = |line|
 
     Ok({ first_name, last_name, birth_year })
 
-expect parse_person("George Harrison was born in 1943") == Ok({first_name: "George", last_name: "Harrison", birth_year: 1943})
+expect parse_person("George Harrison was born in 1943") == Ok({ first_name: "George", last_name: "Harrison", birth_year: 1943 })

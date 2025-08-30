@@ -17,7 +17,7 @@ main! = |args|
     run!(args)
     |> Result.map_err(
         |err|
-            Exit(1, "Error: ${make_error_msg(err)}\n\nExample usage: ${usage}")
+            Exit(1, "Error: ${make_error_msg(err)}\n\nExample usage: ${usage}"),
     )
 
 run! : List Arg => Result {} _
@@ -71,7 +71,7 @@ parse_args! = |args|
         bad_args ->
             Err(FailedToReadArgs(bad_args))
 
-read_env_var! : Str => Result Str [VarNotFound(Str), EnvVarSetEmpty(Str)]
+read_env_var! : Str => Result Str [VarNotFound Str, EnvVarSetEmpty Str]
 read_env_var! = |env_var_name|
     when Env.var!(env_var_name) is
         Ok(env_var_str) ->
@@ -79,17 +79,18 @@ read_env_var! = |env_var_name|
                 Err(EnvVarSetEmpty(env_var_name))
             else
                 Ok(env_var_str)
+
         err -> err
 
 fetch_html! : Str => Result Str _
 fetch_html! = |url|
     Http.get_utf8!(url)
     |> Result.map_err(
-        |err| FailedToFetchHtml(url, err)
+        |err| FailedToFetchHtml(url, err),
     )
 
 # effects need to be functions, so we use the empty input type `{}`
-list_cwd_contents! : {} => Result Str [FailedToListCwd(_)]
+list_cwd_contents! : {} => Result Str [FailedToListCwd _]
 list_cwd_contents! = |_|
 
     dir_contents =
@@ -111,40 +112,40 @@ make_error_msg = |error|
             """
             Failed to read command line arguments, I received: ${Inspect.to_str(bad_args)}
             """
-        
+
         VarNotFound(var_name) ->
             """
-            Environment variable '$(var_name)' was not found.
+            Environment variable '${var_name}' was not found.
             Set the variable before running the application.
             """
-        
+
         EnvVarSetEmpty(var_name) ->
             """
-            Environment variable '$(var_name)' was empty.
+            Environment variable '${var_name}' was empty.
             Provide a non-empty value for this variable.
             """
-        
+
         FailedToFetchHtml(url, err) ->
             """
-            Failed to fetch HTML content for URL: $(url)
+            Failed to fetch HTML content for URL: ${url}
 
-            Error: $(Inspect.to_str(err))
+            Error: ${Inspect.to_str(err)}
 
             Check the URL and your internet connection.
             """
-        
+
         FailedToWriteFile(path_str, err) ->
             """
-            Failed to write file: $(path_str)
+            Failed to write file: ${path_str}
 
-            Error: $(Inspect.to_str(err))
+            Error: ${Inspect.to_str(err)}
             """
-        
+
         FailedToListCwd(err) ->
             """
             Failed to list current directory contents of current directory.
-            Error: $(Inspect.to_str(err))
+            Error: ${Inspect.to_str(err)}
             """
 
         other ->
-            "An unexpected error occurred: $(Inspect.to_str(other))"
+            "An unexpected error occurred: ${Inspect.to_str(other)}"
