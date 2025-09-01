@@ -52,7 +52,7 @@ To build a binary for the app using Ahead-Of-Time compilation:
 ```cli
 $ dotnet publish -c Release
 ```
-> _use `arch -arm64` if you are running in a Apple Silicon mac._
+> _use `arch -arm64` if you are running on an Apple Silicon mac._
 
 2. `cd` into the into the `publish` folder and run the binary:
 ```cli

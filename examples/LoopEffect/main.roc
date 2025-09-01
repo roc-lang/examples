@@ -4,14 +4,19 @@ app [main!] {
 
 import cli.Stdin
 import cli.Stdout
-import cli.Stderr
 import cli.Arg exposing [Arg]
 
-main! : List Arg => Result {} _
-main! = |_args|
-    when run!({}) is
-        Ok({}) -> Ok({})
-        Err(err) -> print_err!(err)
+## recursive function that sums every number that is provided through stdin
+add_number_from_stdin! : I64 => Result I64 _
+add_number_from_stdin! = |sum|
+    when Stdin.line!({}) is
+        Ok(input) ->
+            num = Str.to_i64(input) ? |_| NotNum(input)
+            add_number_from_stdin!((sum + num))
+
+        Err(EndOfFile) -> Ok(sum)
+        Err(err) -> Err(NotNum(Inspect.to_str(err)))
+
 
 run! : {} => Result {} _
 run! = |_|
@@ -21,20 +26,14 @@ run! = |_|
 
     Stdout.line!("Sum: ${Num.to_str(sum)}")
 
-## recursive function that sums every number that is provided through stdin
-add_number_from_stdin! : I64 => Result I64 _
-add_number_from_stdin! = |sum|
-    when Stdin.line!({}) is
-        Ok(input) ->
-            when Str.to_i64(input) is
-                Ok(num) -> add_number_from_stdin!((sum + num))
-                Err(_) -> Err(NotNum(input))
+    
+main! : List Arg => Result {} _
+main! = |_args|
+    when run!({}) is
+        Ok({}) -> Ok({})
 
-        Err(EndOfFile) -> Ok(sum)
-        Err(err) -> err |> Inspect.to_str |> NotNum |> Err
+        Err(NotNum(text)) ->
+            Err(Exit(1, "Error: \"${text}\" is not a valid I64 number."))
 
-print_err! : _ => Result {} _
-print_err! = |err|
-    when err is
-        NotNum(text) -> Stderr.line!("Error: \"${text}\" is not a valid I64 number.")
-        _ -> Stderr.line!("Error: ${Inspect.to_str(err)}")
+        Err(err) ->
+            Err(Exit(1, "Error: ${Inspect.to_str(err)}"))

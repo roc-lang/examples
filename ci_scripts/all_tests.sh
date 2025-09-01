@@ -18,9 +18,6 @@ fi
 $ROC build ./examples/HelloWorld/main.roc
 expect ci_scripts/expect_scripts/HelloWorld.exp
 
-$ROC build ./examples/Arithmetic/main.roc
-expect ci_scripts/expect_scripts/Arithmetic.exp
-
 $ROC build ./examples/FizzBuzz/main.roc
 $ROC test ./examples/FizzBuzz/main.roc
 expect ci_scripts/expect_scripts/FizzBuzz.exp
@@ -70,6 +67,10 @@ expect ci_scripts/expect_scripts/ErrorHandlingRealWorld.exp
 
 $ROC build ./examples/LoopEffect/main.roc
 expect ci_scripts/expect_scripts/LoopEffect.exp
+
+$ROC build ./examples/Snake/main.roc
+$ROC test ./examples/Snake/main.roc
+expect ci_scripts/expect_scripts/Snake.exp
 
 $ROC test ./examples/RecordBuilder/DateParser.roc
 

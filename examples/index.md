@@ -27,8 +27,8 @@ You can find the source code for all of these at [github.com/roc-lang/examples](
 - [Safe Math](/SafeMath/README.html)
 - [Graph Traversal](/GraphTraversal/README.html)
 - [Parser](/Parser/README.html)
-- [Arithmetic](/Arithmetic/README.html)
 - [Looping Effectful Functions](/LoopEffect/README.html)
+- [Snake Game](/Snake/README.html)
 - [Record Builder](/RecordBuilder/README.html)
 - [Encoding & Decoding Abilities](/EncodeDecode/README.html)
 - [Desugaring ?](/DesugaringTry/README.html)
@@ -42,5 +42,7 @@ You can find the source code for all of these at [github.com/roc-lang/examples](
 
 ## External examples
 
+- [basic-cli examples](https://github.com/roc-lang/basic-cli/tree/main/examples)
+- [basic-webserver examples](https://github.com/roc-lang/basic-webserver/tree/main/examples)
 - [Awesome Roc](https://github.com/lukewilliamboswell/roc-awesome)
 - [Interpreter for stack based language](https://github.com/isaacvando/gob)
