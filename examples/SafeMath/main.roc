@@ -37,7 +37,7 @@ safe_variance = |maybe_empty_list|
                 |state, elem|
                     diff = Num.sub_checked(elem, mean)? # (X - µ)
                     squared = Num.mul_checked(diff, diff)? # (X - µ)²
-                    Num.add_checked(squared, state) # ∑
+                    Num.add_checked(squared, state), # ∑
             )
             |> Result.map_ok(|x| x / n)
 

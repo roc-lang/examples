@@ -17,7 +17,6 @@ add_number_from_stdin! = |sum|
         Err(EndOfFile) -> Ok(sum)
         Err(err) -> Err(NotNum(Inspect.to_str(err)))
 
-
 run! : {} => Result {} _
 run! = |_|
     Stdout.line!("Enter some numbers on different lines, then press Ctrl-D to sum them up.")?
@@ -26,12 +25,10 @@ run! = |_|
 
     Stdout.line!("Sum: ${Num.to_str(sum)}")
 
-    
 main! : List Arg => Result {} _
 main! = |_args|
     when run!({}) is
         Ok({}) -> Ok({})
-
         Err(NotNum(text)) ->
             Err(Exit(1, "Error: \"${text}\" is not a valid I64 number."))
 

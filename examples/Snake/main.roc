@@ -76,20 +76,17 @@ update_game = |state|
             # Check wall collision
             if new_head_pos.x < 0 or new_head_pos.x >= grid_size or new_head_pos.y < 0 or new_head_pos.y >= grid_size then
                 { state & game_over: Bool.true }
-
-            # Check self collision
+                # Check self collision
             else if contains(state.snake_lst, new_head_pos) then
                 { state & game_over: Bool.true }
-            
-            # Check food collision
+                # Check food collision
             else if new_head_pos == state.food_pos then
                 new_snake_lst = prepend(state.snake_lst, new_head_pos)
 
                 new_food_pos = { x: (new_head_pos.x + 3) % grid_size, y: (new_head_pos.y + 3) % grid_size }
 
                 { state & snake_lst: new_snake_lst, food_pos: new_food_pos }
-            
-            # No collision; move the snake
+                # No collision; move the snake
             else
                 new_snake_lst =
                     prepend(state.snake_lst, new_head_pos)
@@ -202,27 +199,27 @@ expect
     new_grid = draw_game_pure(new_state)
 
     expected_grid =
-    """
-    ....................\r
-    ....................\r
-    ....................\r
-    ....................\r
-    ....................\r
-    ....................\r
-    ....................\r
-    ....................\r
-    ....................\r
-    ....................\r
-    .........oo.........\r
-    ..........O.........\r
-    ....................\r
-    ....................\r
-    ....................\r
-    ...............*....\r
-    ....................\r
-    ....................\r
-    ....................\r
-    ....................
-    """
+        """
+        ....................\r
+        ....................\r
+        ....................\r
+        ....................\r
+        ....................\r
+        ....................\r
+        ....................\r
+        ....................\r
+        ....................\r
+        ....................\r
+        .........oo.........\r
+        ..........O.........\r
+        ....................\r
+        ....................\r
+        ....................\r
+        ...............*....\r
+        ....................\r
+        ....................\r
+        ....................\r
+        ....................
+        """
 
     new_grid == expected_grid

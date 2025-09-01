@@ -8,8 +8,6 @@
   convenient way without adding new functionality to the language itself.
 </details>
 
-# TODO show off ` ? `
-
 Desugaring converts syntax sugar (like `x + 1`) into more fundamental operations (like `Num.add(x, 1)`).
 
 Let's see how `?` is desugared. In this example we will extract the name and birth year from a

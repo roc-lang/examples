@@ -11,7 +11,11 @@ import json.Json
 
 main! : List Arg => Result {} _
 main! = |_args|
-    request_body = Str.to_utf8("""{"Image":{"Animated":false,"Height":600,"Ids":[116,943,234,38793],"Thumbnail":{"Height":125,"Url":"http://www.example.com/image/481989943","Width":100},"Title":"View from 15th Floor","Width":800}}""")
+    request_body = Str.to_utf8(
+        """
+        {"Image":{"Animated":false,"Height":600,"Ids":[116,943,234,38793],"Thumbnail":{"Height":125,"Url":"http://www.example.com/image/481989943","Width":100},"Title":"View from 15th Floor","Width":800}}
+        """,
+    )
 
     # This { field_name_mapping: PascalCase } setting translates
     # incoming JSON fields from PascalCase (first letter capitalized)

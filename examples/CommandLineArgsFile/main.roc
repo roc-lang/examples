@@ -23,13 +23,11 @@ main! : List Arg => Result {} _
 main! = |raw_args|
     when run!(raw_args) is
         Ok(_) -> Ok({})
-
         Err(ZeroArgsGiven) ->
             Err(Exit(1, "Error ZeroArgsGiven:\n\tI expected one argument, but I got none.\n\tRun the app like this: `roc main.roc -- input.txt`"))
 
-        Err(FileReadFailed(first_arg, file_err)) -> 
+        Err(FileReadFailed(first_arg, file_err)) ->
             Err(Exit(1, "Error FileReadFailed:\n\tI tried to read the file at path: `${first_arg}`\n\tBut I got this error: `${Inspect.to_str(file_err)}`"))
 
         Err(err) -> Err(err)
-
 

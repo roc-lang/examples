@@ -65,14 +65,6 @@ jobs:
           brew install expect
           brew install z3
 
-      - name: print runner CPU (Ubuntu)
-        if: startsWith(matrix.operating-system, 'ubuntu-')
-        run: lscpu
-
-      - name: print runner CPU (macOS)
-        if: startsWith(matrix.operating-system, 'macos-')
-        run: sysctl -n machdep.cpu.brand_string
-
       - name: check if roc files are properly formatted
         run: ROC=./roc_alpha/roc ./ci_scripts/check_format.sh
 
