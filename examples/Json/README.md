@@ -1,6 +1,7 @@
 # JSON
 
 Decode JSON data into a Roc record.
+Note: On Linux you need to pass the flag `--linker=legacy` to roc when building code that uses the Json package due to [issue 3609](https://github.com/roc-lang/roc/issues/3609).
 
 ## Code
 ```roc

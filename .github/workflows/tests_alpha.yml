@@ -2,7 +2,7 @@ on:
   pull_request:
   workflow_dispatch:
 
-name: Test examples without nix
+name: Test examples without nix using alpha release
 
 # this cancels workflows currently in progress if you start a new one
 concurrency:
@@ -17,7 +17,7 @@ jobs:
     runs-on: ${{ matrix.operating-system }}
     strategy:
       matrix:
-        operating-system: [ubuntu-22.04, ubuntu-24.04, ubuntu-24.04-arm, macos-13, macos-14]
+        operating-system: [ubuntu-22.04, ubuntu-24.04, ubuntu-24.04-arm, macos-13, macos-15]
     timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
@@ -37,29 +37,23 @@ jobs:
             echo "os_pattern=macos_apple_silicon" >> $GITHUB_OUTPUT
           fi
 
-      - id: try_fetching_testing_release
-        continue-on-error: true
+      - name: Download alpha release
         run: |
-          curl -fOL https://github.com/roc-lang/roc/releases/download/nightly/roc_nightly-${{ steps.vars.outputs.os_pattern }}-TESTING.tar.gz
+          curl -fOL https://github.com/roc-lang/roc/releases/download/alpha4-rolling/roc-${{ steps.vars.outputs.os_pattern }}-alpha4-rolling.tar.gz
 
-      - name: There are no TESTING releases, checking regular releases instead
-        if: steps.try_fetching_testing_release.outcome == 'failure'
-        run: |
-          curl -fOL https://github.com/roc-lang/roc/releases/download/nightly/roc_nightly-${{ steps.vars.outputs.os_pattern }}-latest.tar.gz
-
-      - name: rename nightly tar
-        run: mv $(ls | grep "roc_nightly.*tar\.gz") roc_nightly.tar.gz
+      - name: rename alpha tar
+        run: mv $(ls | grep "roc-.*tar\.gz") roc_alpha.tar.gz
   
       - name: decompress the tar
-        run: tar -xzf roc_nightly.tar.gz
+        run: tar -xzf roc_alpha.tar.gz
   
-      - run: rm roc_nightly.tar.gz
+      - run: rm roc_alpha.tar.gz
 
       - name: simplify nightly folder name
-        run: mv roc_nightly* roc_nightly
+        run: mv roc_nightly* roc_alpha
 
       - name: get short commit SHA
-        run: echo "SHORT_COMMIT_SHA=$(./roc_nightly/roc version | grep -oP 'commit \K[a-f0-9]+' )" >> $GITHUB_ENV
+        run: echo "SHORT_COMMIT_SHA=$(./roc_alpha/roc version | grep -oP 'commit \K[a-f0-9]+' )" >> $GITHUB_ENV
 
       - name: Install dependencies (Ubuntu)
         if: startsWith(matrix.operating-system, 'ubuntu-')
@@ -71,18 +65,10 @@ jobs:
           brew install expect
           brew install z3
 
-      - name: print runner CPU (Ubuntu)
-        if: startsWith(matrix.operating-system, 'ubuntu-')
-        run: lscpu
-
-      - name: print runner CPU (macOS)
-        if: startsWith(matrix.operating-system, 'macos-')
-        run: sysctl -n machdep.cpu.brand_string
-
       - name: check if roc files are properly formatted
-        run: ROC=./roc_nightly/roc ./ci_scripts/check_format.sh
+        run: ROC=./roc_alpha/roc ./ci_scripts/check_format.sh
 
-      - run: ROC=./roc_nightly/roc ./ci_scripts/all_tests.sh
+      - run: ROC=./roc_alpha/roc ./ci_scripts/all_tests.sh
 
       - name: Checks if every folder in examples is mentioned in ./examples/index.md
         run: bash ./ci_scripts/check_index.sh

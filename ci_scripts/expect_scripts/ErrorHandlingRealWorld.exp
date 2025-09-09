@@ -7,10 +7,11 @@ set timeout 7
 
 source ./ci_scripts/expect_scripts/shared-code.exp
 
-spawn ./examples/Arithmetic/main 20 4
+set env(HELLO) 1
 
+spawn ./examples/ErrorHandlingRealWorld/main "https://www.roc-lang.org" roc.html
 
-expect "sum: 24\r\ndifference: 16\r\nproduct: 80\r\ninteger quotient: 5\r\nremainder: 0\r\nexponentiation: 160000" {
+expect "Done\r\n" {
     expect eof {
         check_exit_and_segfault
     }

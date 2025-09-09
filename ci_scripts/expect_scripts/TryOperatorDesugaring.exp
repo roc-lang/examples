@@ -7,7 +7,7 @@ set timeout 7
 
 source ./ci_scripts/expect_scripts/shared-code.exp
 
-spawn ./examples/DesugaringTry/main
+spawn ./examples/TryOperatorDesugaring/main
 
 expect -exact "(Ok {birth_year: 1990, name: \"Alice\"})\r\n(Ok {birth_year: 1990, name: \"Alice\"})\r\n" {
     expect eof {

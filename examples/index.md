@@ -9,8 +9,9 @@ You can find the source code for all of these at [github.com/roc-lang/examples](
 - [Basic Dict Usage](/BasicDict/README.html)
 - [Tuples](/Tuples/README.html)
 - [Pattern Matching on Lists](/PatternMatching/README.html)
-- [Error Handling Basic (Result)](/Results/README.html)
-- [Error Handling Real World (Result, try)](/ErrorHandling/README.html)
+- [Error Handling Basic (Result)](/ErrorHandlingBasic/README.html)
+- [Error Handling Real World (Result)](/ErrorHandlingRealWorld/README.html)
+- [`?` Operator Desugaring](/TryOperatorDesugaring/README.html)
 - [Import Files](/IngestFiles/README.html)
 - [Import from Directory](/ImportFromDirectory/README.html)
 - [Import Package from Module](/ImportPackageFromModule/README.html)
@@ -18,6 +19,7 @@ You can find the source code for all of these at [github.com/roc-lang/examples](
 - [JSON](/Json/README.html)
 - [Hello, Webserver!](/HelloWeb/README.html)
 - [Scripting](/Scripting/README.html)
+- [Terminal Commands](/Commands/README.html)
 - [Sort Strings](/SortStrings/README.html)
 - [Random Numbers](/RandomNumbers/README.html)
 - [CLI Args Simple](/CommandLineArgs/README.html)
@@ -25,8 +27,8 @@ You can find the source code for all of these at [github.com/roc-lang/examples](
 - [Safe Math](/SafeMath/README.html)
 - [Graph Traversal](/GraphTraversal/README.html)
 - [Parser](/Parser/README.html)
-- [Arithmetic](/Arithmetic/README.html)
 - [Looping Effectful Functions](/LoopEffect/README.html)
+- [Snake Game](/Snake/README.html)
 - [Record Builder](/RecordBuilder/README.html)
 - [Encoding & Decoding Abilities](/EncodeDecode/README.html)
 - [Desugaring ?](/DesugaringTry/README.html)
@@ -40,5 +42,7 @@ You can find the source code for all of these at [github.com/roc-lang/examples](
 
 ## External examples
 
+- [basic-cli examples](https://github.com/roc-lang/basic-cli/tree/main/examples)
+- [basic-webserver examples](https://github.com/roc-lang/basic-webserver/tree/main/examples)
 - [Awesome Roc](https://github.com/lukewilliamboswell/roc-awesome)
 - [Interpreter for stack based language](https://github.com/isaacvando/gob)

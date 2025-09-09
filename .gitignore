@@ -6,7 +6,6 @@ main
 generate-build
 
 # example binaries
-examples/Arithmetic/main
 examples/IngestFiles/main
 examples/FizzBuzz/main
 examples/HelloWorld/main
