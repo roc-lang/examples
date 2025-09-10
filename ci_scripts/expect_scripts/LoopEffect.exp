@@ -5,6 +5,8 @@
 
 set timeout 7
 
+source ./ci_scripts/expect_scripts/shared-code.exp
+
 spawn ./examples/LoopEffect/main
 
 expect "Enter some numbers on different lines, then press Ctrl-D to sum them up.\r\n"
@@ -26,8 +28,9 @@ expect "Sum: 2\r\n" {
     send -- "a\r"
 
     expect "\"a\" is not a valid I64 number." {
-        expect eof
-        exit 0
+      expect eof {
+          check_exit_and_segfault
+      }
     }
 
     puts stderr "\nError: output was different than expected."

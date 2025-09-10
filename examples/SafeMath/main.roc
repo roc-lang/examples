@@ -1,4 +1,4 @@
-app [main!] { cli: platform "https://github.com/roc-lang/basic-cli/releases/download/0.19.0/Hj-J_zxz7V9YurCSTFcFdu6cQJie4guzsPMUi5kBYUk.tar.br" }
+app [main!] { cli: platform "https://github.com/roc-lang/basic-cli/releases/download/0.20.0/X73hGh05nNTkDHU06FHC0YfFaQB1pimX7gncRcao5mU.tar.br" }
 
 import cli.Stdout
 import cli.Arg exposing [Arg]
@@ -23,21 +23,21 @@ safe_variance = |maybe_empty_list|
         _ ->
             non_empty_list = maybe_empty_list
 
+            # Length of list as a fraction (for compatibility in division)
             n = non_empty_list |> List.len |> Num.to_frac
 
             mean =
                 non_empty_list # sum of all elements:
                 |> List.walk_try(0.0, |state, elem| Num.add_checked(state, elem))
-                |> Result.map_ok(|x| x / n)
+                |> Result.map_ok(|x| x / n)?
 
             non_empty_list
             |> List.walk_try(
                 0.0,
                 |state, elem|
-                    mean
-                    |> Result.try(|m| Num.sub_checked(elem, m)) # X - µ
-                    |> Result.try(|y| Num.mul_checked(y, y)) # ²
-                    |> Result.try(|z| Num.add_checked(z, state)), # ∑
+                    diff = Num.sub_checked(elem, mean)? # (X - µ)
+                    squared = Num.mul_checked(diff, diff)? # (X - µ)²
+                    Num.add_checked(squared, state), # ∑
             )
             |> Result.map_ok(|x| x / n)
 

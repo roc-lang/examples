@@ -1,7 +1,14 @@
 # CLI Args
 
 Use command line arguments to read a file.
-To pass an argument: `roc main.roc input.txt` or `roc -- input.txt` or `roc build && ./main input.txt`.
+To pass an argument:
+```
+roc main.roc input.txt
+# or
+roc -- input.txt
+# or
+roc build && ./main input.txt
+```
 
 ## Code
 ```roc

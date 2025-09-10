@@ -1,15 +1,21 @@
 app [main!] {
-    cli: platform "https://github.com/roc-lang/basic-cli/releases/download/0.19.0/Hj-J_zxz7V9YurCSTFcFdu6cQJie4guzsPMUi5kBYUk.tar.br",
-    json: "https://github.com/lukewilliamboswell/roc-json/releases/download/0.12.0/1trwx8sltQ-e9Y2rOB4LWUWLS_sFVyETK8Twl0i9qpw.tar.gz",
+    cli: platform "https://github.com/roc-lang/basic-cli/releases/download/0.20.0/X73hGh05nNTkDHU06FHC0YfFaQB1pimX7gncRcao5mU.tar.br",
+    json: "https://github.com/lukewilliamboswell/roc-json/releases/download/0.13.0/RqendgZw5e1RsQa3kFhgtnMP8efWoqGRsAvubx4-zus.tar.br",
 }
 
 import cli.Stdout
 import cli.Arg exposing [Arg]
 import json.Json
 
+# Note: use `--linker=legacy` flag on Linux due to https://github.com/roc-lang/roc/issues/3609
+
 main! : List Arg => Result {} _
 main! = |_args|
-    request_body = Str.to_utf8("{\"Image\":{\"Animated\":false,\"Height\":600,\"Ids\":[116,943,234,38793],\"Thumbnail\":{\"Height\":125,\"Url\":\"http:\\/\\/www.example.com\\/image\\/481989943\",\"Width\":100},\"Title\":\"View from 15th Floor\",\"Width\":800}}")
+    request_body = Str.to_utf8(
+        """
+        {"Image":{"Animated":false,"Height":600,"Ids":[116,943,234,38793],"Thumbnail":{"Height":125,"Url":"http://www.example.com/image/481989943","Width":100},"Title":"View from 15th Floor","Width":800}}
+        """,
+    )
 
     # This { field_name_mapping: PascalCase } setting translates
     # incoming JSON fields from PascalCase (first letter capitalized)

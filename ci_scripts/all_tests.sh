@@ -18,9 +18,6 @@ fi
 $ROC build ./examples/HelloWorld/main.roc
 expect ci_scripts/expect_scripts/HelloWorld.exp
 
-$ROC build ./examples/Arithmetic/main.roc
-expect ci_scripts/expect_scripts/Arithmetic.exp
-
 $ROC build ./examples/FizzBuzz/main.roc
 $ROC test ./examples/FizzBuzz/main.roc
 expect ci_scripts/expect_scripts/FizzBuzz.exp
@@ -48,26 +45,32 @@ expect ci_scripts/expect_scripts/RandomNumbers.exp
 $ROC build ./examples/CommandLineArgs/main.roc
 expect ci_scripts/expect_scripts/CommandLineArgs.exp
 
+$ROC build ./examples/Commands/main.roc
+expect ci_scripts/expect_scripts/Commands.exp
+
 $ROC build ./examples/CommandLineArgsFile/main.roc
 expect ci_scripts/expect_scripts/CommandLineArgsFile.exp
 
-$ROC build ./examples/DesugaringTry/main.roc
-$ROC test ./examples/DesugaringTry/main.roc
-expect ci_scripts/expect_scripts/DesugaringTry.exp
+$ROC build ./examples/TryOperatorDesugaring/main.roc
+$ROC test ./examples/TryOperatorDesugaring/main.roc
+expect ci_scripts/expect_scripts/TryOperatorDesugaring.exp
 
 $ROC build ./examples/Tuples/main.roc
 expect ci_scripts/expect_scripts/Tuples.exp
 
 $ROC test ./examples/TowersOfHanoi/Hanoi.roc
 
-$ROC build ./examples/Results/main.roc
-expect ci_scripts/expect_scripts/Results.exp
+$ROC test ./examples/ErrorHandlingBasic/ErrorHandlingBasic.roc
 
-$ROC build ./examples/ErrorHandling/main.roc
-expect ci_scripts/expect_scripts/ErrorHandling.exp
+$ROC build ./examples/ErrorHandlingRealWorld/main.roc
+expect ci_scripts/expect_scripts/ErrorHandlingRealWorld.exp
 
 $ROC build ./examples/LoopEffect/main.roc
 expect ci_scripts/expect_scripts/LoopEffect.exp
+
+$ROC build ./examples/Snake/main.roc
+$ROC test ./examples/Snake/main.roc
+expect ci_scripts/expect_scripts/Snake.exp
 
 $ROC test ./examples/RecordBuilder/DateParser.roc
 
@@ -93,6 +96,10 @@ $ROC build ./examples/ImportPackageFromModule/main.roc
 expect ci_scripts/expect_scripts/ImportPackageFromModule.exp
 
 $ROC test ./examples/CustomInspect/OpaqueTypes.roc
+
+$ROC build ./examples/SortStrings/main.roc
+$ROC ./examples/SortStrings/main.roc
+expect ci_scripts/expect_scripts/SortStrings.exp
 
 # these examples don't work on macos and aarch64 linux yet #225 #226 #231
 if [[ "$(uname)" == "Linux" && "$(uname -m)" == "x86_64" ]]; then

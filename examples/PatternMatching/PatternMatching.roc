@@ -7,10 +7,7 @@ expect
             [] -> EmptyList
             _ -> Other
 
-    match([])
-    == EmptyList
-    and match([A, B, C])
-    != EmptyList
+    match([]) == EmptyList and match([A, B, C]) == Other
 
 # Match a non-empty list
 expect
@@ -19,10 +16,7 @@ expect
             [_, ..] -> NonEmptyList
             _ -> Other
 
-    match([A, B, C])
-    == NonEmptyList
-    and match([])
-    != NonEmptyList
+    match([A, B, C]) == NonEmptyList and match([]) == Other
 
 # Match a list whose first element is the string "Hi"
 expect
@@ -31,10 +25,7 @@ expect
             ["Hi", ..] -> StartsWithHi
             _ -> Other
 
-    match(["Hi", "Hello", "Yo"])
-    == StartsWithHi
-    and match(["Hello", "Yo", "Hi"])
-    != StartsWithHi
+    match(["Hi", "Hello", "Yo"]) == StartsWithHi and match(["Hello", "Yo", "Hi"]) == Other
 
 # Match a list whose last element is the number 42
 expect
@@ -43,10 +34,7 @@ expect
             [.., 42] -> EndsWith42
             _ -> Other
 
-    match([24, 64, 42])
-    == EndsWith42
-    and match([42, 1, 5])
-    != EndsWith42
+    match([24, 64, 42]) == EndsWith42 and match([42, 1, 5]) == Other
 
 # Match a list that starts with a Foo tag
 # followed by a Bar tag
@@ -56,10 +44,7 @@ expect
             [Foo, Bar, ..] -> StartsWithFooBar
             _ -> Other
 
-    match([Foo, Bar, Bar])
-    == StartsWithFooBar
-    and match([Bar, Bar, Foo])
-    != StartsWithFooBar
+    match([Foo, Bar, Bar]) == StartsWithFooBar and match([Bar, Bar, Foo]) == Other
 
 # Match a list with these exact elements:
 # Foo, Bar, and then (Baz "Hi")
@@ -71,10 +56,12 @@ expect
 
     match([Foo, Bar, Baz("Hi")])
     == FooBarBazStr
-    and match([Foo, Bar])
-    != FooBarBazStr
-    and match([Foo, Bar, Baz("Hi"), Blah])
-    != FooBarBazStr
+    and
+    match([Foo, Bar])
+    == Other
+    and
+    match([Foo, Bar, Baz("Hi"), Blah])
+    == Other
 
 # Match a list with Foo as its first element, and
 # Count for its second element. Count holds a number,
@@ -88,9 +75,9 @@ expect
     match([Foo, Count(1)])
     == FooCountIf
     and match([Foo, Count(0)])
-    != FooCountIf
+    == Other
     and match([Baz, Count(1)])
-    != FooCountIf
+    == Other
 
 # Use `as` to create a variable equal to the part of the list that matches `..`
 expect

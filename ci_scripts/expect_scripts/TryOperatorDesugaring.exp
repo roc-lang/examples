@@ -5,11 +5,14 @@
 
 set timeout 7
 
-spawn ./examples/DesugaringTry/main
+source ./ci_scripts/expect_scripts/shared-code.exp
+
+spawn ./examples/TryOperatorDesugaring/main
 
 expect -exact "(Ok {birth_year: 1990, name: \"Alice\"})\r\n(Ok {birth_year: 1990, name: \"Alice\"})\r\n" {
-    expect eof
-    exit 0
+    expect eof {
+        check_exit_and_segfault
+    }
 }
 
 puts stderr "\nError: output was different from expected value."

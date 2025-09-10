@@ -3,6 +3,8 @@ Sometimes, you need to repeat an [effectful](https://en.wikipedia.org/wiki/Side_
 
 We'll demonstrate this by adding numbers read from stdin until the end of input (Ctrl-D or [end of file](https://en.wikipedia.org/wiki/End-of-file)).
 
+For a game loop example, check out [snake](https://roc-lang.org/examples/Snake/README). 
+
 ## Full Code
 
 ```roc

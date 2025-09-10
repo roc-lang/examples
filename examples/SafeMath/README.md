@@ -10,11 +10,11 @@ This Roc code crashed with: "Integer addition overflowed!"
 ```
 If you want to avoid a program-ending crash, you can instead use:
 ```
-» Num.add_checked Num.max_u64 Num.max_u64
+» Num.add_checked(Num.max_u64, Num.max_u64)
 
 Err Overflow : Result U64 [Overflow]
 ```
-That would allow you to display a clean error to the user or handle the failure in an intelligent way.
+That would allow you to display a clean error to the user or handle the failure in an intelligent way, so that your user does not lose all their progress!
 Use `checked` math functions if [reliability is important for your application](https://arstechnica.com/information-technology/2015/05/boeing-787-dreamliners-contain-a-potentially-catastrophic-software-bug/).
 
 For a realistic demonstration, we will use `checked` math functions to calculate the variance of a population.
