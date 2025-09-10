@@ -1,1 +1,41 @@
-TODO
+# All Syntax File
+
+Demonstrates all Roc syntax in a single app file.
+
+## Code
+```roc
+file:main.roc
+```
+
+## Output
+
+Run this from the directory that has `main.roc` in it:
+
+```
+$ roc main.roc
+{diff: 5, div: 2, div_trunc: 2, eq: Bool.false, gt: Bool.true, gteq: Bool.true, lt: Bool.false, lteq: Bool.false, neg: -10, neq: Bool.true, prod: 50, rem: 0, sum: 15}
+{bool_and: Bool.false, bool_and_keyword: Bool.false, bool_or: Bool.true, bool_or_keyword: Bool.true, not_a: Bool.false}
+"Pizza Roc"
+42
+Hello, Venus!This is a multiline string.
+You can call functions inside $... too: 2
+Unicode escape sequence:  
+"Success"
+Hello, world!
+Hello, world!
+Hello, world!
+Hello, world!
+Hello, world!
+(Ok {})
+"True"
+("Roc", 1)
+Red
+[1, 2]
+(TagFour 42)
+default
+("Roc", 1, 1, 2)
+[examples/AllSyntax/main.roc:116] a = 42
+[examples/AllSyntax/main.roc:119] 43 = 43
+{}
+```
+

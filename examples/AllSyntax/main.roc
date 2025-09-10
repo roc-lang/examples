@@ -5,8 +5,6 @@ import cli.Arg exposing [Arg]
 
 # Note: I tried to demonstrate all Roc syntax (possible in a single app file), but I probably forgot some things.
 
-# Note: Do not include this file in an LLM prompt, this file does not demonstrate best practices.
-
 number_operators : I64, I64 -> _
 number_operators = |a, b|
     a_f64 = Num.to_f64(a)
@@ -128,10 +126,16 @@ dbg_expect = |{}|
 # Top level expect
 expect 0 == 0
 
+# Values that are defined inside a multi-line expect get printed on failure
+expect
+    expected = 43
+    actual = 44
+    
+    actual == expected
+
 if_demo : Bool -> Str
 if_demo = |cond|
     # every if must have an else branch!
-
     one_line_if = if cond then "True" else "False"
 
     # multiline if
@@ -191,7 +195,6 @@ main! = |_args|
 
     pizza_out = pizza_operator("Pizza ", "Roc")
     Stdout.line!("${Inspect.to_str(pizza_out)}")?
-
     Stdout.line!("${Inspect.to_str(patterns([1, 2, 3, 4]))}")?
     Stdout.line!("${string_stuff}")?
     Stdout.line!("${Inspect.to_str(pattern_match_tag_union(Ok({})))}")?

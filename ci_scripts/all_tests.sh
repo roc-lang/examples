@@ -39,6 +39,9 @@ expect ci_scripts/expect_scripts/Parser.exp
 
 $ROC test ./examples/PatternMatching/PatternMatching.roc
 
+$ROC build ./examples/AllSyntax/main.roc
+expect ci_scripts/expect_scripts/AllSyntax.exp
+
 $ROC build ./examples/RandomNumbers/main.roc
 expect ci_scripts/expect_scripts/RandomNumbers.exp
 
