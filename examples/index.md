@@ -25,7 +25,6 @@ You can find the source code for all of these at [github.com/roc-lang/examples](
 - [Random Numbers](/RandomNumbers/README.html)
 - [CLI Args Simple](/CommandLineArgs/README.html)
 - [CLI Args File](/CommandLineArgsFile/README.html)
-- [All Syntax](/AllSyntax/README.html)
 - [Safe Math](/SafeMath/README.html)
 - [Graph Traversal](/GraphTraversal/README.html)
 - [Parser](/Parser/README.html)

@@ -5,7 +5,9 @@ import cli.Stdout as StdoutAlias
 import cli.Arg exposing [Arg]
 import "README.md" as readme : Str # You can also import as List U8
 
-# Note: I tried to demonstrate all Roc syntax (possible in a single app file), but I probably forgot some things.
+# Note 1: I tried to demonstrate all Roc syntax (possible in a single app file), but I probably forgot some things.
+
+# Note 2: Lots of syntax patterns are better explained in their own dedicated example, see https://www.roc-lang.org/examples/ 
 
 ## Double hashtag for doc comment
 number_operators : I64, I64 -> _
@@ -263,18 +265,18 @@ animal_equality = |@Animal(a), @Animal(b)|
 
 # Defining a new ability
 CustomInspect implements
-    inspectMe : val -> Str where val implements CustomInspect
+    inspect_me : val -> Str where val implements CustomInspect
 
 Color := [Red, Green]
     implements [
         Eq,
         CustomInspect {
-            inspectMe: inspectColor,
+            inspect_me: inspect_color,
         },
     ]
 
-inspectColor : Color -> Str
-inspectColor = \@Color color ->
+inspect_color : Color -> Str
+inspect_color = \@Color color ->
     when color is
         Red -> "Red"
         Green -> "Green"
