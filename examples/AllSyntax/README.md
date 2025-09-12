@@ -1,6 +1,6 @@
 # All Syntax File
 
-Demonstrates all Roc syntax in a single app file.
+Demonstrates all Roc syntax in a single app file. See [all module types](https://roc-lang.org/tutorial#modules) to view syntax examples for the non-app headers.
 
 ## Code
 ```roc
@@ -27,15 +27,24 @@ Hello, world!
 Hello, world!
 Hello, world!
 (Ok {})
-"True"
+"False"
 ("Roc", 1)
 Red
 [1, 2]
 (TagFour 42)
 default
-("Roc", 1, 1, 2)
-[examples/AllSyntax/main.roc:116] a = 42
-[examples/AllSyntax/main.roc:119] 43 = 43
+("Roc", 1, 1, 1)
+{x: 1, y: 3}
+44
+[./examples/AllSyntax/main.roc:119] a = 42
+[./examples/AllSyntax/main.roc:122] 43 = 43
 {}
+4
+(5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5.0, 5, 5, 5)
+Rocco
+42
+99
+(Ok {age: 25, city: "NYC", name: "Alice"})
+Bool.true
 ```
 
