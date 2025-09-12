@@ -18,7 +18,7 @@ You can find the source code for all of these at [github.com/roc-lang/examples](
 - [Multiple Roc Files](/MultipleRocFiles/README.html)
 - [JSON](/Json/README.html)
 - [Hello, Webserver!](/HelloWeb/README.html)
-- [All Syntax in 1 File](/examples/AllSyntax/README.html)
+- [All Syntax in 1 File](/AllSyntax/README.html)
 - [Scripting](/Scripting/README.html)
 - [Terminal Commands](/Commands/README.html)
 - [Sort Strings](/SortStrings/README.html)
