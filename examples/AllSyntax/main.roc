@@ -188,6 +188,59 @@ destructuring =
 
     (str, num, x, y)
 
+# Using `where` ... `implements`
+to_str : a -> Str where a implements Inspect
+to_str = |value|
+    Inspect.to_str(value)
+
+# Opaque type
+Username := Str
+
+username_from_str : Str -> Username
+username_from_str = |str|
+    @Username(str)
+
+username_to_str : Username -> Str
+username_to_str = |@Username(str)|
+    str
+
+# Opaque type with derived abilities
+StatsDB := Dict Str { score : Dec, average : Dec } implements [ Eq, Hash ]
+
+# Custom implementation of an ability
+Animal := [
+        Dog Str,
+        Cat Str,
+    ]
+    implements [
+        Eq { is_eq: animal_equality },
+    ]
+
+animal_equality : Animal, Animal -> Bool
+animal_equality = |@Animal(a), @Animal(b)|
+    when (a, b) is
+        (Dog(name_a), Dog(name_b)) -> name_a == name_b
+        (Cat(name_a), Cat(name_b)) -> name_a == name_b
+        _ -> Bool.false
+
+# Defining a new ability
+CustomInspect implements
+    inspectMe : val -> Str where val implements CustomInspect
+
+Color := [Red, Green]
+    implements [
+        Eq,
+        CustomInspect {
+            inspectMe: inspectColor,
+        },
+    ]
+
+inspectColor : Color -> Str
+inspectColor = \@Color color ->
+    when color is
+        Red -> "Red"
+        Green -> "Green"
+
 main! : List Arg => Result {} _
 main! = |_args|
     Stdout.line!("${Inspect.to_str(number_operators(10, 5))}")?
@@ -207,6 +260,8 @@ main! = |_args|
     Stdout.line!("${default_val_record({})}")?
     Stdout.line!("${Inspect.to_str(destructuring)}")?
     Stdout.line!("${Inspect.to_str(dbg_expect({}))}")?
+    Stdout.line!("${username_to_str(username_from_str("Rocco"))}")?
+    Stdout.line!("${to_str(42)}")?
 
     # Commented out so CI tests can pass
     # crash "Avoid using crash in production software!"
