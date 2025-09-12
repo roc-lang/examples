@@ -94,7 +94,7 @@ list_cwd_contents! : {} => Result Str [FailedToListCwd _]
 list_cwd_contents! = |_|
 
     dir_contents =
-        Dir.list!(".") ? |err| FailedToListCwd(err)
+        Dir.list!(".") ? FailedToListCwd
 
     contents_str =
         dir_contents
