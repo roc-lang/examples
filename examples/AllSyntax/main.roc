@@ -5,9 +5,11 @@ import cli.Stdout as StdoutAlias
 import cli.Arg exposing [Arg]
 import "README.md" as readme : Str # You can also import as List U8
 
-# Note 1: I tried to demonstrate all Roc syntax (possible in a single app file), but I probably forgot some things.
+# Note 1: I tried to demonstrate all Roc syntax (possible in a single app file),
+# but I probably forgot some things.
 
-# Note 2: Lots of syntax patterns are better explained in their own dedicated example, see https://www.roc-lang.org/examples/ 
+# Note 2: Lots of syntax patterns are better explained in their own dedicated example,
+# see https://www.roc-lang.org/examples/ 
 
 ## Double hashtag for doc comment
 number_operators : I64, I64 -> _
@@ -62,7 +64,8 @@ patterns = |lst|
         [_head, .. as tail] if List.len(tail) > 7 ->
             List.len(tail)
 
-        # Note: avoid using `_` in a when branch, in general you should try to match all cases explicitly.
+        # Note: avoid using `_` in a when branch, in general you should
+        # try to match all cases explicitly.
         _ ->
             100
 
@@ -108,8 +111,10 @@ effect_demo! = |msg|
     # ?? to provide default value
     Stdout.line!(msg) ?? {}
 
-    # In rare cases, you can use `_ =` to ignore the result. This allows you to avoid StdoutErr in the type signature.
-    # Example of appropriate usage: https://github.com/roc-lang/basic-webserver/blob/main/platform/main.roc
+    # In rare cases, you can use `_ =` to ignore the result.
+    # This allows you to avoid StdoutErr in the type signature.
+    # Example of appropriate usage:
+    # https://github.com/roc-lang/basic-webserver/blob/main/platform/main.roc
     _ = Stdout.line!(msg)
 
     Ok({})
