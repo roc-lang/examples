@@ -17,9 +17,8 @@ if [ -z "${ROC}" ]; then
 fi
 
 # array of paths to exclude from format check
-# TODO: remove the exclusion of examples/Tasks/main.roc when
-# https://github.com/roc-lang/roc/issues/6074 is done
-excludes=( './examples/Tasks/main.roc' './roc_nightly/' )
+# AllSyntax: The formatter changes `||`` into `or`, and we want to demonstrate both in the example
+excludes=( './examples/AllSyntax/main.roc' './roc_nightly/' )
 
 # Start the find command and loop through excludes to add them
 find_command="find . -name '*.roc'"
