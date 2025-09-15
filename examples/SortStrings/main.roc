@@ -18,7 +18,7 @@ main! = |_args|
     ]
 
     # If you copy this code, make sure that your strings are valid ASCII.
-    fruits_ascii = List.map_try(fruits, Ascii.from_str) ? |err| FruitListContainsInvalidAscii(err)
+    fruits_ascii = List.map_try(fruits, Ascii.from_str) ? FruitListContainsInvalidAscii
 
     sorted_fruits_ascending = Ascii.sort_asc(fruits_ascii)
 
