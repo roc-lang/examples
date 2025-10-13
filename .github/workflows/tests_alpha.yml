@@ -38,9 +38,9 @@ jobs:
           brew install z3
 
       - name: check if roc files are properly formatted
-        run: ROC=./roc_alpha/roc ./ci_scripts/check_format.sh
+        run: ROC=roc ./ci_scripts/check_format.sh
 
-      - run: ROC=./roc_alpha/roc ./ci_scripts/all_tests.sh
+      - run: ROC=roc ./ci_scripts/all_tests.sh
 
       - name: Checks if every folder in examples is mentioned in ./examples/index.md
         run: bash ./ci_scripts/check_index.sh
