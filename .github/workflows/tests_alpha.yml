@@ -22,7 +22,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
     
-      - uses: roc-lang/setup-roc@68881a790d8281b2466c27e1955517e0c2f6bb6b
+      - uses: roc-lang/setup-roc@e2e4452c2bfb0380daadefdb23b989bc9748c63b
+        with:
+          version: alpha4-rolling
 
       - name: Run Roc
         run: roc version

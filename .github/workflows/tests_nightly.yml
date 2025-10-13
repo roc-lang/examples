@@ -22,38 +22,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set OS-specific variables
-        id: vars
-        run: |
-          if [[ "${{ matrix.operating-system }}" =~ ^ubuntu- ]]; then
-            if [[ "${{ matrix.operating-system }}" =~ -arm$ ]]; then
-              echo "os_pattern=linux_arm64" >> $GITHUB_OUTPUT
-            else
-              echo "os_pattern=linux_x86_64" >> $GITHUB_OUTPUT
-            fi
-          elif [ "${{ matrix.operating-system }}" = "macos-13" ]; then
-            echo "os_pattern=macos_x86_64" >> $GITHUB_OUTPUT
-          else
-            echo "os_pattern=macos_apple_silicon" >> $GITHUB_OUTPUT
-          fi
+      - uses: roc-lang/setup-roc@e2e4452c2bfb0380daadefdb23b989bc9748c63b
+        with:
+          version: nightly
 
-      - name: Download latest nightly release
-        run: |
-          curl -fOL https://github.com/roc-lang/roc/releases/download/nightly/roc_nightly-${{ steps.vars.outputs.os_pattern }}-latest.tar.gz
-
-      - name: rename nightly tar
-        run: mv $(ls | grep "roc_nightly.*tar\.gz") roc_nightly.tar.gz
-  
-      - name: decompress the tar
-        run: tar -xzf roc_nightly.tar.gz
-  
-      - run: rm roc_nightly.tar.gz
-
-      - name: simplify nightly folder name
-        run: mv roc_nightly* roc_nightly
-
-      - name: get short commit SHA
-        run: echo "SHORT_COMMIT_SHA=$(./roc_nightly/roc version | grep -oP 'commit \K[a-f0-9]+' )" >> $GITHUB_ENV
+      - name: Run Roc
+        run: roc version
 
       - name: Install dependencies (Ubuntu)
         if: startsWith(matrix.operating-system, 'ubuntu-')
