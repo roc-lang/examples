@@ -21,40 +21,12 @@ jobs:
     timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
+    
+      - uses: roc-lang/setup-roc@68881a790d8281b2466c27e1955517e0c2f6bb6b
 
-      - name: Set OS-specific variables
-        id: vars
-        run: |
-          if [[ "${{ matrix.operating-system }}" =~ ^ubuntu- ]]; then
-            if [[ "${{ matrix.operating-system }}" =~ -arm$ ]]; then
-              echo "os_pattern=linux_arm64" >> $GITHUB_OUTPUT
-            else
-              echo "os_pattern=linux_x86_64" >> $GITHUB_OUTPUT
-            fi
-          elif [ "${{ matrix.operating-system }}" = "macos-13" ]; then
-            echo "os_pattern=macos_x86_64" >> $GITHUB_OUTPUT
-          else
-            echo "os_pattern=macos_apple_silicon" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Download alpha release
-        run: |
-          curl -fOL https://github.com/roc-lang/roc/releases/download/alpha4-rolling/roc-${{ steps.vars.outputs.os_pattern }}-alpha4-rolling.tar.gz
-
-      - name: rename alpha tar
-        run: mv $(ls | grep "roc-.*tar\.gz") roc_alpha.tar.gz
-  
-      - name: decompress the tar
-        run: tar -xzf roc_alpha.tar.gz
-  
-      - run: rm roc_alpha.tar.gz
-
-      - name: simplify nightly folder name
-        run: mv roc_nightly* roc_alpha
-
-      - name: get short commit SHA
-        run: echo "SHORT_COMMIT_SHA=$(./roc_alpha/roc version | grep -oP 'commit \K[a-f0-9]+' )" >> $GITHUB_ENV
-
+      - name: Run Roc
+        run: roc version
+        
       - name: Install dependencies (Ubuntu)
         if: startsWith(matrix.operating-system, 'ubuntu-')
         run: sudo apt install -y expect
