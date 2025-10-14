@@ -22,7 +22,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: roc-lang/setup-roc@e2e4452c2bfb0380daadefdb23b989bc9748c63b
+      - uses: roc-lang/setup-roc@39c354a6a838a0089eea9068a0414f49b62c5c08
         with:
           version: nightly
 
