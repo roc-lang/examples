@@ -23,8 +23,11 @@
 
             rocPkgs = roc.packages.${system};
 
-            aliases = ''
-              alias testcmd='export ROC=roc && ./ci_scripts/all_tests.sh'
+            shellFunctions = ''
+              testcmd() {
+                ./ci_scripts/all_tests.sh
+              }
+              export -f testcmd
             '';
 
             linuxInputs = with pkgs;
@@ -54,10 +57,15 @@
                       if pkgs.stdenv.isLinux then "${pkgs.glibc.out}/lib" else "";
 
                     shellHook = ''
-                      ${aliases}
+                      export ROC=roc
+
+                      ${shellFunctions}
                       
-                      echo "Some convenient command aliases:"
-                      echo "${aliases}" | grep -E "alias .*" -o | sed 's/alias /  /' | sed 's/=/ = /'
+                      echo "Some convenient commands:"
+                      echo "${shellFunctions}" | grep -E '^\s*[a-zA-Z_][a-zA-Z0-9_]*\(\)' | sed 's/().*//' | sed 's/^[[:space:]]*/  /' | while read func; do
+                        body=$(echo "${shellFunctions}" | sed -n "/''${func}()/,/^[[:space:]]*}/p" | sed '1d;$d' | tr '\n' ';' | sed 's/;$//' | sed 's/[[:space:]]*$//')
+                        echo "  $func = $body"
+                      done
                       echo ""
                     '';
                 };
