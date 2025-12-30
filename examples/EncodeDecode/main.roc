@@ -1,125 +1,137 @@
-app [main!] {
-    cli: platform "https://github.com/roc-lang/basic-cli/releases/download/0.20.0/X73hGh05nNTkDHU06FHC0YfFaQB1pimX7gncRcao5mU.tar.br",
-    json: "https://github.com/lukewilliamboswell/roc-json/releases/download/0.13.0/RqendgZw5e1RsQa3kFhgtnMP8efWoqGRsAvubx4-zus.tar.br",
+app [main!] { pf: platform "../platform/main.roc" }
+
+import pf.Stdout
+
+# Example demonstrating the new Encode module with static dispatch
+# Based on: https://github.com/roc-lang/roc/commit/22cf61ff9332f0de7a0d5d7f42b7f5836232a744
+#
+# The Encode module uses static dispatch via where clauses:
+# - Str.encode requires: where [fmt.encode_str : fmt, Str -> List(U8)]
+# - List.encode requires: where [fmt.encode_list : fmt, List(item), (item, fmt -> List(U8)) -> List(U8)]
+
+# Define a custom JSON-like format type with the required methods
+JsonFormat := [Format].{
+    # Method required by Str.encode where clause
+    encode_str : JsonFormat, Str -> List(U8)
+    encode_str = |_fmt, str| {
+        # Wrap string in quotes and convert to bytes
+        quoted = "\"${str}\""
+        Str.to_utf8(quoted)
+    }
+
+    # Method required by List.encode where clause  
+    encode_list : JsonFormat, List(item), (item, JsonFormat -> List(U8)) -> List(U8)
+    encode_list = |fmt, items, encode_item| {
+        var $result = ['[']
+        var $first = Bool.True
+        
+        for item in items {
+            if $first {
+                $first = Bool.False
+            } else {
+                $result = $result.append(',')
+            }
+            encoded_item = encode_item(item, fmt)
+            $result = $result.concat(encoded_item)
+        }
+        
+        $result.append(']')
+    }
 }
 
-import json.Json
-import cli.Stdout
-import cli.Arg exposing [Arg]
-### start snippet impl
+# Define a Person type that can be encoded as a JSON object
+Person := [Person({ name : Str, age : U64 })].{
+    # Custom encode method for Person - encodes as JSON object
+    encode : Person, JsonFormat -> List(U8)
+    encode = |self, fmt| {
+        # Get the inner record via pattern match
+        match self {
+            Person({ name, age }) => {
+                # Encode name as JSON string
+                name_bytes = name.encode(fmt)
+                
+                # Encode age as number (no quotes)
+                age_bytes = Str.to_utf8(age.to_str())
+                
+                # Build: {"name":"...","age":...}
+                var $result = Str.to_utf8("{\"name\":")
+                $result = $result.concat(name_bytes)
+                $result = $result.concat(Str.to_utf8(",\"age\":"))
+                $result = $result.concat(age_bytes)
+                $result = $result.concat(Str.to_utf8("}"))
+                $result
+            }
+        }
+    }
+}
 
-ItemKind := [
-    Text,
-    Method,
-    Function,
-    Constructor,
-    Field,
-    Variable,
-    Class,
-    Interface,
-    Module,
-    Property,
-]
-    implements [
-        Decoding { decoder: decode_items },
-        Encoding { to_encoder: encode_items },
-        Inspect,
-        Eq,
+main! : List(Str) => Try({}, [Exit(I32)])
+main! = |_args| {
+    # Create our format instance using the tag constructor
+    json_fmt = JsonFormat.Format
+    
+    # Encode a string using static dispatch
+    # This calls Str.encode which requires fmt.encode_str
+    hello_str = "Hello, World!"
+    encoded_str = hello_str.encode(json_fmt)
+    
+    Stdout.line!("Encoded string:")
+    Stdout.line!("  Input: ${hello_str}")
+    
+    # Convert back to string to show the JSON format
+    match Str.from_utf8(encoded_str) {
+        Ok(json_str) => Stdout.line!("  As JSON: ${json_str}")
+        Err(_) => Stdout.line!("  (invalid UTF-8)")
+    }
+    
+    Stdout.line!("")
+    
+    # Encode a list of strings using static dispatch
+    # This calls List.encode which requires fmt.encode_list and item.encode
+    names = ["Alice", "Bob", "Charlie"]
+    encoded_list = names.encode(json_fmt)
+    
+    Stdout.line!("Encoded list of strings:")
+    Stdout.line!("  Input: [\"Alice\", \"Bob\", \"Charlie\"]")
+    
+    match Str.from_utf8(encoded_list) {
+        Ok(json_str) => Stdout.line!("  As JSON: ${json_str}")
+        Err(_) => Stdout.line!("  (invalid UTF-8)")
+    }
+    
+    Stdout.line!("")
+    
+    # Encode a Person as a JSON object
+    alice : Person
+    alice = Person.Person({ name: "Alice", age: 30 })
+    person_bytes = alice.encode(json_fmt)
+    
+    Stdout.line!("Encoded Person object:")
+    Stdout.line!("  Input: { name: \"Alice\", age: 30 }")
+    
+    match Str.from_utf8(person_bytes) {
+        Ok(json_str) => Stdout.line!("  As JSON: ${json_str}")
+        Err(_) => Stdout.line!("  (invalid UTF-8)")
+    }
+    
+    Stdout.line!("")
+    
+    # Encode a list of Person objects
+    people : List(Person)
+    people = [
+        Person.Person({ name: "Alice", age: 30 }),
+        Person.Person({ name: "Bob", age: 25 }),
+        Person.Person({ name: "Charlie", age: 35 }),
     ]
-
-encode_items : ItemKind -> Encoder fmt where fmt implements EncoderFormatting
-encode_items = |@ItemKind(kind)|
-    Encode.u32(
-        when kind is
-            Text -> 1
-            Method -> 2
-            Function -> 3
-            Constructor -> 4
-            Field -> 5
-            Variable -> 6
-            Class -> 7
-            Interface -> 8
-            Module -> 9
-            Property -> 10,
-    )
-
-decode_items : Decoder ItemKind _
-decode_items =
-    Decode.custom(
-        |bytes, fmt|
-            # Helper function to wrap our [tag](https://www.roc-lang.org/tutorial#tags)
-            ok = |tag| Ok(@ItemKind(tag))
-
-            bytes
-            |> Decode.from_bytes_partial(fmt)
-            |> try_map_result(
-                |num|
-                    when num is
-                        1 -> ok(Text)
-                        2 -> ok(Method)
-                        3 -> ok(Function)
-                        4 -> ok(Constructor)
-                        5 -> ok(Field)
-                        6 -> ok(Variable)
-                        7 -> ok(Class)
-                        8 -> ok(Interface)
-                        9 -> ok(Module)
-                        10 -> ok(Property)
-                        _ -> Err(TooShort),
-            ),
-    )
-
-# Converts `DecodeResult U32` to `DecodeResult ItemKind` using a given function
-try_map_result : DecodeResult U32, (U32 -> Result ItemKind DecodeError) -> DecodeResult ItemKind
-try_map_result = |decoded, num_to_item_kind_fun|
-    when decoded.result is
-        Err(e) -> { result: Err(e), rest: decoded.rest }
-        Ok(res) -> { result: num_to_item_kind_fun(res), rest: decoded.rest }
-
-### end snippet impl
-
-### start snippet demo
-
-# make a list of ItemKind's
-original_list : List ItemKind
-original_list = [
-    @ItemKind(Text),
-    @ItemKind(Method),
-    @ItemKind(Function),
-    @ItemKind(Constructor),
-    @ItemKind(Field),
-    @ItemKind(Variable),
-    @ItemKind(Class),
-    @ItemKind(Interface),
-    @ItemKind(Module),
-    @ItemKind(Property),
-]
-
-# encode them into JSON bytes
-encoded_bytes : List U8
-encoded_bytes = Encode.to_bytes(original_list, Json.utf8)
-
-# check that encoding is correct
-expect
-    expected_bytes : List U8
-    expected_bytes = "[1,2,3,4,5,6,7,8,9,10]" |> Str.to_utf8
-
-    encoded_bytes == expected_bytes
-
-# decode back to a list of ItemKind's
-decoded_list : List ItemKind
-decoded_list = Decode.from_bytes(encoded_bytes, Json.utf8) |> Result.with_default([])
-# don't use `Result.with_default([])` for professional applications; check https://www.roc-lang.org/examples/ErrorHandling/README.html
-
-# check that decoding is correct
-expect decoded_list == original_list
-
-main! : List Arg => Result {} _
-main! = |_args|
-    # prints decoded items to stdout
-    decoded_list
-    |> List.map(Inspect.to_str)
-    |> Str.join_with("\n")
-    |> Stdout.line!
-
-### end snippet demo
+    people_bytes = people.encode(json_fmt)
+    
+    Stdout.line!("Encoded list of Person objects:")
+    Stdout.line!("  Input: [{ name: \"Alice\", age: 30 }, { name: \"Bob\", age: 25 }, { name: \"Charlie\", age: 35 }]")
+    
+    match Str.from_utf8(people_bytes) {
+        Ok(json_str) => Stdout.line!("  As JSON: ${json_str}")
+        Err(_) => Stdout.line!("  (invalid UTF-8)")
+    }
+    
+    Ok({})
+}

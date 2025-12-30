@@ -1,18 +1,49 @@
-# Encoding & Decoding Abilities
+# Encoding with Static Dispatch
 
-An example for how to implement the builtin `Encoding` and `Decoding` abilities for an opaque type (`ItemKind`).
+An example demonstrating the new Encode module with static dispatch using where clauses.
 
-Implementing these abilities for an opaque type like `ItemKind`, enables it to be used seamlessly within other data structures.
-This is useful when you would like to provide a custom mapping, such as in this example, between an integer and a [tag union](https://www.roc-lang.org/tutorial#tag-union-types).
+Based on: https://github.com/roc-lang/roc/commit/22cf61ff9332f0de7a0d5d7f42b7f5836232a744
 
-## Implementation
+## Overview
+
+The Encode module uses static dispatch via where clauses:
+- `Str.encode` requires: `where [fmt.encode_str : fmt, Str -> List(U8)]`
+- `List.encode` requires: `where [fmt.encode_list : fmt, List(item), (item, fmt -> List(U8)) -> List(U8)]`
+
+This example shows how to create a custom JSON-like format type that implements these methods.
+
+## Custom Format Type
+
 ```roc
-file:main.roc:snippet:impl
+JsonFormat := [Format].{
+    encode_str : JsonFormat, Str -> List(U8)
+    encode_str = |_fmt, str| {
+        quoted = "\"${str}\""
+        Str.to_utf8(quoted)
+    }
+
+    encode_list : JsonFormat, List(item), (item, JsonFormat -> List(U8)) -> List(U8)
+    encode_list = |fmt, items, encode_item| {
+        # Build JSON array: [item1,item2,...]
+        ...
+    }
+}
 ```
 
-## Demo
+## Custom Type Encoding
+
 ```roc
-file:main.roc:snippet:demo
+Person := [Person({ name : Str, age : U64 })].{
+    encode : Person, JsonFormat -> List(U8)
+    encode = |self, fmt| {
+        match self {
+            Person({ name, age }) => {
+                # Builds: {"name":"...","age":...}
+                ...
+            }
+        }
+    }
+}
 ```
 
 ## Output
@@ -20,17 +51,20 @@ file:main.roc:snippet:demo
 Run this from the directory that has `main.roc` in it:
 
 ```
-$ roc dev
-(@ItemKind Text)
-(@ItemKind Method)
-(@ItemKind Function)
-(@ItemKind Constructor)
-(@ItemKind Field)
-(@ItemKind Variable)
-(@ItemKind Class)
-(@ItemKind Interface)
-(@ItemKind Module)
-(@ItemKind Property)
-```
+$ roc main.roc
+Encoded string:
+  Input: Hello, World!
+  As JSON: "Hello, World!"
 
-You can also use `roc test` to run the tests.
+Encoded list of strings:
+  Input: ["Alice", "Bob", "Charlie"]
+  As JSON: ["Alice","Bob","Charlie"]
+
+Encoded Person object:
+  Input: { name: "Alice", age: 30 }
+  As JSON: {"name":"Alice","age":30}
+
+Encoded list of Person objects:
+  Input: [{ name: "Alice", age: 30 }, { name: "Bob", age: 25 }, { name: "Charlie", age: 35 }]
+  As JSON: [{"name":"Alice","age":30},{"name":"Bob","age":25},{"name":"Charlie","age":35}]
+```
