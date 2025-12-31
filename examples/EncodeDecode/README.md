@@ -1,36 +1,46 @@
-# Encoding & Decoding Abilities
+# Encoding with Static Dispatch (Minimal)
 
-An example for how to implement the builtin `Encoding` and `Decoding` abilities for an opaque type (`ItemKind`).
+A minimal example demonstrating encoding with static dispatch.
 
-Implementing these abilities for an opaque type like `ItemKind`, enables it to be used seamlessly within other data structures.
-This is useful when you would like to provide a custom mapping, such as in this example, between an integer and a [tag union](https://www.roc-lang.org/tutorial#tag-union-types).
+For a more advanced example with custom types, see [EncodeDecodeAdvanced](../EncodeDecodeAdvanced/).
 
-## Implementation
+<!-- TODO: Update to notebook file format once implemented in the new compiler -->
+
+## Overview
+
+The Encode module uses static dispatch via where clauses. To encode values, you define a format type with the required methods:
+
 ```roc
-file:main.roc:snippet:impl
+JsonFormat := [Format].{
+    encode_str : JsonFormat, Str -> Try(List(U8), [])
+    encode_str = |_fmt, str| {
+        quoted = "\"${str}\""
+        Ok(Str.to_utf8(quoted))
+    }
+
+    encode_list : JsonFormat, List(item), (item, JsonFormat -> Try(List(U8), err)) -> Try(List(U8), err)
+    encode_list = |fmt, items, encode_item| {
+        # Build JSON array...
+    }
+}
 ```
 
-## Demo
+Then use it:
+
 ```roc
-file:main.roc:snippet:demo
+json_fmt = JsonFormat.Format
+encoded = "Hello".encode(json_fmt)?  # => Ok(['"', 'H', 'e', 'l', 'l', 'o', '"'])
 ```
 
 ## Output
 
-Run this from the directory that has `main.roc` in it:
-
 ```
-$ roc dev
-(@ItemKind Text)
-(@ItemKind Method)
-(@ItemKind Function)
-(@ItemKind Constructor)
-(@ItemKind Field)
-(@ItemKind Variable)
-(@ItemKind Class)
-(@ItemKind Interface)
-(@ItemKind Module)
-(@ItemKind Property)
-```
+$ roc main.roc
+Encoded string:
+  Input: Hello, World!
+  As JSON: "Hello, World!"
 
-You can also use `roc test` to run the tests.
+Encoded list:
+  Input: ["Alice", "Bob", "Charlie"]
+  As JSON: ["Alice","Bob","Charlie"]
+```
