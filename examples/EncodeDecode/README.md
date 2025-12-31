@@ -1,54 +1,38 @@
-# Encoding with Static Dispatch
+# Encoding with Static Dispatch (Minimal)
 
-An example demonstrating the new Encode module with static dispatch using where clauses.
+A minimal example demonstrating encoding with static dispatch.
 
-Based on: https://github.com/roc-lang/roc/commit/22cf61ff9332f0de7a0d5d7f42b7f5836232a744
+For a more advanced example with custom types, see [EncodeDecodeAdvanced](../EncodeDecodeAdvanced/).
+
+<!-- TODO: Update to notebook file format once implemented in the new compiler -->
 
 ## Overview
 
-The Encode module uses static dispatch via where clauses:
-- `Str.encode` requires: `where [fmt.encode_str : fmt, Str -> List(U8)]`
-- `List.encode` requires: `where [fmt.encode_list : fmt, List(item), (item, fmt -> List(U8)) -> List(U8)]`
-
-This example shows how to create a custom JSON-like format type that implements these methods.
-
-## Custom Format Type
+The Encode module uses static dispatch via where clauses. To encode values, you define a format type with the required methods:
 
 ```roc
 JsonFormat := [Format].{
-    encode_str : JsonFormat, Str -> List(U8)
+    encode_str : JsonFormat, Str -> Try(List(U8), [])
     encode_str = |_fmt, str| {
         quoted = "\"${str}\""
-        Str.to_utf8(quoted)
+        Ok(Str.to_utf8(quoted))
     }
 
-    encode_list : JsonFormat, List(item), (item, JsonFormat -> List(U8)) -> List(U8)
+    encode_list : JsonFormat, List(item), (item, JsonFormat -> Try(List(U8), err)) -> Try(List(U8), err)
     encode_list = |fmt, items, encode_item| {
-        # Build JSON array: [item1,item2,...]
-        ...
+        # Build JSON array...
     }
 }
 ```
 
-## Custom Type Encoding
+Then use it:
 
 ```roc
-Person := [Person({ name : Str, age : U64 })].{
-    encode : Person, JsonFormat -> List(U8)
-    encode = |self, fmt| {
-        match self {
-            Person({ name, age }) => {
-                # Builds: {"name":"...","age":...}
-                ...
-            }
-        }
-    }
-}
+json_fmt = JsonFormat.Format
+encoded = "Hello".encode(json_fmt)?  # => Ok(['"', 'H', 'e', 'l', 'l', 'o', '"'])
 ```
 
 ## Output
-
-Run this from the directory that has `main.roc` in it:
 
 ```
 $ roc main.roc
@@ -56,15 +40,7 @@ Encoded string:
   Input: Hello, World!
   As JSON: "Hello, World!"
 
-Encoded list of strings:
+Encoded list:
   Input: ["Alice", "Bob", "Charlie"]
   As JSON: ["Alice","Bob","Charlie"]
-
-Encoded Person object:
-  Input: { name: "Alice", age: 30 }
-  As JSON: {"name":"Alice","age":30}
-
-Encoded list of Person objects:
-  Input: [{ name: "Alice", age: 30 }, { name: "Bob", age: 25 }, { name: "Charlie", age: 35 }]
-  As JSON: [{"name":"Alice","age":30},{"name":"Bob","age":25},{"name":"Charlie","age":35}]
 ```
