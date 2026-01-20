@@ -2,7 +2,7 @@
 
 Here are some small examples of ways to do various things in Roc.
 
-The following is based on the stable Rust compiler, and some of the syntax will not work with the new Zig compiler. If you would like to experiment with the unstable Zig compiler, you can try the [Advent of Code guide](https://gist.github.com/rtfeldman/f46bcbfe5132d62c4095dfa687bb9aa4).
+The following is based on the stable Rust compiler. Some of the syntax is deprecated and will not work with the new Zig compiler. If you would like to experiment with the unstable Zig compiler, you can try the [Advent of Code guide](https://gist.github.com/rtfeldman/f46bcbfe5132d62c4095dfa687bb9aa4).
 
 You can find the source code for all of these at [github.com/roc-lang/examples](https://github.com/roc-lang/examples/)
 
