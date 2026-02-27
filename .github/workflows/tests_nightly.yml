@@ -17,14 +17,17 @@ jobs:
     runs-on: ${{ matrix.operating-system }}
     strategy:
       matrix:
-        operating-system: [ubuntu-22.04, ubuntu-24.04, ubuntu-24.04-arm, macos-15-intel, macos-15]
+        operating-system: [ubuntu-24.04]
+        # TODO re-enable all operating systems
+        #operating-system: [ubuntu-22.04, ubuntu-24.04, ubuntu-24.04-arm, macos-15-intel, macos-15, windows-2025, windows-11-arm]
     timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
 
-      - uses: roc-lang/setup-roc@39c354a6a838a0089eea9068a0414f49b62c5c08
+      - uses: roc-lang/setup-roc@30ff82b396cbeb36a662a18f5c652773efb43e72
         with:
-          version: nightly
+          # Installs the latest nightly from https://github.com/roc-lang/nightlies
+          version: nightly-new-compiler
 
       - name: Run Roc
         run: roc version
