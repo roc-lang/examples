@@ -5,8 +5,8 @@ For example, instead of having `foo.name` to access the `name` field of a record
 you might write `foo.0` to access the first field in a tuple (or `foo.1` for the second
 field, etc.)
 
-
 ## Code
+
 ```roc
 file:main.roc
 ```
@@ -17,8 +17,9 @@ Run this from the directory that has `main.roc` in it:
 
 ```
 $ roc main.roc
-First is: A String,
+First is: Just a String,
 Second is: true,
-Third is: 15000000.
+Third is: 15000000.0.
+
 You also have some pears.
 ```
