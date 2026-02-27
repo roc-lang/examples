@@ -29,9 +29,9 @@ main! = |_args| {
 	match (fruit_selection, quantity) {
 		(_, 0) => echo!("You have no fruit.")
 		(Apple, 1) => echo!("You have an apple.")
-		(Apple, _) => echo!("You also have some apples.")
-		(Pear, _) => echo!("You also have some pears.")
-		(Banana, _) => echo!("You also have some bananas.")
+		(Apple, _) => echo!("You have some apples.")
+		(Pear, _) => echo!("You have some pears.")
+		(Banana, _) => echo!("You have some bananas.")
 	}
 
 	Ok({})
