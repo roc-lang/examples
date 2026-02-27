@@ -9,7 +9,7 @@ source ./ci_scripts/expect_scripts/shared-code.exp
 
 spawn ./examples/Tuples/main
 
-expect "First is: A String,\r\nSecond is: true,\r\nThird is: 15000000.\r\nYou also have some pears.\r\n" {
+expect "First is: A String,\r\nSecond is: true,\r\nThird is: 15000000.\r\nYou have some pears.\r\n" {
     expect eof {
         check_exit_and_segfault
     }
