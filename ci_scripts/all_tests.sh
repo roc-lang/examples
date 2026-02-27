@@ -17,6 +17,7 @@ fi
 
 # opt-in list of examples to test (add examples as they are updated for the new compiler)
 optin=(
+  "Tuples"
 )
 
 is_optin() {
