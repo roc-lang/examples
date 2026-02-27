@@ -26,8 +26,8 @@ for exclude in "${excludes[@]}"; do
     find_command+=" ! -path '$exclude*'"
 done
 
-# `roc format --check`` all roc files
+# `roc fmt --check`` all roc files
 for file in $(eval "$find_command"); do
-    echo "Checking if $file was formatted with roc format..."
-    $ROC format --check "$file"
+    echo "Checking if $file was formatted with roc fmt..."
+    $ROC fmt --check "$file"
 done
