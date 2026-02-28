@@ -96,7 +96,6 @@ if is_optin "CommandLineArgsFile"; then
 fi
 
 if is_optin "TryOperatorDesugaring"; then
-  $ROC build ./examples/TryOperatorDesugaring/main.roc
   $ROC test ./examples/TryOperatorDesugaring/main.roc
   expect ci_scripts/expect_scripts/TryOperatorDesugaring.exp
 fi

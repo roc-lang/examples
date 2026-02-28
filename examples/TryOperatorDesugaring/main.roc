@@ -8,7 +8,9 @@ main! = |_args| {
 	} else {
 		"${person2.name} is older than ${person1.name}"
 	}
+
 	echo!(msg)
+
 	Ok({})
 }
 
