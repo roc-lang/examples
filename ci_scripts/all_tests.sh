@@ -102,7 +102,6 @@ if is_optin "TryOperatorDesugaring"; then
 fi
 
 if is_optin "Tuples"; then
-  $ROC build ./examples/Tuples/main.roc
   expect ci_scripts/expect_scripts/Tuples.exp
 fi
 
