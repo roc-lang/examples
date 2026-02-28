@@ -1,37 +1,38 @@
-app [main!] { pf: platform "https://github.com/roc-lang/basic-cli/releases/download/0.20.0/X73hGh05nNTkDHU06FHC0YfFaQB1pimX7gncRcao5mU.tar.br" }
+main! : List(Str) => Try({}, _)
+main! = |_args| {
 
-import pf.Stdout
-import pf.Arg exposing [Arg]
+	# A tuple that contains three different types
+	simple_tuple : (Str, Bool, Dec)
+	simple_tuple = ("Just a String", True, 15_000_000)
 
-main! : List Arg => Result {} _
-main! = |_args|
+	# Access the items in a tuple by index (starts at 0)
+	first_item = simple_tuple.0
+	second_item = if simple_tuple.1 "true" else "false"
+	third_item = simple_tuple.2.to_str()
 
-    # a tuple that contains three different types
-    simple_tuple : (Str, Bool, I64)
-    simple_tuple = ("A String", Bool.true, 15_000_000)
+	echo!(
+		\\First is: ${first_item},
+		\\Second is: ${second_item},
+		\\Third is: ${third_item}.
+		\\
+		,
+	)
 
-    # access the items in a tuple by index (starts at 0)
-    first_item = simple_tuple.0
-    second_item = if simple_tuple.1 then "true" else "false"
-    third_item = Num.to_str(simple_tuple.2)
+	# You can also use tuples with `match`:
+	fruit_selection : [Apple, Pear, Banana]
+	fruit_selection = Pear
 
-    Stdout.line!(
-        """
-        First is: ${first_item},
-        Second is: ${second_item},
-        Third is: ${third_item}.
-        """,
-    )?
+	quantity = 12
 
-    # You can also use tuples with `when`:
-    fruit_selection : [Apple, Pear, Banana]
-    fruit_selection = Pear
+	# Create a tuple of fruites and quantities,
+	# So you can match on both of them
+	match (fruit_selection, quantity) {
+		(_, 0) => echo!("You have no fruit.")
+		(Apple, 1) => echo!("You have an apple.")
+		(Apple, _) => echo!("You have some apples.")
+		(Pear, _) => echo!("You have some pears.")
+		(Banana, _) => echo!("You have some bananas.")
+	}
 
-    quantity = 12
-
-    when (fruit_selection, quantity) is
-        # TODO re-enable when github.com/roc-lang/roc/issues/5530 is fixed.
-        # (_, qty) if qty == 0 -> Stdout.line! "You have no fruit."
-        (Apple, _) -> Stdout.line!("You also have some apples.")
-        (Pear, _) -> Stdout.line!("You also have some pears.")
-        (Banana, _) -> Stdout.line!("You also have some bananas.")
+	Ok({})
+}

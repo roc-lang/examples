@@ -16,18 +16,12 @@ if [ -z "${ROC}" ]; then
   exit 1
 fi
 
-# array of paths to exclude from format check
-# AllSyntax: The formatter changes `||`` into `or`, and we want to demonstrate both in the example
-excludes=( './examples/AllSyntax/main.roc' './roc_nightly/' )
+# opt-in list of files to format check (add files as they are updated for the new compiler)
+optin=(
+  "examples/Tuples/main.roc"
+)
 
-# Start the find command and loop through excludes to add them
-find_command="find . -name '*.roc'"
-for exclude in "${excludes[@]}"; do
-    find_command+=" ! -path '$exclude*'"
-done
-
-# `roc format --check`` all roc files
-for file in $(eval "$find_command"); do
-    echo "Checking if $file was formatted with roc format..."
-    $ROC format --check "$file"
+for file in "${optin[@]}"; do
+    echo "Checking if $file was formatted with roc fmt..."
+    $ROC fmt --check "$file"
 done
