@@ -18,6 +18,7 @@ fi
 
 # opt-in list of files to format check (add files as they are updated for the new compiler)
 optin=(
+  "examples/TryOperatorDesugaring/main.roc"
   "examples/Tuples/main.roc"
 )
 
