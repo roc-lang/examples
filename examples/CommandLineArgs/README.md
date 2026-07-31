@@ -23,5 +23,5 @@ Run this from the directory that has `main.roc` in it:
 
 ```
 $ roc main.roc some_argument
-received argument: some_argument
+received argument: "some_argument"
 ```

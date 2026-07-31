@@ -1,45 +1,46 @@
-app [main!] {
-    cli: platform "https://github.com/roc-lang/basic-cli/releases/download/0.20.0/X73hGh05nNTkDHU06FHC0YfFaQB1pimX7gncRcao5mU.tar.br",
-    json: "https://github.com/lukewilliamboswell/roc-json/releases/download/0.13.0/RqendgZw5e1RsQa3kFhgtnMP8efWoqGRsAvubx4-zus.tar.br",
-}
-
-import cli.Stdout
-import cli.Arg exposing [Arg]
-import json.Json
-
-# Note: use `--linker=legacy` flag on Linux due to https://github.com/roc-lang/roc/issues/3609
-
-main! : List Arg => Result {} _
-main! = |_args|
-    request_body = Str.to_utf8(
-        """
-        {"Image":{"Animated":false,"Height":600,"Ids":[116,943,234,38793],"Thumbnail":{"Height":125,"Url":"http://www.example.com/image/481989943","Width":100},"Title":"View from 15th Floor","Width":800}}
-        """,
-    )
-
-    # This { field_name_mapping: PascalCase } setting translates
-    # incoming JSON fields from PascalCase (first letter capitalized)
-    # to snake_case, which is what Roc field names always use.
-    decoder = Json.utf8_with({ field_name_mapping: PascalCase })
-
-    decoded : DecodeResult ImageRequest
-    decoded = Decode.from_bytes_partial(request_body, decoder)
-
-    when decoded.result is
-        Ok(record) -> Stdout.line!("Successfully decoded image, title:\"${record.image.title}\"")
-        Err(_) -> Err(Exit(1, "Error, failed to decode image"))
+json_str =
+	\\{
+	\\  "image": {
+	\\    "animated": false,
+	\\    "height": 600,
+	\\    "ids": [116, 943, 234, 38793],
+	\\    "thumbnail": {
+	\\      "height": 125,
+	\\      "url": "http://www.example.com/image/481989943",
+	\\      "width": 100
+	\\    },
+	\\    "title": "View from 15th Floor",
+	\\    "width": 800
+	\\  }
+	\\}
 
 ImageRequest : {
-    image : {
-        width : I64,
-        height : I64,
-        title : Str,
-        thumbnail : {
-            url : Str,
-            height : F32,
-            width : F32,
-        },
-        animated : Bool,
-        ids : List U32,
-    },
+	image : {
+		width : U32,
+		height : U32,
+		title : Str,
+		thumbnail : {
+			url : Str,
+			height : U32,
+			width : U32,
+		},
+		animated : Bool,
+		ids : List(U32),
+	},
+}
+
+main! = |_| {
+	decoded : Try(ImageRequest, _)
+	decoded = Json.parse(json_str)
+
+	match decoded {
+		Ok(record) => {
+			echo!("Successfully decoded image, title:\"${record.image.title}\"\n")
+			Ok({})
+		}
+		Err(_) => {
+			echo!("Error, failed to decode image\n")
+			Ok({})
+		}
+	}
 }

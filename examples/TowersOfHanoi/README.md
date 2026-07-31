@@ -13,6 +13,5 @@ Run this from the directory that has `Hanoi.roc` in it:
 
 ```
 $ roc test Hanoi.roc
-
-0 failed and 3 passed in 662 ms.
+All (3) tests passed in 9.2 ms.
 ```

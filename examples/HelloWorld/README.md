@@ -1,6 +1,6 @@
 # Hello, World!
 
-Printing [Hello World](https://en.wikipedia.org/wiki/%22Hello,_World!%22_program) to the command line using the [basic-cli platform](https://github.com/roc-lang/basic-cli):
+Printing [Hello World](https://en.wikipedia.org/wiki/%22Hello,_World!%22_program) to the command line using `echo!`:
 
 ## Code
 ```roc

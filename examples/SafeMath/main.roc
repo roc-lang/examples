@@ -1,8 +1,3 @@
-app [main!] { cli: platform "https://github.com/roc-lang/basic-cli/releases/download/0.20.0/X73hGh05nNTkDHU06FHC0YfFaQB1pimX7gncRcao5mU.tar.br" }
-
-import cli.Stdout
-import cli.Arg exposing [Arg]
-
 ## Safely calculates the variance of a population.
 ##
 ## variance formula: σ² = ∑(X - µ)² / N
@@ -14,49 +9,54 @@ import cli.Arg exposing [Arg]
 ##
 ## Performance note: safe or checked math prevents crashes but also runs slower.
 ##
-safe_variance : List (Frac a) -> Result (Frac a) [EmptyInputList, Overflow]
-safe_variance = |maybe_empty_list|
+safe_variance : List(Dec) -> Try(Dec, [EmptyInputList, Overflow])
+safe_variance = |maybe_empty_list| {
+	# Check length to prevent division by zero
+	match maybe_empty_list.len() {
+		0 => Err(EmptyInputList)
+		_ => {
+			non_empty_list = maybe_empty_list
 
-    # Check length to prevent division by zero
-    when List.len(maybe_empty_list) is
-        0 -> Err(EmptyInputList)
-        _ ->
-            non_empty_list = maybe_empty_list
+			# Length of list as a fraction (for compatibility in division)
+			n = non_empty_list.len().to_dec()
 
-            # Length of list as a fraction (for compatibility in division)
-            n = non_empty_list |> List.len |> Num.to_frac
+			mean =
+				non_empty_list # sum of all elements:
+					.fold_try(0.0, |state, elem| elem.plus_try(state))
+					.map_ok(|x| x / n)?
 
-            mean =
-                non_empty_list # sum of all elements:
-                |> List.walk_try(0.0, |state, elem| Num.add_checked(state, elem))
-                |> Result.map_ok(|x| x / n)?
+			non_empty_list
+				.fold_try(
+					0.0,
+					|state, elem| {
+						diff = elem.minus_try(mean)? # (X - µ)
+						squared = diff.times_try(diff)? # (X - µ)²
+						squared.plus_try(state) # ∑
+					},
+				)
+				.map_ok(|x| x / n)
+		}
+	}
+}
 
-            non_empty_list
-            |> List.walk_try(
-                0.0,
-                |state, elem|
-                    diff = Num.sub_checked(elem, mean)? # (X - µ)
-                    squared = Num.mul_checked(diff, diff)? # (X - µ)²
-                    Num.add_checked(squared, state), # ∑
-            )
-            |> Result.map_ok(|x| x / n)
+main! = |_| {
+	variance_result =
+		(
+			[46, 69, 32, 60, 52, 41]
+				->safe_variance(),
+		).map_ok(|v| v.to_str())
+			.map_ok(|v| "σ² = ${v}")
 
-main! : List Arg => Result {} _
-main! = |_args|
+	output_str =
+		match variance_result {
+			Ok(str) => str
+			Err(EmptyInputList) => "Error: EmptyInputList: I can't calculate the variance over an empty list."
+			Err(Overflow) => "Error: Overflow: When calculating the variance, a number got too large to store in the available memory for the type."
+		}
 
-    variance_result =
-        [46, 69, 32, 60, 52, 41]
-        |> safe_variance
-        |> Result.map_ok(Num.to_str)
-        |> Result.map_ok(|v| "σ² = ${v}")
-
-    output_str =
-        when variance_result is
-            Ok(str) -> str
-            Err(EmptyInputList) -> "Error: EmptyInputList: I can't calculate the variance over an empty list."
-            Err(Overflow) -> "Error: Overflow: When calculating the variance, a number got too large to store in the available memory for the type."
-
-    Stdout.line!(output_str)
+	echo!("${output_str}\n")
+	Ok({})
+}
 
 expect safe_variance([]) == Err(EmptyInputList)
 expect safe_variance([0]) == Ok(0)

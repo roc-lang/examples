@@ -21,12 +21,13 @@ After desugaring, this becomes:
 file:main.roc:snippet:desugared
 ```
 
-So `birth_year = Str.to_u16(birth_year_str)?` is converted to
+So `birth_year = U16.from_str(birth_year_str)?` is converted to
 
 ```roc
-when Str.to_u16(birth_year_str) is
-    Err(err2) -> return Err(err2)
-    Ok(birth_year) -> birth_year
+match U16.from_str(birth_year_str) {
+    Err(err2) => Err(err2),
+    Ok(birth_year) => birth_year,
+}
 ```
 As you can see, the first version is a lot nicer!
 
@@ -44,6 +45,6 @@ Run this from the directory that has `main.roc` in it:
 
 ```
 $ roc main.roc
-Ok({birth_year: 1990, name: "Alice"})
-Ok({birth_year: 1990, name: "Alice"})
+Ok({ birth_year: 1990, name: "Alice" })
+Ok({ birth_year: 1990, name: "Alice" })
 ```

@@ -1,10 +1,10 @@
 # Ingest Files
 
-To import files as a `Str` or a `List U8` (list of bytes):
+To import files as a `Str` or a `List(U8)` (list of bytes):
 
 ```roc
 import "some-file.txt" as some_str : Str
-import "some-file" as some_bytes : List U8
+import "some-file" as some_bytes : List(U8)
 ```
 
 This prevents needing to set up the error handling for the file reading.

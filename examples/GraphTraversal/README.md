@@ -14,5 +14,5 @@ Run this from the directory that has `Graph.roc` in it:
 ```
 $ roc test Graph.roc
 
-0 failed and 8 passed in 200 ms.
+All (8) tests passed in 3.5 ms.
 ```

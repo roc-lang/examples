@@ -13,38 +13,47 @@ Run this from the directory that has `main.roc` in it:
 
 ```
 $ roc main.roc
-{diff: 5, div: 2, div_trunc: 2, eq: Bool.false, gt: Bool.true, gteq: Bool.true, lt: Bool.false, lteq: Bool.false, neg: -10, neq: Bool.true, prod: 50, rem: 0, sum: 15}
-{bool_and: Bool.false, bool_and_keyword: Bool.false, bool_or: Bool.true, bool_or_keyword: Bool.true, not_a: Bool.false}
-"Pizza Roc"
+Hello, world!
+Hello, world! (using alias)
+{ diff: 5, div: 2, div_trunc: 2, eq: False, gt: True, gteq: True, lt: False, lteq: False, neg: -10, neq: True, prod: 50, rem: 0, sum: 15 }
+{ bool_and_keyword: False, bool_or_keyword: True, not_a: False }
+"One Two"
+"Three Four"
+The color is red.
+78
+Success
+Line 1
+Line 2
+Line 3
+Unicode escape sequence:  
+This is an effectful function!
+Ok(1)
+Err(NoFirstError(ListWasEmpty))
+Err(NoFirstError(ListWasEmpty))
+15.0
+False
+10.0
+[dbg] 42.0
+42.0
+NotOneTwoNotFive
+("Roc", 1.0)
+["a", "b"]
+("Roc", 1.0, 1.0, 1.0)
 42
-Hello, Venus!This is a multiline string.
-You can call functions inside $... too: 2
-Unicode escape sequence:  
-"Success"
-Hello, world!
-Hello, world!
-Hello, world!
-Hello, world!
-Hello, world!
-(Ok {})
-"False"
-("Roc", 1)
-Red
-[1, 2]
-(TagFour 42)
-default
-("Roc", 1, 1, 1)
-{x: 1, y: 3}
-44
-[./examples/AllSyntax/main.roc:119] a = 42
-[./examples/AllSyntax/main.roc:122] 43 = 43
-{}
-4
-(5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5.0, 5, 5, 5)
-Rocco
-42
+10.0
+{ age: 31, name: "Alice" }
+{ age: 30, name: "Alice" }
+{ binary: 5.0, explicit_i128: 5, explicit_i16: 5, explicit_i32: 5, explicit_i64: 5, explicit_i8: 5, explicit_u128: 5, explicit_u16: 5, explicit_u32:5, explicit_u64: 5, explicit_u8: 5, hex: 5.0, octal: 5.0, usage_based: 5.0 }
+<opaque>
+"The secret key is: my_secret_key"
+False
 99
-(Ok {age: 25, city: "NYC", name: "Alice"})
-Bool.true
+"12345.0"
+"Foo with 42 and hello"
+"other color"
+"Names: Alice, Bob, Charlie"
+"A"
+"other letter"
+True
 ```
 
