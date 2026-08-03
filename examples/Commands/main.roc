@@ -3,7 +3,6 @@ app [main!] {
 }
 
 import cli.Stdout
-import cli.Stderr
 import cli.Cmd
 
 # Different ways to run commands like you do in a terminal.
