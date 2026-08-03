@@ -30,7 +30,7 @@ safe_variance = |maybe_empty_list| {
 					0.0,
 					|state, elem| {
 						diff = elem.minus_try(mean)? # (X - µ)
-						squared = diff.times_try(diff)? # (X - µ)²
+						squared = times_try(diff, diff)? # (X - µ)²
 						squared.plus_try(state) # ∑
 					},
 				)
@@ -63,3 +63,16 @@ expect safe_variance([0]) == Ok(0)
 expect safe_variance([100]) == Ok(0)
 expect safe_variance([4, 22, 99, 204, 18, 20]) == Ok(5032.138888888888888888)
 expect safe_variance([46, 69, 32, 60, 52, 41]) == Ok(147.666666666666666666)
+
+# The following function should soon be available in the Roc builtins
+times_try : Dec, Dec -> Try(Dec, [Overflow, ..])
+times_try = |a, b| {
+	result = a.times_saturated(b)
+	if result == Dec.lowest or result == Dec.highest {
+		# For simplicity, some edge cases are ignored here, such as
+		# Dec.highest.times_try(1)
+		Err(Overflow)
+	} else {
+		Ok(result)
+	}
+}
