@@ -13,8 +13,8 @@ file:main.roc
 Run this from the directory that has `main.roc` in it:
 
 ```
-$ roc main.roc
-I counted 7 letter A's!
+$ roc main.roc -- ABRACADABRA
+I counted 5 letter A's!
 ```
 
 Run unit tests with `roc test main.roc`
