@@ -1,16 +1,15 @@
 ### start snippet header
 app [main!] {
-    cli: platform "https://github.com/roc-lang/basic-cli/releases/download/0.20.0/X73hGh05nNTkDHU06FHC0YfFaQB1pimX7gncRcao5mU.tar.br",
-    unicode: "https://github.com/roc-lang/unicode/releases/download/0.3.0/9KKFsA4CdOz0JIOL7iBSI_2jGIXQ6TsFBXgd086idpY.tar.br",
+    cli: platform "https://github.com/roc-lang/basic-cli/releases/download/0.21.0/4rAQg8kUYZ3Vksr4qMQHpaFYNiHSn9GgS7gVxghd1XYV.tar.zst",
+    unicode: "https://github.com/roc-lang/unicode/releases/download/2.0.0/9ZvqNzsNkpqFmGTeATAY3BNBD7mP41jqZx2w2N19tBvh.tar.zst",
 }
 ### end snippet header
 
 import cli.Stdout
-import cli.Arg exposing [Arg]
 import Module
 
-main! : List Arg => Result {} _
-main! = |_args|
+main! = |_args| {
     Module.split_graphemes("hello")
-    |> Inspect.to_str
+    |> Str.inspect
     |> Stdout.line!
+}
