@@ -6,6 +6,7 @@ app [main!] {
 import cli.Stdout
 import cli.Stderr
 import cli.File
+import cli.OsStr
 import cli.Path
 
 run! = |args| {
@@ -19,6 +20,7 @@ run! = |args| {
 	Stdout.line!("First line in file:\n${file_first_line_str}")
 }
 
+main! : List(OsStr) => Try({}, [Exit(I32), ..])
 main! = |args| {
 	match run!(args) {
 		Ok(_) => Ok({})
