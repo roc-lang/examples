@@ -14,7 +14,7 @@ ItemKind := [
 ].{
 	is_eq : _ # enable the default is_eq implementation
 
-    to_inspect = |ItemKind.(item_kind)| "ItemKind.(${Str.inspect(item_kind)})"
+	to_inspect = |ItemKind.(item_kind)| "ItemKind.(${Str.inspect(item_kind)})"
 
 	encoder_for : encoding -> (ItemKind, state -> Try(state, []))
 		where [
@@ -104,7 +104,7 @@ main! = |_args| {
 		|> List.map(Str.inspect)
 		|> Str.join_with("\n")
 		|> echo!
-    echo!("\n")
+	echo!("\n")
 	Ok({})
 }
 

@@ -16,7 +16,7 @@ ImageRequest : {
 main! = |args| {
 	input_str = match args {
 		[_prog_name, first_arg, ..] => first_arg
-		_ =>  # use default JSON
+		_ => # use default JSON
 			\\{
 			\\  "image": {
 			\\    "animated": false,
@@ -31,7 +31,7 @@ main! = |args| {
 			\\    "width": 800
 			\\  }
 			\\}
-	}
+		}
 
 	decoded : Try(ImageRequest, _)
 	decoded = Json.parse(input_str)

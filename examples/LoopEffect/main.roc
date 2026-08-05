@@ -1,5 +1,5 @@
 app [main!] {
-    cli: platform "https://github.com/roc-lang/basic-cli/releases/download/0.21.0/4rAQg8kUYZ3Vksr4qMQHpaFYNiHSn9GgS7gVxghd1XYV.tar.zst",
+	cli: platform "https://github.com/roc-lang/basic-cli/releases/download/0.21.0/4rAQg8kUYZ3Vksr4qMQHpaFYNiHSn9GgS7gVxghd1XYV.tar.zst",
 }
 
 import cli.Stdin
@@ -10,36 +10,36 @@ import cli.OsStr
 ## recursive function that sums every number that is provided through stdin
 add_number_from_stdin! : I64 => Try(I64, _)
 add_number_from_stdin! = |sum| {
-    match Stdin.line!() {
-        Ok(input) => {
-            num = I64.from_str(input) ? |_| NotNum(input)
-            add_number_from_stdin!((sum + num))
-        }
-        Err(EndOfFile) => Ok(sum),
-        Err(err) => Err(NotNum(Str.inspect(err))),
-    }
+	match Stdin.line!() {
+		Ok(input) => {
+			num = I64.from_str(input) ? |_| NotNum(input)
+			add_number_from_stdin!((sum + num))
+		}
+		Err(EndOfFile) => Ok(sum)
+		Err(err) => Err(NotNum(Str.inspect(err)))
+	}
 }
 
 run! : () => Try({}, _)
 run! = || {
-    Stdout.line!("Enter some numbers on different lines, then press Ctrl-D to sum them up.")?
+	Stdout.line!("Enter some numbers on different lines, then press Ctrl-D to sum them up.")?
 
-    sum = add_number_from_stdin!(0)?
+	sum = add_number_from_stdin!(0)?
 
-    Stdout.line!("Sum: ${sum.to_str()}")
+	Stdout.line!("Sum: ${sum.to_str()}")
 }
 
 main! : List(OsStr) => Try({}, [Exit(I32), ..])
 main! = |_args| {
-    match run!() {
-        Ok({}) => Ok({}),
-        Err(NotNum(text)) => {
-            _ = Stderr.line!("Error: \"${text}\" is not a valid I64 number.")
-            Err(Exit(1))
-        }
-        Err(err) => {
-            _ = Stderr.line!("Error: ${Str.inspect(err)}")
-            Err(Exit(1))
-        }
-    }
+	match run!() {
+		Ok({}) => Ok({})
+		Err(NotNum(text)) => {
+			_ = Stderr.line!("Error: \"${text}\" is not a valid I64 number.")
+			Err(Exit(1))
+		}
+		Err(err) => {
+			_ = Stderr.line!("Error: ${Str.inspect(err)}")
+			Err(Exit(1))
+		}
+	}
 }

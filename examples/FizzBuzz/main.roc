@@ -2,8 +2,8 @@ main! = |_| {
 	output =
 		(1..=100)
 			.map(fizz_buzz)
-			->List.from_iter()
-			->Str.join_with(",")
+			|> List.from_iter
+			|> Str.join_with(",")
 
 	echo!("${output}\n")
 	Ok({})

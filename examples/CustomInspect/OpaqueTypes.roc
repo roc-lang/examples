@@ -31,7 +31,7 @@ main! = |_| {
 CreditCard :: Str.{
 	create = |nb| CreditCard.(nb)
 	to_inspect = |CreditCard.(nb)| {
-		last_four_digits = nb.to_utf8().take_last(4)->Str.from_utf8() ?? "****"
+		last_four_digits = nb.to_utf8().take_last(4) |> Str.from_utf8 ?? "****"
 		"**** **** **** ${last_four_digits}"
 	}
 }

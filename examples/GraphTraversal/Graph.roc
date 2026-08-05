@@ -178,7 +178,7 @@ test_graph_small =
 		("F-BFS", []),
 		("F-DFS", []),
 	]
-		->Graph.from_list()
+		|> Graph.from_list
 
 test_graph_large =
 	[
@@ -214,7 +214,7 @@ test_graph_large =
 		("AD", []),
 		("AE", []),
 	]
-		->Graph.from_list()
+		|> Graph.from_list
 
 test_graph_multipath =
 	[
@@ -223,4 +223,4 @@ test_graph_multipath =
 		("Correct", []),
 		("Cwrong", []),
 	]
-		->Graph.from_list()
+		|> Graph.from_list

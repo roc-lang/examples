@@ -43,7 +43,7 @@ main! = |_| {
 	variance_result =
 		(
 			[46, 69, 32, 60, 52, 41]
-				->safe_variance(),
+				|> safe_variance
 		).map_ok(|v| v.to_str())
 			.map_ok(|v| "σ² = ${v}")
 

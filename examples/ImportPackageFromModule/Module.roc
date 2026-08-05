@@ -1,5 +1,5 @@
 import unicode.Grapheme
 
 Module :: {}.{
-    split_graphemes = |string| Grapheme.split(string)
+	split_graphemes = |string| Grapheme.split(string)
 }
