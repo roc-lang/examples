@@ -17,7 +17,7 @@ safe_variance = |maybe_empty_list| {
 		_ => {
 			non_empty_list = maybe_empty_list
 
-			# Length of list as a fraction (for compatibility in division)
+			# Length of list as a Dec (for compatibility in division)
 			n = non_empty_list.len().to_dec()
 
 			mean =

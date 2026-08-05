@@ -55,7 +55,7 @@ expect {
 }
 
 # Match a list with these exact elements:
-# Foo, Bar, and then (Baz "Hi")
+# Foo, Bar, and then Baz("Hi")
 expect {
 	match_fn = |input|
 		match input {

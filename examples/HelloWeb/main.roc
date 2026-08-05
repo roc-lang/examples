@@ -24,6 +24,7 @@ program = { init!, respond!, shutdown! }
 # startup data. This example has no startup data, so its context is `{}`.
 init! : () => Try({ config : Server.Config, context : Context }, [Exit(I64), ..])
 init! = || {
+	# TODO: simplify this. We don't need acces log, metrics... in hello web example.
 	config = Server.default_config
 		.with_access_log(
 			Server.json_lines_access_log({

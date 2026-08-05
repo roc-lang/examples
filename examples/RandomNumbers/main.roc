@@ -13,7 +13,7 @@ main! = |_args| {
 	# Print a list of 10 random numbers.
 	numbers_str =
 		random_numbers
-			|> List.map(U32.to_str)
+			.map(U32.to_str)
 			|> Str.join_with("\n")
 
 	_ = Stdout.line!(numbers_str)

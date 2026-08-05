@@ -1,16 +1,19 @@
 Hanoi := State
 
+## The three rods of the Tower of Hanoi problem.
+Rod : [A, B, C]
+
 State : {
 	num_disks : U32, # number of disks in the Tower of Hanoi problem
-	from : Str, # identifier of the source rod
-	to : Str, # identifier of the target rod
-	using : Str, # identifier of the auxiliary rod
-	moves : List((Str, Str)), # list of moves done so far
+	from : Rod, # source rod (all disks start on this rod)
+	to : Rod, # target rod
+	using : Rod, # auxiliary rod
+	moves : List((Rod, Rod)), # list of moves done so far
 }
 
 ## Solves the Tower of Hanoi problem using recursion. Returns a list of moves
 ## which represent the solution.
-hanoi : State -> List((Str, Str))
+hanoi : State -> List((Rod, Rod))
 hanoi = |{ num_disks, from, to, using, moves }| {
 	if num_disks == 1 {
 		moves.concat([(from, to)])
@@ -35,14 +38,15 @@ hanoi = |{ num_disks, from, to, using, moves }| {
 	}
 }
 
-start = { num_disks: 0, from: "A", to: "B", using: "C", moves: [] }
+start : State
+start = { num_disks: 0, from: A, to: B, using: C, moves: [] }
 
 ## Test Case 1: Tower of Hanoi with 1 disk
 expect {
 	actual = hanoi({ ..start, num_disks: 1 })
 	actual
 		== [
-			("A", "B"),
+			(A, B),
 		]
 }
 
@@ -51,9 +55,9 @@ expect {
 	actual = hanoi({ ..start, num_disks: 2 })
 	actual
 		== [
-			("A", "C"),
-			("A", "B"),
-			("C", "B"),
+			(A, C),
+			(A, B),
+			(C, B),
 		]
 }
 
@@ -62,12 +66,12 @@ expect {
 	actual = hanoi({ ..start, num_disks: 3 })
 	actual
 		== [
-			("A", "B"),
-			("A", "C"),
-			("B", "C"),
-			("A", "B"),
-			("C", "A"),
-			("C", "B"),
-			("A", "B"),
+			(A, B),
+			(A, C),
+			(B, C),
+			(A, B),
+			(C, A),
+			(C, B),
+			(A, B),
 		]
 }

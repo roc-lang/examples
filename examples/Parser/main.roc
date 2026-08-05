@@ -35,8 +35,8 @@ Letter : [A, B, C, Other]
 count_letter_a : List(Letter) -> Str
 count_letter_a = |letters| {
 	letters
-		|> List.count_if(|l| l == A)
-		|> U64.to_str
+		.count_if(|l| l == A)
+		.to_str()
 }
 
 # Parser to convert utf8 input into Letter [tags](https://www.roc-lang.org/tutorial#tags)
