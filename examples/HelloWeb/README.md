@@ -14,7 +14,7 @@ file:main.roc
 Run this from the directory that has `main.roc` in it and go to http://localhost:8000/ in your browser:
 
 ```
-$ roc main.roc --linker=legacy
+$ roc main.roc
 Listening on http://127.0.0.1:8000
 ```
 

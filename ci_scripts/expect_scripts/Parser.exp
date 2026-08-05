@@ -10,7 +10,7 @@ source ./ci_scripts/expect_scripts/shared-code.exp
 spawn ./examples/Parser/main
 
 
-expect "I counted 7 letter A's!\r\n" {
+expect "I counted 5 letter A's!\r\n" {
     expect eof {
         check_exit_and_segfault
     }

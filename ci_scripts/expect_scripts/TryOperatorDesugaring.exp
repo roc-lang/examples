@@ -9,7 +9,7 @@ source ./ci_scripts/expect_scripts/shared-code.exp
 
 spawn ./examples/TryOperatorDesugaring/main
 
-expect -exact "(Ok {birth_year: 1990, name: \"Alice\"})\r\n(Ok {birth_year: 1990, name: \"Alice\"})\r\n" {
+expect -exact "Ok({ birth_year: 1990, name: \"Alice\" })\r\nOk({ birth_year: 1990, name: \"Alice\" })\r\n" {
     expect eof {
         check_exit_and_segfault
     }

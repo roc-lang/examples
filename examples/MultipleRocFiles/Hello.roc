@@ -7,4 +7,4 @@ Hello :: {}.{
 }
 
 # Anything located outside of the Hello type can only be used in this file.
-module_name = "Hello.roc"
+module_name = "Hello module"

@@ -6,10 +6,8 @@ app [main!] {
 ### end snippet header
 
 import cli.Stdout
-import cli.OsStr
 import Module
 
-main! : List(OsStr) => Try({}, [Exit(I32), ..])
 main! = |_args| {
     Module.split_graphemes("hello")
     |> Str.inspect

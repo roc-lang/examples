@@ -7,4 +7,4 @@ Hello :: {}.{
 }
 
 # Anything located outside of the Hello type can only be used in this file.
-module_name = "Dir.Hello module"
+module_name = "Dir/Hello module"

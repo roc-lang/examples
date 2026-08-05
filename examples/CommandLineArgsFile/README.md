@@ -22,5 +22,5 @@ Run this from the directory that has `main.roc` in it:
 ```
 $ roc -- input.txt
 First line in file:
-This is the first line.
+My candle burns at both ends;
 ```

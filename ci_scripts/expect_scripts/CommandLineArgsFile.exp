@@ -1,7 +1,7 @@
 #!/usr/bin/expect
 
 # uncomment line below for debugging
-# exp_internal 1
+exp_internal 1
 
 set timeout 7
 
@@ -9,7 +9,7 @@ source ./ci_scripts/expect_scripts/shared-code.exp
 
 spawn ./examples/CommandLineArgsFile/main examples/CommandLineArgsFile/input.txt 
 
-expect "file content: 42\r\n" {
+expect "First line in file:\r\nMy candle burns at both ends;\r\n\r\n" {
     expect eof {
         check_exit_and_segfault
     }

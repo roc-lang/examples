@@ -9,7 +9,7 @@ source ./ci_scripts/expect_scripts/shared-code.exp
 
 spawn ./examples/CommandLineArgs/main some_argument 
 
-expect "received argument: some_argument\r\n" {
+expect "received argument: \"some_argument\"\r\n" {
     expect eof {
         check_exit_and_segfault
     }

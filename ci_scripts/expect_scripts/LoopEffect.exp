@@ -27,9 +27,9 @@ expect "Sum: 2\r\n" {
     send -- "1\r"
     send -- "a\r"
 
-    expect "\"a\" is not a valid I64 number." {
+    expect "Error: \"a\" is not a valid I64 number.\r\n" {
       expect eof {
-          check_exit_and_segfault
+          check_exit_and_segfault 1
       }
     }
 

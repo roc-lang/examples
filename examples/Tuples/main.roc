@@ -5,14 +5,11 @@ main! = |_| {
 
 	# access the items in a tuple by index (starts at 0)
 	first_item = simple_tuple.0
-	second_item = if simple_tuple.1 {
-		"True"
-	} else {
-		"False"
-	}
+	second_item = simple_tuple.1
+
 	third_item = simple_tuple.2.to_str()
 
-	echo!("First is: ${first_item},\nSecond is: ${second_item},\nThird is: ${third_item}.\n")
+	echo!("First is: ${first_item},\nSecond is: ${Str.inspect(second_item)},\nThird is: ${third_item}.\n")
 
 	# You can also use tuples with `match`:
 	fruit_selection : [Apple, Pear, Banana]

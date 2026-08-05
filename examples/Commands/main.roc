@@ -8,7 +8,6 @@ import cli.OsStr
 
 # Different ways to run commands like you do in a terminal.
 
-main! : List(OsStr) => Try({}, [Exit(I32), ..])
 main! = |_args| {
     # Simplest way to execute a command (prints to your terminal).
     Cmd.exec!("echo", ["Hello"])?
