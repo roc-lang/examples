@@ -1,6 +1,7 @@
 app [main!] {
 	cli: platform "https://github.com/roc-lang/basic-cli/releases/download/0.21.0/4rAQg8kUYZ3Vksr4qMQHpaFYNiHSn9GgS7gVxghd1XYV.tar.zst",
 	parser: "https://github.com/lukewilliamboswell/roc-parser/releases/download/1.0.2/FrnJ4RGDKpQyoDyESNoBwFNviY4ZGbMVLnUjW9tvSRjk.tar.zst",
+	roc: "nightly-2026-08-08-195c9e7",
 }
 
 import cli.Stdout
@@ -43,10 +44,10 @@ count_letter_a = |letters| {
 letter_parser : Parser(List(U8), Letter)
 letter_parser =
 	one_of([
-		codeunit('A') |> map(|_| A),
-		codeunit('B') |> map(|_| B),
-		codeunit('C') |> map(|_| C),
-		any_codeunit |> map(|_| Other),
+		codeunit('A').map(|_| A),
+		codeunit('B').map(|_| B),
+		codeunit('C').map(|_| C),
+		any_codeunit.map(|_| Other),
 	])
 
 # Test parsing a single letter B

@@ -33,7 +33,7 @@ You can find the source code for all of these at [github.com/roc-lang/examples](
 - [Looping Effectful Functions](/LoopEffect/README.html)
 - [Snake Game](/Snake/README.html)
 - [Record Builder](/RecordBuilder/README.html)
-- [Encoding & Decoding Abilities](/EncodeDecode/README.html)
+- [Encoding & Decoding](/EncodeDecode/README.html)
 - [Custom Inspect](/CustomInspect/README.html)
 - [Least Squares](/LeastSquares/README.html)
 - [Towers of Hanoi](/TowersOfHanoi/README.html)

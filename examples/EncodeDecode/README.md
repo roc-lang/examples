@@ -1,4 +1,4 @@
-# Encoding & Decoding Abilities
+# Encoding & Decoding (Parsing)
 
 An example for how to implement the builtin `encoder_for` and `parser_for` functions for a nominal type (`ItemKind`).
 
