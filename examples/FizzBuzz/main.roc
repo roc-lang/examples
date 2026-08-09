@@ -1,32 +1,33 @@
-app [main!] { cli: platform "https://github.com/roc-lang/basic-cli/releases/download/0.20.0/X73hGh05nNTkDHU06FHC0YfFaQB1pimX7gncRcao5mU.tar.br" }
+main! = |_| {
+	output =
+		(1..=100)
+			.map(fizz_buzz)
+			|> List.from_iter
+			|> Str.join_with(",")
 
-import cli.Stdout
-import cli.Arg exposing [Arg]
-
-main! : List Arg => Result {} _
-main! = |_args|
-    List.range({ start: At(1), end: At(100) })
-    |> List.map(fizz_buzz)
-    |> Str.join_with(",")
-    |> Stdout.line!
+	echo!("${output}\n")
+	Ok({})
+}
 
 ## Determine the FizzBuzz value for a given integer.
 ## Returns "Fizz" for multiples of 3, "Buzz" for
 ## multiples of 5, "FizzBuzz" for multiples of both
 ## 3 and 5, and the original number for anything else.
 fizz_buzz : I32 -> Str
-fizz_buzz = |n|
-    fizz = n % 3 == 0
-    buzz = n % 5 == 0
+fizz_buzz = |n| {
+	fizz = n % 3 == 0
+	buzz = n % 5 == 0
 
-    if fizz and buzz then
-        "FizzBuzz"
-    else if fizz then
-        "Fizz"
-    else if buzz then
-        "Buzz"
-    else
-        Num.to_str(n)
+	if fizz and buzz {
+		"FizzBuzz"
+	} else if fizz {
+		"Fizz"
+	} else if buzz {
+		"Buzz"
+	} else {
+		n.to_str()
+	}
+}
 
 ## Test Case 1: not a multiple of 3 or 5
 expect fizz_buzz(1) == "1"

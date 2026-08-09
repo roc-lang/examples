@@ -18,7 +18,7 @@ Run this from the directory that has `main.roc` in it:
 ```
 $ roc main.roc
 First is: A String,
-Second is: true,
+Second is: True,
 Third is: 15000000.
 You also have some pears.
 ```

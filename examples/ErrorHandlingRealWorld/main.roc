@@ -1,151 +1,183 @@
 app [main!] {
-    cli: platform "https://github.com/roc-lang/basic-cli/releases/download/0.20.0/X73hGh05nNTkDHU06FHC0YfFaQB1pimX7gncRcao5mU.tar.br",
+	cli: platform "https://github.com/roc-lang/basic-cli/releases/download/0.21.0/4rAQg8kUYZ3Vksr4qMQHpaFYNiHSn9GgS7gVxghd1XYV.tar.zst",
+	roc: "nightly-2026-08-08-195c9e7",
 }
 
 import cli.Stdout
-import cli.Arg exposing [Arg]
+import cli.Stderr
 import cli.Env
 import cli.Http
-import cli.Dir
-import cli.Utc exposing [Utc]
-import cli.Path exposing [Path]
+import cli.Utc
+import cli.Path
+import cli.OsStr
+import cli.Url
 
 usage = "HELLO=1 roc main.roc -- \"https://www.roc-lang.org\" roc.html"
 
-main! : List Arg => Result {} _
-main! = |args|
-    run!(args)
-    |> Result.map_err(
-        |err|
-            Exit(1, "Error: ${make_error_msg(err)}\n\nExample usage: ${usage}"),
-    )
+run! = |args| {
+	# Get time since [Unix Epoch](https://en.wikipedia.org/wiki/Unix_time)
+	start_time = Utc.now!()
 
-run! : List Arg => Result {} _
-run! = |args|
+	# Read the HELLO environment variable
+	hello_env = read_env_var!("HELLO")?
 
-    # Get time since [Unix Epoch](https://en.wikipedia.org/wiki/Unix_time)
-    start_time : Utc
-    start_time = Utc.now!({}) # We use {} because effects need to be functions.
+	Stdout.line!("HELLO env var was set to ${hello_env}.")?
 
-    # Read the HELLO environment variable
-    hello_env : Str
-    hello_env =
-        read_env_var!("HELLO")?
+	# Read command line arguments
+	{ url, output_path } = parse_args!(args)?
 
-    Stdout.line!("HELLO env var was set to ${hello_env}.")?
+	Stdout.line!("Fetching content from ${url}...")?
 
-    # Read command line arguments
-    { url, output_path } = parse_args!(args)?
+	# Fetch the provided url using HTTP
+	html_str = fetch_html!(url)?
 
-    Stdout.line!("Fetching content from ${url}...")?
+	Stdout.line!("Saving HTML to ${OsStr.display(output_path.to_os_str())}...")?
 
-    # Fetch the provided url using HTTP
-    html_str : Str
-    html_str = fetch_html!(url)?
+	# Write HTML string to a file
+	output_path.write_utf8!(html_str) ? |err| FailedToWriteFile(OsStr.display(output_path.to_os_str()), err)
 
-    Stdout.line!("Saving HTML to ${Path.display(output_path)}...")?
+	# Print contents of current working directory
+	cwd_contents = list_cwd_contents!({})?
 
-    # Write HTML string to a file
-    Path.write_utf8!(html_str, output_path) ? |err| FailedToWriteFile(Path.display(output_path), err)
+	Stdout.line!("Contents of current directory: ${cwd_contents}")?
 
-    # Print contents of current working directory
-    cwd_contents = list_cwd_contents!({})?
+	end_time = Utc.now!()
 
-    Stdout.line!("Contents of current directory: ${cwd_contents}")?
+	run_duration = Utc.delta_as_millis(start_time, end_time)
 
-    end_time : Utc
-    end_time = Utc.now!({})
+	Stdout.line!("Run time: ${run_duration.to_str()} ms")?
 
-    run_duration = Utc.delta_as_millis(start_time, end_time)
+	Stdout.line!("Done")
+}
 
-    Stdout.line!("Run time: ${Num.to_str(run_duration)} ms")?
+parse_args! = |args| {
+	match args {
+		[_, first_arg, second_arg, ..] => {
+			url = OsStr.display(first_arg)
+			Ok({ url, output_path: Path.from_os_str(second_arg) })
+		}
+		bad_args => Err(FailedToReadArgs(bad_args))
+	}
+}
 
-    Stdout.line!("Done")
+read_env_var! = |env_var_name| {
+	match Env.var!(OsStr.from_str(env_var_name)) {
+		Ok(env_var_os_str) => {
+			env_var_str = OsStr.display(env_var_os_str)
+			if Str.is_empty(env_var_str) {
+				Err(EnvVarSetEmpty(env_var_name))
+			} else {
+				Ok(env_var_str)
+			}
+		}
+		Err(VarNotFound(var_os_str)) => Err(VarNotFound(var_os_str))
+		Err(other) => Err(OtherEnvErr(Str.inspect(other)))
+	}
+}
 
-parse_args! : List Arg => Result { url : Str, output_path : Path } _
-parse_args! = |args|
-    when List.map(args, Arg.display) is
-        [_, first, second, ..] ->
-            Ok({ url: first, output_path: Path.from_str(second) })
+fetch_html! = |url_str| {
+	url = Url.parse(url_str) ? |err| FailedToParseUrl(url_str, err)
+	html_str = Http.get_utf8!(url) ? |err| FailedToFetchHtml(url_str, err)
+	Ok(html_str)
+}
 
-        bad_args ->
-            Err(FailedToReadArgs(bad_args))
+list_cwd_contents! = |{}| {
+	p = Path.from_os_str(OsStr.from_str("."))
+	dir_contents = p.list!() ? |err| FailedToListCwd(err)
 
-read_env_var! : Str => Result Str [VarNotFound Str, EnvVarSetEmpty Str]
-read_env_var! = |env_var_name|
-    when Env.var!(env_var_name) is
-        Ok(env_var_str) ->
-            if Str.is_empty(env_var_str) then
-                Err(EnvVarSetEmpty(env_var_name))
-            else
-                Ok(env_var_str)
+	contents_str =
+		dir_contents
+			.map(|path| OsStr.display(path.to_os_str()))
+			|> Str.join_with(",")
 
-        err -> err
-
-fetch_html! : Str => Result Str _
-fetch_html! = |url|
-    Http.get_utf8!(url)
-    |> Result.map_err(
-        |err| FailedToFetchHtml(url, err),
-    )
-
-# effects need to be functions, so we use the empty input type `{}`
-list_cwd_contents! : {} => Result Str [FailedToListCwd _]
-list_cwd_contents! = |_|
-
-    dir_contents =
-        Dir.list!(".") ? FailedToListCwd
-
-    contents_str =
-        dir_contents
-        |> List.map(Path.display)
-        |> Str.join_with(",")
-
-    Ok(contents_str)
+	Ok(contents_str)
+}
 
 # In a professional application, it's recommended to use error tags throughout your program and
 # convert them into user-friendly messages (in the user's language) at the application's edge.
-make_error_msg : _ -> Str
-make_error_msg = |error|
-    when error is
-        FailedToReadArgs(bad_args) ->
-            """
-            Failed to read command line arguments, I received: ${Inspect.to_str(bad_args)}
-            """
-
-        VarNotFound(var_name) ->
-            """
-            Environment variable '${var_name}' was not found.
-            Set the variable before running the application.
-            """
-
-        EnvVarSetEmpty(var_name) ->
-            """
-            Environment variable '${var_name}' was empty.
-            Provide a non-empty value for this variable.
-            """
-
-        FailedToFetchHtml(url, err) ->
-            """
-            Failed to fetch HTML content for URL: ${url}
-
-            Error: ${Inspect.to_str(err)}
-
-            Check the URL and your internet connection.
-            """
-
-        FailedToWriteFile(path_str, err) ->
-            """
-            Failed to write file: ${path_str}
-
-            Error: ${Inspect.to_str(err)}
-            """
-
-        FailedToListCwd(err) ->
-            """
-            Failed to list current directory contents of current directory.
-            Error: ${Inspect.to_str(err)}
-            """
-
-        other ->
-            "An unexpected error occurred: ${Inspect.to_str(other)}"
+main! = |args| {
+	match run!(args) {
+		Ok(_) => Ok({})
+		Err(FailedToReadArgs(bad_args)) => {
+			_ = Stderr.line!(
+				\\Failed to read command line arguments, I received: ${Str.inspect(bad_args)}
+				\\
+				\\Example usage: ${usage}
+				,
+			)
+			Err(Exit(1))
+		}
+		Err(VarNotFound(var_os_str)) => {
+			var_name = OsStr.display(var_os_str)
+			_ = Stderr.line!(
+				\\Environment variable '${var_name}' was not found.
+				\\Set the variable before running the application.
+				\\
+				\\Example usage: ${usage}"
+				,
+			)
+			Err(Exit(1))
+		}
+		Err(EnvVarSetEmpty(var_name)) => {
+			_ = Stderr.line!(
+				\\Environment variable '${var_name}' was empty.
+				\\Provide a non-empty value for this variable.
+				\\
+				\\Example usage: ${usage}
+				,
+			)
+			Err(Exit(1))
+		}
+		Err(FailedToParseUrl(url, err)) => {
+			_ = Stderr.line!(
+				\\Failed to parse URL: ${url}
+				\\Error: ${Str.inspect(err)}
+				\\
+				\\Example usage: ${usage}
+				,
+			)
+			Err(Exit(1))
+		}
+		Err(FailedToFetchHtml(url, err)) => {
+			_ = Stderr.line!(
+				\\Failed to fetch HTML content for URL: ${url}
+				\\Error: ${Str.inspect(err)}
+				\\
+				\\Check the URL and your internet connection.
+				\\
+				\\Example usage: ${usage}
+				,
+			)
+			Err(Exit(1))
+		}
+		Err(FailedToWriteFile(path_str, err)) => {
+			_ = Stderr.line!(
+				\\Failed to write file: ${path_str}
+				\\Error: ${Str.inspect(err)}
+				\\
+				\\Example usage: ${usage}
+				,
+			)
+			Err(Exit(1))
+		}
+		Err(FailedToListCwd(err)) => {
+			_ = Stderr.line!(
+				\\Failed to list contents of current directory.
+				\\Error: ${Str.inspect(err)}
+				\\
+				\\Example usage: ${usage}
+				,
+			)
+			Err(Exit(1))
+		}
+		Err(other) => {
+			_ = Stderr.line!(
+				\\An unexpected error occurred: ${Str.inspect(other)}
+				\\
+				\\Example usage: ${usage}
+				,
+			)
+			Err(Exit(1))
+		}
+	}
+}

@@ -7,13 +7,9 @@ import Dir.Hello exposing [hello]
 
 You can also do:
 ```roc
-import Dir.Hello as Hello
+import Dir/Hello as Hello
 ```
-Or:
-```roc
-import Dir.Hello
-```
-Note that in this last case you will need to use `Dir.Hello` in your code, for example: `Dir.Hello.hello "World!"`.
+Note that in this case you will need to use `Hello.hello` in your code (not just `hello`), for example: `Hello.hello("World!")`.
 
 ## Code
 
@@ -35,5 +31,5 @@ Run this from the directory that has `main.roc` in it:
 
 ```
 $ roc main.roc
-Hello World from inside Dir!
+Hello World from inside Dir/Hello module!
 ```

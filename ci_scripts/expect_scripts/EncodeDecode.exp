@@ -9,7 +9,7 @@ source ./ci_scripts/expect_scripts/shared-code.exp
 
 spawn ./examples/EncodeDecode/main
 
-expect "(@ItemKind Text)\r\n(@ItemKind Method)\r\n(@ItemKind Function)\r\n(@ItemKind Constructor)\r\n(@ItemKind Field)\r\n(@ItemKind Variable)\r\n(@ItemKind Class)\r\n(@ItemKind Interface)\r\n(@ItemKind Module)\r\n" {
+expect "ItemKind.(Text)\r\nItemKind.(Method)\r\nItemKind.(Function)\r\nItemKind.(Constructor)\r\nItemKind.(Field)\r\nItemKind.(Variable)\r\nItemKind.(Class)\r\nItemKind.(Interface)\r\nItemKind.(Module)\r\nItemKind.(Property)\r\n" {
     expect eof {
         check_exit_and_segfault
     }

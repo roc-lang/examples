@@ -6,19 +6,15 @@ set -euxo pipefail
 
 if [ -z "${ROC}" ]; then
   echo "ERROR: The ROC environment variable is not set.
-    Set it to something like:
-        /home/username/Downloads/roc_nightly-linux_x86_64-2023-10-30-cb00cfb/roc
-        or
-        /home/username/gitrepos/roc/target/build/release/roc
-        or
-        ./roc_nightly/roc" >&2
+    Set it to the path of the roc executable." >&2
 
   exit 1
 fi
 
+
 # array of paths to exclude from format check
-# AllSyntax: The formatter changes `||`` into `or`, and we want to demonstrate both in the example
-excludes=( './examples/AllSyntax/main.roc' './roc_nightly/' )
+# TODO: update this once these examples are migrated
+excludes=( './examples/ElmWebApp/backend.roc' './examples/SortStrings/main.roc' )
 
 # Start the find command and loop through excludes to add them
 find_command="find . -name '*.roc'"
@@ -26,8 +22,8 @@ for exclude in "${excludes[@]}"; do
     find_command+=" ! -path '$exclude*'"
 done
 
-# `roc format --check`` all roc files
+# `roc fmt --check`` all roc files
 for file in $(eval "$find_command"); do
-    echo "Checking if $file was formatted with roc format..."
-    $ROC format --check "$file"
+    echo "Checking if $file was formatted with roc fmt..."
+    $ROC fmt --check "$file"
 done

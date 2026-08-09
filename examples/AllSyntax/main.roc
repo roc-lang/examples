@@ -1,371 +1,467 @@
-app [main!] { cli: platform "https://github.com/roc-lang/basic-cli/releases/download/0.20.0/X73hGh05nNTkDHU06FHC0YfFaQB1pimX7gncRcao5mU.tar.br" }
-
-import cli.Stdout
-import cli.Stdout as StdoutAlias
-import cli.Arg exposing [Arg]
-import "README.md" as readme : Str # You can also import as List U8
+import "README.md" as readme : Str # You can also import as List
 
 # Note 1: I tried to demonstrate all Roc syntax (possible in a single app file),
-# but I probably forgot some things.
-
-# Note 2: Lots of syntax patterns are better explained in their own dedicated example,
-# see https://www.roc-lang.org/examples/ 
+# but I probably forgot some things. Let @Anton know on zulip if you spot something missing, or make a github issue.
 
 ## Double hashtag for doc comment
 number_operators : I64, I64 -> _
-number_operators = |a, b|
-    a_f64 = Num.to_f64(a)
-    b_f64 = Num.to_f64(b)
+number_operators = |a, b| {
+	a_f64 = I64.to_f64(a)
+	b_f64 = I64.to_f64(b)
 
-    {
-        # binary operators
-        sum: a + b,
-        diff: a - b,
-        prod: a * b,
-        div: a_f64 / b_f64,
-        div_trunc: a // b,
-        rem: a % b,
-        eq: a == b,
-        neq: a != b,
-        lt: a < b,
-        lteq: a <= b,
-        gt: a > b,
-        gteq: a >= b,
-        # unary operators
-        neg: -a,
-        # the last item can have a comma too
-    }
+	{
+		# binary operators
+		sum: a + b,
+		diff: a - b,
+		prod: a * b,
+		div: a_f64 / b_f64,
+		div_trunc: a // b,
+		rem: a % b,
+		eq: a == b,
+		neq: a != b,
+		lt: a < b,
+		lteq: a <= b,
+		gt: a > b,
+		gteq: a >= b,
+
+		# Not implemented yet:
+		# default: None ?? 0,
+
+		# unary operators
+		neg: -a,
+		# the last item can have a comma too
+	}
+}
 
 boolean_operators : Bool, Bool -> _
 boolean_operators = |a, b| {
-    bool_and: a && b,
-    bool_and_keyword: a and b,
-    bool_or: a || b,
-    bool_or_keyword: a or b,
-    not_a: !a,
+	bool_and_keyword: a and b,
+	bool_or_keyword: a or b,
+	not_a: !a,
 }
 
-pizza_operator : Str, Str -> Str
-pizza_operator = |str_a, str_b|
-    str_a |> Str.concat(str_b)
+simple_match : [Red, Green, Blue, BabyBlue] -> Str
+simple_match = |color| {
+	match color {
+		Red => "The color is red."
+		Green => "The color is green."
+		Blue | BabyBlue => "The color is blue."
+	}
+}
 
-patterns : List U64 -> U64
-patterns = |lst|
-    when lst is
-        [1, 2, ..] ->
-            42
+match_list_patterns : List(U64) -> U64
+match_list_patterns = |lst| {
+	match lst {
+		[] => 0
+		[x] => x
+		[1, 2, 3] => 6
+		[1, 2, ..] => 66
+		[2, .., 1] => 88
+		[1, .. as tail] => 77 + tail.len()
+		[_head, 5] => 55
+		[99, x] if x < 4 => 99 + x
 
-        [2, .., 1] ->
-            24
+		# Note: avoid overusing `_` in a match branch, in general you should
+		# try to match all cases explicitly.
+		_ => 100
+	}
+}
 
-        [] ->
-            0
+match_tag_union_advanced : Try({}, [StdoutErr(Str), Other]) -> Str
+match_tag_union_advanced = |try|
+# `Try(a, b)` is the tag union `[Ok(a), Err(b)]` under the hood.
+	match try {
+		Ok(_) =>
+			"Success"
 
-        [_head, .. as tail] if List.len(tail) > 7 ->
-            List.len(tail)
+		Err(StdoutErr(err)) =>
+			"StdoutErr: ${Str.inspect(err)}"
 
-        # Note: avoid using `_` in a when branch, in general you should
-        # try to match all cases explicitly.
-        _ ->
-            100
+		Err(_) =>
+			"Unknown error"
+		}
 
-string_stuff : Str
-string_stuff =
-    planet = "Venus"
-
-    Str.concat(
-        "Hello, ${planet}!",
-        """
-        This is a multiline string.
-        You can call functions inside $... too: ${Num.to_str(1 + 1)}
-        Unicode escape sequence: \u(00A0)
-        """,
-    )
-
-pattern_match_tag_union : Result {} [StdoutErr(Str), Other] -> Str
-pattern_match_tag_union = |result|
-    # `Result a b` is the tag union `[Ok a, Err b]` under the hood.
-    when result is
-        Ok(_) ->
-            "Success"
-
-        Err(StdoutErr(err)) ->
-            "StdoutErr: ${Inspect.to_str(err)}"
-
-        Err(_) ->
-            "Unknown error"
+multiline_str : U64 -> Str
+multiline_str = |number|
+	\\Line 1
+	\\Line 2
+	\\Line ${number.to_str()}
 
 # end name with `!` for effectful functions
 # `=>` shows effectfulness in the type signature
-effect_demo! : Str => Result {} [StdoutErr _, StdoutLineFailed [StdoutErr _]]
+effect_demo! : Str => {}
 effect_demo! = |msg|
+	echo!("${msg}\n")
 
-    # `?` to return the error if there is one
-    Stdout.line!(msg)?
+question_postfix : List(Str) -> Try(I64, _)
+question_postfix = |strings| {
+	# `?` to immediately return the error if there is one
+	first_str = strings.first()?
+	first_num = I64.from_str(first_str)?
 
-    # ` ? ` for map_err
-    Stdout.line!(msg) ? |err| StdoutLineFailed(err)
-    # this also works:
-    Stdout.line!(msg) ? StdoutLineFailed
+	Ok(first_num)
+}
 
-    # ?? to provide default value
-    Stdout.line!(msg) ?? {}
+# `?` with a right-hand side maps the err payload before early returning.
+# The rhs can be a bare tag (applied as a constructor) or any function-like
+# expression (e.g. a lambda); the err payload is passed as its argument.
+question_with_err_map : List(Str) -> Try(Str, _)
+question_with_err_map = |strings| {
+	# `? NoFirstError` wraps the err as `NoFirstError(err)` before returning
+	first_str = strings.first() ? NoFirstError
+	Ok(first_str)
+}
 
-    # In rare cases, you can use `_ =` to ignore the result.
-    # This allows you to avoid StdoutErr in the type signature.
-    # Example of appropriate usage:
-    # https://github.com/roc-lang/basic-webserver/blob/main/platform/main.roc
-    _ = Stdout.line!(msg)
+question_with_err_lambda : List(Str) -> Try(Str, _)
+question_with_err_lambda = |strings| {
+	# `? |e| NoFirstError(e)` is the explicit lambda form
+	first_str = strings.first() ? |e| NoFirstError(e)
+	Ok(first_str)
+}
 
-    Ok({})
+# Use crash for placeholders you want to fill in later.
+implement_me_later : Str -> Str
+implement_me_later = |str| {
+	if str == "" {
+		str
+	} else {
+		crash "not implemented"
+	}
+}
 
-dbg_expect : {} -> {}
-dbg_expect = |{}|
-    a = 42
+# for loops can be easier to think about than List.fold (previously `List.walk`)
+for_loop = |num_list| {
+	var $sum = 0
 
-    dbg a
+	for num in num_list {
+		$sum = $sum + num
+	}
 
-    # dbg can forward what it receives
-    b = dbg 43
+	$sum
+}
 
-    # inline expects get removed in optimized builds!
-    expect b == 43
+# break exits a for or while loop early
+break_in_for_loop = |bool_list| {
+	var $allTrue = True
+	for b in bool_list {
+		if b == False {
+			$allTrue = False
+			break
+		} else {
+			{}
+		}
+	}
+	$allTrue
+}
 
-    {}
+while_loop = |limit| {
+	var $count = 0
+	var $sum = 0
 
-# Top level expect
-expect 0 == 0
+	while $count < limit {
+		$sum = $sum + $count
+		$count = $count + 1
+	}
 
-# Values that are defined inside a multi-line expect get printed on failure
-expect
-    expected = 43
-    actual = 44
-    
-    actual == expected
+	$sum
+}
+
+print! = |something| {
+	echo!("${Str.inspect(something)}\n")
+}
+
+dbg_keyword = || {
+	foo : Dec
+	foo = 42.0
+
+	dbg foo
+
+	# This variation does not work yet:
+	# bar = dbg 43
+
+	foo
+}
 
 if_demo : U64 -> Str
-if_demo = |num|
-    # every if must have an else branch!
-    one_line_if = if num == 1 then "True" else "False"
+if_demo = |num| {
+	# every if must have an else branch!
+	one_line_if = if num == 1 "One" else "NotOne"
 
-    # multiline if
-    if num == 2 then
-        one_line_if
-    else if num == 3 then
-        "False"
-    else
-        "False"
+	two_line_if =
+		if num == 2
+			"Two"
+		else
+			"NotTwo"
 
-tuple_demo : {} -> (Str, U32)
-tuple_demo = |{}|
-    # tuples can contain multiple types
-    # they are allocated on the stack
-    ("Roc", 1)
+	with_curlies =
+		if num == 5 {
+			"Five"
+		} else {
+			"NotFive"
+		}
 
-tag_union_demo : Str -> [Red, Green, Yellow]
-tag_union_demo = |string|
-    when string is
-        "red" -> Red
-        "green" -> Green
-        # We can't list all possible strings, so we use `_` to match all other cases.
-        _ -> Yellow
+	# else if
+	if num == 3
+		"Three"
+	else if num == 4
+		"Four"
+	else
+		one_line_if.concat(two_line_if).concat(with_curlies)
+}
 
-type_var_star : List * -> List _
-type_var_star = |lst| lst
+tuple_demo =
+# tuples can contain multiple types
+	("Roc", 1)
 
-TypeWithTypeVar a : [
-    TagOne,
-    TagTwo Str,
-]a
+# Here we use a type variable `a` to indicate this function works for a list of any type.
+type_var : List(a) -> List(a)
+type_var = |lst| lst
 
-tag_union_advanced : Str -> TypeWithTypeVar [TagThree, TagFour U64]
-tag_union_advanced = |string|
-    when string is
-        "one" -> TagOne
-        "two" -> TagTwo("hello")
-        "three" -> TagThree
-        # We can't list all possible strings, so we use `_` to match all other cases.
-        _ -> TagFour(42)
+destructuring = || {
+	tup : (Str, Dec)
+	tup = ("Roc", 1.0)
+	(str, num) = tup
 
-default_val_record : { a ?? Str } -> Str
-default_val_record = |{ a ?? "default" }|
-    a
+	rec : { x : Dec, y : Dec }
+	rec = { x: 1.0, y: tup.1 } # tuple access with `.index`
+	{ x, y } = rec
 
-destructuring =
-    tup = ("Roc", 1)
-    (str, num) = tup
+	(str, num, x, y)
+}
 
-    rec = { x: 1, y: tup.1 } # tuple access with `.index`
-    { x, y } = rec
+NominalTypeRecord := { x : U64 }
 
-    (str, num, x, y)
+# `Type.{ fields }` also works as a pattern, destructuring a nominal type's
+# backing record directly.
+destructure_nominal_type : NominalTypeRecord -> U64
+destructure_nominal_type = |NominalTypeRecord.{ x }| x
 
-record_update =
-    rec = { x: 1, y: 2 }
-    rec2 = { rec & y: 3 }
-    rec2
+# TODO not sure if still planned for implementation
+# record_update = {
+#     rec = { x: 1, y: 2 }
+#     rec2 = { rec & y: 3 }
+#     rec2
+# }
 
-record_access_func = .x
+record_update_2 : { name : Str, age : I64 } -> { name : Str, age : I64 }
+record_update_2 = |person| {
+	{ ..person, age: 31 }
+}
 
-# You can pass a record with many more fields than just x and y.
-open_record_arg_sum : { x: U64, y: U64 }* -> U64
-open_record_arg_sum = |{ x, y }|
-    x + y
+# `..rest` in a record pattern binds every field you did not name as a new
+# record, so it doubles as a way to remove a field: `rest` is `person` without `email`.
+remove_record_field : { name : Str, age : I64, email : Str } -> { name : Str, age : I64 }
+remove_record_field = |person| {
+	{ email: _, ..rest } = person
+	rest
+}
 
-number_literals =
-    usage_based = 5
-    explicit_u8 = 5u8
-    explicit_i8 = 5i8
-    explicit_u16 = 5u16
-    explicit_i16 = 5i16
-    explicit_u32 = 5u32
-    explicit_i32 = 5i32
-    explicit_u64 = 5u64
-    explicit_i64 = 5i64
-    explicit_u128 = 5u128
-    explicit_i128 = 5i128
-    explicit_f32 = 5.0f32
-    explicit_f64 = 5.0f64
-    explicit_dec = 5.0dec
-
-    hex = 0x5
-    octal = 0o5
-    binary = 0b0101
-    
-    (usage_based, explicit_u8, explicit_i8, explicit_u16, explicit_i16, explicit_u32, explicit_i32, explicit_u64, explicit_i64, explicit_u128, explicit_i128, explicit_f32, explicit_f64, explicit_dec, hex, octal, binary)
-
-# Using `where` ... `implements`
-to_str : a -> Str where a implements Inspect
-to_str = |value|
-    Inspect.to_str(value)
+number_literals = {
+	usage_based: 5, # defaults to Dec
+	explicit_u8: 5.U8, # Note that most of the time you will want to specify the type in the type signature instead.
+	explicit_i8: 5.I8,
+	explicit_u16: 5.U16,
+	explicit_i16: 5.I16,
+	explicit_u32: 5.U32,
+	explicit_i32: 5.I32,
+	explicit_u64: 5.U64,
+	explicit_i64: 5.I64,
+	explicit_u128: 5.U128,
+	explicit_i128: 5.I128,
+	# Note: F32, F64, and Dec literals use type inference which doesn't work with Str.inspect so they are omitted here.
+	hex: 0x5,
+	octal: 0o5,
+	binary: 0b0101,
+}
 
 # Opaque type
-Username := Str
+# Useful if you want to hide fields e.g. so users of the type can not access some implementation detail you did not want to expose.
+Secret :: {
+	key : Str,
+}.{
+	new : Str -> Secret
+	new = |k| { key: k }
 
-username_from_str : Str -> Username
-username_from_str = |str|
-    @Username(str)
+	unlock : Secret, Str -> Str
+	unlock = |secret, password| {
+		if password == "open sesame" {
+			"The secret key is: ${secret.key}"
+		} else {
+			"Wrong password!"
+		}
+	}
+}
 
-username_to_str : Username -> Str
-username_to_str = |@Username(str)|
-    str
+# Define a nominal type with a custom is_eq method
+Animal := [Dog(Str), Cat(Str)].{
+	is_eq = |a, b| match (a, b) {
+		(Dog(name1), Dog(name2)) => name1 == name2
+		(Cat(name1), Cat(name2)) => name1 == name2
+		_ => Bool.False
+	}
+}
 
-# Opaque type with derived abilities
-StatsDB := Dict Str { score : Dec, average : Dec } implements [ Eq, Hash ]
+early_return = |arg| {
+	first =
+		if !arg {
+			return 99
+		} else {
+			"continue"
+		}
 
-# Custom implementation of an ability
-Animal := [
-        Dog Str,
-        Cat Str,
-    ]
-    implements [
-        Eq { is_eq: animal_equality },
-    ]
+	# Do some other stuff
+	Str.count_utf8_bytes(first)
+}
 
-animal_equality : Animal, Animal -> Bool
-animal_equality = |@Animal(a), @Animal(b)|
-    when (a, b) is
-        (Dog(name_a), Dog(name_b)) | (Cat(name_a), Cat(name_b)) -> name_a == name_b
-        _ -> Bool.false
+my_concat = Str.concat
 
-# Defining a new ability
-CustomInspect implements
-    inspect_me : val -> Str where val implements CustomInspect
+# Complex pipeline: chaining static dispatch methods with a lambda
+format_names : List(Str) -> Str
+format_names = |names|
+	names
+		.map(|name| name.trim())
+		|> Str.join_with(", ")
+		|> (|joined| {
+			if joined.is_empty() "No names provided" else "Names: ${joined}"
+		})
 
-Color := [Red, Green]
-    implements [
-        Eq,
-        CustomInspect {
-            inspect_me: inspect_color,
-        },
-    ]
+# Tags can have multiple payloads
+multi_payload_tag : [Foo(I64, Str), Bar] -> Str
+multi_payload_tag = |tag| match tag {
+	Foo(num, name) => "Foo with ${num.to_str()} and ${name}"
+	Bar => "Just Bar"
+}
 
-inspect_color : Color -> Str
-inspect_color = \@Color color ->
-    when color is
-        Red -> "Red"
-        Green -> "Green"
+# Mark a tag union as open using `..`.
+# This function accepts any tag union containing at least Red and Green.
+color_to_str : [Red, Green, ..] -> Str
+color_to_str = |color| match color {
+	Red => "red"
+	Green => "green"
+	_ => "other color"
+}
 
-early_return = |arg|
-    first =
-        if !arg then
-            return 99
-        else
-            "continue"
+# TODO: Closed tag unions with `..[]]` - syntax not implemented yet
+# str_to_color : Str -> [Red, Green, Blue, Other, ..[]]
 
-    # Do some other stuff
-    Str.count_utf8_bytes(first)
+# Type alias for an extensible tag union. You can use a type var (`others`) like so:
+Letters(others) : [A, B, ..others]
 
+# Use the type alias in a function signature. Pass `[C]` as `others`.
+letter_to_str : Letters([C]) -> Str
+letter_to_str = |letter| match letter {
+	A => "A"
+	B => "B"
+	_ => "other letter"
+}
 
-record_builder_example =
-    parser = { chain <-
-        name: parse(Ok),
-        age: parse(Str.to_u32),
-        city: parse(Ok),
-    } |> run
-    
-    parser("Alice-25-NYC")
+# If you want to define a function that works for any type that has a specific method, you can use `where`:
+stringify : a -> Str where [a.to_str : a -> Str]
+stringify = |value| value.to_str()
 
-# record builder helpers
+main! = |_args| {
+	echo!("Hello, world!\n")
+	echo!("Hello, world! (using alias)\n")
 
-Builder a := List Str -> Result (a, List Str) [Empty]
+	echo!("${Str.inspect(number_operators(10, 5))}\n")
+	print!(boolean_operators(Bool.True, Bool.False))
 
-parse : (Str -> Result a [Empty]) -> Builder a
-parse = |f| @Builder |segments|
-    when segments is
-        [] -> Err(Empty)
-        [first, .. as rest] -> 
-            when f(first) is
-                Ok(value) -> Ok((value, rest))
-                Err(_) -> Err(Empty)
+	# pizza operator (|>) is gone, we now have static dispatch instead.
+	# It allows you to call methods that are defined on the type (like `Animal.is_eq` above).
+	print!("One".concat(" Two"))
 
-chain : Builder a, Builder b, (a, b -> c) -> Builder c
-chain = |@Builder(fa), @Builder(fb), combine|
-    @Builder |segments|
-        (a, rest1) = fa(segments)?
-        (b, rest2) = fb(rest1)?
-        Ok((combine(a, b), rest2))
+	# If you want a very similar style for a function that is not defined on the type but is in scope, you can use `|>`:
+	print!("Three" |> my_concat(" Four"))
 
-run : Builder a -> (Str -> Result a [Empty])
-run = |@Builder(f)| |input|
-    segments = Str.split_on(input, "-")
-    (result, _) = f(segments)?
-    Ok(result)
+	echo!("${simple_match(Red)}\n")
+	print!(match_list_patterns([1, 10]))
+	echo!("${match_tag_union_advanced(Ok({}))}\n")
 
-# end record builder helpers
+	echo!("${multiline_str(3)}\n")
+	echo!("Unicode escape sequence: \u(00A0)\n")
 
+	effect_demo!("This is an effectful function!")
 
-main! : List Arg => Result {} _
-main! = |_args|
-    Stdout.line!("${Inspect.to_str(number_operators(10, 5))}")?
-    Stdout.line!("${Inspect.to_str(boolean_operators(Bool.true, Bool.false))}")?
+	print!(question_postfix(["1", "not a number", "100"]))
+	print!(question_with_err_map([]))
+	print!(question_with_err_lambda([]))
 
-    pizza_out = pizza_operator("Pizza ", "Roc")
-    Stdout.line!("${Inspect.to_str(pizza_out)}")?
-    StdoutAlias.line!("${Inspect.to_str(patterns([1, 2, 3, 4]))}")?
-    Stdout.line!("${string_stuff}")?
-    Stdout.line!("${Inspect.to_str(pattern_match_tag_union(Ok({})))}")?
-    Stdout.line!("${Inspect.to_str(effect_demo!("Hello, world!"))}")?
-    Stdout.line!("${Inspect.to_str(if_demo(1))}")?
-    Stdout.line!("${Inspect.to_str(tuple_demo({}))}")?
-    Stdout.line!("${Inspect.to_str(tag_union_demo("red"))}")?
-    Stdout.line!("${Inspect.to_str(type_var_star([1, 2]))}")?
-    Stdout.line!("${Inspect.to_str(tag_union_advanced("four"))}")?
-    Stdout.line!("${default_val_record({})}")?
-    Stdout.line!("${Inspect.to_str(destructuring)}")?
-    Stdout.line!("${Inspect.to_str(record_update)}")?
-    Stdout.line!("${Inspect.to_str(record_access_func({ x: 44, y: 3 }))}")?
-    Stdout.line!("${Inspect.to_str(dbg_expect({}))}")?
-    Stdout.line!("${Num.to_str(open_record_arg_sum({ x: 1, y: 3 }))}")?
-    Stdout.line!("${Inspect.to_str(number_literals)}")?
-    Stdout.line!("${username_to_str(username_from_str("Rocco"))}")?
-    Stdout.line!("${to_str(42)}")?
-    Stdout.line!("${Inspect.to_str(early_return(Bool.false))}")?
-    Stdout.line!("${Inspect.to_str(record_builder_example)}")?
-    Stdout.line!("${Inspect.to_str(Str.count_utf8_bytes(readme) > 0)}")?
+	sum = for_loop([1, 2, 3, 4, 5])
+	print!(sum)
 
-    # Commented out so CI tests can pass
-    # crash "Avoid using crash in production software!"
+	expect sum == 15
 
-    Ok({})
+	all_true = break_in_for_loop([True, True, False, True, True])
+	print!(all_true)
 
+	while_sum = while_loop(5)
+	print!(while_sum)
+
+	print!(dbg_keyword())
+
+	echo!("${if_demo(2)}\n")
+
+	print!(tuple_demo)
+
+	print!(type_var(["a", "b"]))
+
+	print!(destructuring())
+
+	print!(destructure_nominal_type(NominalTypeRecord.{ x: 42 }))
+
+	# print!(record_update)
+
+	print!({ x: 10, y: 20 }.x)
+
+	print!(record_update_2({ name: "Alice", age: 30 }))
+
+	print!(remove_record_field({ name: "Alice", age: 30, email: "alice@example.com" }))
+
+	print!(number_literals)
+
+	secret = Secret.new("my_secret_key")
+	# This print will not expose internal data.
+	print!(secret)
+	print!(secret.unlock("open sesame"))
+
+	dog : Animal
+	dog = Dog("Fido")
+	cat : Animal
+	cat = Cat("Whiskers")
+	print!(dog == cat)
+
+	print!(early_return(Bool.False))
+
+	print!(stringify(12345))
+
+	# Tags with multiple payloads
+	print!(multi_payload_tag(Foo(42, "hello")))
+
+	# Open tag unions with `..`
+	# This function accepts [Red, Green, ..] so we can pass Blue too
+	print!(color_to_str(Blue))
+
+	# Complex pipeline with arrow lambda
+	print!(format_names(["  Alice ", "Bob  ", " Charlie"]))
+
+	# Type alias for extensible tag union
+	print!(letter_to_str(A))
+	print!(letter_to_str(C)) # C is not in [A, B] but we passed it in the signature of letter_to_str
+
+	print!(readme.contains("Roc"))
+
+	# Commented out so CI tests can pass
+	# crash "Avoid using crash in production software!"
+
+	Ok({})
+}
+
+# Top level expects only run when using `roc test file.roc`
+expect Bool.True != Bool.False
+
+## Multi-line expect that confirms basic math works.
+expect {
+	x = 4
+	y = 5
+	x + y == 9
+}

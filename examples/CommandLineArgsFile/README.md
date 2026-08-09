@@ -21,5 +21,6 @@ Run this from the directory that has `main.roc` in it:
 
 ```
 $ roc -- input.txt
-file content: 42
+First line in file:
+My candle burns at both ends;
 ```

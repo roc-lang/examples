@@ -9,7 +9,7 @@ source ./ci_scripts/expect_scripts/shared-code.exp
 
 spawn ./examples/RandomNumbers/main
 
-expect "52\r\n34\r\n26\r\n69\r\n34\r\n35\r\n51\r\n74\r\n70\r\n39\r\n" {
+expect "59\r\n62\r\n67\r\n63\r\n41\r\n52\r\n44\r\n72\r\n42\r\n48\r\n" {
     expect eof {
         check_exit_and_segfault
     }

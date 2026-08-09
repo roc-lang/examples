@@ -1,8 +1,6 @@
 # Error Handling Basic
 
-Roc uses `Result ok err` types to handle errors. The `?` operator tries an operation and returns early if it fails. You can replace default errors with custom ones using `? |_| CustomError(important_info)`, if you don't want to do that, add `?` right after `)` without any spaces.
-
-You will often see `Stdout.line!("hello")?` without a custom error because it's very unlikely to fail.
+Roc uses `Try(ok, err)` types to handle errors. The `?` operator tries an operation and returns early if it fails. You can replace default errors with custom ones using `? |_| CustomError(important_info)`.
 
 See also:
 - [Real world error handling](https://www.roc-lang.org/examples/ErrorHandlingRealWorld/README) for a more complex example.
@@ -20,5 +18,5 @@ Run this from the directory that has `ErrorHandlingBasic.roc` in it:
 
 ```sh
 $ roc test ErrorHandlingBasic.roc
-0 failed and 1 passed in 102 ms.
+All (1) tests passed in 7.3 ms.
 ```

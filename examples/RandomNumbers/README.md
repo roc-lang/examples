@@ -25,14 +25,14 @@ Run this from the directory that has `main.roc` in it:
 
 ```
 $ roc main.roc
+59
+62
+67
+63
+41
 52
-34
-26
-69
-34
-35
-51
-74
-70
-39
+44
+72
+42
+48
 ```

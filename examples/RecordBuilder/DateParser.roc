@@ -1,68 +1,62 @@
-module [
-    ParserGroup,
-    ParserErr,
-    parse_with,
-    chain_parsers,
-    build_segment_parser,
-]
-
 # see README.md for explanation of code
-ParserErr : [InvalidNumStr, OutOfSegments]
+ParserErr : [BadNumStr, OutOfSegments]
 
-ParserGroup a := List Str -> Result (a, List Str) ParserErr
+Parser(a) : List(Str) -> Try((a, List(Str)), ParserErr)
 
-parse_with : (Str -> Result a ParserErr) -> ParserGroup a
-parse_with = |parser|
-    @ParserGroup(
-        |segments|
-            when segments is
-                [] -> Err(OutOfSegments)
-                [first, .. as rest] ->
-                    parsed = parser(first)?
-                    Ok((parsed, rest)),
-    )
+DateParser :: {}.{
+	map2 : Parser(a), Parser(b), (a, b -> c) -> Parser(c)
+	map2 = |first, second, combiner|
+		|segments| {
+			(a, after_first) = first(segments)?
+			(b, after_second) = second(after_first)?
 
-chain_parsers : ParserGroup a, ParserGroup b, (a, b -> c) -> ParserGroup c
-chain_parsers = |@ParserGroup(first), @ParserGroup(second), combiner|
-    @ParserGroup(
-        |segments|
-            (a, after_first) = first(segments)?
-            (b, after_second) = second(after_first)?
+			Ok((combiner(a, b), after_second))
+		}
 
-            Ok((combiner(a, b), after_second)),
-    )
+	parse_with : (Str -> Try(a, ParserErr)) -> Parser(a)
+	parse_with = |parser|
+		|segments|
+			match segments {
+				[] => Err(OutOfSegments)
+				[first, .. as rest] => {
+					parsed = parser(first)?
+					Ok((parsed, rest))
+				}
+			}
 
-build_segment_parser : ParserGroup a -> (Str -> Result a ParserErr)
-build_segment_parser = |@ParserGroup(parser_group)|
-    |text|
-        segments = Str.split_on(text, "-")
-        (date, _remaining) = parser_group(segments)?
+	parse_str : Parser(Str)
+	parse_str = DateParser.parse_with(|s| Ok(s))
 
-        Ok(date)
+	parse : Parser(a), Str -> Try(a, ParserErr)
+	parse = |parser, text| {
+		segments = Str.split_on(text, "-")
+		(date, _remaining) = parser(segments)?
 
-expect
-    date_parser =
-        { chain_parsers <-
-            month: parse_with(Ok),
-            day: parse_with(Str.to_u64),
-            year: parse_with(Str.to_u64),
-        }
-        |> build_segment_parser
+		Ok(date)
+	}
+}
 
-    date_parser("Mar-10-2015") == Ok({ month: "Mar", day: 10, year: 2015 })
+expect {
+	date_parser = {
+		month: DateParser.parse_str,
+		day: DateParser.parse_with(U64.from_str),
+		year: DateParser.parse_with(U64.from_str),
+	}.DateParser
 
-expect
-    date_parser =
-        build_segment_parser(
-            chain_parsers(
-                parse_with(Ok),
-                chain_parsers(
-                    parse_with(Str.to_u64),
-                    parse_with(Str.to_u64),
-                    |day, year| (day, year),
-                ),
-                |month, (day, year)| { month, day, year },
-            ),
-        )
+	DateParser.parse(date_parser, "Mar-10-2015") == Ok({ month: "Mar", day: 10, year: 2015 })
+}
 
-    date_parser("Mar-10-2015") == Ok({ month: "Mar", day: 10, year: 2015 })
+expect {
+	date_parser =
+		DateParser.map2(
+			DateParser.parse_str,
+			DateParser.map2(
+				DateParser.parse_with(U64.from_str),
+				DateParser.parse_with(U64.from_str),
+				|day, year| (day, year),
+			),
+			|month, (day, year)| { month, day, year },
+		)
+
+	DateParser.parse(date_parser, "Mar-10-2015") == Ok({ month: "Mar", day: 10, year: 2015 })
+}

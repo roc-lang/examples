@@ -23,5 +23,5 @@ Run this from the directory that has `main.roc` in it:
 
 ```
 $ roc main.roc
-(Ok ["h", "e", "l", "l", "o"])
+Ok(["h", "e", "l", "l", "o"])
 ```

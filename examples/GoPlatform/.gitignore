@@ -1,5 +1,0 @@
-platform/libapp.so
-platform/dynhost
-platform/*.rh
-platform/*.rm
-*.tar.br

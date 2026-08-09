@@ -1,36 +1,46 @@
 app [main!] {
-    cli: platform "https://github.com/roc-lang/basic-cli/releases/download/0.20.0/X73hGh05nNTkDHU06FHC0YfFaQB1pimX7gncRcao5mU.tar.br",
+	cli: platform "https://github.com/roc-lang/basic-cli/releases/download/0.21.0/4rAQg8kUYZ3Vksr4qMQHpaFYNiHSn9GgS7gVxghd1XYV.tar.zst",
+	roc: "nightly-2026-08-08-195c9e7",
 }
 
 import cli.Stdin
 import cli.Stdout
-import cli.Arg exposing [Arg]
+import cli.Stderr
+import cli.OsStr
 
 ## recursive function that sums every number that is provided through stdin
-add_number_from_stdin! : I64 => Result I64 _
-add_number_from_stdin! = |sum|
-    when Stdin.line!({}) is
-        Ok(input) ->
-            num = Str.to_i64(input) ? |_| NotNum(input)
-            add_number_from_stdin!((sum + num))
+add_number_from_stdin! : I64 => Try(I64, _)
+add_number_from_stdin! = |sum| {
+	match Stdin.line!() {
+		Ok(input) => {
+			num = I64.from_str(input) ? |_| NotNum(input)
+			add_number_from_stdin!((sum + num))
+		}
+		Err(EndOfFile) => Ok(sum)
+		Err(err) => Err(NotNum(Str.inspect(err)))
+	}
+}
 
-        Err(EndOfFile) -> Ok(sum)
-        Err(err) -> Err(NotNum(Inspect.to_str(err)))
+run! : () => Try({}, _)
+run! = || {
+	Stdout.line!("Enter some numbers on different lines, then press Ctrl-D to sum them up.")?
 
-run! : {} => Result {} _
-run! = |_|
-    Stdout.line!("Enter some numbers on different lines, then press Ctrl-D to sum them up.")?
+	sum = add_number_from_stdin!(0)?
 
-    sum = add_number_from_stdin!(0)?
+	Stdout.line!("Sum: ${sum.to_str()}")
+}
 
-    Stdout.line!("Sum: ${Num.to_str(sum)}")
-
-main! : List Arg => Result {} _
-main! = |_args|
-    when run!({}) is
-        Ok({}) -> Ok({})
-        Err(NotNum(text)) ->
-            Err(Exit(1, "Error: \"${text}\" is not a valid I64 number."))
-
-        Err(err) ->
-            Err(Exit(1, "Error: ${Inspect.to_str(err)}"))
+main! : List(OsStr) => Try({}, [Exit(I32), ..])
+main! = |_args| {
+	match run!() {
+		Ok({}) => Ok({})
+		Err(NotNum(text)) => {
+			_ = Stderr.line!("Error: \"${text}\" is not a valid I64 number.")
+			Err(Exit(1))
+		}
+		Err(err) => {
+			_ = Stderr.line!("Error: ${Str.inspect(err)}")
+			Err(Exit(1))
+		}
+	}
+}

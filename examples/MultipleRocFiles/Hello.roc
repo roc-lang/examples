@@ -1,6 +1,10 @@
-# Only what's listed here is accessible/exposed to other modules
-module [hello]
+Hello :: {}.{
+	# Only what's listed here is accessible to other modules
+	hello : Str -> Str
+	hello = |name| {
+		"Hello ${name} from ${module_name}!\n"
+	}
+}
 
-hello : Str -> Str
-hello = |name|
-    "Hello ${name} from module!"
+# Anything located outside of the Hello type can only be used in this file.
+module_name = "Hello module"

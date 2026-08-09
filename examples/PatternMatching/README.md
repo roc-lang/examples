@@ -2,24 +2,25 @@
 
 All the ways to pattern match on lists:
 ```roc
-when input is
-    [] -> EmptyList
+match input {
+    [] => EmptyList,
 
-    [_, ..] -> NonEmptyList
+    [_, ..] => NonEmptyList,
 
-    ["Hi", ..] -> StartsWithHi
+    ["Hi", ..] => StartsWithHi,
 
-    [.., 42] -> EndsWith42
+    [.., 42] => EndsWith42,
 
-    [Foo, Bar, ..] -> StartsWithFooBar
+    [Foo, Bar, ..] => StartsWithFooBar,
 
-    [Foo, Bar, Baz("Hi")] -> FooBarBazStr
+    [Foo, Bar, Baz("Hi")] => FooBarBazStr,
 
-    [Foo, Count(num), ..] if num > 0 -> FooCountIf
+    [Foo, Count(num), ..] if num > 0 => FooCountIf,
 
-    [head, .. as tail] -> HeadAndTail(head, tail)
+    [head, .. as tail] => HeadAndTail(head, tail),
 
-    _ -> Other
+    _ => Other,
+}
 ```
 Note: this specific snippet would not typecheck because it uses lists of different types.
 This is just meant to be a compact overview. See the code section below for valid Roc.
@@ -36,5 +37,5 @@ Run this from the directory that has `PatternMatching.roc` in it:
 ```
 $ roc test PatternMatching.roc
 
-0 failed and 8 passed in 88 ms.
+All (8) tests passed in 11.1 ms.
 ```
