@@ -1,51 +1,31 @@
-## Uses host-owned operational telemetry and responds with a simple HTML greeting.
 app [Context, program] {
-	pf: platform "https://github.com/roc-lang/basic-webserver/releases/download/0.15.0/HcMFsVT26qeMvqWtG5rfNhVMWjceYbKh1An4uYpheBVW.tar.zst",
-	http: "https://github.com/roc-lang/http/releases/download/1.0.0/6ZUwqYhCS8PU9Mo6MF7oV82ET2o7KYb57CLKDq4cq4sS.tar.zst",
-	gregorian: "https://cdn.jasperwoudenberg.com/roc-gregorian-v1.0.0-rc.2/Ce3xuHN92F5oGRuzjUTmm65jULAEj8pvvrTBmZJzE1M4.tar.zst",
-	roc: "nightly-2026-08-10-7df8509",
+	pf: platform "https://github.com/roc-lang/basic-webserver/releases/download/0.16.0/42jC1JT3auhHSmv2Ah8mW5F2MXiAakq1UQQ4NQceQjXw.tar.zst",
+	http: "https://github.com/roc-lang/http/releases/download/2.0.0/6ZUwqYhCS8PU9Mo6MF7oV82ET2o7KYb57CLKDq4cq4sS.tar.zst",
 }
-# app [Model, init!, respond!] {
-#    web: platform "https://github.com/roc-lang/basic-webserver/releases/download/0.15.0/HcMFsVT26qeMvqWtG5rfNhVMWjceYbKh1An4uYpheBVW.tar.zst",
-#    http: "https://github.com/roc-lang/http/releases/download/2.0.0/6ZUwqYhCS8PU9Mo6MF7oV82ET2o7KYb57CLKDq4cq4sS.tar.zst",
-# }
 
 import pf.Server
-import pf.Stdout
-import pf.UnixTime
 import http.Response
-import gregorian.Time
 
-# `init!` produces this immutable context once, and every request receives it.
 Context : {}
 
 program = { init!, respond!, shutdown! }
 
-# `init!` can validate configuration, run migrations, or prepare immutable
-# startup data. This example has no startup data, so its context is `{}`.
+# With `init` you can set up a database connection once at server startup,
+# generate css by running `tailwindcss`...
+# In this case we don't have anything to initialize, so we use the default
+# config.
 init! : () => Try({ config : Server.Config, context : Context }, [Exit(I64), ..])
-init! = || {
-	# TODO: simplify this. We don't need acces log, metrics... in hello web example.
-	config = Server.default_config
-		.with_access_log(
-			Server.json_lines_access_log({
-				target: Server.path_without_query,
-				max_buffered_events: 128,
-			}),
-		)
-		.with_metrics(Server.open_metrics({ at: "/metrics" }))
-	Ok({ config, context: {} })
-}
+init! = || Ok({ config: Server.default_config, context: {} })
 
 respond! : Server.Request, Context => Try(Server.Outcome, [ServerErr(Str), ..])
-respond! = |request, _context| {
-	datetime = (Time.unix_epoch + UnixTime.now!().seconds_since_epoch()).iso8601()
-
-	Stdout.line!("${datetime} ${Str.inspect(request.method())} ${Str.inspect(request.target())}")
-		? |err| ServerErr("Failed to log request: ${Str.inspect(err)}")
-
-	Ok(Server.respond(Response.from_status(200).with_body(Str.to_utf8("<b>Hello from server</b><br>"))))
-}
+respond! = |_request, _context|
+	Ok(
+		Server.respond(
+			Response.from_status(200)
+				.with_headers([{ name: "Content-Type", value: "text/html; charset=utf-8" }])
+				.with_body(Str.to_utf8("<b>Hello from Roc!</b>")),
+		),
+	)
 
 shutdown! : Server.ShutdownReason, Context => Try({}, [Exit(I64), ..])
 shutdown! = |_reason, _context| Ok({})
