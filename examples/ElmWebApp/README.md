@@ -50,7 +50,9 @@ roc build --opt=speed backend.roc
 
 ### Elm
 
-> Note: for non-trivial Elm development we recommend using [elm-watch](https://github.com/lydell/elm-watch).
+> Note 1: for non-trivial Elm development we recommend using [elm-watch](https://github.com/lydell/elm-watch).
+
+> Note 2: if you have npx installed, you can do `npx elm make ...` to avoid needing to install elm.
 
 Compile elm code to javascript:
 
