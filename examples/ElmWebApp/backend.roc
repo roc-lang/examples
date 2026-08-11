@@ -1,39 +1,34 @@
-app [Model, init!, respond!] {
-    web: platform "https://github.com/roc-lang/basic-webserver/releases/download/0.13.1/7P4PF5rntQVkys5JbIHqkMpZIXo-pxa5lVqOdh7z8fE.tar.br",
-    roc: "nightly-2026-08-10-7df8509",
+app [Context, program] {
+	pf: platform "https://github.com/roc-lang/basic-webserver/releases/download/0.16.0/42jC1JT3auhHSmv2Ah8mW5F2MXiAakq1UQQ4NQceQjXw.tar.zst",
+	http: "https://github.com/roc-lang/http/releases/download/2.0.0/6ZUwqYhCS8PU9Mo6MF7oV82ET2o7KYb57CLKDq4cq4sS.tar.zst",
 }
 
-import web.Stdout
-import web.Http exposing [Request, Response]
-import web.Utc
+import pf.Server
+import http.Response
 
-# [backend](https://chatgpt.com/share/7ac35a32-dab5-46d0-bb17-9d584469556f) Roc server
+Context : {}
 
-# Model is produced by `init`.
-Model : {}
+program = { init!, respond!, shutdown! }
 
 # With `init` you can set up a database connection once at server startup,
 # generate css by running `tailwindcss`,...
-# In this case we don't have anything to initialize, so it is just `Ok({})`.
+# In this case we don't have anything to initialize, so we use the default
+# config
+init! : () => Try({ config : Server.Config, context : Context }, [Exit(I64), ..])
+init! = || Ok({ config: Server.default_config, context: {} })
 
-init! = |{}| Ok({})
+respond! : Server.Request, Context => Try(Server.Outcome, [ServerErr(Str), ..])
+respond! = |_request, _context|
+	Ok(
+		Server.respond(
+			Response.from_status(200)
+			# !!
+			# Change http://localhost:8001 to your domain for production usage
+			# !!
+				.with_headers([{ name: "Access-Control-Allow-Origin", value: "http://localhost:8001" }])
+				.with_body(Str.to_utf8("Hi, Elm! This is from Roc: 🎁\n")),
+		),
+	)
 
-respond! : Request, Model => Result Response [ServerErr Str]_
-respond! = |req, _|
-    # Log request datetime, method and url
-    datetime = Utc.to_iso_8601(Utc.now!({}))
-
-    Stdout.line!("${datetime} ${Inspect.to_str(req.method)} ${req.uri}")?
-
-    Ok(
-        {
-            status: 200,
-            headers: [
-                # !!
-                # Change http://localhost:8001 to your domain for production usage
-                # !!
-                { name: "Access-Control-Allow-Origin", value: "http://localhost:8001" },
-            ],
-            body: Str.to_utf8("Hi, Elm! This is from Roc: 🎁\n"),
-        },
-    )
+shutdown! : Server.ShutdownReason, Context => Try({}, [Exit(I64), ..])
+shutdown! = |_reason, _context| Ok({})

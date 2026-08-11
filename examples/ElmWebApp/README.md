@@ -35,15 +35,16 @@ file:backend.roc
 
 ### Roc
 
-You can change the port on which the Roc server runs with ROC_BASIC_WEBSERVER_PORT.
-```
+You can change the port on which the Roc server runs with `ROC_BASIC_WEBSERVER_PORT`.
+
+```bash
 cd examples/ElmWebApp/
 
 # development
-roc backend.roc --linker=legacy
+roc backend.roc
 
 # production
-roc build backend.roc --optimize --linker=legacy
+roc build --opt=speed backend.roc
 ./backend
 ```
 
@@ -52,7 +53,8 @@ roc build backend.roc --optimize --linker=legacy
 > Note: for non-trivial Elm development we recommend using [elm-watch](https://github.com/lydell/elm-watch).
 
 Compile elm code to javascript:
-```
+
+```bash
 cd examples/ElmWebApp/frontend
 # development
 elm make src/Main.elm --output elm.js
@@ -61,9 +63,12 @@ elm make src/Main.elm --output elm.js --optimize
 ```
 
 Serve the frontend:
+
+```bash
+# Roc backend will be on 8000
+elm reactor --port 8001
 ```
-elm reactor --port 8001 # Roc backend will be on 8000
-```
-For production; use a battle-tested HTTP server instead of elm reactor.
+
+For production; use a battle-tested HTTP server instead of `elm reactor`.
 
 Open [localhost:8001/index.html](localhost:8001/index.html) in your browser.
