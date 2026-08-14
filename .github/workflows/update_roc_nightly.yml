@@ -68,6 +68,8 @@ jobs:
   test:
     needs: bump
     if: needs.bump.outputs.changed == 'true'
+    permissions:
+      contents: read
     uses: ./.github/workflows/tests_nightly.yml
     with:
       ref: ${{ needs.bump.outputs.branch }}
