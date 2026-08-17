@@ -1,6 +1,7 @@
 main! = |_| {
 	output =
 		(1..=100)
+			.iter()
 			.map(fizz_buzz)
 			|> List.from_iter
 			|> Str.join_with(",")
