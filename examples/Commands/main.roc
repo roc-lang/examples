@@ -1,6 +1,6 @@
 app [main!] {
 	cli: platform "https://github.com/roc-lang/basic-cli/releases/download/0.21.0/4rAQg8kUYZ3Vksr4qMQHpaFYNiHSn9GgS7gVxghd1XYV.tar.zst",
-	roc: "nightly-2026-08-12-606470f",
+	roc: "nightly-2026-08-16-23452ea",
 }
 
 import cli.Stdout

@@ -1,6 +1,6 @@
 app [main!] {
 	cli: platform "https://github.com/roc-lang/basic-cli/releases/download/0.21.0/4rAQg8kUYZ3Vksr4qMQHpaFYNiHSn9GgS7gVxghd1XYV.tar.zst",
-	roc: "nightly-2026-08-12-606470f",
+	roc: "nightly-2026-08-16-23452ea",
 }
 
 import cli.Stdin
@@ -131,10 +131,10 @@ draw_game! = |state| {
 
 draw_game_pure : GameState -> Str
 draw_game_pure = |state| {
-	lines = List.from_iter(0..<grid_size)
+	lines = List.from_iter((0..<grid_size).iter())
 		.map(
 			|yy| {
-				chars = List.from_iter(0..<grid_size)
+				chars = List.from_iter((0..<grid_size).iter())
 					.map(
 						|xx| {
 							pos = { x: xx, y: yy }
