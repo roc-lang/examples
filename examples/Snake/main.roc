@@ -131,10 +131,10 @@ draw_game! = |state| {
 
 draw_game_pure : GameState -> Str
 draw_game_pure = |state| {
-	lines = List.from_iter(0..<grid_size)
+	lines = List.from_iter((0..<grid_size).iter())
 		.map(
 			|yy| {
-				chars = List.from_iter(0..<grid_size)
+				chars = List.from_iter((0..<grid_size).iter())
 					.map(
 						|xx| {
 							pos = { x: xx, y: yy }
