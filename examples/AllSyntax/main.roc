@@ -395,7 +395,7 @@ main! = |_args| {
 	echo!("${match_tag_union_advanced(Ok({}))}\n")
 
 	echo!("${multiline_str(3)}\n")
-	echo!("Unicode escape sequence: \u(2728)\n")
+	echo!("Unicode escape sequence: \u(1F680)\n")
 
 	effect_demo!("This is an effectful function!")
 
