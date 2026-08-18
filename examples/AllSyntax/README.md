@@ -33,7 +33,7 @@ Err(NoFirstError(ListWasEmpty))
 15.0
 False
 10.0
-[dbg] 42.0 <= this is output to stderr
+[dbg] 42.0
 42.0
 NotOneTwoNotFive
 ("Roc", 1.0)
@@ -60,3 +60,4 @@ False
 True
 ```
 
+Note: the `[dbg]` line is output to stderr instead of stdout.
