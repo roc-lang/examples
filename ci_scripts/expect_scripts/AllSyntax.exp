@@ -25,7 +25,7 @@ Success
 Line 1
 Line 2
 Line 3
-Unicode escape sequence: \xF0\x9F\x9A\x80
+Unicode escape sequence: \U0001F680
 This is an effectful function!
 Ok(1)
 Err(NoFirstError(ListWasEmpty))
