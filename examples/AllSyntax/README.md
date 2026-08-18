@@ -25,7 +25,7 @@ Success
 Line 1
 Line 2
 Line 3
-Unicode escape sequence: 🚀
+Unicode escape sequence: ✨
 This is an effectful function!
 Ok(1)
 Err(NoFirstError(ListWasEmpty))

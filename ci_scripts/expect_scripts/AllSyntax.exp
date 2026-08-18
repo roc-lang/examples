@@ -9,7 +9,7 @@ source ./ci_scripts/expect_scripts/shared-code.exp
 
 spawn ./examples/AllSyntax/main
 
-# 1. Used subst to evaluate \U0001F680
+# 1. Used subst to evaluate \u2728
 # 2. Escaped glob brackets as \\[ and \\]
 # 3. Did NOT escape { and }, as they are not special in glob
 set expected_output [normalize_output [subst -nocommands -novariables {
@@ -25,7 +25,7 @@ Success
 Line 1
 Line 2
 Line 3
-Unicode escape sequence: \U0001F680
+Unicode escape sequence: \u2728
 This is an effectful function!
 Ok(1)
 Err(NoFirstError(ListWasEmpty))
