@@ -3,8 +3,8 @@ on:
   workflow_dispatch:
   workflow_call:
     inputs:
-      ref:
-        description: 'Branch, tag or SHA to test. Defaults to the usual checkout for this event.'
+      nightly-tag:
+        description: 'Nightly release tag to pin before testing. Defaults to the version already pinned in the checkout.'
         type: string
         required: false
         default: ''
@@ -30,9 +30,19 @@ jobs:
         operating-system: [ubuntu-26.04, ubuntu-26.04-arm, macos-26-intel, macos-26]
     timeout-minutes: 90
     steps:
+      # Always the checkout for this event, never a caller supplied ref: when this
+      # workflow is called from a schedule or workflow_dispatch it runs with the
+      # cache scope of the default branch, so it must not execute code from an
+      # arbitrary ref (cache poisoning).
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          ref: ${{ inputs.ref }}
+
+      # Reproduces what ci_scripts/update_roc_version.sh does on the update branch,
+      # so callers can test a new nightly without us checking that branch out.
+      - name: Pin the requested Roc version
+        if: inputs.nightly-tag != ''
+        env:
+          NIGHTLY_TAG: ${{ inputs.nightly-tag }}
+        run: ./ci_scripts/update_roc_version.sh "$NIGHTLY_TAG"
 
       - id: roc-version
         run: echo "nightly-tag=$(<.roc-version)" >> "$GITHUB_OUTPUT"
