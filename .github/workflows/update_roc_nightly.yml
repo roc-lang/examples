@@ -25,7 +25,6 @@ jobs:
     outputs:
       nightly-tag: ${{ steps.latest.outputs.nightly-tag }}
       changed: ${{ steps.bump.outputs.changed }}
-      branch: ${{ steps.bump.outputs.branch }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
@@ -43,8 +42,6 @@ jobs:
         env:
           NIGHTLY_TAG: ${{ steps.latest.outputs.nightly-tag }}
         run: |
-          echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
-
           if [ "$NIGHTLY_TAG" = "$(<.roc-version)" ]; then
             echo "already pinned to $NIGHTLY_TAG, nothing to do"
             echo "changed=false" >> "$GITHUB_OUTPUT"
@@ -72,7 +69,7 @@ jobs:
       contents: read
     uses: ./.github/workflows/tests_nightly.yml
     with:
-      ref: ${{ needs.bump.outputs.branch }}
+      nightly-tag: ${{ needs.bump.outputs.nightly-tag }}
 
   pull-request:
     needs: [bump, test]
