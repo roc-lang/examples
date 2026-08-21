@@ -1,6 +1,6 @@
 # Custom Inspect
 
-An [Opaque type](https://www.roc-lang.org/tutorial#opaque-types) can provide a custom implementation for the [Inspect](https://www.roc-lang.org/builtins/Inspect) ability.
+An [Opaque type](https://www.roc-lang.org/tutorial#opaque-types) can control the output of `Str.inspect` being called on itself by implementing `to_inspect`.
 
 This can be useful for more complex types, or to hide internal implementation details.
 
