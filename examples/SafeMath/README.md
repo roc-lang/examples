@@ -14,7 +14,7 @@ If you want to avoid a program-ending crash, you can instead use `plus_try`:
 Err(Overflow)
 ```
 That would allow you to display a clean error to the user or handle the failure in an intelligent way, so that your user does not lose all their progress!
-Use `*_try` math functions if [reliability is important for your application](https://arstechnica.com/information-technology/2015/05/boeing-787-dreamliners-contain-a-potentially-catastrophic-software-bug/).
+Use `*_try` math functions if reliability is important for your application.
 
 For a realistic demonstration, we will use `*_try` math functions to calculate the variance of a population.
 
