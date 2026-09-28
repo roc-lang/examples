@@ -65,7 +65,7 @@ expect safe_variance([4, 22, 99, 204, 18, 20]) == Ok(5032.138888888888888888)
 expect safe_variance([46, 69, 32, 60, 52, 41]) == Ok(147.666666666666666666)
 
 # The following function should soon be available in the Roc builtins
-times_try : Dec, Dec -> Try(Dec, [Overflow, ..])
+times_try : Dec, Dec -> Try(Dec, [Overflow])
 times_try = |a, b| {
 	result = a.times_saturated(b)
 	if result == Dec.lowest or result == Dec.highest {

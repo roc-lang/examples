@@ -12,7 +12,7 @@ import parser.String exposing [parse_str, codeunit, any_codeunit]
 
 default_input_str = "ABRACADABRA"
 
-main! : List(OsStr) => Try({}, [Exit(I32), ..])
+main! : List(OsStr) => Try({}, [Exit(I32)])
 main! = |args| {
 	input_str = args.map(OsStr.display).get(1) ?? default_input_str
 

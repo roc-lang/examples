@@ -52,7 +52,7 @@ run! = |args| {
 
 parse_args! = |args| {
 	match args {
-		[_, first_arg, second_arg, ..] => {
+		[first_arg, second_arg, ..] => {
 			url = OsStr.display(first_arg)
 			Ok({ url, output_path: Path.from_os_str(second_arg) })
 		}

@@ -5,7 +5,7 @@ main! = |_| {
 }
 
 ### start snippet question
-parse_name_and_year : Str -> Try({ name : Str, birth_year : U16 }, [BadFormat, BadNumStr, ..])
+parse_name_and_year : Str -> Try({ name : Str, birth_year : U16 }, [BadFormat, BadNumStr])
 parse_name_and_year = |str| {
 	{ before: name, after: birth_year_str } = str.split_first(" was born in ") ? |_| BadFormat
 	birth_year = U16.from_str(birth_year_str)?
@@ -15,7 +15,7 @@ parse_name_and_year = |str| {
 ### end snippet question
 
 ### start snippet desugared
-parse_name_and_year_try : Str -> Try({ name : Str, birth_year : U16 }, [BadFormat, BadNumStr, ..])
+parse_name_and_year_try : Str -> Try({ name : Str, birth_year : U16 }, [BadFormat, BadNumStr])
 parse_name_and_year_try = |str| {
 	match str.split_first(" was born in ") {
 		Err(_) => Err(BadFormat)

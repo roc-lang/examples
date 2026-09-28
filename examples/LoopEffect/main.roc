@@ -30,7 +30,7 @@ run! = || {
 	Stdout.line!("Sum: ${sum.to_str()}")
 }
 
-main! : List(OsStr) => Try({}, [Exit(I32), ..])
+main! : List(OsStr) => Try({}, [Exit(I32)])
 main! = |_args| {
 	match run!() {
 		Ok({}) => Ok({})

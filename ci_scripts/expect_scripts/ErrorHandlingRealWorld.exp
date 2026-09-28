@@ -3,7 +3,8 @@
 # uncomment line below for debugging
 # exp_internal 1
 
-set timeout 7
+# Generous timeout: this example does a real HTTP request
+set timeout 30
 
 source ./ci_scripts/expect_scripts/shared-code.exp
 
@@ -11,9 +12,19 @@ set env(HELLO) 1
 
 spawn ./examples/ErrorHandlingRealWorld/main "https://www.roc-lang.org" roc.html
 
-expect "Done\r\n" {
-    expect eof {
-        check_exit_and_segfault
+expect {
+    "Done\r\n" {
+        expect eof {
+            check_exit_and_segfault
+        }
+    }
+    timeout {
+        puts stderr "\nError: timed out after $timeout seconds waiting for \"Done\"."
+        exit 1
+    }
+    eof {
+        puts stderr "\nError: program exited before printing \"Done\". wait status: [wait]"
+        exit 1
     }
 }
 

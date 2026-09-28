@@ -8,7 +8,7 @@ import cli.Stdout
 import cli.OsStr
 import rand.Random
 
-main! : List(OsStr) => Try({}, [Exit(I32), ..])
+main! : List(OsStr) => Try({}, [Exit(I32)])
 main! = |_args| {
 
 	# Print a list of 10 random numbers.

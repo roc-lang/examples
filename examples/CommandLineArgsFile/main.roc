@@ -10,8 +10,7 @@ import cli.File
 import cli.Path
 
 run! = |args| {
-	# get the second argument, the first is the executable's path
-	first_arg = List.get(args, 1) ? |_| ZeroArgsGiven
+	first_arg = List.get(args, 0) ? |_| ZeroArgsGiven
 
 	reader = File.open_reader!(Path.from_os_str(first_arg)) ? |err| FileReadFailed(first_arg, err)
 	file_first_line_utf8 = reader.read_line!() ? |err| FileReadFailed(first_arg, err)
