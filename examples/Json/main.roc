@@ -31,7 +31,7 @@ main! = |args| {
 			\\    "width": 800
 			\\  }
 			\\}
-		}
+	}
 
 	decoded : Try(ImageRequest, _)
 	decoded = Json.parse(input_str)
