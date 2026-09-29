@@ -79,7 +79,7 @@ match_tag_union_advanced = |try|
 
 		Err(_) =>
 			"Unknown error"
-		}
+	}
 
 multiline_str : U64 -> Str
 multiline_str = |number|

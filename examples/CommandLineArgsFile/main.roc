@@ -1,7 +1,7 @@
 # Run with `roc ./examples/CommandLineArgsFile/main.roc -- examples/CommandLineArgsFile/input.txt`
 app [main!] {
-	cli: platform "https://github.com/roc-lang/basic-cli/releases/download/0.22.2/9zUBxb1LtXYVc4eR4hAtd1WQDwBYDhM6HQdZz1UFCm2m.tar.zst",
-	roc: "nightly-2026-09-19-d025939",
+	cli: platform "https://github.com/roc-lang/basic-cli/releases/download/0.23.0/GNN5tt2gKdX4dhawg4915C4YB193woHFdcCkz31fhGxv.tar.zst",
+	roc: "nightly-2026-09-28-9927ba8",
 }
 
 import cli.Stdout
@@ -10,8 +10,7 @@ import cli.File
 import cli.Path
 
 run! = |args| {
-	# get the second argument, the first is the executable's path
-	first_arg = List.get(args, 1) ? |_| ZeroArgsGiven
+	first_arg = List.get(args, 0) ? |_| ZeroArgsGiven
 
 	reader = File.open_reader!(Path.from_os_str(first_arg)) ? |err| FileReadFailed(first_arg, err)
 	file_first_line_utf8 = reader.read_line!() ? |err| FileReadFailed(first_arg, err)

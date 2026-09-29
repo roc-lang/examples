@@ -1,6 +1,6 @@
 app [main!] {
-	cli: platform "https://github.com/roc-lang/basic-cli/releases/download/0.22.2/9zUBxb1LtXYVc4eR4hAtd1WQDwBYDhM6HQdZz1UFCm2m.tar.zst",
-	roc: "nightly-2026-09-19-d025939",
+	cli: platform "https://github.com/roc-lang/basic-cli/releases/download/0.23.0/GNN5tt2gKdX4dhawg4915C4YB193woHFdcCkz31fhGxv.tar.zst",
+	roc: "nightly-2026-09-28-9927ba8",
 }
 
 import cli.Stdout
@@ -52,7 +52,7 @@ run! = |args| {
 
 parse_args! = |args| {
 	match args {
-		[_, first_arg, second_arg, ..] => {
+		[first_arg, second_arg, ..] => {
 			url = OsStr.display(first_arg)
 			Ok({ url, output_path: Path.from_os_str(second_arg) })
 		}

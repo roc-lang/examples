@@ -14,10 +14,10 @@ program = { init!, respond!, shutdown! }
 # generate css by running `tailwindcss`...
 # In this case we don't have anything to initialize, so we use the default
 # config.
-init! : () => Try({ config : Server.Config, context : Context }, [Exit(I64), ..])
+init! : () => Try({ config : Server.Config, context : Context }, [Exit(I64)])
 init! = || Ok({ config: Server.default_config, context: {} })
 
-respond! : Server.Request, Context => Try(Server.Outcome, [ServerErr(Str), ..])
+respond! : Server.Request, Context => Try(Server.Outcome, [ServerErr(Str)])
 respond! = |_request, _context|
 	Ok(
 		Server.respond(
@@ -27,5 +27,5 @@ respond! = |_request, _context|
 		),
 	)
 
-shutdown! : Server.ShutdownReason, Context => Try({}, [Exit(I64), ..])
+shutdown! : Server.ShutdownReason, Context => Try({}, [Exit(I64)])
 shutdown! = |_reason, _context| Ok({})
