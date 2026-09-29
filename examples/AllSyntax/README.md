@@ -39,6 +39,7 @@ NotOneTwoNotFive
 ("Roc", 1.0)
 ["a", "b"]
 ("Roc", 1.0, 1.0, 1.0)
+{ count: 42, name: "Roc" }
 42
 10.0
 { age: 31, name: "Alice" }
