@@ -23,11 +23,11 @@ Celsius :: Dec.{
 }
 
 temp1 : Celsius
-temp1 = 37 # calls Celsius.from_quote at compile time
+temp1 = 37 # calls Celsius.from_numeral at compile time
 
-temp2 = 37.Celsius # also calls Celsius.from_quote at compile time
+temp2 = 37.Celsius # also calls Celsius.from_numeral at compile time
 
-#temp3 = -1000 # this code would cause a compilation error: it's too cold!
+#temp3 = -1000 # this would cause a compilation error: it's too cold!
 
 ### end snippet numeral
 
@@ -75,11 +75,11 @@ Time := { hour : U8, minute : U8, second : U8 }.{
 }
 
 time1 : Time
-time1 = "02:59:57"
+time1 = "02:59:57" # calls Time.from_quote at compilation time
 
-time2 = "02:59:57".Time
+time2 = "02:59:57".Time # also calls Time.from_quote at compilation time
 
-#time3 = "99:99:99" # compilation error
+#time3 = "99:99:99" # this would cause a compilation error: invalid time!
 
 ### end snippet quote
 
