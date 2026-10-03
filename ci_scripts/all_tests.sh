@@ -23,10 +23,10 @@ expect ci_scripts/expect_scripts/HelloWorld.exp
 cd ./examples/FizzBuzz/
 $ROC build --no-cache main.roc
 cd ../..
-$ROC test ./examples/FizzBuzz/main.roc
+$ROC test --no-cache ./examples/FizzBuzz/main.roc
 expect ci_scripts/expect_scripts/FizzBuzz.exp
 
-$ROC test ./examples/GraphTraversal/Graph.roc
+$ROC test --no-cache ./examples/GraphTraversal/Graph.roc
 
 cd ./examples/Json/
 $ROC build --no-cache main.roc
@@ -46,10 +46,10 @@ expect ci_scripts/expect_scripts/IngestFiles.exp
 cd ./examples/Parser/
 $ROC build --no-cache main.roc
 cd ../..
-$ROC test ./examples/Parser/main.roc
+$ROC test --no-cache ./examples/Parser/main.roc
 expect ci_scripts/expect_scripts/Parser.exp
 
-$ROC test ./examples/PatternMatching/PatternMatching.roc
+$ROC test --no-cache ./examples/PatternMatching/PatternMatching.roc
 
 cd ./examples/AllSyntax/
 $ROC build --no-cache --opt=dev main.roc
@@ -79,7 +79,7 @@ expect ci_scripts/expect_scripts/CommandLineArgsFile.exp
 cd ./examples/TryOperatorDesugaring/
 $ROC build --no-cache main.roc
 cd ../..
-$ROC test ./examples/TryOperatorDesugaring/main.roc
+$ROC test --no-cache ./examples/TryOperatorDesugaring/main.roc
 expect ci_scripts/expect_scripts/TryOperatorDesugaring.exp
 
 cd ./examples/Tuples/
@@ -87,9 +87,9 @@ $ROC build --no-cache main.roc
 cd ../..
 expect ci_scripts/expect_scripts/Tuples.exp
 
-$ROC test ./examples/TowersOfHanoi/Hanoi.roc
+$ROC test --no-cache ./examples/TowersOfHanoi/Hanoi.roc
 
-$ROC test ./examples/ErrorHandlingBasic/ErrorHandlingBasic.roc
+$ROC test --no-cache ./examples/ErrorHandlingBasic/ErrorHandlingBasic.roc
 
 cd ./examples/ErrorHandlingRealWorld/
 $ROC build --no-cache main.roc
@@ -104,12 +104,12 @@ expect ci_scripts/expect_scripts/LoopEffect.exp
 cd ./examples/Snake/
 $ROC build --no-cache main.roc
 cd ../..
-$ROC test ./examples/Snake/main.roc
+$ROC test --no-cache ./examples/Snake/main.roc
 expect ci_scripts/expect_scripts/Snake.exp
 
-$ROC test ./examples/RecordBuilder/DateParser.roc
+$ROC test --no-cache ./examples/RecordBuilder/DateParser.roc
 
-$ROC test ./examples/BasicDict/BasicDict.roc
+$ROC test --no-cache ./examples/BasicDict/BasicDict.roc
 
 cd ./examples/MultipleRocFiles/
 $ROC build --no-cache main.roc
@@ -129,7 +129,7 @@ expect ci_scripts/expect_scripts/EncodeDecode.exp
 cd ./examples/SafeMath/
 $ROC build --no-cache main.roc
 cd ../..
-$ROC test ./examples/SafeMath/main.roc
+$ROC test --no-cache ./examples/SafeMath/main.roc
 expect ci_scripts/expect_scripts/SafeMath.exp
 
 cd ./examples/HelloWeb/
@@ -142,7 +142,9 @@ $ROC build --no-cache main.roc
 cd ../..
 expect ci_scripts/expect_scripts/ImportPackageFromModule.exp
 
-$ROC test ./examples/CustomInspect/OpaqueTypes.roc
+$ROC test --no-cache ./examples/CustomInspect/OpaqueTypes.roc
+
+$ROC test --no-cache ./examples/CustomLiterals/main.roc
 
 cd ./examples/SortStrings/
 #$ROC build --no-cache main.roc
