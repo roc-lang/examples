@@ -50,7 +50,9 @@ file:main.roc:snippet:interpolation
 
 Here `name` becomes `Roc &amp; friends &lt;3`, while `<p>` and `</p>` remain markup. This example is for inserting text into HTML elements. Other contexts, such as URLs, scripts, or styles, could each handle interpolations in their own way.
 
-Unlike `from_numeral` and `from_quote`, this `from_interpolation` returns `Html` directly. There is no automatic `Try` unwrapping or rejection of `Err`. Our top-level `greeting` is evaluated at compile time because all its inputs are known. Interpolation can also use runtime values, in which case escaping and assembly happen at runtime.
+Our top-level `greeting` is evaluated at compile time because all its inputs are known. Interpolation can also use runtime values, in which case escaping and assembly happen at runtime.
+
+Note: Unlike `from_numeral` and `from_quote`, the `from_interpolation` function doesn't have to return a `Try`. This will change shortly: it will require a `Try` and the compiler will automatically unwrap `Ok` and reject `Err` (see [issue #12044](https://github.com/roc-lang/roc/issues/12044)).
 
 ## Output
 
