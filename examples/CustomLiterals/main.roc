@@ -23,9 +23,11 @@ Celsius :: Dec.{
 }
 
 temp1 : Celsius
-temp1 = 37
+temp1 = 37 # calls Celsius.from_quote at compile time
 
-temp2 = 37.Celsius
+temp2 = 37.Celsius # also calls Celsius.from_quote at compile time
+
+#temp3 = -1000 # this code would cause a compilation error: it's too cold!
 
 ### end snippet numeral
 
@@ -77,6 +79,8 @@ time1 = "02:59:57"
 
 time2 = "02:59:57".Time
 
+#time3 = "99:99:99" # compilation error
+
 ### end snippet quote
 
 ### start snippet constructor
@@ -126,7 +130,10 @@ greeting2 = "<p>Hello, ${name}!</p>".Html
 
 ### end snippet interpolation
 
+# Test Celsius
 expect temp1.to_dec() == 37
+
+# Test Time
 expect time1.hour == 2
 expect time1.minute == 59
 expect time1.second == 57
@@ -141,7 +148,10 @@ expect Time.from_quote("02:60:00").is_err()
 expect Time.from_quote("02:59:60").is_err()
 expect Time.from_quote("2:59:60").is_err()
 expect Time.from_quote("2:9:0001").is_err()
+expect Time.from_quote("99:99:99").is_err()
 expect Time.from_quote("ab:cd:ef").is_err()
+
+# Test HTML
 expect greeting1 == greeting2
 expect greeting1.to_str() == "<p>Hello, Roc &amp; friends &lt;3!</p>"
 expect Html.escape("&<>'\"") == "&amp;&lt;&gt;&#39;&quot;"
