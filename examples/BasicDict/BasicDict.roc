@@ -11,28 +11,28 @@ fruit_dict =
 		.insert("Banana", 2)
 
 expect
-# get the value for a key
-# Dict.get returns a Try with either `Ok(value)` or `Err(KeyNotFound)`
+	# get the value for a key
+	# Dict.get returns a Try with either `Ok(value)` or `Err(KeyNotFound)`
 	fruit_dict.get("Apple") == Ok(3)
 
 expect
-# get the length (number of key-value pairs) of a Dict
+	# get the length (number of key-value pairs) of a Dict
 	fruit_dict.len() == 2
 
 expect
-# get all the keys
+	# get all the keys
 	fruit_dict.keys() == ["Apple", "Banana"]
 
 expect
-# get all the values
+	# get all the values
 	fruit_dict.values() == [3, 2]
 
 expect
-# convert to a list of tuples
+	# convert to a list of tuples
 	fruit_dict.to_list() == [("Apple", 3), ("Banana", 2)]
 
 expect
-# remove a key-value pair
+	# remove a key-value pair
 	fruit_dict.remove("Apple").remove("Banana").is_empty()
 
 expect {
