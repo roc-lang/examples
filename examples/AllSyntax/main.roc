@@ -69,7 +69,7 @@ match_list_patterns = |lst| {
 
 match_tag_union_advanced : Try({}, [StdoutErr(Str), Other]) -> Str
 match_tag_union_advanced = |try|
-# `Try(a, b)` is the tag union `[Ok(a), Err(b)]` under the hood.
+	# `Try(a, b)` is the tag union `[Ok(a), Err(b)]` under the hood.
 	match try {
 		Ok(_) =>
 			"Success"
@@ -210,7 +210,7 @@ if_demo = |num| {
 }
 
 tuple_demo =
-# tuples can contain multiple types
+	# tuples can contain multiple types
 	("Roc", 1)
 
 # Here we use a type variable `a` to indicate this function works for a list of any type.

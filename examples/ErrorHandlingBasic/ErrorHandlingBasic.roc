@@ -3,7 +3,7 @@ Person : { first_name : Str, last_name : Str, birth_year : U16 }
 parse_person : Str -> Try(Person, [InvalidSentenceFormat(Str), InvalidNameFormat(Str), InvalidBirthYearFormat(Str)])
 parse_person = |line| {
 	{ before: full_name, after: birth_year_str } =
-	# The NotFound error is not very informative, so we discard it with `_` and provide our own.
+		# The NotFound error is not very informative, so we discard it with `_` and provide our own.
 		line.split_first(" was born in ") ? |_| InvalidSentenceFormat(line)
 
 	{ before: first_name, after: last_name } =
