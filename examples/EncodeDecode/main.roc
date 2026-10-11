@@ -1,3 +1,7 @@
+app [main!] {
+	roc: "nightly-2026-10-06-c34079d",
+}
+
 ### start snippet impl
 
 ItemKind := [

@@ -1,3 +1,7 @@
+app [main!] {
+	roc: "nightly-2026-10-09-258ab27",
+}
+
 Person : { first_name : Str, last_name : Str, birth_year : U16 }
 
 parse_person : Str -> Try(Person, [InvalidSentenceFormat(Str), InvalidNameFormat(Str), InvalidBirthYearFormat(Str)])

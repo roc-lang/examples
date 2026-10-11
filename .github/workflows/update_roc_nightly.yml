@@ -24,9 +24,13 @@ jobs:
       contents: write
     outputs:
       nightly-tag: ${{ steps.latest.outputs.nightly-tag }}
-      changed: ${{ steps.bump.outputs.changed }}
+      changed: ${{ steps.upgrade.outputs.changed }}
+      summary: ${{ steps.upgrade.outputs.summary }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Install dependencies
+        run: sudo apt install -y expect
 
       - name: Get the latest nightly tag
         id: latest
@@ -37,29 +41,38 @@ jobs:
           echo "latest nightly is $nightly_tag"
           echo "nightly-tag=$nightly_tag" >> "$GITHUB_OUTPUT"
 
-      - name: Update the pinned version
-        id: bump
+      # Examples that do not work with the latest nightly yet, for example because
+      # their platform was not updated, stay on the version they pin.
+      - name: Upgrade the examples that work with the latest nightly
+        id: upgrade
         env:
           NIGHTLY_TAG: ${{ steps.latest.outputs.nightly-tag }}
         run: |
-          if [ "$NIGHTLY_TAG" = "$(<.roc-version)" ]; then
-            echo "already pinned to $NIGHTLY_TAG, nothing to do"
+          summary="$(./ci_scripts/upgrade_roc_nightly.sh "$NIGHTLY_TAG" | tail -n 2)"
+          echo "$summary"
+
+          {
+            echo "summary<<EOF"
+            echo "$summary"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+          if git diff --quiet; then
+            echo "no example changed, nothing to do"
             echo "changed=false" >> "$GITHUB_OUTPUT"
-            exit 0
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
 
-          ./ci_scripts/update_roc_version.sh "$NIGHTLY_TAG"
-          echo "changed=true" >> "$GITHUB_OUTPUT"
-
       - name: Push the branch
-        if: steps.bump.outputs.changed == 'true'
+        if: steps.upgrade.outputs.changed == 'true'
         env:
           NIGHTLY_TAG: ${{ steps.latest.outputs.nightly-tag }}
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git switch --create "$BRANCH"
-          git commit --all --message "Update Roc nightly pin to $NIGHTLY_TAG"
+          git commit --all --message "Upgrade examples to Roc $NIGHTLY_TAG"
           git push --force origin "$BRANCH"
 
   test:
@@ -69,7 +82,8 @@ jobs:
       contents: read
     uses: ./.github/workflows/tests_nightly.yml
     with:
-      nightly-tag: ${{ needs.bump.outputs.nightly-tag }}
+      # The env context is not available here, keep this the same as BRANCH.
+      ref: update-roc-nightly
 
   pull-request:
     needs: [bump, test]
@@ -85,18 +99,20 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           NIGHTLY_TAG: ${{ needs.bump.outputs.nightly-tag }}
+          SUMMARY: ${{ needs.bump.outputs.summary }}
           TEST_RESULT: ${{ needs.test.result }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           if [ "$TEST_RESULT" = "success" ]; then
-            status=":white_check_mark: All tests passed with this nightly."
+            status=":white_check_mark: All tests passed with the upgraded examples."
           else
-            status=":x: Tests did not pass with this nightly (\`$TEST_RESULT\`), this needs a look before merging."
+            status=":x: Tests did not pass (\`$TEST_RESULT\`), this needs a look before merging."
           fi
 
-          title="Update Roc nightly pin to $NIGHTLY_TAG"
-          body="$(printf '%s\n\n%s\n\n%s\n' \
-            "Updates \`.roc-version\` and all example manifests to [\`$NIGHTLY_TAG\`](https://github.com/roc-lang/nightlies/releases/tag/$NIGHTLY_TAG)." \
+          title="Upgrade examples to Roc $NIGHTLY_TAG"
+          body="$(printf '%s\n\n%s\n\n%s\n\n%s\n' \
+            "Updates the \`roc\` pin in the header of the examples that work with [\`$NIGHTLY_TAG\`](https://github.com/roc-lang/nightlies/releases/tag/$NIGHTLY_TAG)." \
+            "$SUMMARY" \
             "$status See the [workflow run]($RUN_URL) for details." \
             "This PR was created automatically by the \`Update Roc nightly\` workflow.")"
 

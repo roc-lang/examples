@@ -16,6 +16,8 @@ We want the examples website to be the centralized place to find your up-to-date
 1. [Install Roc](https://github.com/roc-lang/roc/tree/main/getting_started#installation)
 2. For the FizzBuzz example: `roc examples/FizzBuzz/main.roc`
 
+Each example pins the Roc nightly it works with in its header (`roc: "nightly-..."`), `roc` warns if you run another version. Different examples can pin different versions, see [CONTRIBUTING.md](CONTRIBUTING.md#roc-versions).
+
 ## Ideas and Improvements
 
 If you have any ideas or improvements, talk to us on our [group chat](https://roc.zulipchat.com/), we're friendly!

@@ -1,6 +1,7 @@
 app [Context, program] {
 	pf: platform "https://github.com/roc-lang/basic-webserver/releases/download/0.17.0/AC9goxhsjJJdrQtnc2ga3eTiESyh6ZLraZJsCVdEfeZT.tar.zst",
 	http: "https://github.com/roc-lang/http/releases/download/2.0.0/6ZUwqYhCS8PU9Mo6MF7oV82ET2o7KYb57CLKDq4cq4sS.tar.zst",
+	roc: "nightly-2026-10-06-c34079d",
 }
 
 import pf.Server
@@ -14,10 +15,10 @@ program = { init!, respond!, shutdown! }
 # generate css by running `tailwindcss`,...
 # In this case we don't have anything to initialize, so we use the default
 # config
-init! : () => Try({ config : Server.Config, context : Context }, [Exit(I64), ..])
+init! : () => Try({ config : Server.Config, context : Context }, [Exit(I64)])
 init! = || Ok({ config: Server.default_config, context: {} })
 
-respond! : Server.Request, Context => Try(Server.Outcome, [ServerErr(Str), ..])
+respond! : Server.Request, Context => Try(Server.Outcome, [ServerErr(Str)])
 respond! = |_request, _context|
 	Ok(
 		Server.respond(
@@ -30,5 +31,5 @@ respond! = |_request, _context|
 		),
 	)
 
-shutdown! : Server.ShutdownReason, Context => Try({}, [Exit(I64), ..])
+shutdown! : Server.ShutdownReason, Context => Try({}, [Exit(I64)])
 shutdown! = |_reason, _context| Ok({})

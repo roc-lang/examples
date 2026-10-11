@@ -1,3 +1,7 @@
+app [main!] {
+	roc: "nightly-2026-10-09-258ab27",
+}
+
 main! = |_| {
 	n_str = least_square_difference.to_str()
 	echo!("The least positive integer n, where the difference of n*n and (n-1)*(n-1) is greater than 1000, is ${n_str}\n")

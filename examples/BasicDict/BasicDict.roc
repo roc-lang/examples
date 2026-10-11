@@ -1,3 +1,7 @@
+app [main!] {
+	roc: "nightly-2026-10-09-258ab27",
+}
+
 main! = |_| Ok({})
 
 # the dictionary type is: Dict(key, value)
