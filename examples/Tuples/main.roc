@@ -1,3 +1,7 @@
+app [main!] {
+	roc: "nightly-2026-10-09-258ab27",
+}
+
 main! = |_| {
 	# a tuple that contains three different types
 	simple_tuple : (Str, Bool, I64)

@@ -1,3 +1,7 @@
+app [main!] {
+	roc: "nightly-2026-10-09-258ab27",
+}
+
 # Run with `roc ./examples/CommandLineArgs/main.roc input.txt`
 
 main! = |raw_args| {

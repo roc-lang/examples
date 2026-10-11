@@ -1,3 +1,7 @@
+app [main!] {
+	roc: "nightly-2026-10-09-258ab27",
+}
+
 main! = |_| {
 	echo!("${Str.inspect(parse_name_and_year("Alice was born in 1990"))}\n")
 	echo!("${Str.inspect(parse_name_and_year_try("Alice was born in 1990"))}\n")

@@ -3,8 +3,8 @@ on:
   workflow_dispatch:
   workflow_call:
     inputs:
-      nightly-tag:
-        description: 'Nightly release tag to pin before testing. Defaults to the version already pinned in the checkout.'
+      ref:
+        description: 'Branch to test. Defaults to the checkout of the triggering event.'
         type: string
         required: false
         default: ''
@@ -30,30 +30,13 @@ jobs:
         operating-system: [ubuntu-26.04, ubuntu-26.04-arm, macos-26-intel, macos-26]
     timeout-minutes: 90
     steps:
-      # Always the checkout for this event, never a caller supplied ref: when this
-      # workflow is called from a schedule or workflow_dispatch it runs with the
-      # cache scope of the default branch, so it must not execute code from an
-      # arbitrary ref (cache poisoning).
+      # Each example is tested with the Roc nightly that it pins in its header,
+      # ci_scripts/get_roc.sh downloads the nightlies that are needed.
+      # Callers may pass a ref to test the branch they just pushed, nothing is cached so
+      # running code of that branch cannot poison the cache of the default branch.
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-
-      # Reproduces what ci_scripts/update_roc_version.sh does on the update branch,
-      # so callers can test a new nightly without us checking that branch out.
-      - name: Pin the requested Roc version
-        if: inputs.nightly-tag != ''
-        env:
-          NIGHTLY_TAG: ${{ inputs.nightly-tag }}
-        run: ./ci_scripts/update_roc_version.sh "$NIGHTLY_TAG"
-
-      - id: roc-version
-        run: echo "nightly-tag=$(<.roc-version)" >> "$GITHUB_OUTPUT"
-
-      - uses: roc-lang/setup-roc@cbe782d6f165b89c87d99f50a59ac4f5f73b4427
         with:
-          version: nightly-new-compiler
-          nightly-tag: ${{ steps.roc-version.outputs.nightly-tag }}
-
-      - name: Run Roc
-        run: roc version
+          ref: ${{ inputs.ref }}
 
       - name: Install dependencies (Ubuntu)
         if: startsWith(matrix.operating-system, 'ubuntu-')
@@ -64,10 +47,10 @@ jobs:
         run: |
           brew install expect
 
-      - name: check if roc files are properly formatted
-        run: ROC=roc ./ci_scripts/check_format.sh
-
-      - name: check that manifests use the pinned Roc version
+      - name: check that every example pins a Roc version
         run: ./ci_scripts/check_roc_version.sh
 
-      - run: ROC=roc ./ci_scripts/all_tests.sh
+      - name: check if roc files are properly formatted
+        run: ./ci_scripts/check_format.sh
+
+      - run: ./ci_scripts/all_tests.sh
