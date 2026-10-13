@@ -1,5 +1,5 @@
 app [main!] {
-	roc: "nightly-2026-10-06-c34079d",
+	roc: "nightly-2026-10-09-258ab27",
 }
 
 ### start snippet impl
@@ -51,7 +51,7 @@ ItemKind := [
 	parser_for = |encoding| {
 		|state| {
 			parsed = encoding.parse_u32(state) ? |InvalidJson(e)| InvalidJson(e)
-			item_kind : Try(ItemKind, [TooShort, ..])
+			item_kind : Try(ItemKind, [TooShort])
 			item_kind = match parsed.value {
 				1 => Ok(ItemKind.(Text))
 				2 => Ok(ItemKind.(Method))
