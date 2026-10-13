@@ -32,11 +32,9 @@ jobs:
     steps:
       # Each example is tested with the Roc nightly that it pins in its header,
       # ci_scripts/get_roc.sh downloads the nightlies that are needed.
-      # Callers may pass a ref to test the branch they just pushed, nothing is cached so
-      # running code of that branch cannot poison the cache of the default branch.
+      # Checkout the trusted ref from the triggering event context.
+      # Do not checkout caller-provided refs in this workflow.
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          ref: ${{ inputs.ref }}
 
       - name: Install dependencies (Ubuntu)
         if: startsWith(matrix.operating-system, 'ubuntu-')
