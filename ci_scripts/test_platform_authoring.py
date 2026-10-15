@@ -22,6 +22,12 @@ def main():
     parser.add_argument("--host", choices=["c", "zig", "rust", "all"], default="all")
     args = parser.parse_args()
     windows = platform.system() == "Windows"
+    linux = platform.system() == "Linux"
+    # Roc's static archive contains non-PIC code. Linux host toolchains must
+    # link a non-PIE executable, even when the distribution defaults to PIE.
+    c_link_flags = ["-no-pie"] if linux else []
+    zig_link_flags = ["-fno-PIE"] if linux else []
+    rust_link_flags = ["-C", "relocation-model=static"] if linux else []
     # Match Zig's ABI to the MSVC archive produced by Roc's Windows targets.
     zig_target = []
     if windows:
@@ -41,13 +47,13 @@ def main():
                     run("cl", "/nologo", "/std:c11", "host.c", archive,
                         f"/Fo{work / 'host.obj'}", f"/Fe{binary}")
                 else:
-                    run("cc", "-std=c11", "host.c", archive, "-lm", "-o", binary)
+                    run("cc", "-std=c11", "host.c", archive, "-lm", *c_link_flags, "-o", binary)
             elif host == "zig":
-                run("zig", "build-exe", "host.zig", archive, "-lc", *zig_target,
+                run("zig", "build-exe", "host.zig", archive, "-lc", *zig_target, *zig_link_flags,
                     f"-femit-bin={binary}")
             else:
                 run("rustc", "--edition=2024", "host.rs", "-C", f"link-arg={archive}",
-                    "-o", binary)
+                    *rust_link_flags, "-o", binary)
             result = subprocess.run([str(binary)], cwd=EXAMPLE, check=True,
                                     capture_output=True, text=True)
             if result.stdout != "42\n":

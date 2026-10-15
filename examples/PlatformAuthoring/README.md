@@ -46,12 +46,17 @@ The C host declares `roc_transform` as an external function. It also supplies th
 file:host.c
 ```
 
-On macOS or Linux, build and run it with:
+On Linux, build and run it with:
 
 ```sh
-cc -std=c11 host.c app.a -lm -o host-c
+cc -std=c11 host.c app.a -lm -no-pie -o host-c
 ./host-c
 ```
+
+The pinned Roc compiler produces a static archive containing code that is not
+position-independent. Ubuntu and some other Linux distributions default to
+position-independent executables (PIE), so `-no-pie` is needed when linking this
+archive. On macOS, use the same command without `-no-pie`.
 
 On Windows, use the Visual Studio C compiler:
 
@@ -68,12 +73,14 @@ Zig’s `extern` declaration imports the Roc entry point, while `export fn` make
 file:host.zig
 ```
 
-On macOS or Linux:
+On Linux:
 
 ```sh
-zig build-exe host.zig app.a -lc -femit-bin=host-zig
+zig build-exe host.zig app.a -lc -fno-PIE -femit-bin=host-zig
 ./host-zig
 ```
+
+On macOS, omit `-fno-PIE`.
 
 On Windows, select the MSVC ABI to match the Roc archive:
 
@@ -90,12 +97,14 @@ Rust calls the Roc entry point through `unsafe extern "C"`. The callbacks use `#
 file:host.rs
 ```
 
-On macOS or Linux:
+On Linux:
 
 ```sh
-rustc --edition=2024 host.rs -C link-arg=app.a -o host-rust
+rustc --edition=2024 host.rs -C link-arg=app.a -C relocation-model=static -o host-rust
 ./host-rust
 ```
+
+On macOS, omit `-C relocation-model=static`.
 
 On Windows:
 
