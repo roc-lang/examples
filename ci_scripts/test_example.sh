@@ -49,6 +49,47 @@ run_expect() {
 }
 
 case "$name" in
+  AdvancedParsing | Boxes | Closures | CustomEquality | \
+    CustomOperators | ExpectTry | Iterators | Loops | \
+    MutualRecursion | NestedTypes | NominalTypes | OpenRecords | Paths | \
+    PatternAliases | Polymorphism | RecursiveTypes | Sets | \
+    StringPatterns | Unicode | WrappingArithmetic)
+    "$roc" test --no-cache "examples/$name/main.roc"
+    ;;
+  Streams | DerivedMap)
+    build_example
+    "$roc" test --no-cache "examples/$name/main.roc"
+    run_expect
+    ;;
+  PackageAuthoring | Documentation)
+    "$roc" test --no-cache "examples/$name/main.roc"
+    (
+      work="$(mktemp -d)"
+      trap 'rm -rf "$work"' EXIT
+      if [ "$name" = "PackageAuthoring" ]; then
+        "$roc" bundle "examples/$name/package/main.roc" --output-dir "$work"
+      else
+        "$roc" docs "examples/$name/package.roc" --output="$work/docs"
+        test -s "$work/docs/index.html"
+      fi
+    )
+    ;;
+  PlatformAuthoring)
+    # The dedicated platform-authoring workflow also tests the Zig and Rust hosts.
+    python3 ci_scripts/test_platform_authoring.py --roc "$roc" --host c
+    ;;
+  RocRay)
+    case "$(uname -s)-$(uname -m)" in
+      Linux-aarch64 | Linux-arm64)
+        # RocRay 0.10.0 does not ship a Linux ARM64 host.
+        "$roc" check --no-cache "examples/$name/main.roc"
+        ;;
+      *)
+        build_example
+        "./examples/$name/main" --host-headless --host-headless-frames=3
+        ;;
+    esac
+    ;;
   AllSyntax)
     build_example --opt=dev
     run_expect
