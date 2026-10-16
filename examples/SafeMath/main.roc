@@ -1,5 +1,5 @@
 app [main!] {
-	roc: "nightly-2026-10-15-38e6c42",
+	roc: "nightly-2026-10-16-f14c106",
 }
 
 ## Safely calculates the variance of a population.
