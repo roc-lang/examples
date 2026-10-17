@@ -1,5 +1,5 @@
 app [main!] {
-	roc: "nightly-2026-10-16-f14c106",
+	roc: "nightly-2026-10-17-5f126ac",
 }
 
 ImageRequest : {
