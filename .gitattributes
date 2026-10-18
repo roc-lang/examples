@@ -1,1 +1,2 @@
 *.roc linguist-detectable=true
+examples/**/*.roc -linguist-documentation
