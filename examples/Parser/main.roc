@@ -14,7 +14,7 @@ default_input_str = "ABRACADABRA"
 
 main! : List(OsStr) => Try({}, [Exit(I32)])
 main! = |args| {
-	input_str = args.map(OsStr.display).get(1) ?? default_input_str
+	input_str = args.map(OsStr.display).first() ?? default_input_str
 
 	match Utf8.parse_str(letter_parser.many(), input_str) {
 		Ok(letters) => {
