@@ -85,6 +85,11 @@ case "$name" in
   RecordBuilder)
     "$roc" test --no-cache examples/RecordBuilder/DateParser.roc
     ;;
+  Streams)
+    build_example
+    "$roc" test --no-cache "examples/$name/main.roc"
+    run_expect
+    ;;
   TowersOfHanoi)
     "$roc" test --no-cache examples/TowersOfHanoi/Hanoi.roc
     ;;
