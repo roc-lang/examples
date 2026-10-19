@@ -1,5 +1,5 @@
 app [main!] {
-	roc: "nightly-2026-10-09-258ab27",
+	roc: "nightly-2026-10-17-5f126ac",
 }
 
 # Match an empty list
@@ -72,9 +72,9 @@ expect {
 		and
 		match_fn([Foo, Bar])
 			== Other
-			and
-			match_fn([Foo, Bar, Baz("Hi"), Blah])
-				== Other
+		and
+		match_fn([Foo, Bar, Baz("Hi"), Blah])
+			== Other
 }
 
 # Match a list with Foo as its first element, and
@@ -91,8 +91,8 @@ expect {
 		== FooCountIf
 		and match_fn([Foo, Count(0)])
 			== Other
-			and match_fn([Baz, Count(1)])
-				== Other
+		and match_fn([Baz, Count(1)])
+			== Other
 }
 
 # Use `as` to create a variable equal to the part of the list that matches `..`
@@ -107,10 +107,10 @@ expect {
 		== HeadAndTail(1, [2, 3])
 		and match_fn([1, 2])
 			== HeadAndTail(1, [2])
-			and match_fn([1])
-				== HeadAndTail(1, [])
-				and match_fn([])
-					== Other
+		and match_fn([1])
+			== HeadAndTail(1, [])
+		and match_fn([])
+			== Other
 }
 
 main! = |_| Ok({})
