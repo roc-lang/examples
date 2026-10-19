@@ -85,6 +85,9 @@ case "$name" in
   RecordBuilder)
     "$roc" test --no-cache examples/RecordBuilder/DateParser.roc
     ;;
+  RecursiveTypes)
+    "$roc" test --no-cache "examples/$name/main.roc"
+    ;;
   TowersOfHanoi)
     "$roc" test --no-cache examples/TowersOfHanoi/Hanoi.roc
     ;;
