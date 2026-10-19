@@ -82,6 +82,9 @@ case "$name" in
   PatternMatching)
     "$roc" test --no-cache examples/PatternMatching/PatternMatching.roc
     ;;
+  PlatformAuthoring)
+    python3 ci_scripts/test_platform_authoring.py --roc "$roc" --host c
+    ;;
   RecordBuilder)
     "$roc" test --no-cache examples/RecordBuilder/DateParser.roc
     ;;
