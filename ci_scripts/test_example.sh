@@ -56,6 +56,9 @@ case "$name" in
   BasicDict)
     "$roc" test --no-cache examples/BasicDict/BasicDict.roc
     ;;
+  Closures)
+    "$roc" test --no-cache "examples/$name/main.roc"
+    ;;
   CommandLineArgs | CommandLineArgsFile | Commands | EncodeDecode | ErrorHandlingRealWorld | \
     HelloWorld | ImportFromDirectory | ImportPackageFromModule | IngestFiles | Json | LeastSquares | \
     LoopEffect | MultipleRocFiles | RandomNumbers | Tuples)
