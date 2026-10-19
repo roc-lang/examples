@@ -68,6 +68,11 @@ case "$name" in
   CustomLiterals)
     "$roc" test --no-cache examples/CustomLiterals/main.roc
     ;;
+  DerivedMap)
+    build_example
+    "$roc" test --no-cache "examples/$name/main.roc"
+    run_expect
+    ;;
   ErrorHandlingBasic)
     "$roc" test --no-cache examples/ErrorHandlingBasic/ErrorHandlingBasic.roc
     ;;
