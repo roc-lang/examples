@@ -88,6 +88,9 @@ case "$name" in
   TowersOfHanoi)
     "$roc" test --no-cache examples/TowersOfHanoi/Hanoi.roc
     ;;
+  WrappingArithmetic)
+    "$roc" test --no-cache "examples/$name/main.roc"
+    ;;
   # TODO: also run these, the expect scripts need updating
   ElmWebApp)
     "$roc" check --no-cache examples/ElmWebApp/backend.roc
