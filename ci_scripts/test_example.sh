@@ -79,6 +79,14 @@ case "$name" in
   GraphTraversal)
     "$roc" test --no-cache examples/GraphTraversal/Graph.roc
     ;;
+  PackageAuthoring)
+    "$roc" test --no-cache "examples/$name/main.roc"
+    (
+      work="$(mktemp -d)"
+      trap 'rm -rf "$work"' EXIT
+      "$roc" bundle "examples/$name/package/main.roc" --output-dir "$work"
+    )
+    ;;
   PatternMatching)
     "$roc" test --no-cache examples/PatternMatching/PatternMatching.roc
     ;;
