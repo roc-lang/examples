@@ -79,6 +79,9 @@ case "$name" in
   GraphTraversal)
     "$roc" test --no-cache examples/GraphTraversal/Graph.roc
     ;;
+  NominalTypes)
+    "$roc" test --no-cache "examples/$name/main.roc"
+    ;;
   PatternMatching)
     "$roc" test --no-cache examples/PatternMatching/PatternMatching.roc
     ;;
