@@ -1,0 +1,80 @@
+name: Test platform authoring hosts
+
+on:
+  pull_request:
+    paths:
+      - 'examples/PlatformAuthoring/**'
+      - 'ci_scripts/test_platform_authoring.py'
+      - 'ci_scripts/test_example.sh'
+      - '.github/workflows/test-platform-authoring.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  hosts:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-26.04, macos-26, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: mlugg/setup-zig@d1434d08867e3ee9daa34448df10607b98908d29 # v2
+        with:
+          version: 0.17.0
+
+      - uses: ilammy/msvc-dev-cmd@0b201ec74fa43914dc39ae48a89fd1d8cb592756 # v1.13.0
+        if: runner.os == 'Windows'
+
+      - name: Select Rust
+        run: rustup default 1.98.1
+
+      - name: Download the example's pinned Roc compiler
+        shell: python
+        run: |
+          import os
+          from pathlib import Path
+          import platform
+          import re
+          import tarfile
+          import urllib.request
+          import zipfile
+
+          source = Path("examples/PlatformAuthoring/main.roc").read_text()
+          tag = re.search(r'roc: "(nightly-[^\"]+)"', source).group(1)
+          suffix = tag.removeprefix("nightly-")
+          system = platform.system()
+          arm = platform.machine().lower() in ("arm64", "aarch64")
+          arch = {
+              "Darwin": "macos_apple_silicon" if arm else "macos_x86_64",
+              "Linux": "linux_arm64" if arm else "linux_x86_64",
+              "Windows": "windows_x86_64",
+          }[system]
+          extension = "zip" if system == "Windows" else "tar.gz"
+          filename = f"roc_nightly-{arch}-{suffix}.{extension}"
+          directory = Path(os.environ["RUNNER_TEMP"]) / "roc-platform-compiler"
+          directory.mkdir()
+          archive = directory / filename
+          urllib.request.urlretrieve(
+              f"https://github.com/roc-lang/nightlies/releases/download/{tag}/{filename}", archive
+          )
+          if system == "Windows":
+              with zipfile.ZipFile(archive) as bundle:
+                  bundle.extractall(directory)
+          else:
+              with tarfile.open(archive) as bundle:
+                  bundle.extractall(directory, filter="data")
+          executable = next(directory.rglob("roc.exe" if system == "Windows" else "roc"))
+          with open(os.environ["GITHUB_ENV"], "a", encoding="utf-8") as env:
+              env.write(f"ROC={executable}\n")
+
+      - name: Build and run every host
+        run: python ci_scripts/test_platform_authoring.py

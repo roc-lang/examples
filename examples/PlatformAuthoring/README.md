@@ -117,7 +117,7 @@ Each host should print `42` and exit successfully. You can also run `roc test ma
 
 ## Testing and extending the platform
 
-From the repository root, `python ci_scripts/test_platform_authoring.py` builds and runs all three hosts. The regular examples test script continues to check the C host on every PR without requiring Zig or Rust to be installed.
+From the repository root, `python ci_scripts/test_platform_authoring.py` builds and runs all three hosts. The dedicated CI workflow runs this check on macOS, Linux, and Windows x64 when a PR changes this example or its associated CI files. It cancels superseded runs and can also be started manually. The regular examples test script continues to check the C host on every PR without requiring Zig or Rust to be installed.
 
 This example keeps the boundary small by passing only integers. Its allocator wrappers accept alignments up to eight bytes, which is sufficient for this `I64` example. A general-purpose platform would need to support larger alignments too, as well as ownership transfers when passing strings, lists, or other allocated values across the boundary.
 

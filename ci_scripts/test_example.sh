@@ -83,6 +83,7 @@ case "$name" in
     "$roc" test --no-cache examples/PatternMatching/PatternMatching.roc
     ;;
   PlatformAuthoring)
+    # The dedicated platform-authoring workflow also tests the Zig and Rust hosts.
     python3 ci_scripts/test_platform_authoring.py --roc "$roc" --host c
     ;;
   RecordBuilder)
