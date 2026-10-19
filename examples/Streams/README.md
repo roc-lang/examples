@@ -25,7 +25,7 @@ An ordinary `for` loop consumes a pure iterator, although its body may still per
 
 ## Creating a stream from file reads
 
-`basic-cli`  provides `read_line!()`, which reads one line at a time, but does not provide a ready-made stream of lines. The `lines` function below adapts those individual reads into a stream. This lets callers use the same pipeline operations and `for!` syntax as in the first example:
+The `basic-cli` platform provides `read_line!()`, which reads one line at a time, but does not provide a ready-made stream of lines. The `lines` function below adapts those individual reads into a custom stream. This lets callers use the same pipeline operations and `for!` syntax as in the first example:
 
 ```roc
 file:main.roc:snippet:custom
