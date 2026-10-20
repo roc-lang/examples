@@ -1,5 +1,5 @@
 app [main!] {
-	roc: "nightly-2026-10-19-601b54c",
+	roc: "nightly-2026-10-20-7a8a800",
 }
 
 # Run with `roc ./examples/CommandLineArgs/main.roc input.txt`
