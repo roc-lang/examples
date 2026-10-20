@@ -1,5 +1,5 @@
 app [] {
-	roc: "nightly-2026-10-18-1df370f",
+	roc: "nightly-2026-10-19-601b54c",
 }
 
 ## The Graph module represents a [graph](https://en.wikipedia.org/wiki/Graph_(discrete_mathematics))
