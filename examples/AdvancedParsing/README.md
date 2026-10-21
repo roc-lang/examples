@@ -20,4 +20,12 @@ Field defaults belong to nominal records, so `User` uses `:=` rather than the ty
 
 The HTTP header example uses the same approach: we describe the record we want, and the format’s parser fills it in.
 
-Run `roc test main.roc` from this directory.
+## Output
+
+Run this from the directory that has `main.roc` in it:
+
+```
+$ roc test main.roc
+
+All (6) tests passed in 101.4 ms.
+```
