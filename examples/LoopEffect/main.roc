@@ -1,5 +1,5 @@
 app [main!] {
-	cli: platform "https://github.com/roc-lang/basic-cli/releases/download/0.25.0/CZsY7tYZwR3rj9kYbpaCfxki2yVAaRL8bBwMLvB2xkbA.tar.zst",
+	cli: platform "https://github.com/roc-lang/basic-cli/releases/download/0.26.0/GddgvsGjiNXrHFW6au5i5dUDbTs8FinQdrgE2Gqmw53t.tar.zst",
 	roc: "nightly-2026-10-21-5349569",
 }
 
@@ -16,7 +16,7 @@ add_number_from_stdin! = |sum| {
 			num = I64.from_str(input) ? |_| NotNum(input)
 			add_number_from_stdin!((sum + num))
 		}
-		Err(EndOfFile) => Ok(sum)
+		Err(EndOfInput) => Ok(sum)
 		Err(err) => Err(NotNum(Str.inspect(err)))
 	}
 }
