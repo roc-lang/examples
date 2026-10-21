@@ -49,6 +49,9 @@ run_expect() {
 }
 
 case "$name" in
+  AdvancedParsing)
+    "$roc" test --no-cache "examples/$name/main.roc"
+    ;;
   AllSyntax)
     build_example --opt=dev
     run_expect
