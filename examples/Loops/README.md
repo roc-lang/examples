@@ -10,4 +10,12 @@ The `for` version follows the items in the list, while the `while` version keeps
 
 A `var` can only be reassigned inside the function that declares it. That local reassignment does not make the function effectful, so all three versions have the same pure function type.
 
-Run `roc test main.roc` from this directory.
+## Output
+
+Run this from the directory that has `main.roc` in it:
+
+```text
+$ roc test main.roc
+
+All (4) tests passed in 11.4 ms.
+```
