@@ -14,4 +14,12 @@ Each operator calls a method on `Page`:
 
 The `range_iter` method makes that range iterable by delegating stepping and bounds to `U64`, then wrapping each number in a `Page`. Supporting other operators would require their corresponding methods too; Roc does not infer them from these definitions.
 
-Run `roc test main.roc` from this directory.
+## Output
+
+Run this from the directory that has `main.roc` in it:
+
+```text
+$ roc test main.roc
+
+All (2) tests passed in 25.9 ms.
+```
