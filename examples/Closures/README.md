@@ -6,4 +6,12 @@ A closure is a function that can capture values from the function that creates i
 file:main.roc:snippet:example
 ```
 
-Run `roc test main.roc` from this directory.
+## Output
+
+Run this from the directory that has `main.roc` in it:
+
+```text
+$ roc test main.roc
+
+All (3) tests passed in 14.7 ms.
+```
