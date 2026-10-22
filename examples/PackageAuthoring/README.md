@@ -28,4 +28,12 @@ file:main.roc:snippet:header
 
 When the package is ready to share, `roc bundle package/main.roc` produces a `.tar.zst` archive whose name identifies its contents. After uploading that archive to a release, consumers can use its full HTTPS URL in place of the local path.
 
-You can run `roc test main.roc` from this directory to try the package locally.
+## Output
+
+Run this from the directory that has `main.roc` in it:
+
+```text
+$ roc test main.roc
+
+All (1) tests passed in 8.5 ms.
+```
