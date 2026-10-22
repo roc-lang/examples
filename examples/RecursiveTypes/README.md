@@ -12,4 +12,12 @@ Every type in a recursive cycle must be nominal (`:=` or `::`). A type alias (`:
 
 For an example of grouping related types within a type module, see [Nested Types](../NestedTypes/README.md).
 
-Run `roc test main.roc` from this directory.
+## Output
+
+Run this from the directory that has `main.roc` in it:
+
+```text
+$ roc test main.roc
+
+All (2) tests passed in 10.9 ms.
+```
