@@ -8,4 +8,12 @@ file:main.roc:snippet:example
 
 Captured values are strings: `filename` returns the captured name directly, while `route` uses `U64.from_str` to convert the captured ID into a number. A matching path with an invalid ID returns `InvalidId`; a path that does not match `users/${id}` returns `NotFound`.
 
-Run `roc test main.roc` from this directory.
+## Output
+
+Run this from the directory that has `main.roc` in it:
+
+```text
+$ roc test main.roc
+
+All (5) tests passed in 9.8 ms.
+```
