@@ -12,4 +12,12 @@ Set elements need to support equality and hashing, which strings and integers al
 
 A set’s iteration order is not guaranteed, so the tests compare membership rather than expecting a particular order.
 
-Run `roc test main.roc` from this directory.
+## Output
+
+Run this from the directory that has `main.roc` in it:
+
+```text
+$ roc test main.roc
+
+All (6) tests passed in 32.6 ms.
+```
