@@ -10,4 +10,12 @@ file:main.roc:snippet:example
 
 You do not need to add boxes just to make a nominal type recursive; Roc handles that representation for you.
 
-Run `roc test main.roc` from this directory.
+## Output
+
+Run this from the directory that has `main.roc` in it:
+
+```text
+$ roc test main.roc
+
+All (3) tests passed in 13.3 ms.
+```
