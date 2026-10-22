@@ -88,6 +88,18 @@ case "$name" in
   RecordBuilder)
     "$roc" test --no-cache examples/RecordBuilder/DateParser.roc
     ;;
+  RocRay)
+    case "$(uname -s)-$(uname -m)" in
+      Linux-aarch64 | Linux-arm64)
+        # RocRay 0.10.0 does not ship a Linux ARM64 host.
+        "$roc" check --no-cache "examples/$name/main.roc"
+        ;;
+      *)
+        build_example
+        "./examples/$name/main" --host-headless --host-headless-frames=3
+        ;;
+    esac
+    ;;
   TowersOfHanoi)
     "$roc" test --no-cache examples/TowersOfHanoi/Hanoi.roc
     ;;
