@@ -10,4 +10,12 @@ Our `User` type treats the ID as the user’s identity: two values with the same
 
 The two methods need to agree: whenever `is_eq` considers two values equal, `to_hash` must hash them the same way. Here, both methods use only `id`. Hashing the whole record would include the name, so it would no longer agree with our equality rule.
 
-Run `roc test main.roc` from this directory.
+## Output
+
+Run this from the directory that has `main.roc` in it:
+
+```text
+$ roc test main.roc
+
+All (4) tests passed in 31.0 ms.
+```
