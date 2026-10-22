@@ -10,4 +10,12 @@ Wrapping continues at the opposite bound: adding ten to `250.U8` wraps around to
 
 Ordinary `+`, `-`, and `*` crash on overflow. If you would prefer to handle overflow as an error, the [Safe Math example](../SafeMath/README.md) shows the fallible arithmetic methods.
 
-Run `roc test main.roc` from this directory.
+## Output
+
+Run this from the directory that has `main.roc` in it:
+
+```text
+$ roc test main.roc
+
+All (6) tests passed in 10.8 ms.
+```
