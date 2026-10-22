@@ -8,4 +8,12 @@ file:main.roc:snippet:example
 
 Inside an `expect`, `?` unwraps `Ok` and fails the test if it encounters `Err`. When an error is the expected outcome, we check it directly instead, as the final test does with `.is_err()`.
 
-Run `roc test main.roc` from this directory.
+## Output
+
+Run this from the directory that has `main.roc` in it:
+
+```text
+$ roc test main.roc
+
+All (3) tests passed in 14.6 ms.
+```
