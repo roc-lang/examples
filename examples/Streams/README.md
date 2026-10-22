@@ -45,9 +45,16 @@ The sample file contains three lines:
 file:input.txt
 ```
 
-From this directory, run `roc main.roc -- input.txt` to run both examples. After the first example's messages, the file example prints:
+## Output
+
+Run both examples from the directory that has `main.roc` and `input.txt` in it:
 
 ```text
+$ roc main.roc -- input.txt
+Preparing 1
+Got 10
+Preparing 2
+Got 20
 Hello from a file!
 Streams read on demand.
 ```
