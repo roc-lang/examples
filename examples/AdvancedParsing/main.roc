@@ -1,5 +1,5 @@
 app [] {
-	roc: "nightly-2026-10-14-38a3029",
+	roc: "nightly-2026-10-21-5349569",
 }
 
 ### start snippet example
@@ -21,28 +21,24 @@ parse_headers = Encoding.HttpHeader.parser_for()
 expect {
 	user = parse_user(
 		\\{"userName": "Sam"}
-		,
 	)?
 	user.user_name == "Sam" and user.email == Err(Missing) and (user.?nickname ?? "anonymous") == "anonymous" and user.role == Restricted
 }
 expect {
 	user = parse_user(
 		\\{"userName": "Sam", "email": "sam@example.com"}
-		,
 	)?
 	user.email == Ok("sam@example.com")
 }
 expect {
 	user = parse_user(
 		\\{"userName": "Sam", "nickname": "Sammy"}
-		,
 	)?
 	user.?nickname == Ok("Sammy")
 }
 expect {
 	user = parse_user(
 		\\{"userName": "Sam", "role": "Admin"}
-		,
 	)?
 	user.role == Admin
 }
