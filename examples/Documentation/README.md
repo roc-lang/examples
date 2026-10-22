@@ -20,12 +20,22 @@ The package entry point exposes `Counter`, making it available to the documentat
 file:package.roc
 ```
 
-From this directory, you can generate the site with:
+## Output
+
+From this directory, generate the documentation site with:
 
 ```sh
 roc docs package.roc --output=generated-docs
 ```
 
+The generated site starts at `generated-docs/index.html`.
+
 If you would like to preview it in a browser, `roc docs package.roc --serve` generates the documentation and starts a local server.
 
-You can also run `roc test main.roc` to check the example’s behavior.
+You can also check the example’s behavior:
+
+```text
+$ roc test main.roc
+
+All (1) tests passed in 8.4 ms.
+```
