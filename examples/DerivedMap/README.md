@@ -12,4 +12,20 @@ With `map`, the transformation is pure. With `map!`, it can also perform effects
 
 With this compiler version, derived mapping requires a single data-carrying payload. That is why `Failed` has no error message here; adding a `Str` payload to it would require implementing the mapping methods ourselves.
 
-Run `roc main.roc` and `roc test main.roc` from this directory.
+## Output
+
+Run this from the directory that has `main.roc` in it:
+
+```text
+$ roc main.roc
+Loaded user: Sam
+Loaded("Sam")
+```
+
+You can also run the tests for the pure transformations:
+
+```text
+$ roc test main.roc
+
+All (3) tests passed in 6.4 ms.
+```
