@@ -65,6 +65,9 @@ case "$name" in
     build_example
     run_expect
     ;;
+  CustomEquality)
+    "$roc" test --no-cache "examples/$name/main.roc"
+    ;;
   CustomInspect)
     "$roc" test --no-cache examples/CustomInspect/OpaqueTypes.roc
     ;;
