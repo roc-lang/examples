@@ -10,4 +10,12 @@ Roc allows the two functions to refer to each other without forward declarations
 
 Roc guarantees that these tail calls do not grow the stack. If we did more work after a call, such as adding to its result, it would no longer be a tail call. The [tail-call optimization documentation](https://www.roc-lang.org/docs/main/langref/functions/#tail-call-optimization) explains this distinction in more detail.
 
-Run `roc test main.roc` from this directory.
+## Output
+
+Run this from the directory that has `main.roc` in it:
+
+```text
+$ roc test main.roc
+
+All (4) tests passed in 6.5 ms.
+```
