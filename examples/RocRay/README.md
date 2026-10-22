@@ -2,10 +2,6 @@
 
 This example uses the [RocRay](https://github.com/lukewilliamboswell/roc-ray) platform to draw an interactive circle. Moving the mouse moves the circle, and holding the left mouse button changes its color, showing how a small graphical app keeps state, responds to input, and draws each frame.
 
-![The RocRay example showing a blue circle on a black background.](screenshot.png)
-
-The circle is blue when the mouse button is released and turns red while the left button is held.
-
 ```roc
 file:main.roc:snippet:example
 ```
@@ -17,6 +13,12 @@ RocRay releases are paired with particular Roc versions. This app header selects
 ```roc
 file:main.roc:snippet:header
 ```
+
+## Output
+
+![The RocRay example showing a blue circle on a black background.](screenshot.png)
+
+The circle is blue when the mouse button is released and turns red while the left button is held.
 
 From this directory, build with `roc build main.roc`, then run `./main` (`main.exe` on Windows). The release bundle already includes the compiled host, so you do not need Zig to build the app.
 
