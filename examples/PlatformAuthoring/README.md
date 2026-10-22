@@ -113,7 +113,24 @@ rustc --edition=2024 host.rs -C link-arg=app.lib -o host-rust.exe
 .\host-rust.exe
 ```
 
-Each host should print `42` and exit successfully. You can also run `roc test main.roc` to test the Roc function separately.
+## Output
+
+After building any of the hosts above, running it prints `42`. For example, with the C host on macOS or Linux:
+
+```text
+$ ./host-c
+42
+```
+
+On Windows, run `.\host-c.exe` for the same output. The Zig and Rust hosts print the same result.
+
+You can also test the Roc function separately:
+
+```text
+$ roc test main.roc
+
+All (1) tests passed in 6.6 ms.
+```
 
 ## Testing and extending the platform
 
