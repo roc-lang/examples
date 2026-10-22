@@ -16,4 +16,12 @@ These operations only manipulate path values; they do not access the filesystem.
 file:main.roc:snippet:header
 ```
 
-Run `roc test main.roc` from this directory.
+## Output
+
+Run this from the directory that has `main.roc` in it:
+
+```text
+$ roc test main.roc
+
+All (5) tests passed in 31.7 ms.
+```
