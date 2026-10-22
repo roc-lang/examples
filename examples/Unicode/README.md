@@ -42,4 +42,14 @@ The last test uses full case folding to compare text without case differences. F
 
 Case operations take explicit resource limits and return `Try` values. The small budgets here are ample for these examples; `?` makes a test fail if an operation returns an error. `Case.result_text` extracts the transformed text from a result that also records how it maps to the original input.
 
-Run `roc test main.roc` from this directory. The [package documentation](https://roc-lang.github.io/unicode) covers more features, including incremental UTF-8 decoding, line breaking, bidirectional text, and character properties.
+The [package documentation](https://roc-lang.github.io/unicode) covers more features, including incremental UTF-8 decoding, line breaking, bidirectional text, and character properties.
+
+## Output
+
+Run this from the directory that has `main.roc` in it:
+
+```text
+$ roc test main.roc
+
+All (8) tests passed in 266.2 ms.
+```
