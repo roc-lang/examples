@@ -20,4 +20,12 @@ This grouping gives the status a clear owner: it is an order status, rather than
 
 Nesting is independent of recursion. The [Recursive Types example](../RecursiveTypes/README.md) shows types that refer to themselves and each other without an enclosing type.
 
-Run `roc test main.roc` from this directory.
+## Output
+
+Run this from the directory that has `main.roc` in it:
+
+```text
+$ roc test main.roc
+
+All (3) tests passed in 9.5 ms.
+```
