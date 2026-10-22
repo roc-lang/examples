@@ -14,4 +14,12 @@ file:Positive.roc
 
 If we only wanted a shorter name for an existing type, we could use a type alias (`:`). Unlike the nominal types above, an alias does not give the type a separate identity.
 
-Run `roc test main.roc` from this directory.
+## Output
+
+Run this from the directory that has `main.roc` in it:
+
+```text
+$ roc test main.roc
+
+All (3) tests passed in 10.2 ms.
+```
