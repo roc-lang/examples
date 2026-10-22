@@ -10,4 +10,12 @@ file:main.roc:snippet:example
 
 `a.Showable` gives that requirement a name that `show_pair` can reuse. A type satisfies the alias by providing the required methods; there is no separate implementation declaration to write.
 
-Run `roc test main.roc` from this directory.
+## Output
+
+Run this from the directory that has `main.roc` in it:
+
+```text
+$ roc test main.roc
+
+All (4) tests passed in 7.2 ms.
+```
