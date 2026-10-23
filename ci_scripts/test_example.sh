@@ -91,6 +91,9 @@ case "$name" in
   RecordBuilder)
     "$roc" test --no-cache examples/RecordBuilder/DateParser.roc
     ;;
+  RecursiveTypes)
+    "$roc" test --no-cache "examples/$name/main.roc"
+    ;;
   StringPatterns)
     "$roc" test --no-cache "examples/$name/main.roc"
     ;;
