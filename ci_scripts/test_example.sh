@@ -94,6 +94,9 @@ case "$name" in
   RecursiveTypes)
     "$roc" test --no-cache "examples/$name/main.roc"
     ;;
+  Sets)
+    "$roc" test --no-cache "examples/$name/main.roc"
+    ;;
   StringPatterns)
     "$roc" test --no-cache "examples/$name/main.roc"
     ;;
