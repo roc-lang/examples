@@ -82,6 +82,9 @@ case "$name" in
   GraphTraversal)
     "$roc" test --no-cache examples/GraphTraversal/Graph.roc
     ;;
+  NestedTypes)
+    "$roc" test --no-cache "examples/$name/main.roc"
+    ;;
   OpenRecords)
     "$roc" test --no-cache "examples/$name/main.roc"
     ;;
