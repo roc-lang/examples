@@ -82,6 +82,9 @@ case "$name" in
   GraphTraversal)
     "$roc" test --no-cache examples/GraphTraversal/Graph.roc
     ;;
+  Paths)
+    "$roc" test --no-cache "examples/$name/main.roc"
+    ;;
   PatternAliases)
     "$roc" test --no-cache "examples/$name/main.roc"
     ;;
