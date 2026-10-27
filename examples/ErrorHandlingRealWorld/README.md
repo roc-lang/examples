@@ -22,7 +22,7 @@ HELLO env var was set to 1.
 Fetching content from https://www.roc-lang.org...
 Saving HTML to roc.html...
 Contents of current directory: ./roc.html,./README.md,./main.roc
-Run time: 92 ms
+Run time: 92ms
 Done
 ```
 
