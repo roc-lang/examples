@@ -103,6 +103,9 @@ case "$name" in
   TowersOfHanoi)
     "$roc" test --no-cache examples/TowersOfHanoi/Hanoi.roc
     ;;
+  Unicode)
+    "$roc" test --no-cache "examples/$name/main.roc"
+    ;;
   WrappingArithmetic)
     "$roc" test --no-cache "examples/$name/main.roc"
     ;;
