@@ -88,6 +88,9 @@ case "$name" in
   PatternMatching)
     "$roc" test --no-cache examples/PatternMatching/PatternMatching.roc
     ;;
+  Polymorphism)
+    "$roc" test --no-cache "examples/$name/main.roc"
+    ;;
   RecordBuilder)
     "$roc" test --no-cache examples/RecordBuilder/DateParser.roc
     ;;
