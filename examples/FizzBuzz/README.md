@@ -6,7 +6,7 @@ A Roc solution to the popular [FizzBuzz](https://en.wikipedia.org/wiki/Fizz_buzz
 
 ## Code
 ```roc
-file:main.roc
+file:main.roc:snippet:example
 ```
 
 ## Output

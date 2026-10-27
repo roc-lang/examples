@@ -13,7 +13,7 @@ file:Hello.roc
 main.roc:
 
 ```roc
-file:main.roc
+file:main.roc:snippet:example
 ```
 
 ## Output

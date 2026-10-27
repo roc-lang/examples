@@ -4,7 +4,7 @@ Printing [Hello World](https://en.wikipedia.org/wiki/%22Hello,_World!%22_program
 
 ## Code
 ```roc
-file:main.roc
+file:main.roc:snippet:example
 ```
 
 ## Output

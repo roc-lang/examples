@@ -2,6 +2,7 @@ app [main!] {
 	roc: "nightly-2026-10-27-de79a0f",
 }
 
+### start snippet example
 import "README.md" as readme : Str # You can also import as List
 
 # Note 1: I tried to demonstrate all Roc syntax (possible in a single app file),
@@ -526,3 +527,4 @@ expect {
 	y = 5
 	x + y == 9
 }
+### end snippet example

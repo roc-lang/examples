@@ -2,6 +2,7 @@ app [main!] {
 	roc: "nightly-2026-10-27-de79a0f",
 }
 
+### start snippet example
 ImageRequest : {
 	image : {
 		width : U32,
@@ -51,3 +52,4 @@ main! = |args| {
 		}
 	}
 }
+### end snippet example

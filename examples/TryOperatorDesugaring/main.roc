@@ -2,6 +2,7 @@ app [main!] {
 	roc: "nightly-2026-10-27-de79a0f",
 }
 
+### start snippet example
 main! = |_| {
 	echo!("${Str.inspect(parse_name_and_year("Alice was born in 1990"))}\n")
 	echo!("${Str.inspect(parse_name_and_year_try("Alice was born in 1990"))}\n")
@@ -36,3 +37,4 @@ parse_name_and_year_try = |str| {
 
 expect parse_name_and_year("Alice was born in 1990") == Ok({ name: "Alice", birth_year: 1990 })
 expect parse_name_and_year_try("Alice was born in 1990") == Ok({ name: "Alice", birth_year: 1990 })
+### end snippet example

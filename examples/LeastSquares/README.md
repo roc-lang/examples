@@ -6,7 +6,7 @@ A Roc solution for the following [Least Squares](https://en.wikipedia.org/wiki/L
 
 ## Code
 ```roc
-file:main.roc
+file:main.roc:snippet:example
 ```
 
 ## Output
