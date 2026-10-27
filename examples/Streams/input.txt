@@ -1,0 +1,3 @@
+Hello from a file!
+Streams read on demand.
+This third line is not requested.
