@@ -1,6 +1,6 @@
 app [main!] {
-	cli: platform "https://github.com/roc-lang/basic-cli/releases/download/0.25.0/CZsY7tYZwR3rj9kYbpaCfxki2yVAaRL8bBwMLvB2xkbA.tar.zst",
-	roc: "nightly-2026-10-17-5f126ac",
+	cli: platform "https://github.com/roc-lang/basic-cli/releases/download/0.26.0/GddgvsGjiNXrHFW6au5i5dUDbTs8FinQdrgE2Gqmw53t.tar.zst",
+	roc: "nightly-2026-10-27-de79a0f",
 }
 
 import cli.Stdout
@@ -43,9 +43,9 @@ run! = |args| {
 
 	end_time = Utc.now!()
 
-	run_duration = Utc.delta_as_millis(start_time, end_time)
+	run_duration = end_time.since(start_time)
 
-	Stdout.line!("Run time: ${run_duration.to_str()} ms")?
+	Stdout.line!("Run time: ${run_duration.to_str()}")?
 
 	Stdout.line!("Done")
 }
@@ -77,7 +77,7 @@ read_env_var! = |env_var_name| {
 
 fetch_html! = |url_str| {
 	url = Url.parse(url_str) ? |err| FailedToParseUrl(url_str, err)
-	html_str = Http.get_utf8!(url) ? |err| FailedToFetchHtml(url_str, err)
+	html_str = Http.get_utf8!(url, {}) ? |err| FailedToFetchHtml(url_str, err)
 	Ok(html_str)
 }
 
@@ -103,7 +103,6 @@ main! = |args| {
 				\\Failed to read command line arguments, I received: ${Str.inspect(bad_args)}
 				\\
 				\\Example usage: ${usage}
-				,
 			)
 			Err(Exit(1))
 		}
@@ -114,7 +113,6 @@ main! = |args| {
 				\\Set the variable before running the application.
 				\\
 				\\Example usage: ${usage}"
-				,
 			)
 			Err(Exit(1))
 		}
@@ -124,7 +122,6 @@ main! = |args| {
 				\\Provide a non-empty value for this variable.
 				\\
 				\\Example usage: ${usage}
-				,
 			)
 			Err(Exit(1))
 		}
@@ -134,7 +131,6 @@ main! = |args| {
 				\\Error: ${Str.inspect(err)}
 				\\
 				\\Example usage: ${usage}
-				,
 			)
 			Err(Exit(1))
 		}
@@ -146,7 +142,6 @@ main! = |args| {
 				\\Check the URL and your internet connection.
 				\\
 				\\Example usage: ${usage}
-				,
 			)
 			Err(Exit(1))
 		}
@@ -156,7 +151,6 @@ main! = |args| {
 				\\Error: ${Str.inspect(err)}
 				\\
 				\\Example usage: ${usage}
-				,
 			)
 			Err(Exit(1))
 		}
@@ -166,7 +160,6 @@ main! = |args| {
 				\\Error: ${Str.inspect(err)}
 				\\
 				\\Example usage: ${usage}
-				,
 			)
 			Err(Exit(1))
 		}
@@ -175,7 +168,6 @@ main! = |args| {
 				\\An unexpected error occurred: ${Str.inspect(other)}
 				\\
 				\\Example usage: ${usage}
-				,
 			)
 			Err(Exit(1))
 		}

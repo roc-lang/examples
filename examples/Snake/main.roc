@@ -1,6 +1,6 @@
 app [main!] {
-	cli: platform "https://github.com/roc-lang/basic-cli/releases/download/0.25.0/CZsY7tYZwR3rj9kYbpaCfxki2yVAaRL8bBwMLvB2xkbA.tar.zst",
-	roc: "nightly-2026-10-17-5f126ac",
+	cli: platform "https://github.com/roc-lang/basic-cli/releases/download/0.26.0/GddgvsGjiNXrHFW6au5i5dUDbTs8FinQdrgE2Gqmw53t.tar.zst",
+	roc: "nightly-2026-10-27-de79a0f",
 }
 
 import cli.Stdin
@@ -39,11 +39,11 @@ init_snake_len = len(initial_state.snake_lst)
 
 main! : List(OsStr) => Try({}, _)
 main! = |_args| {
-	Tty.enable_raw_mode!()
+	Tty.enable_raw_mode!()?
 
 	game_loop!(initial_state)?
 
-	Tty.disable_raw_mode!()
+	Tty.disable_raw_mode!()?
 	Stdout.line!("\n--- Game Over ---")
 }
 

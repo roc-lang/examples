@@ -1,5 +1,5 @@
 app [main!] {
-	roc: "nightly-2026-10-17-5f126ac",
+	roc: "nightly-2026-10-27-de79a0f",
 }
 
 import "README.md" as readme : Str # You can also import as List
@@ -189,10 +189,10 @@ dbg_keyword = || {
 if_demo : U64 -> Str
 if_demo = |num| {
 	# every if must have an else branch!
-	one_line_if = if num == 1 "One" else "NotOne"
+	one_line_if = if (num == 1) "One" else "NotOne"
 
 	two_line_if =
-		if num == 2
+		if (num == 2)
 			"Two"
 		else
 			"NotTwo"
@@ -205,9 +205,9 @@ if_demo = |num| {
 		}
 
 	# else if
-	if num == 3
+	if (num == 3)
 		"Three"
-	else if num == 4
+	else if (num == 4)
 		"Four"
 	else
 		one_line_if.concat(two_line_if).concat(with_curlies)
@@ -365,7 +365,7 @@ format_names = |names|
 		.map(|name| name.trim())
 		|> Str.join_with(", ")
 		|> (|joined| {
-			if joined.is_empty() "No names provided" else "Names: ${joined}"
+			if (joined.is_empty()) "No names provided" else "Names: ${joined}"
 		})
 
 # Tags can have multiple payloads

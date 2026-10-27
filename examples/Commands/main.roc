@@ -1,23 +1,22 @@
 app [main!] {
-	cli: platform "https://github.com/roc-lang/basic-cli/releases/download/0.25.0/CZsY7tYZwR3rj9kYbpaCfxki2yVAaRL8bBwMLvB2xkbA.tar.zst",
-	roc: "nightly-2026-10-17-5f126ac",
+	cli: platform "https://github.com/roc-lang/basic-cli/releases/download/0.26.0/GddgvsGjiNXrHFW6au5i5dUDbTs8FinQdrgE2Gqmw53t.tar.zst",
+	roc: "nightly-2026-10-27-de79a0f",
 }
 
 import cli.Stdout
 import cli.Cmd
-import cli.OsStr
 
 # Different ways to run commands like you do in a terminal.
 
 main! = |_args| {
-	# Simplest way to execute a command (prints to your terminal).
-	Cmd.exec!("echo", ["Hello"])?
+	# Simplest way to run a command (prints to your terminal). Anything but exit code 0 is an error.
+	Cmd.call!("echo", ["Hello"])?
 
-	# To execute and capture the output (stdout and stderr) without inheriting your terminal.
+	# To capture the output (stdout) as text without inheriting your terminal. Anything but exit code 0 is an error.
 	cmd_output =
 		Cmd.new("echo")
-			.args(["Hi"])
-			.exec_output!()?
+			.arg("Hi")
+			.capture!()?
 
 	Stdout.line!("${Str.inspect(cmd_output)}")?
 
@@ -26,23 +25,25 @@ main! = |_args| {
 		.clear_envs() # You probably don't need to clear all other environment variables, this is just an example.
 		.env("FOO", "BAR")
 		.envs([("BAZ", "DUCK"), ("XYZ", "ABC")]) # Set multiple environment variables at once with `envs`
-		.exec_cmd!()?
+		.call!()?
 
-	# To execute and just get the exit code (prints to your terminal).
-	# Prefer using `exec!` or `exec_cmd!`.
-	exit_code =
+	# To run a command and just get the exit status (prints to your terminal), a non-zero exit code is not an error.
+	exit_status =
 		Cmd.new("cat")
-			.args(["non_existent.txt"])
-			.exec_exit_code!()?
+			.arg("non_existent.txt")
+			.inherit_stdio()
+			.run!()?
+			.status
 
-	Stdout.line!("Exit code: ${exit_code.to_str()}")?
+	Stdout.line!("Exit status: ${Str.inspect(exit_status)}")?
 
-	# To execute and capture the output (stdout and stderr) in the original form as bytes without inheriting your terminal.
-	# Prefer using `exec_output!`.
+	# To run a command and get the status and the output (stdout and stderr) as data, in their original form as bytes.
 	cmd_output_bytes =
 		Cmd.new("echo")
-			.args(["Hi"])
-			.exec_output_bytes!()?
+			.arg("Hi")
+			.run!()?
+			.require_success()?
+			.stdout_bytes
 
 	Stdout.line!("${Str.inspect(cmd_output_bytes)}")?
 
