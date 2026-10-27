@@ -1,5 +1,5 @@
 app [main!] {
-	roc: "nightly-2026-10-17-5f126ac",
+	roc: "nightly-2026-10-26-3c0fffe",
 }
 
 import Dir/Hello exposing [hello]
