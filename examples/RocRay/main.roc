@@ -1,7 +1,7 @@
 ### start snippet header
 app [Model, program] {
-	rr: platform "https://github.com/lukewilliamboswell/roc-ray/releases/download/0.10.0/5xecDmRJroKT9fnSiYsGdCKEzNWLnRKGtHJ5CxuCnpb9.tar.zst",
-	roc: "nightly-2026-09-27-a3ce7f1",
+	roc: "nightly-2026-10-27-de79a0f",
+	rr: platform "https://github.com/lukewilliamboswell/roc-ray/releases/download/0.11.1/4NWnSt7bKCyVx4xDFH89pV11ekYbiGQ43kdjfZ9NBJQn.tar.zst",
 }
 
 ### end snippet header

@@ -25,7 +25,7 @@ An ordinary `for` loop consumes a pure iterator, although its body may still per
 
 ## Creating a stream from file reads
 
-The `basic-cli` platform provides `read_line!()`, which reads one line at a time, but does not provide a ready-made stream of lines. The `lines` function below adapts those individual reads into a custom stream. This lets callers use the same pipeline operations and `for!` syntax as in the first example:
+The `basic-cli` platform provides `read_line!()`, which reads one line at a time. The `lines` function below adapts those individual reads into a custom stream (the reader also has a ready-made `lines()` method, this example builds the stream by hand to show how custom streams work). This lets callers use the same pipeline operations and `for!` syntax as in the first example:
 
 ```roc
 file:main.roc:snippet:custom
@@ -34,10 +34,10 @@ file:main.roc:snippet:custom
 A custom stream supplies its initial state, a size hint (`Unknown` here), and a callback that produces the next item and state. In this example:
 
 - `Reading(reader)` keeps the buffered reader available for the next pull.
-- An empty byte list signals the end of the file, represented by `Err(NoMore)`. A blank line contains a newline, so it is still an item.
+- `Err(EndOfInput)` signals the end of the file, represented by `Err(NoMore)`. A blank line is `Ok("")`, so it is still an item.
 - A read error is yielded as an item containing `Err(err)`, followed by the `Finished` state. This lets the caller report the error rather than silently treating it as the end of the file.
 
-The loop uses `?` to propagate read and UTF-8 errors. Since `read_line!()` retains the newline, `Stdout.write!()` prints the text without adding another one. The reader closes automatically when its last reference is dropped.
+The loop uses `?` to propagate read and UTF-8 errors. Since `read_line!()` removes the newline, `Stdout.line!()` adds it back when printing. The reader closes automatically when its last reference is dropped.
 
 The sample file contains three lines:
 

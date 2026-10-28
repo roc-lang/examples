@@ -112,7 +112,7 @@ case "$name" in
   RocRay)
     case "$(uname -s)-$(uname -m)" in
       Linux-aarch64 | Linux-arm64)
-        # RocRay 0.10.0 does not ship a Linux ARM64 host.
+        # RocRay 0.11.1 does not ship a Linux ARM64 host.
         "$roc" check --no-cache "examples/$name/main.roc"
         ;;
       *)
