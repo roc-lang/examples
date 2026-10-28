@@ -1,6 +1,6 @@
 ### start snippet header
 app [Model, program] {
-	roc: "nightly-2026-10-27-de79a0f",
+	roc: "nightly-2026-10-28-bad769b",
 	rr: platform "https://github.com/lukewilliamboswell/roc-ray/releases/download/0.11.1/4NWnSt7bKCyVx4xDFH89pV11ekYbiGQ43kdjfZ9NBJQn.tar.zst",
 }
 
