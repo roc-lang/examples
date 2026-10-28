@@ -1,6 +1,6 @@
 app [main!] {
-	cli: platform "https://github.com/roc-lang/basic-cli/releases/download/0.25.0/CZsY7tYZwR3rj9kYbpaCfxki2yVAaRL8bBwMLvB2xkbA.tar.zst",
-	roc: "nightly-2026-10-14-38a3029",
+	cli: platform "https://github.com/roc-lang/basic-cli/releases/download/0.26.0/GddgvsGjiNXrHFW6au5i5dUDbTs8FinQdrgE2Gqmw53t.tar.zst",
+	roc: "nightly-2026-10-27-de79a0f",
 }
 
 import cli.File
@@ -33,8 +33,8 @@ lines = |reader| Stream.custom(
 	|state| match state {
 		Finished => Err(NoMore)
 		Reading(current) => match current.read_line!() {
-			Ok(bytes) if bytes.is_empty() => Err(NoMore)
-			Ok(bytes) => Ok((Ok(bytes), Reading(current)))
+			Ok(line) => Ok((Ok(line), Reading(current)))
+			Err(EndOfInput) => Err(NoMore)
 			Err(err) => Ok((Err(err), Finished))
 		}
 	},
@@ -44,9 +44,8 @@ show_file! = |path| {
 	reader = File.open_reader!(path)?
 
 	for! result in lines(reader).take_first(2) {
-		bytes = result?
-		line = Str.from_utf8(bytes) ? |_| InvalidUtf8
-		Stdout.write!(line)?
+		line = result?
+		Stdout.line!(line)?
 	}
 	Ok({})
 }
