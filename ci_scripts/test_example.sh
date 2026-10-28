@@ -71,6 +71,15 @@ case "$name" in
   CustomLiterals)
     "$roc" test --no-cache examples/CustomLiterals/main.roc
     ;;
+  Documentation)
+    "$roc" test --no-cache "examples/$name/main.roc"
+    (
+      work="$(mktemp -d)"
+      trap 'rm -rf "$work"' EXIT
+      "$roc" docs "examples/$name/package.roc" --output="$work/docs"
+      test -s "$work/docs/index.html"
+    )
+    ;;
   ErrorHandlingBasic)
     "$roc" test --no-cache examples/ErrorHandlingBasic/ErrorHandlingBasic.roc
     ;;
