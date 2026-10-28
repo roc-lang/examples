@@ -1,6 +1,6 @@
 ### start snippet header
 app [] {
-	roc: "nightly-2026-10-27-de79a0f",
+	roc: "nightly-2026-10-28-bad769b",
 	unicode: "https://github.com/roc-lang/unicode/releases/download/4.3.1/BNmth7q83JT3Pc2neutkWibVwFwNNNBLhhKfZhmDREeL.tar.zst",
 }
 
