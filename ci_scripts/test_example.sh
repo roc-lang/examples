@@ -83,6 +83,9 @@ case "$name" in
   ErrorHandlingBasic)
     "$roc" test --no-cache examples/ErrorHandlingBasic/ErrorHandlingBasic.roc
     ;;
+  ExpectTry)
+    "$roc" test --no-cache "examples/$name/main.roc"
+    ;;
   FizzBuzz | Parser | SafeMath | Snake | TryOperatorDesugaring)
     build_example
     "$roc" test --no-cache "examples/$name/main.roc"
