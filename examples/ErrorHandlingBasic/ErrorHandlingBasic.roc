@@ -1,5 +1,5 @@
 app [main!] {
-	roc: "nightly-2026-10-28-bad769b",
+	roc: "nightly-2026-10-29-a0a9fc2",
 }
 
 Person : { first_name : Str, last_name : Str, birth_year : U16 }
