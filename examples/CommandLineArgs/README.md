@@ -14,7 +14,7 @@ We also have [a more complex example that uses a filename as argument](https://w
 
 ## Code
 ```roc
-file:main.roc
+file:main.roc:snippet:example
 ```
 
 ## Output

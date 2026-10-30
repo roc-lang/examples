@@ -27,7 +27,7 @@ This is just meant to be a compact overview. See the code section below for vali
 
 ## Code
 ```roc
-file:PatternMatching.roc
+file:PatternMatching.roc:snippet:example
 ```
 
 ## Output

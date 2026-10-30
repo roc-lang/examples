@@ -2,6 +2,7 @@ app [main!] {
 	roc: "nightly-2026-10-30-0602c5f",
 }
 
+### start snippet example
 main! = |_| Ok({})
 
 # the dictionary type is: Dict(key, value)
@@ -58,3 +59,4 @@ expect {
 }
 
 # see https://www.roc-lang.org/docs/main/Dict/ for more
+### end snippet example

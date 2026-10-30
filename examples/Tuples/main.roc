@@ -2,6 +2,7 @@ app [main!] {
 	roc: "nightly-2026-10-30-0602c5f",
 }
 
+### start snippet example
 main! = |_| {
 	# a tuple that contains three different types
 	simple_tuple : (Str, Bool, I64)
@@ -30,3 +31,4 @@ main! = |_| {
 
 	Ok({})
 }
+### end snippet example

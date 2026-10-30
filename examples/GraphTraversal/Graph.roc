@@ -2,6 +2,7 @@ app [] {
 	roc: "nightly-2026-10-30-0602c5f",
 }
 
+### start snippet example
 ## The Graph module represents a [graph](https://en.wikipedia.org/wiki/Graph_(discrete_mathematics))
 ## using an [adjacency list](https://en.wikipedia.org/wiki/Adjacency_list)
 ## and exposes functions for working with graphs, such as creating one from a list and
@@ -228,3 +229,4 @@ test_graph_multipath =
 		("Cwrong", []),
 	]
 		|> Graph.from_list
+### end snippet example

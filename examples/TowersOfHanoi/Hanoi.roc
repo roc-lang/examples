@@ -2,6 +2,7 @@ app [] {
 	roc: "nightly-2026-10-30-0602c5f",
 }
 
+### start snippet example
 Hanoi := State
 
 ## The three rods of the Tower of Hanoi problem.
@@ -79,3 +80,4 @@ expect {
 			(A, B),
 		]
 }
+### end snippet example

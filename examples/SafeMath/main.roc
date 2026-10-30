@@ -2,6 +2,7 @@ app [main!] {
 	roc: "nightly-2026-10-30-0602c5f",
 }
 
+### start snippet example
 ## Safely calculates the variance of a population.
 ##
 ## variance formula: σ² = ∑(X - µ)² / N
@@ -80,3 +81,4 @@ times_try = |a, b| {
 		Ok(result)
 	}
 }
+### end snippet example

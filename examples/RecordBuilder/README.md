@@ -127,7 +127,7 @@ Now we're ready to use our parser as much as we want on any input text!
 ## Full Code
 
 ```roc
-file:DateParser.roc
+file:DateParser.roc:snippet:example
 ```
 
 ## Output
