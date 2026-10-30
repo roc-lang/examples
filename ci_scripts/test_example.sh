@@ -91,6 +91,9 @@ case "$name" in
   GraphTraversal)
     "$roc" test --no-cache examples/GraphTraversal/Graph.roc
     ;;
+  Iterators)
+    "$roc" test --no-cache "examples/$name/main.roc"
+    ;;
   NestedTypes)
     "$roc" test --no-cache "examples/$name/main.roc"
     ;;
