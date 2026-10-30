@@ -1,5 +1,5 @@
 app [main!] {
-	roc: "nightly-2026-10-29-a0a9fc2",
+	roc: "nightly-2026-10-30-0602c5f",
 }
 
 OpaqueTypes :: {}.{}
