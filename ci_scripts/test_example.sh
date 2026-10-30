@@ -49,6 +49,9 @@ run_expect() {
 }
 
 case "$name" in
+  AdvancedParsing)
+    "$roc" test --no-cache "examples/$name/main.roc"
+    ;;
   AllSyntax)
     build_example --opt=dev
     run_expect
@@ -68,6 +71,15 @@ case "$name" in
   CustomLiterals)
     "$roc" test --no-cache examples/CustomLiterals/main.roc
     ;;
+  Documentation)
+    "$roc" test --no-cache "examples/$name/main.roc"
+    (
+      work="$(mktemp -d)"
+      trap 'rm -rf "$work"' EXIT
+      "$roc" docs "examples/$name/package.roc" --output="$work/docs"
+      test -s "$work/docs/index.html"
+    )
+    ;;
   ErrorHandlingBasic)
     "$roc" test --no-cache examples/ErrorHandlingBasic/ErrorHandlingBasic.roc
     ;;
@@ -82,14 +94,70 @@ case "$name" in
   MutualRecursion)
     "$roc" test --no-cache "examples/$name/main.roc"
     ;;
+  Iterators)
+    "$roc" test --no-cache "examples/$name/main.roc"
+    ;;
+  NestedTypes)
+    "$roc" test --no-cache "examples/$name/main.roc"
+    ;;
+  OpenRecords)
+    "$roc" test --no-cache "examples/$name/main.roc"
+    ;;
+  NominalTypes)
+    "$roc" test --no-cache "examples/$name/main.roc"
+    ;;
+  Paths)
+    "$roc" test --no-cache "examples/$name/main.roc"
+    ;;
+  PatternAliases)
+    "$roc" test --no-cache "examples/$name/main.roc"
+    ;;
+  Loops)
+    "$roc" test --no-cache "examples/$name/main.roc"
+    ;;
   PatternMatching)
     "$roc" test --no-cache examples/PatternMatching/PatternMatching.roc
+    ;;
+  Polymorphism)
+    "$roc" test --no-cache "examples/$name/main.roc"
     ;;
   RecordBuilder)
     "$roc" test --no-cache examples/RecordBuilder/DateParser.roc
     ;;
+  RocRay)
+    case "$(uname -s)-$(uname -m)" in
+      Linux-aarch64 | Linux-arm64)
+        # RocRay 0.11.1 does not ship a Linux ARM64 host.
+        "$roc" check --no-cache "examples/$name/main.roc"
+        ;;
+      *)
+        build_example
+        "./examples/$name/main" --host-headless --host-headless-frames=3
+        ;;
+    esac
+    ;;
+  Streams)
+    build_example
+    "$roc" test --no-cache "examples/$name/main.roc"
+    run_expect
+    ;;
+  RecursiveTypes)
+    "$roc" test --no-cache "examples/$name/main.roc"
+    ;;
+  Sets)
+    "$roc" test --no-cache "examples/$name/main.roc"
+    ;;
+  StringPatterns)
+    "$roc" test --no-cache "examples/$name/main.roc"
+    ;;
   TowersOfHanoi)
     "$roc" test --no-cache examples/TowersOfHanoi/Hanoi.roc
+    ;;
+  Unicode)
+    "$roc" test --no-cache "examples/$name/main.roc"
+    ;;
+  WrappingArithmetic)
+    "$roc" test --no-cache "examples/$name/main.roc"
     ;;
   # TODO: also run these, the expect scripts need updating
   ElmWebApp)

@@ -13,3 +13,14 @@ file:OpaqueTypes.roc:snippet:color
 ```roc
 file:OpaqueTypes.roc:snippet:secret
 ```
+
+## Output
+
+Run the tests from the directory that has `OpaqueTypes.roc` in it:
+
+```text
+$ roc test OpaqueTypes.roc
+All (4) tests passed.
+```
+
+The tests check the custom color names and the redacted credit card number.
