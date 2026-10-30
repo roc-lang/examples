@@ -71,6 +71,9 @@ case "$name" in
   CustomLiterals)
     "$roc" test --no-cache examples/CustomLiterals/main.roc
     ;;
+  CustomOperators)
+    "$roc" test --no-cache "examples/$name/main.roc"
+    ;;
   Documentation)
     "$roc" test --no-cache "examples/$name/main.roc"
     (
