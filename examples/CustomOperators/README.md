@@ -12,7 +12,7 @@ Each operator calls a method on `Page`:
 - `<` calls `is_lt`, which compares the two page numbers.
 - `..=` calls `range_inclusive_to`, which creates a range including its last page.
 
-The `range_iter` method makes that range iterable by delegating stepping and bounds to `U64`, then wrapping each number in a `Page`. Supporting other operators would require their corresponding methods too; Roc does not infer them from these definitions.
+The `range_iter` method makes that range iterable by delegating stepping and bounds to `U64`, then wrapping each number in a `Page`. Supporting other operators would require their corresponding methods too; Roc does not infer them from these definitions. See [here](https://roc-lang.org/docs/main/langref/operators/) for a complete list.
 
 ## Output
 
