@@ -12,7 +12,16 @@ spawn ./examples/Json/main
 
 expect "Successfully decoded image, title:\"View from 15th Floor\"\r\n" {
     expect eof {
-        check_exit_and_segfault
+        spawn ./examples/Json/main {{"image":{"animated":true,"height":1,"ids":[],"thumbnail":{"height":1,"url":"u","width":1},"title":"Sunset","width":1}}}
+
+        expect "Successfully decoded image, title:\"Sunset\"\r\n" {
+            expect eof {
+                check_exit_and_segfault
+            }
+        }
+
+        puts stderr "\nError: output was different from expected value."
+        exit 1
     }
 }
 

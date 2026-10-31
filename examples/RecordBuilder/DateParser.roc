@@ -1,5 +1,5 @@
 app [] {
-	roc: "nightly-2026-10-17-5f126ac",
+	roc: "nightly-2026-10-31-f7bef6b",
 }
 
 # see README.md for explanation of code

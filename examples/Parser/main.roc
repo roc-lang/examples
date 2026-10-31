@@ -1,7 +1,7 @@
 app [main!] {
-	cli: platform "https://github.com/roc-lang/basic-cli/releases/download/0.25.0/CZsY7tYZwR3rj9kYbpaCfxki2yVAaRL8bBwMLvB2xkbA.tar.zst",
-	parser: "https://github.com/lukewilliamboswell/roc-parser/releases/download/2.0.0/7CLzCK6qUz7zmj6nvBxMEFu11HPwQTnCovKiyWzDSLTW.tar.zst",
-	roc: "nightly-2026-10-17-5f126ac",
+	cli: platform "https://github.com/roc-lang/basic-cli/releases/download/0.26.0/GddgvsGjiNXrHFW6au5i5dUDbTs8FinQdrgE2Gqmw53t.tar.zst",
+	parser: "https://github.com/lukewilliamboswell/roc-parser/releases/download/3.0.0/6xsRdRqenJrAb4wG7HaST4Xh349vD5sHAJDsKTK6E3dr.tar.zst",
+	roc: "nightly-2026-10-31-f7bef6b",
 }
 
 import cli.Stdout
@@ -14,7 +14,7 @@ default_input_str = "ABRACADABRA"
 
 main! : List(OsStr) => Try({}, [Exit(I32)])
 main! = |args| {
-	input_str = args.map(OsStr.display).get(1) ?? default_input_str
+	input_str = args.map(OsStr.display).first() ?? default_input_str
 
 	match Utf8.parse_str(letter_parser.many(), input_str) {
 		Ok(letters) => {
