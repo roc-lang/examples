@@ -1,0 +1,15 @@
+#!/usr/bin/expect
+
+set timeout 7
+source ./ci_scripts/expect_scripts/shared-code.exp
+
+spawn ./examples/DerivedMap/main
+
+expect -exact "Loaded user: Sam\r\nLoaded(\"Sam\")\r\n" {
+    expect eof {
+        check_exit_and_segfault
+    }
+}
+
+puts stderr "Error: output was different from expected value."
+exit 1
