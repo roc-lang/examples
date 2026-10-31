@@ -1,5 +1,5 @@
 app [main!] {
-	roc: "nightly-2026-10-17-5f126ac",
+	roc: "nightly-2026-10-31-f7bef6b",
 }
 
 ImageRequest : {
@@ -19,7 +19,7 @@ ImageRequest : {
 
 main! = |args| {
 	input_str = match args {
-		[_prog_name, first_arg, ..] => first_arg
+		[first_arg, ..] => first_arg
 		_ => # use default JSON
 			\\{
 			\\  "image": {

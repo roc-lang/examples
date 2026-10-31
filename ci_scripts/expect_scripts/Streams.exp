@@ -1,0 +1,15 @@
+#!/usr/bin/expect
+
+set timeout 7
+source ./ci_scripts/expect_scripts/shared-code.exp
+
+spawn ./examples/Streams/main examples/Streams/input.txt
+
+expect -exact "Preparing 1\r\nGot 10\r\nPreparing 2\r\nGot 20\r\nHello from a file!\r\nStreams read on demand.\r\n" {
+    expect eof {
+        check_exit_and_segfault
+    }
+}
+
+puts stderr "Error: output was different from expected value."
+exit 1

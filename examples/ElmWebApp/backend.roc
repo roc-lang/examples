@@ -1,7 +1,7 @@
 app [Context, program] {
-	pf: platform "https://github.com/roc-lang/basic-webserver/releases/download/0.17.0/AC9goxhsjJJdrQtnc2ga3eTiESyh6ZLraZJsCVdEfeZT.tar.zst",
 	http: "https://github.com/roc-lang/http/releases/download/2.0.0/6ZUwqYhCS8PU9Mo6MF7oV82ET2o7KYb57CLKDq4cq4sS.tar.zst",
-	roc: "nightly-2026-10-06-c34079d",
+	pf: platform "https://github.com/roc-lang/basic-webserver/releases/download/0.19.0/4KBAoiBazDfi9UF6e3BYKwon6rA8mnx3dbLMLKFzdEMw.tar.zst",
+	roc: "nightly-2026-10-31-f7bef6b",
 }
 
 import pf.Server
@@ -23,9 +23,9 @@ respond! = |_request, _context|
 	Ok(
 		Server.respond(
 			Response.from_status(200)
-			# !!
-			# Change http://localhost:8001 to your domain for production usage
-			# !!
+				# !!
+				# Change http://localhost:8001 to your domain for production usage
+				# !!
 				.with_headers([{ name: "Access-Control-Allow-Origin", value: "http://localhost:8001" }])
 				.with_body(Str.to_utf8("Hi, Elm! This is from Roc: 🎁\n")),
 		),
