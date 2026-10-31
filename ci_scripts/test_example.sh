@@ -59,6 +59,9 @@ case "$name" in
   BasicDict)
     "$roc" test --no-cache examples/BasicDict/BasicDict.roc
     ;;
+  Boxes)
+    "$roc" test --no-cache "examples/$name/main.roc"
+    ;;
   Closures)
     "$roc" test --no-cache "examples/$name/main.roc"
     ;;
