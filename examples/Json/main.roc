@@ -19,7 +19,7 @@ ImageRequest : {
 
 main! = |args| {
 	input_str = match args {
-		[_prog_name, first_arg, ..] => first_arg
+		[first_arg, ..] => first_arg
 		_ => # use default JSON
 			\\{
 			\\  "image": {
