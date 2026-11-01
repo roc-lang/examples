@@ -2,6 +2,7 @@ app [main!] {
 	roc: "nightly-2026-10-31-f7bef6b",
 }
 
+### start snippet example
 Person : { first_name : Str, last_name : Str, birth_year : U16 }
 
 parse_person : Str -> Try(Person, [InvalidSentenceFormat(Str), InvalidNameFormat(Str), InvalidBirthYearFormat(Str)])
@@ -24,3 +25,4 @@ expect parse_person("Paul McCartney was born in 1942") == Ok({ first_name: "Paul
 expect parse_person("Ringo Starr was born in MCMXL") == Err(InvalidBirthYearFormat("MCMXL"))
 
 main! = |_| Ok({})
+### end snippet example

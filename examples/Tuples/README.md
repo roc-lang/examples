@@ -8,7 +8,7 @@ field, etc.)
 
 ## Code
 ```roc
-file:main.roc
+file:main.roc:snippet:example
 ```
 
 ## Output

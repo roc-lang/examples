@@ -27,7 +27,7 @@ The variance formula is: `σ² = ∑(X - µ)² / N` where:
 ## Code
 
 ```roc
-file:main.roc
+file:main.roc:snippet:example
 ```
 
 ## Output

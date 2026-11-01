@@ -2,6 +2,7 @@ app [] {
 	roc: "nightly-2026-10-31-f7bef6b",
 }
 
+### start snippet example
 # see README.md for explanation of code
 ParserErr : [BadNumStr, OutOfSegments]
 
@@ -64,3 +65,4 @@ expect {
 
 	DateParser.parse(date_parser, "Mar-10-2015") == Ok({ month: "Mar", day: 10, year: 2015 })
 }
+### end snippet example

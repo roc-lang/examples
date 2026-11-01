@@ -9,7 +9,7 @@ See also:
 ## Full Code
 
 ```roc
-file:ErrorHandlingBasic.roc
+file:ErrorHandlingBasic.roc:snippet:example
 ```
 
 ## Output

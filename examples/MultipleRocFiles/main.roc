@@ -2,6 +2,7 @@ app [main!] {
 	roc: "nightly-2026-10-31-f7bef6b",
 }
 
+### start snippet example
 import Hello exposing [hello]
 
 main! = |_args| {
@@ -9,3 +10,4 @@ main! = |_args| {
 	echo!(hello("World"))
 	Ok({})
 }
+### end snippet example

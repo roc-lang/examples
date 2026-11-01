@@ -4,7 +4,7 @@ Decode JSON data into a Roc record.
 
 ## Code
 ```roc
-file:main.roc
+file:main.roc:snippet:example
 ```
 
 ## Output

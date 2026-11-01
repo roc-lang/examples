@@ -2,6 +2,7 @@ app [main!] {
 	roc: "nightly-2026-10-31-f7bef6b",
 }
 
+### start snippet example
 # Run with `roc ./examples/CommandLineArgs/main.roc input.txt`
 
 main! = |raw_args| {
@@ -21,3 +22,4 @@ main! = |raw_args| {
 		}
 	}
 }
+### end snippet example

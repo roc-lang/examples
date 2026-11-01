@@ -2,6 +2,7 @@ app [main!] {
 	roc: "nightly-2026-10-31-f7bef6b",
 }
 
+### start snippet example
 # Match an empty list
 expect {
 	match_fn = |input|
@@ -114,3 +115,4 @@ expect {
 }
 
 main! = |_| Ok({})
+### end snippet example

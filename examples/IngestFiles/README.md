@@ -13,7 +13,7 @@ The file content is included in the Roc app executable, if you publish the execu
 
 ## Full Code
 ```roc
-file:main.roc
+file:main.roc:snippet:example
 ```
 
 ## Output

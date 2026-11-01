@@ -4,7 +4,7 @@ An example implementation of [Depth First Search](https://en.wikipedia.org/wiki/
 
 ## Code
 ```roc
-file:Graph.roc
+file:Graph.roc:snippet:example
 ```
 
 ## Output

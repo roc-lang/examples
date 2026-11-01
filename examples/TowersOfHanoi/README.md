@@ -4,7 +4,7 @@ A Roc solution for the popular [Towers of Hanoi](https://en.wikipedia.org/wiki/T
 
 ## Code
 ```roc
-file:Hanoi.roc
+file:Hanoi.roc:snippet:example
 ```
 
 ## Output

@@ -18,7 +18,7 @@ fruit_dict =
 ## Basic Dict Examples
 
 ```roc
-file:BasicDict.roc
+file:BasicDict.roc:snippet:example
 ```
 
 ## Constraints

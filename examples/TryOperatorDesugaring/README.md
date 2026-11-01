@@ -36,7 +36,7 @@ error handling to drastically reduce the likelihood of crashes.
 
 ## Full Code
 ```roc
-file:main.roc
+file:main.roc:snippet:example
 ```
 
 ## Output

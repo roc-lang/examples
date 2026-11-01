@@ -2,6 +2,7 @@ app [main!] {
 	roc: "nightly-2026-10-31-f7bef6b",
 }
 
+### start snippet example
 main! = |_| {
 	output =
 		(1..=100)
@@ -49,3 +50,4 @@ expect fizz_buzz(20) == "Buzz"
 ## Test Case 4: multiple of both 3 and 5
 expect fizz_buzz(15) == "FizzBuzz"
 expect fizz_buzz(45) == "FizzBuzz"
+### end snippet example
