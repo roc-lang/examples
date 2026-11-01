@@ -4,7 +4,7 @@ Demonstrates all Roc syntax in a single app file. See [all module types](https:/
 
 ## Code
 ```roc
-file:main.roc:snippet:example
+file:main.roc
 ```
 
 ## Output
