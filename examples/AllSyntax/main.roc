@@ -2,10 +2,9 @@ app [main!] {
 	roc: "nightly-2026-11-02-847b82c",
 }
 
-import "README.md" as readme : Str # You can also import as List
+import "README.md" as readme : Str # You can also import with the type `List(U8)`
 
-# Note 1: I tried to demonstrate all Roc syntax (possible in a single app file),
-# but I probably forgot some things. Let @Anton know on zulip if you spot something missing, or make a github issue.
+# Demonstrates all Roc syntax (possible in a single app file),
 
 ## Double hashtag for doc comment
 number_operators : I64, I64 -> _
