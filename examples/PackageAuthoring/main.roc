@@ -1,7 +1,7 @@
 ### start snippet header
 app [] {
 	greetings: "package/main.roc",
-	roc: "nightly-2026-11-03-34bd006",
+	roc: "nightly-2026-11-04-2622062",
 }
 
 ### end snippet header
