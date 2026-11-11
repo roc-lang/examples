@@ -1,5 +1,5 @@
 app [main!] {
-	roc: "nightly-2026-11-09-9e85de7",
+	roc: "nightly-2026-11-11-7679cc5",
 }
 
 import "README.md" as readme : Str # You can also import with the type `List(U8)`
