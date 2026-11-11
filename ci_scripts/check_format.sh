@@ -10,7 +10,7 @@ cd "$(dirname "${BASH_SOURCE[0]}")/.."
 
 # array of paths to exclude from format check
 # TODO: update this once these examples are migrated
-excludes=( './examples/ElmWebApp/backend.roc' './examples/SortStrings/main.roc' )
+excludes=( './examples/ElmWebApp/backend.roc' )
 
 # Start the find command and loop through excludes to add them
 find_command="find ./examples -name '*.roc'"

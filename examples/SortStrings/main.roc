@@ -1,46 +1,38 @@
 app [main!] {
-    cli: platform "https://github.com/roc-lang/basic-cli/releases/download/0.25.0/CZsY7tYZwR3rj9kYbpaCfxki2yVAaRL8bBwMLvB2xkbA.tar.zst",
-    ascii: "https://github.com/Hasnep/roc-ascii/releases/download/v0.5.0/5WxqRf15XVko4HxVq5dW8r84s95CxrtvzrjZYwbg9Z3H.tar.zst",
-    roc: "nightly-2026-10-09-258ab27",
+	ascii: "https://github.com/ageron/roc-ascii/releases/download/v0.5.1/3mkSijmaYYGXbT6EvDAXyV4Y9YzYncztbWNDfRSr3z3f.tar.zst",
+	cli: platform "https://github.com/roc-lang/basic-cli/releases/download/0.28.0/2yhxoR7cZPSYbyUzPWULFw8AA6QEcdsgFNRmzu7pZbst.tar.zst",
+	roc: "nightly-2026-11-10-f7d1f19",
 }
 
 import cli.Stdout
-import cli.Arg exposing [Arg]
 import ascii.Ascii
 
 # TODO unicode example
 
-main! : List Arg => Result {} _
-main! = |_args|
-    fruits = [
-        "banana",
-        "apple",
-        "cherry",
-    ]
+main! = |_args| {
+	fruits = [
+		"banana",
+		"apple",
+		"cherry",
+	]
 
-    # If you copy this code, make sure that your strings are valid ASCII.
-    fruits_ascii = List.map_try(fruits, Ascii.from_str) ? FruitListContainsInvalidAscii
+	# If you copy this code, make sure that your strings are valid ASCII.
+	fruits_ascii = fruits.map_try(Ascii.from_str)?
 
-    sorted_fruits_ascending = Ascii.sort_asc(fruits_ascii)
+	sorted_fruits_ascending = Ascii.sort_asc(fruits_ascii)
+	sorted_fruits_ascending_str = ascii_list_to_str(sorted_fruits_ascending)
 
-    sorted_fruits_ascending_str =
-        ascii_list_to_str(sorted_fruits_ascending)
+	expect sorted_fruits_ascending_str == "apple, banana, cherry"
 
-    expect sorted_fruits_ascending_str == "apple, banana, cherry"
+	sorted_fruits_descending = Ascii.sort_desc(fruits_ascii)
+	sorted_fruits_descending_str = ascii_list_to_str(sorted_fruits_descending)
 
-    sorted_fruits_descending = Ascii.sort_desc(fruits_ascii)
+	expect sorted_fruits_descending_str == "cherry, banana, apple"
 
-    sorted_fruits_descending_str =
-        ascii_list_to_str(sorted_fruits_descending)
+	Stdout.line!("\nSorted fruits:")?
+	Stdout.line!("\tascending order: ${sorted_fruits_ascending_str}")?
+	Stdout.line!("\tdescending order: ${sorted_fruits_descending_str}")
+}
 
-    expect sorted_fruits_descending_str == "cherry, banana, apple"
-
-    Stdout.line!("\nSorted fruits:")?
-    Stdout.line!("\tascending order: ${sorted_fruits_ascending_str}")?
-    Stdout.line!("\tdescending order: ${sorted_fruits_descending_str}")
-
-ascii_list_to_str : List Ascii.Ascii -> Str
-ascii_list_to_str = |ascii_list|
-    ascii_list
-    |> List.map(Ascii.to_str)
-    |> Str.join_with(", ")
+ascii_list_to_str : List(Ascii.Ascii) -> Str
+ascii_list_to_str = |ascii_list| Str.join_with(ascii_list.map(Ascii.to_str), ", ")

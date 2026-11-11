@@ -194,10 +194,9 @@ case "$name" in
   HelloWeb)
     "$roc" check --no-cache examples/HelloWeb/main.roc
     ;;
-  # TODO: migrate this example to the new syntax
   SortStrings)
-    echo "Skipping $name"
-    exit "$skipped_exit_code"
+    build_example
+    run_expect
     ;;
   *)
     echo "ERROR: no tests are defined for examples/$name, add them to ci_scripts/test_example.sh" >&2
