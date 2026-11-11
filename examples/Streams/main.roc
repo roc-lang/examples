@@ -1,6 +1,6 @@
 app [main!] {
-	cli: platform "https://github.com/roc-lang/basic-cli/releases/download/0.26.0/GddgvsGjiNXrHFW6au5i5dUDbTs8FinQdrgE2Gqmw53t.tar.zst",
-	roc: "nightly-2026-11-04-2622062",
+	cli: platform "https://github.com/roc-lang/basic-cli/releases/download/0.28.0/2yhxoR7cZPSYbyUzPWULFw8AA6QEcdsgFNRmzu7pZbst.tar.zst",
+	roc: "nightly-2026-11-10-f7d1f19",
 }
 
 import cli.File
@@ -29,7 +29,7 @@ show_pipeline! = || {
 ### start snippet custom
 lines = |reader| Stream.custom(
 	Reading(reader),
-	Unknown,
+	Err(Unknown),
 	|state| match state {
 		Finished => Err(NoMore)
 		Reading(current) => match current.read_line!() {

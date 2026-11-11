@@ -1,5 +1,5 @@
 app [] {
-	roc: "nightly-2026-11-04-2622062",
+	roc: "nightly-2026-11-10-f7d1f19",
 }
 
 ### start snippet example
@@ -16,7 +16,7 @@ backwards = (1.I64..=8).step_by(2).iter_rev().collect()
 countdown : U64 -> Iter(U64)
 countdown = |start| Iter.custom(
 	start,
-	Known(start),
+	Ok(start),
 	|n| {
 		if n == 0 {
 			Err(NoMore)

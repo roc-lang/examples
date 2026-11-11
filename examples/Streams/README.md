@@ -31,7 +31,7 @@ The `basic-cli` platform provides `read_line!()`, which reads one line at a time
 file:main.roc:snippet:custom
 ```
 
-A custom stream supplies its initial state, a size hint (`Unknown` here), and a callback that produces the next item and state. In this example:
+A custom stream supplies its initial state, a size hint (`Err(Unknown)` here), and a callback that produces the next item and state. In this example:
 
 - `Reading(reader)` keeps the buffered reader available for the next pull.
 - `Err(EndOfInput)` signals the end of the file, represented by `Err(NoMore)`. A blank line is `Ok("")`, so it is still an item.

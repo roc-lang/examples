@@ -21,7 +21,7 @@ Every example pins the Roc nightly it works with in the header of its `main.roc`
 
 ```roc
 app [main!] {
-	cli: platform "https://github.com/roc-lang/basic-cli/releases/download/0.26.0/GddgvsGjiNXrHFW6au5i5dUDbTs8FinQdrgE2Gqmw53t.tar.zst",
+	cli: platform "https://github.com/roc-lang/basic-cli/releases/download/0.28.0/2yhxoR7cZPSYbyUzPWULFw8AA6QEcdsgFNRmzu7pZbst.tar.zst",
 	roc: "nightly-2026-10-09-258ab27",
 }
 ```
