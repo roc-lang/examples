@@ -1,5 +1,5 @@
 app [main!] {
-	roc: "nightly-2026-10-06-c34079d",
+	roc: "nightly-2026-11-10-f7d1f19",
 }
 
 ### start snippet numeral
@@ -99,15 +99,10 @@ Ok(validated_time) = Time.from_hms({ hour: 2, minute: 59, second: 57 })
 Html :: Str.{
 	is_eq : _
 
-	from_interpolation : Str, Iter((Str, Str)) -> Html
-	from_interpolation = |first, rest| {
-		Html.(
-			rest.fold(
-				first,
-				|html, (value, following)| {
-					html.concat(Html.escape(value)).concat(following)
-				},
-			),
+	from_interpolation : List(Str) -> Try((Iter(Str) -> Html), [InvalidInterpolation(Str)])
+	from_interpolation = |segments| {
+		Str.from_interpolation(segments).map_ok(
+			|assemble| |values| Html.(assemble(values.map(Html.escape))),
 		)
 	}
 

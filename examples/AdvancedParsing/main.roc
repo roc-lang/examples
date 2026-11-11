@@ -1,5 +1,5 @@
 app [] {
-	roc: "nightly-2026-11-09-9e85de7",
+	roc: "nightly-2026-11-10-f7d1f19",
 }
 
 ### start snippet example
@@ -15,7 +15,7 @@ User := {
 parse_user : Str -> Try(User, [InvalidJson(Str), MissingRequiredField(Str)])
 parse_user = Json.parser_camel()
 
-parse_headers : Str -> Try({ content_length : U64, x_auth_token : Try(Str, [Missing]) }, [BadHeader, MissingRequiredField(Str)])
+parse_headers : Str -> Try({ content_length : U64, x_auth_token : Try(Str, [Missing]) }, [BadHeader, MissingHeader(Str)])
 parse_headers = Encoding.HttpHeader.parser_for()
 
 expect {
