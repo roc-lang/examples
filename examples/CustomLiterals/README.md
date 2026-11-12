@@ -40,7 +40,7 @@ The ordinary call preserves its `Try`, so `maybe_time` contains `Ok(time)`. The 
 
 ## Interpolated Strings: `from_interpolation`
 
-An interpolated literal calls `from_interpolation`. Its first argument is the text before the first interpolation. The iterator then provides each interpolated value paired with the literal text following it.
+An interpolated literal calls `from_interpolation` at compile time with the literal's segments, the pieces of text around the interpolations. It returns a `Try` of a function, which receives an iterator over the interpolated values each time the literal is evaluated. `Err(InvalidInterpolation(message))` is reported as a compile-time error.
 
 This `Html` type escapes the interpolated values while preserving the literal markup:
 
@@ -51,8 +51,6 @@ file:main.roc:snippet:interpolation
 Here `name` becomes `Roc &amp; friends &lt;3`, while `<p>` and `</p>` remain markup. This example is for inserting text into HTML elements. Other contexts, such as URLs, scripts, or styles, could each handle interpolations in their own way.
 
 Our top-level `greeting` is evaluated at compile time because all its inputs are known. Interpolation can also use runtime values, in which case escaping and assembly happen at runtime.
-
-Note: Unlike `from_numeral` and `from_quote`, the `from_interpolation` function doesn't have to return a `Try`. This will change shortly: it will require a `Try` and the compiler will automatically unwrap `Ok` and reject `Err` (see [issue #12044](https://github.com/roc-lang/roc/issues/12044)).
 
 ## Output
 

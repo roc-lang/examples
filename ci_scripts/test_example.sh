@@ -155,7 +155,7 @@ case "$name" in
   RocRay)
     case "$(uname -s)-$(uname -m)" in
       Linux-aarch64 | Linux-arm64)
-        # RocRay 0.11.1 does not ship a Linux ARM64 host.
+        # RocRay 0.12.1 does not ship a Linux ARM64 host.
         "$roc" check --no-cache "examples/$name/main.roc"
         ;;
       *)
@@ -194,10 +194,9 @@ case "$name" in
   HelloWeb)
     "$roc" check --no-cache examples/HelloWeb/main.roc
     ;;
-  # TODO: migrate this example to the new syntax
   SortStrings)
-    echo "Skipping $name"
-    exit "$skipped_exit_code"
+    build_example
+    run_expect
     ;;
   *)
     echo "ERROR: no tests are defined for examples/$name, add them to ci_scripts/test_example.sh" >&2

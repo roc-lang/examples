@@ -1,5 +1,5 @@
 app [] {
-	roc: "nightly-2026-11-04-2622062",
+	roc: "nightly-2026-11-10-f7d1f19",
 }
 
 ### start snippet example
@@ -19,10 +19,10 @@ Page := { number : U64 }.{
 		step: Page.{ number: 1 },
 		upper_bound: Inclusive,
 		direction: To,
-		len_if_known: Unknown,
+		len_if_known: Err(Unknown),
 	})
 
-	range_iter : Page, Page, Page, [Exclusive, Inclusive], [To, From], [Known(U64), Unknown] -> Iter(Page)
+	range_iter : Page, Page, Page, [Exclusive, Inclusive], [To, From], Try(U64, [Unknown]) -> Iter(Page)
 	range_iter = |first, last, step, bound, direction, count|
 		U64.range_iter(first.number, last.number, step.number, bound, direction, count)
 			.map(|number| Page.{ number })

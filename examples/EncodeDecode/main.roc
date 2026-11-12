@@ -1,5 +1,5 @@
 app [main!] {
-	roc: "nightly-2026-11-09-9e85de7",
+	roc: "nightly-2026-11-10-f7d1f19",
 }
 
 ### start snippet impl
@@ -44,14 +44,14 @@ ItemKind := [
 		}
 	}
 
-	parser_for : encoding -> (state -> Try({ value : ItemKind, rest : state }, [TooShort, InvalidJson(Str)]))
+	parser_for : encoding -> (state -> Try({ value : ItemKind, rest : state }, [InvalidJson(Str)]))
 		where [
 			encoding.parse_u32 : encoding, state -> Try({ value : U32, rest : state }, [InvalidJson(Str)]),
 		]
 	parser_for = |encoding| {
 		|state| {
 			parsed = encoding.parse_u32(state) ? |InvalidJson(e)| InvalidJson(e)
-			item_kind : Try(ItemKind, [TooShort])
+			item_kind : Try(ItemKind, [InvalidJson(Str)])
 			item_kind = match parsed.value {
 				1 => Ok(ItemKind.(Text))
 				2 => Ok(ItemKind.(Method))
@@ -63,7 +63,7 @@ ItemKind := [
 				8 => Ok(ItemKind.(Interface))
 				9 => Ok(ItemKind.(Module))
 				10 => Ok(ItemKind.(Property))
-				_ => Err(TooShort)
+				_ => Err(InvalidJson("unknown item kind"))
 			}
 			Ok({ value: item_kind?, rest: parsed.rest })
 		}

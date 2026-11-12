@@ -38,7 +38,7 @@ for dir in examples/*/; do
   # Formatting changes between nightlies, and roc fmt updates the pin as well.
   # The examples that are not formatted yet are left alone, like in check_format.sh.
   case "$name" in
-    ElmWebApp | SortStrings) ;;
+    ElmWebApp) ;;
     *) find "$dir" -name '*.roc' -exec "$roc" fmt {} \; >/dev/null || true ;;
   esac
 

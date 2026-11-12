@@ -13,6 +13,10 @@ set expected_output [normalize_output {
 Sorted fruits:
 	ascending order: apple, banana, cherry
 	descending order: cherry, banana, apple
+
+Sorted words:
+	by code point: \["Cherry", "Straße", "apple", "banana"\]
+	ignoring case: \["apple", "banana", "Cherry", "Straße"\]
 }]
 
 expect $expected_output {
