@@ -108,6 +108,10 @@ case "$name" in
     "$roc" test --no-cache "examples/$name/main.roc"
     run_expect
     ;;
+  HelloWeb)
+    build_example
+    run_expect
+    ;;
   GraphTraversal)
     "$roc" test --no-cache examples/GraphTraversal/Graph.roc
     ;;
@@ -190,9 +194,6 @@ case "$name" in
   # TODO: also run these, the expect scripts need updating
   ElmWebApp)
     "$roc" check --no-cache examples/ElmWebApp/backend.roc
-    ;;
-  HelloWeb)
-    "$roc" check --no-cache examples/HelloWeb/main.roc
     ;;
   SortStrings)
     build_example
