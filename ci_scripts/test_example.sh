@@ -97,6 +97,12 @@ case "$name" in
       test -s "$work/docs/index.html"
     )
     ;;
+  ElmWebApp)
+    (cd "examples/$name" && "$roc" build --no-cache backend.roc)
+    elm="$(./ci_scripts/get_elm.sh)"
+    (cd "examples/$name/frontend" && "$elm" make src/Main.elm --optimize --output elm.js)
+    ./ci_scripts/test_elm_web_app.sh
+    ;;
   ErrorHandlingBasic)
     "$roc" test --no-cache examples/ErrorHandlingBasic/ErrorHandlingBasic.roc
     ;;
@@ -190,10 +196,6 @@ case "$name" in
     ;;
   WrappingArithmetic)
     "$roc" test --no-cache "examples/$name/main.roc"
-    ;;
-  # TODO: also run these, the expect scripts need updating
-  ElmWebApp)
-    "$roc" check --no-cache examples/ElmWebApp/backend.roc
     ;;
   SortStrings)
     build_example

@@ -35,7 +35,7 @@ file:backend.roc
 
 ### Roc
 
-You can change the port on which the Roc server runs with `ROC_BASIC_WEBSERVER_PORT`.
+The Roc server runs on port 8000. You can change that in `init!` with `Server.default_config.with_listen({ host: "127.0.0.1", port: 8000 })`. If you do, also update the url in `Main.elm`.
 
 ```bash
 cd examples/ElmWebApp/
@@ -49,6 +49,8 @@ roc build --opt=speed backend.roc
 ```
 
 ### Elm
+
+This example uses [Elm 0.19.3](https://guide.elm-lang.org/install/elm.html).
 
 > Note 1: for non-trivial Elm development we recommend using [elm-watch](https://github.com/lydell/elm-watch).
 
@@ -73,4 +75,5 @@ elm reactor --port 8001
 
 For production; use a battle-tested HTTP server instead of `elm reactor`.
 
-Open [localhost:8001/index.html](localhost:8001/index.html) in your browser.
+Open [http://localhost:8001/index.html](http://localhost:8001/index.html) in your browser.
+Use `localhost` rather than `127.0.0.1`: the Roc backend only allows requests from the origin `http://localhost:8001`.

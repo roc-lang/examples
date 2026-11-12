@@ -36,11 +36,7 @@ for dir in examples/*/; do
   ./ci_scripts/update_roc_version.sh "$tag" "$name" >/dev/null || exit 1
 
   # Formatting changes between nightlies, and roc fmt updates the pin as well.
-  # The examples that are not formatted yet are left alone, like in check_format.sh.
-  case "$name" in
-    ElmWebApp) ;;
-    *) find "$dir" -name '*.roc' -exec "$roc" fmt {} \; >/dev/null || true ;;
-  esac
+  find "$dir" -name '*.roc' -exec "$roc" fmt {} \; >/dev/null || true
 
   # Unset ROC, the example must be tested with the nightly it pins now.
   ROC= ./ci_scripts/test_example.sh "$name" >/dev/null 2>&1
