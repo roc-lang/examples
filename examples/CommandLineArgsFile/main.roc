@@ -1,7 +1,7 @@
 # Run with `roc ./examples/CommandLineArgsFile/main.roc -- examples/CommandLineArgsFile/input.txt`
 app [main!] {
 	cli: platform "https://github.com/roc-lang/basic-cli/releases/download/0.28.0/2yhxoR7cZPSYbyUzPWULFw8AA6QEcdsgFNRmzu7pZbst.tar.zst",
-	roc: "nightly-2026-11-10-f7d1f19",
+	roc: "nightly-2026-11-12-ce942d6",
 }
 
 import cli.Stdout
