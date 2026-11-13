@@ -8,18 +8,8 @@ set -euxo pipefail
 
 cd "$(dirname "${BASH_SOURCE[0]}")/.."
 
-# array of paths to exclude from format check
-# TODO: update this once these examples are migrated
-excludes=( './examples/ElmWebApp/backend.roc' )
-
-# Start the find command and loop through excludes to add them
-find_command="find ./examples -name '*.roc'"
-for exclude in "${excludes[@]}"; do
-    find_command+=" ! -path '$exclude*'"
-done
-
-# `roc fmt --check`` all roc files
-for file in $(eval "$find_command"); do
+# `roc fmt --check` all roc files
+for file in $(find ./examples -name '*.roc'); do
     if [ -n "${ROC:-}" ]; then
         roc="$ROC"
     else

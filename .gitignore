@@ -22,6 +22,7 @@ examples/ElmWebApp/frontend/elm-stuff/*
 examples/ElmWebApp/frontend/elm.js
 examples/GoPlatform/platform/*.dylib
 roc_nightly/
+elm_compiler/
 
 # macOS directory attributes
 .DS_Store
