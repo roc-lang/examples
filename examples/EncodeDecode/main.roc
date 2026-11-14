@@ -1,5 +1,5 @@
 app [main!] {
-	roc: "nightly-2026-11-12-ce942d6",
+	roc: "nightly-2026-11-13-03dce41",
 }
 
 ### start snippet impl
