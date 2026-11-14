@@ -32,9 +32,14 @@ jobs:
     steps:
       # Each example is tested with the Roc nightly that it pins in its header,
       # ci_scripts/get_roc.sh downloads the nightlies that are needed.
-      # Checkout the trusted ref from the triggering event context.
-      # Do not checkout caller-provided refs in this workflow.
+      # update_roc_nightly.yml passes the ref of the branch with the upgraded examples, without it
+      # this would test the default branch instead. Checking out that ref is safe: nothing is
+      # cached, so the checked out code cannot poison a cache of the default branch, and the job
+      # only has read permissions. Workflows of other repos that call this one run in their own repo.
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ inputs.ref }}
+          persist-credentials: false
 
       - name: Install dependencies (Ubuntu)
         if: startsWith(matrix.operating-system, 'ubuntu-')
