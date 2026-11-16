@@ -1,0 +1,11 @@
+/app.a
+/app.lib
+/host-c
+/host-zig
+/host-rust
+/*.exe
+/*.obj
+/*.o
+/*.pdb
+/host-rust.dSYM/
+/.zig-cache/
