@@ -1,13 +1,13 @@
 app [] {
-	roc: "nightly-2026-11-15-f25da45",
+	roc: "nightly-2026-11-18-a520eed",
 }
 
 ### start snippet example
 Page := { number : U64 }.{
 	is_eq : _
 
-	plus : Page, U64 -> Page
-	plus = |page, offset| { number: page.number + offset }
+	plus : Page, Page -> Page
+	plus = |a, b| { number: a.number + b.number }
 
 	is_lt : Page, Page -> Bool
 	is_lt = |a, b| a.number < b.number
@@ -30,7 +30,7 @@ Page := { number : U64 }.{
 
 first = Page.{ number: 3 }
 
-last = first + 2
+last = first + Page.{ number: 2 }
 
 pages : List(Page)
 pages = (first..=last).iter().collect()

@@ -8,7 +8,7 @@ file:main.roc:snippet:example
 
 Each operator calls a method on `Page`:
 
-- `+` calls `plus`, which adds an offset to the page number.
+- `+` calls `plus`, which adds the page numbers of both pages. Both sides of `+` must be the same type, so the offset is a `Page` too.
 - `<` calls `is_lt`, which compares the two page numbers.
 - `..=` calls `range_inclusive_to`, which creates a range including its last page.
 
