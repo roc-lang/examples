@@ -1,7 +1,7 @@
 ### start snippet header
 app [] {
-	roc: "nightly-2026-11-12-ce942d6",
-	unicode: "https://github.com/roc-lang/unicode/releases/download/4.3.2/3gvgiWm6BShjHKbNV2zRH6fhC5ZvScZgWF7AnVDWHSdd.tar.zst",
+	roc: "nightly-2026-11-18-a520eed",
+	unicode: "https://github.com/roc-lang/unicode/releases/download/4.3.3/AJfFMmhvmbgn7THAF1E1sofC3dZaVWPFmVV7GH8Bc7k7.tar.zst",
 }
 
 ### end snippet header
