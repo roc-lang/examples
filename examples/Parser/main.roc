@@ -1,7 +1,7 @@
 app [main!] {
 	cli: platform "https://github.com/roc-lang/basic-cli/releases/download/0.28.1/7brgwR8YUqfeGrkdfF1V4GPPN7DnP7ftqub9KcrTEZtr.tar.zst",
 	parser: "https://github.com/lukewilliamboswell/roc-parser/releases/download/3.0.0/6xsRdRqenJrAb4wG7HaST4Xh349vD5sHAJDsKTK6E3dr.tar.zst",
-	roc: "nightly-2026-11-18-a520eed",
+	roc: "nightly-2026-11-21-09f4dc3",
 }
 
 import cli.Stdout
