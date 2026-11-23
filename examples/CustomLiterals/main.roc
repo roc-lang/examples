@@ -1,5 +1,5 @@
 app [main!] {
-	roc: "nightly-2026-11-21-09f4dc3",
+	roc: "0.1.0-RC1",
 }
 
 ### start snippet numeral

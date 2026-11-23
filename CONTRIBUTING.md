@@ -17,7 +17,7 @@ If you are looking for a good place to start, check the [good first issues](http
 
 ## Roc versions
 
-Every example pins the Roc nightly it works with in the header of its `main.roc` (or the file with the `app` header), next to its platform and packages:
+Every example pins the Roc version it works with in the header of its `main.roc` (or the file with the `app` header), next to its platform and packages:
 
 ```roc
 app [main!] {
@@ -27,14 +27,16 @@ app [main!] {
 ```
 
 Examples are upgraded one by one, so different examples can use different Roc versions. This way an example that depends on a platform that was not updated yet does not hold back the others.
-The CI downloads the pinned nightly of each example, you can do the same locally:
+The examples use the [0.1.0_RC1 release](https://github.com/roc-lang/roc/releases/tag/0.1.0_RC1), written as `0.1.0-RC1` in the pin. An example whose platform does not work with the release yet can pin a nightly instead, as `nightly-YYYY-MM-DD-hash`.
+The CI downloads the pinned version of each example, you can do the same locally:
 
-- `./ci_scripts/test_example.sh HelloWorld` tests one example with its pinned nightly (set `ROC` to use another roc binary).
+- `./ci_scripts/test_example.sh HelloWorld` tests one example with its pinned version (set `ROC` to use another roc binary).
 - `./ci_scripts/all_tests.sh` tests all examples.
-- `./ci_scripts/upgrade_roc_nightly.sh [NIGHTLY_TAG]` upgrades every example that works with the (latest) nightly and leaves the others alone. This is also run daily by the `Update Roc nightly` workflow, which opens a PR.
-- `./ci_scripts/update_roc_version.sh NIGHTLY_TAG [EXAMPLE_NAME...]` changes the pin without testing.
+- `./ci_scripts/update_roc_version.sh VERSION [EXAMPLE_NAME...]` changes the pin without testing, `VERSION` is a nightly tag or a release like `0.1.0-RC1`.
 
-New examples need a pin in their `app` header (`app [] { roc: "nightly-..." }` is enough for a file that only has tests) and an entry in `ci_scripts/test_example.sh`.
+The `Check Roc nightly` workflow runs daily, it pins all examples to the latest nightly and runs the tests on a branch. Nothing is opened when that works, a pull request is only opened (mentioning the maintainer) when the upgrade fails.
+
+New examples need a pin in their `app` header (`app [] { roc: "0.1.0-RC1" }` is enough for a file that only has tests) and an entry in `ci_scripts/test_example.sh`.
 
 ## Contribution Tips
 
