@@ -13,8 +13,8 @@ fi
 readonly new_version="$1"
 shift
 
-if [[ ! "$new_version" =~ ^nightly-[0-9]{4}-[0-9]{2}-[0-9]{2}-[0-9a-f]+$ ]]; then
-  echo "expected a nightly release tag like nightly-2026-08-10-7df8509, got: $new_version" >&2
+if [[ ! "$new_version" =~ ^(nightly-[0-9]{4}-[0-9]{2}-[0-9]{2}-[0-9a-f]+|[0-9]+\.[0-9]+\.[0-9]+(-[A-Za-z0-9.]+)?)$ ]]; then
+  echo "expected a nightly tag like nightly-2026-08-10-7df8509 or a release like 0.1.0-RC1, got: $new_version" >&2
   exit 1
 fi
 
@@ -31,7 +31,7 @@ fi
 
 # Update every tracked file that pins a roc version in its header
 while IFS= read -r file; do
-  perl -pi -e "s|roc: \"nightly-[^\"]+\"|roc: \"$new_version\"|g" "$file"
-done < <(git grep -l -E 'roc: "nightly-[^"]+"' -- "${dirs[@]}")
+  perl -pi -e "s|roc: \"[^\"]+\"|roc: \"$new_version\"|g" "$file"
+done < <(git grep -l -E 'roc: "[^"]+"' -- "${dirs[@]}")
 
 echo "Pinned Roc version of ${*:-all examples} updated to $new_version."

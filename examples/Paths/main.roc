@@ -1,7 +1,7 @@
 ### start snippet header
 app [] {
 	path: "https://github.com/roc-lang/path/releases/download/4.0.0/7YfABZPwJAXtLBY2vm8FqMyGAtNxncCJ65HdNKHFGNnE.tar.zst",
-	roc: "nightly-2026-11-21-09f4dc3",
+	roc: "0.1.0-RC1",
 }
 
 ### end snippet header

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Checks that every example pins exactly one Roc nightly in its header, e.g. roc: "nightly-2026-10-09-258ab27".
+# Checks that every example pins exactly one Roc version in its header, e.g. roc: "0.1.0-RC1" or roc: "nightly-2026-10-09-258ab27".
 # Each example is tested with its own pinned version, so examples can be upgraded one by one.
 
 set -euo pipefail
@@ -19,7 +19,7 @@ for dir in examples/*/; do
 done
 
 # Every app header needs the pin, including the apps of multi-file examples.
-missing="$(grep -rL --include='*.roc' 'roc: "nightly-' $(grep -rl --include='*.roc' '^app \[' examples) || true)"
+missing="$(grep -rL --include='*.roc' 'roc: "' $(grep -rl --include='*.roc' '^app \[' examples) || true)"
 if [ -n "$missing" ]; then
   echo "These app headers do not pin a Roc version:" >&2
   echo "$missing" >&2

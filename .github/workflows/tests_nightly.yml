@@ -30,9 +30,9 @@ jobs:
         operating-system: [ubuntu-26.04, ubuntu-26.04-arm, macos-26-intel, macos-26]
     timeout-minutes: 90
     steps:
-      # Each example is tested with the Roc nightly that it pins in its header,
-      # ci_scripts/get_roc.sh downloads the nightlies that are needed.
-      # update_roc_nightly.yml passes the ref of the branch with the upgraded examples, without it
+      # Each example is tested with the Roc version that it pins in its header,
+      # ci_scripts/get_roc.sh downloads the versions that are needed.
+      # check_roc_nightly.yml passes the ref of the branch with the upgraded examples, without it
       # this would test the default branch instead. Checking out that ref is safe: nothing is
       # cached, so the checked out code cannot poison a cache of the default branch, and the job
       # only has read permissions. Workflows of other repos that call this one run in their own repo.

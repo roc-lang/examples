@@ -4,9 +4,9 @@ on:
     - cron: '0 11 * * *'
   workflow_dispatch:
 
-name: Update Roc nightly
+name: Check Roc nightly
 
-# only one update run at a time, they all push to the same branch
+# only one run at a time, they all push to the same branch
 concurrency:
     group: ${{ github.workflow }}
     cancel-in-progress: false
@@ -14,26 +14,39 @@ concurrency:
 # Do not add permissions here! Configure them at the job level!
 permissions: {}
 
+# The examples pin a Roc release (see CONTRIBUTING.md). This workflow tries to
+# upgrade all examples to the latest nightly and runs the tests. Nothing is
+# merged or opened when that works, a pull request is only opened when it fails.
 env:
-  BRANCH: update-roc-nightly
+  BRANCH: roc-nightly-upgrade
 
 jobs:
   bump:
     runs-on: ubuntu-26.04
     permissions:
       contents: write
+      pull-requests: read
     outputs:
       nightly-tag: ${{ steps.latest.outputs.nightly-tag }}
       changed: ${{ steps.upgrade.outputs.changed }}
-      summary: ${{ steps.upgrade.outputs.summary }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - name: Install dependencies
-        run: sudo apt install -y expect
+      # People may be fixing the examples on the branch of that pull request, do not overwrite their work.
+      - name: Look for an open pull request
+        id: open-pr
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          pr="$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number // empty')"
+          echo "pr=$pr" >> "$GITHUB_OUTPUT"
+          if [ -n "$pr" ]; then
+            echo "Pull request #$pr is still open, skipping."
+          fi
 
       - name: Get the latest nightly tag
         id: latest
+        if: steps.open-pr.outputs.pr == ''
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -41,24 +54,14 @@ jobs:
           echo "latest nightly is $nightly_tag"
           echo "nightly-tag=$nightly_tag" >> "$GITHUB_OUTPUT"
 
-      # Examples that do not work with the latest nightly yet, for example because
-      # their platform was not updated, stay on the version they pin.
-      - name: Upgrade the examples that work with the latest nightly
+      - name: Pin the examples to the latest nightly
         id: upgrade
+        if: steps.open-pr.outputs.pr == ''
         env:
           NIGHTLY_TAG: ${{ steps.latest.outputs.nightly-tag }}
         run: |
-          summary="$(./ci_scripts/upgrade_roc_nightly.sh "$NIGHTLY_TAG" | tail -n 2)"
-          echo "$summary"
-
-          {
-            echo "summary<<EOF"
-            echo "$summary"
-            echo "EOF"
-          } >> "$GITHUB_OUTPUT"
-
+          ./ci_scripts/update_roc_version.sh "$NIGHTLY_TAG"
           if git diff --quiet; then
-            echo "no example changed, nothing to do"
             echo "changed=false" >> "$GITHUB_OUTPUT"
           else
             echo "changed=true" >> "$GITHUB_OUTPUT"
@@ -83,43 +86,35 @@ jobs:
     uses: ./.github/workflows/tests_nightly.yml
     with:
       # The env context is not available here, keep this the same as BRANCH.
-      ref: update-roc-nightly
+      ref: roc-nightly-upgrade
 
-  pull-request:
+  report:
     needs: [bump, test]
     if: always() && needs.bump.outputs.changed == 'true'
     runs-on: ubuntu-26.04
     permissions:
-      contents: read
+      contents: write
       pull-requests: write
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - name: Open or update the pull request
+      # The upgrade works, so there is nothing to do and the branch is not needed.
+      - name: Delete the branch
+        if: needs.test.result == 'success'
+        run: git push origin --delete "$BRANCH"
+
+      - name: Open the pull request
+        if: needs.test.result != 'success'
         env:
           GH_TOKEN: ${{ github.token }}
           NIGHTLY_TAG: ${{ needs.bump.outputs.nightly-tag }}
-          SUMMARY: ${{ needs.bump.outputs.summary }}
           TEST_RESULT: ${{ needs.test.result }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
-          if [ "$TEST_RESULT" = "success" ]; then
-            status=":white_check_mark: All tests passed with the upgraded examples."
-          else
-            status=":x: Tests did not pass (\`$TEST_RESULT\`), this needs a look before merging."
-          fi
-
           title="Upgrade examples to Roc $NIGHTLY_TAG"
-          body="$(printf '%s\n\n%s\n\n%s\n\n%s\n' \
-            "Updates the \`roc\` pin in the header of the examples that work with [\`$NIGHTLY_TAG\`](https://github.com/roc-lang/nightlies/releases/tag/$NIGHTLY_TAG)." \
-            "$SUMMARY" \
-            "$status See the [workflow run]($RUN_URL) for details." \
-            "This PR was created automatically by the \`Update Roc nightly\` workflow.")"
+          body="$(printf '%s\n\n%s\n\n%s\n' \
+            "Upgrading the examples to [\`$NIGHTLY_TAG\`](https://github.com/roc-lang/nightlies/releases/tag/$NIGHTLY_TAG) failed (\`$TEST_RESULT\`), see the [workflow run]($RUN_URL)." \
+            "@Anton-4 this needs a look. Push fixes to this branch, merge it once the tests pass or close it to try again with the next nightly." \
+            "This PR was created automatically by the \`Check Roc nightly\` workflow.")"
 
-          pr="$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number // empty')"
-
-          if [ -z "$pr" ]; then
-            gh pr create --head "$BRANCH" --title "$title" --body "$body"
-          else
-            gh pr edit "$pr" --title "$title" --body "$body"
-          fi
+          gh pr create --head "$BRANCH" --title "$title" --body "$body"
