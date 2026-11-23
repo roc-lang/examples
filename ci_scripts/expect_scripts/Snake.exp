@@ -7,6 +7,11 @@ set timeout 7
 
 source ./ci_scripts/expect_scripts/shared-code.exp
 
+# On Windows, Tty.enable_raw_mode! only affects the console of the game, so put the terminal of expect in raw mode as well.
+if {[on_windows]} {
+    set stty_init "raw -echo"
+}
+
 spawn ./examples/Snake/main
 
 expect "Score: 0\r\n" {

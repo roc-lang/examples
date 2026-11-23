@@ -7,16 +7,23 @@ set timeout 7
 
 source ./ci_scripts/expect_scripts/shared-code.exp
 
-spawn ./examples/LoopEffect/main
+if {[on_windows]} {
+    # The pseudo console of MSYS2 does not pass on Ctrl-Z, which ends console input on Windows, so pipe the numbers in.
+    spawn sh -c {printf '1\n2\n-1\n' | ./examples/LoopEffect/main}
+} else {
+    spawn ./examples/LoopEffect/main
+}
 
 expect "Enter some numbers on different lines, then press Ctrl-D to sum them up.\r\n"
 
-send -- "1\r"
-send -- "2\r"
-send -- "-1\r"
+if {![on_windows]} {
+    send -- "1\r"
+    send -- "2\r"
+    send -- "-1\r"
 
-# send Ctrl+D
-send "\004"
+    # send Ctrl+D
+    send "\004"
+}
 
 expect "Sum: 2\r\n" {
   expect eof {

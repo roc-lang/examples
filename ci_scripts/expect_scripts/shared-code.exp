@@ -1,3 +1,8 @@
+# Windows CI runs expect in MSYS2, where the examples run in a Windows console.
+proc on_windows {} {
+    return [expr {[info exists ::env(OS)] && $::env(OS) eq "Windows_NT"}]
+}
+
 proc normalize_output {output} {
     # Remove leading newline for cleaner multiline string formatting
     regsub {^\n} $output "" result
