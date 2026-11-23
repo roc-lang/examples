@@ -8,7 +8,7 @@ file:main.roc:snippet:example
 
 The three callbacks divide up the work: `init!` creates the initial model, `update!` records the mouse position and button state, and `render!` draws the circle from that model. The platform handles the window and closes it when you press Escape.
 
-RocRay releases are paired with particular Roc versions. This app header selects a specific RocRay version and its supported nightly together:
+RocRay releases are paired with particular Roc versions. This app header selects a specific RocRay version and its supported Roc version together:
 
 ```roc
 file:main.roc:snippet:header

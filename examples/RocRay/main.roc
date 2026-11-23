@@ -1,7 +1,7 @@
 ### start snippet header
 app [Model, program] {
-	roc: "nightly-2026-11-12-ce942d6",
-	rr: platform "https://github.com/lukewilliamboswell/roc-ray/releases/download/0.12.2/A8Dt5CorYsEtHFh8h7SfMtpzSy73UWbaB5Twy9JoYS1U.tar.zst",
+	roc: "0.1.0-RC1",
+	rr: platform "https://github.com/lukewilliamboswell/roc-ray/releases/download/0.12.3/default-5dNxpAJgNbQLwNCvyiSS44ReCG5bm2v34uKzFQH97rWC.tar.zst",
 }
 
 ### end snippet header
@@ -33,7 +33,7 @@ render! : Model, Draw.Frame => Try({}, [Exit(I64)])
 render! = |model, frame| {
 	frame.clear!(Color.black)
 	frame.circle!({
-		center: model.position,
+		center: Draw.Vector2.{ x: model.position.x, y: model.position.y },
 		radius: 30,
 		style: Draw.filled(
 			if model.pressed {

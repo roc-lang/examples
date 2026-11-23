@@ -27,7 +27,7 @@ app [main!] {
 ```
 
 Examples are upgraded one by one, so different examples can use different Roc versions. This way an example that depends on a platform that was not updated yet does not hold back the others.
-The examples use the [0.1.0_RC1 release](https://github.com/roc-lang/roc/releases/tag/0.1.0_RC1), written as `0.1.0-RC1` in the pin. An example whose platform does not work with the release yet (RocRay) pins a nightly, as `nightly-YYYY-MM-DD-hash`.
+The examples use the [0.1.0_RC1 release](https://github.com/roc-lang/roc/releases/tag/0.1.0_RC1), written as `0.1.0-RC1` in the pin. An example whose platform does not work with the release yet can pin a nightly instead, as `nightly-YYYY-MM-DD-hash`.
 The CI downloads the pinned version of each example, you can do the same locally:
 
 - `./ci_scripts/test_example.sh HelloWorld` tests one example with its pinned version (set `ROC` to use another roc binary).
