@@ -16,6 +16,14 @@ Hello
 BAZ=DUCK
 FOO=BAR
 XYZ=ABC
+}]
+
+# On Windows, env and cat come from MSYS2, whose env adds TERM and HOME to the cleared environment.
+if {[on_windows]} {
+    append expected_output "TERM=xterm-256color\r\nHOME=$env(HOME)\r\n"
+}
+
+append expected_output [normalize_output {
 cat: non_existent.txt: No such file or directory
 Exit status: Exited\(1\)
 \[72, 105, 10\]

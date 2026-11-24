@@ -27,8 +27,19 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        operating-system: [ubuntu-26.04, ubuntu-26.04-arm, macos-26-intel, macos-26]
+        operating-system: [ubuntu-26.04, ubuntu-26.04-arm, macos-26-intel, macos-26, windows-latest]
+        include:
+          # Git Bash has no expect, so Windows runs the scripts in the MSYS2 that comes with the runner.
+          - operating-system: windows-latest
+            shell: C:\msys64\usr\bin\bash.exe --login -eo pipefail {0}
     timeout-minutes: 90
+    defaults:
+      run:
+        shell: ${{ matrix.shell || 'bash' }}
+    env:
+      # Only used by the MSYS2 shell: stay in the checkout, and keep the PATH of the runner for jq and geckodriver.
+      CHERE_INVOKING: 1
+      MSYS2_PATH_TYPE: inherit
     steps:
       # Each example is tested with the Roc version that it pins in its header,
       # ci_scripts/get_roc.sh downloads the versions that are needed.
@@ -49,6 +60,10 @@ jobs:
         if: startsWith(matrix.operating-system, 'macos-')
         run: |
           brew install expect
+
+      - name: Install dependencies (Windows)
+        if: startsWith(matrix.operating-system, 'windows-')
+        run: pacman -Sy --noconfirm --needed expect unzip
 
       - name: check that every example pins a Roc version
         run: ./ci_scripts/check_roc_version.sh

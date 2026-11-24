@@ -34,6 +34,8 @@ The CI downloads the pinned version of each example, you can do the same locally
 - `./ci_scripts/all_tests.sh` tests all examples.
 - `./ci_scripts/update_roc_version.sh VERSION [EXAMPLE_NAME...]` changes the pin without testing, `VERSION` is a nightly tag or a release like `0.1.0-RC1`.
 
+On Windows, run the scripts in an [MSYS2](https://www.msys2.org) shell after `pacman -S expect unzip`, Git Bash has no `expect`.
+
 The `Check Roc nightly` workflow runs daily, it pins all examples to the latest nightly and runs the tests on a branch. Nothing is opened when that works, a pull request is only opened (mentioning the maintainer) when the upgrade fails.
 
 New examples need a pin in their `app` header (`app [] { roc: "0.1.0-RC1" }` is enough for a file that only has tests) and an entry in `ci_scripts/test_example.sh`.

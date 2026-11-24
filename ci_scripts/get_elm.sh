@@ -14,6 +14,7 @@ case "$(uname -s)-$(uname -m)" in
   Linux-aarch64 | Linux-arm64) asset="linux-arm" sha256="4d22c4d10f89e482d3554b7af4f6527f8a05e4d82648a07b23f1f211495b5d24" ;;
   Darwin-arm64) asset="mac-arm" sha256="a426e47d14cba0588aa81475adc32ba24bbf045209d0c560d0a89a5c4f3c34d0" ;;
   Darwin-x86_64) asset="mac-x64" sha256="4a9c5578e53c4feb55b91c8ee9a0f46da9913414c6303d1c55add0d3abcd9921" ;;
+  MINGW*-x86_64 | MSYS*-x86_64) asset="windows-x64" sha256="02d827be1d8489dbe53aaf5f923cb1f580aed257a9a8b642ff04bbe625572507" ;;
   *) echo "unsupported platform: $(uname -sm)" >&2; exit 1 ;;
 esac
 
@@ -29,7 +30,13 @@ if [ ! -x "$elm" ]; then
 
   url="https://github.com/elm/compiler/releases/download/$version/elm-$version-$asset.gz"
   curl --fail --silent --show-error --location --retry 5 --retry-all-errors --output "$tmp/elm.gz" "$url"
-  echo "$sha256  $tmp/elm.gz" | shasum -a 256 --check --status || {
+  # Windows has no shasum, and the sha256sum of macOS lacks --status.
+  if command -v shasum >/dev/null; then
+    sha256sum=(shasum -a 256)
+  else
+    sha256sum=(sha256sum)
+  fi
+  echo "$sha256  $tmp/elm.gz" | "${sha256sum[@]}" --check --status || {
     echo "checksum mismatch for $url" >&2
     exit 1
   }

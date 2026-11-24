@@ -1,2 +1,4 @@
+# Keep LF on Windows checkouts: roc fmt rejects the CR of CRLF in multiline strings.
+* text=auto eol=lf
 *.roc linguist-detectable=true
 examples/**/*.roc -linguist-documentation
